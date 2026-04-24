@@ -1,0 +1,316 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "updated": "2026-04-24",
+    "updated_by": "Claude (chat automation)",
+    "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
+    "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
+    "instructions": "Pour mettre à jour: GET le sha via API GitHub, puis PUT le nouveau contenu encodé base64."
+  },
+  "project": {
+    "name": "OZECAR",
+    "description": "Kits de supervision de bornes de recharge electrique OZKM / OZKU",
+    "hubspot_account": "143920450",
+    "make_org": "320851",
+    "make_team": "197685",
+    "monta_client_id": "3d29eb5f-ffe8-464d-913a-5b81c5ef5ba1",
+    "pandadoc_template_id": "9twwWCrbRe7ECUgAyzSpom",
+    "pandadoc_status": "sandbox — a remplacer par cle live",
+    "shopify_store": "ozecar-store.myshopify.com",
+    "wordpress_staging": "staging.ozecar.fr",
+    "wordpress_prod": "ozecar.fr",
+    "gmail_sender": "hello@ozecar.fr (alias de dominique@ozecar.fr)",
+    "gmail_connection_id": 6724564
+  },
+  "brand": {
+    "font_body": "DM Sans",
+    "font_mono": "Space Mono",
+    "color_bg": "#F5F0EB",
+    "color_black": "#0F141E",
+    "color_accent": "#FAC828",
+    "color_accent2": "#D4A800"
+  },
+  "products": {
+    "OZKM": {
+      "name": "Kit Master",
+      "format": "Grande enveloppe A5",
+      "contents": [
+        "SIM multi-operateurs",
+        "QR Code sticker",
+        "Numerotation 1A/1B...10A/10B",
+        "Notice"
+      ],
+      "qr_url_pattern": "https://ozecar.fr/activation?kit=OZKM-XXXX",
+      "label_format": "102x152mm MUNBYN",
+      "monta_role": "Cree le Site (station)"
+    },
+    "OZKU": {
+      "name": "Kit Unit",
+      "format": "Petite enveloppe scellee 50x30mm",
+      "contents": [
+        "Carte RFID",
+        "QR Code sticker",
+        "Notice courte"
+      ],
+      "qr_url_pattern": "https://ozecar.fr/activation?kit=OZKU-XXXX",
+      "label_format": "50x30mm MUNBYN",
+      "monta_role": "Cree le ChargePoint (borne)"
+    }
+  },
+  "make_scenarios": {
+    "01": {
+      "id": 5265036,
+      "name": "Commande Shopify -> HubSpot",
+      "trigger": "Nouvelle commande Shopify",
+      "status": "actif",
+      "tested": true,
+      "modules": [
+        "Shopify trigger",
+        "HubSpot Contact",
+        "HubSpot Societe",
+        "HubSpot Deal -> Kit commande"
+      ]
+    },
+    "02": {
+      "id": 5287551,
+      "name": "Activation -> Monta + PandaDoc + Mail",
+      "webhook": "https://hook.eu1.make.com/53svm3p2rnwmcps7vjh50cyl3iwnxnxd",
+      "webhook_id": 2842912,
+      "trigger": "Webhook ozecar.fr/activation",
+      "status": "actif",
+      "tested": false,
+      "pending": "Test bout en bout curl depuis terminal",
+      "modules_count": 13,
+      "modules": [
+        "1-Webhook",
+        "2-SetVariables",
+        "3-Auth Monta",
+        "4-Monta Team",
+        "5-Monta Site",
+        "6-monta-chargers.php",
+        "7-Installer Job",
+        "10-Invitation client Monta",
+        "11-PandaDoc creer contrat (7j)",
+        "12-PandaDoc envoyer",
+        "8-HubSpot PATCH presentationscheduled",
+        "9-Gmail installateur",
+        "13-Gmail interne si config sur site"
+      ]
+    },
+    "03": {
+      "id": 5291943,
+      "name": "Preparation Zaptec -> Zaptec + Monta + HubSpot",
+      "webhook": "https://hook.eu1.make.com/dpnydhyyqzxk16d27pne1df7itl9wmh0",
+      "webhook_id": 2844944,
+      "trigger": "Webhook page preparation onglet Zaptec",
+      "status": "actif",
+      "tested": false,
+      "modules_count": 12,
+      "modules": [
+        "1-Webhook",
+        "2-SetVariables",
+        "3-Auth Zaptec",
+        "4-Zaptec Installation (OCPP->Monta)",
+        "5-Zaptec Circuit",
+        "6-Zaptec Charger",
+        "7-Auth Monta",
+        "8-Monta Team",
+        "9-Monta Site",
+        "10-Monta ChargePoint",
+        "11-HubSpot PATCH",
+        "12-Gmail installateur"
+      ]
+    },
+    "04": {
+      "id": 5426658,
+      "name": "Expedition kit -> Email suivi + HubSpot",
+      "webhook": "https://hook.eu1.make.com/htv0qyca3rtl3bwyokbrhuln1vo4oiv1",
+      "webhook_id": 2906552,
+      "trigger": "Webhook page preparation onglet Commande",
+      "status": "actif",
+      "tested": false,
+      "modules": [
+        "1-Webhook",
+        "2-SetVariables (URL suivi transporteur)",
+        "3-HubSpot PATCH qualifiedtobuy + tracking_number",
+        "4-Gmail client final (lien suivi)"
+      ]
+    }
+  },
+  "hubspot": {
+    "account_id": "143920450",
+    "pipelines": {
+      "supervision": {
+        "id": "default",
+        "stages": {
+          "appointmentscheduled": "Kit commande (Make 01 auto)",
+          "qualifiedtobuy": "Kit expedie (Make 04 auto)",
+          "presentationscheduled": "Activation en cours (Make 02 auto)",
+          "decisionmakerboughtin": "Contrat envoye (PandaDoc auto)",
+          "contractsent": "Contrat signe (manuel)",
+          "closedwon": "On-boarding planifie (manuel)",
+          "5156644039": "Ferme gagne (manuel)"
+        },
+        "stages_todo": [
+          "Kit en preparation (entre appointmentscheduled et qualifiedtobuy)",
+          "Configuration sur site (entre presentationscheduled et decisionmakerboughtin)"
+        ]
+      },
+      "leads_qualification": {
+        "id": "3747862733",
+        "stages": {
+          "5215721685": "Formulaire recu",
+          "5215721686": "Lead qualifie",
+          "5215721687": "Demo planifiee",
+          "5215721688": "Demo realisee",
+          "5215721689": "Devis envoye",
+          "5215721690": "Kit envoye"
+        }
+      }
+    },
+    "custom_properties_todo": [
+      "tracking_number (texte) - numero de suivi expedition",
+      "onsite_config_requested (select) - Non/Oui a planifier/Oui planifiee/Oui realisee",
+      "monta_team_id (texte)",
+      "monta_site_id (texte)",
+      "zaptec_installation_id (texte)",
+      "zaptec_circuit_id (texte)",
+      "zaptec_charger_id (texte)"
+    ]
+  },
+  "pages_html": {
+    "activation": {
+      "url": "ozecar.fr/activation",
+      "file": "ozecar-activation.html",
+      "status": "uploade",
+      "features": [
+        "Flow OZKM/OZKU 4 etapes",
+        "activator_type (installateur/client final)",
+        "Config sur site (checkbox + creneau + notes)",
+        "Details station (parking, horaires, hauteur, photos)",
+        "Invitation Monta + PandaDoc declenches par Make 02"
+      ]
+    },
+    "preparation": {
+      "url": "ozecar.fr/preparation",
+      "file": "ozecar-preparation.html",
+      "status": "a_uploader",
+      "features": [
+        "Onglet Stock (monday.com)",
+        "Onglet Creer (lots OZKM/OZKU)",
+        "Onglet Commande (kits -> deal + section expedition + tracking)",
+        "Onglet Zaptec (formulaire complet client+site+installateur -> Make 03)"
+      ]
+    },
+    "etiquettes": {
+      "url": "usage_local",
+      "file": "ozecar-etiquettes.html",
+      "status": "pret",
+      "features": [
+        "OZKM 102x152mm MUNBYN",
+        "OZKU 50x30mm MUNBYN",
+        "Numerotation 1A/1B...10A/10B",
+        "Apercu + impression lot"
+      ]
+    }
+  },
+  "proxies_php": {
+    "hubspot": {
+      "url": "ozecar.fr/api/hubspot.php",
+      "status": "operationnel"
+    },
+    "monday": {
+      "url": "ozecar.fr/api/monday.php",
+      "status": "operationnel"
+    },
+    "monta": {
+      "url": "ozecar.fr/api/monta.php",
+      "status": "operationnel"
+    },
+    "monta_chargers": {
+      "url": "ozecar.fr/api/monta-chargers.php",
+      "status": "uploade"
+    }
+  },
+  "monday_boards": {
+    "stock_kits": {
+      "id": 18409310538,
+      "name": "Stock Kits OZECAR",
+      "workspace_id": 8567866,
+      "groups": {
+        "ozkm": "group_mm2jry5h",
+        "ozku": "group_mm2jkmpf"
+      },
+      "columns": {
+        "type": "color_mm2j8z35",
+        "statut": "color_mm2jvssv",
+        "iccid_sim": "text_mm2jrj08",
+        "lot": "text_mm2jqj7z",
+        "date_prep": "date_mm2j56sa",
+        "deal_hubspot": "text_mm2jj86h",
+        "date_activation": "date_mm2j49q9",
+        "notes": "long_text_mm2j1qqj",
+        "ozecard_rfid": "board_relation_mm2jfvpv",
+        "qr_code": "board_relation_mm2jm3t7",
+        "hex_rfid_mirror": "lookup_mm2j2wkq",
+        "url_qr_mirror": "lookup_mm2jyf84"
+      },
+      "todo": "Renommer labels Type: Master->OZKM / Unit->OZKU (manuel)"
+    }
+  },
+  "gaps": {
+    "urgent": [
+      {
+        "id": "G01",
+        "title": "Test Make 02 bout en bout",
+        "detail": "curl depuis terminal vers hook.eu1.make.com/53svm3p2rnwmcps7vjh50cyl3iwnxnxd avec payload OZKM-TEST-005",
+        "status": "en_cours"
+      },
+      {
+        "id": "G02",
+        "title": "Uploader ozecar-preparation.html",
+        "detail": "Via Hostinger File Manager -> public_html/preparation/index.html",
+        "status": "a_faire"
+      }
+    ],
+    "important": [
+      {
+        "id": "G03",
+        "title": "HubSpot - 2 stages + 7 proprietes custom",
+        "detail": "Parametres -> Objets -> Deals -> Pipelines et Proprietes",
+        "status": "a_faire"
+      },
+      {
+        "id": "G04",
+        "title": "PandaDoc - Finaliser template + passer en prod",
+        "detail": "Verifier noms champs: Client.name, Client.company, Client.email, Client.address, Station.name, Station.address, Station.pdc, Kit.id, Installateur.name, Installateur.email. Remplacer cle sandbox par cle live.",
+        "status": "a_faire"
+      }
+    ],
+    "normal": [
+      {
+        "id": "G05",
+        "title": "Make 05 - Calendly -> HubSpot Pipeline L&Q",
+        "detail": "Pipeline L&Q ID: 3747862733. Etape Demo planifiee: 5215721687",
+        "status": "a_faire"
+      },
+      {
+        "id": "G06",
+        "title": "Formulaires site -> HubSpot",
+        "detail": "Apres refonte site ozecar.fr - embed formulaires HubSpot (demo, contact, newsletter, livres blancs)",
+        "status": "apres_refonte"
+      },
+      {
+        "id": "G07",
+        "title": "Labels monday Type: Master->OZKM / Unit->OZKU",
+        "detail": "Board 18409310538 - colonne color_mm2j8z35 - action manuelle",
+        "status": "a_faire"
+      }
+    ]
+  },
+  "resources": {
+    "flowchart": "https://ozecar.fr/project/index.html",
+    "copilot": "https://ozecar.fr/copilot/index.html",
+    "state_json": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json"
+  }
+}
