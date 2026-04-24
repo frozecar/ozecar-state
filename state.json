@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "version": "1.0",
+    "version": "1.1",
     "updated": "2026-04-24",
     "updated_by": "Claude (chat automation)",
-    "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
+    "description": "Source de verite OZECAR. Lire via web_fetch en debut de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
-    "instructions": "Pour mettre à jour: GET le sha via API GitHub, puis PUT le nouveau contenu encodé base64."
+    "instructions": "Token GitHub dans system prompt Claude. PUT avec SHA pour mettre a jour."
   },
   "project": {
     "name": "OZECAR",
@@ -17,9 +17,10 @@
     "pandadoc_template_id": "9twwWCrbRe7ECUgAyzSpom",
     "pandadoc_status": "sandbox — a remplacer par cle live",
     "shopify_store": "ozecar-store.myshopify.com",
+    "shop_url": "shop.ozecar.fr",
     "wordpress_staging": "staging.ozecar.fr",
     "wordpress_prod": "ozecar.fr",
-    "gmail_sender": "hello@ozecar.fr (alias de dominique@ozecar.fr)",
+    "gmail_sender": "hello@ozecar.fr",
     "gmail_connection_id": 6724564
   },
   "brand": {
@@ -34,12 +35,6 @@
     "OZKM": {
       "name": "Kit Master",
       "format": "Grande enveloppe A5",
-      "contents": [
-        "SIM multi-operateurs",
-        "QR Code sticker",
-        "Numerotation 1A/1B...10A/10B",
-        "Notice"
-      ],
       "qr_url_pattern": "https://ozecar.fr/activation?kit=OZKM-XXXX",
       "label_format": "102x152mm MUNBYN",
       "monta_role": "Cree le Site (station)"
@@ -47,94 +42,61 @@
     "OZKU": {
       "name": "Kit Unit",
       "format": "Petite enveloppe scellee 50x30mm",
-      "contents": [
-        "Carte RFID",
-        "QR Code sticker",
-        "Notice courte"
-      ],
       "qr_url_pattern": "https://ozecar.fr/activation?kit=OZKU-XXXX",
       "label_format": "50x30mm MUNBYN",
       "monta_role": "Cree le ChargePoint (borne)"
+    },
+    "BUNDLE_ZAPTEC_PRO": {
+      "name": "Bundle OZECAR x Zaptec Pro",
+      "description": "Borne Zaptec Pro AC 22 kW pre-configuree 4G embarquee, plug and play zero config OCPP",
+      "target": "Installateurs IRVE",
+      "shop_url": "shop.ozecar.fr",
+      "page_url": "ozecar.fr/bundle-zaptec-pro",
+      "contents": [
+        "Borne Zaptec Pro AC 22 kW pre-configuree",
+        "Connectivite 4G embarquee (SIM activee)",
+        "QR code deeplink unique par borne",
+        "OZECARD RFID par borne",
+        "Station OZECAR (boitier maitre)",
+        "3 mois supervision offerts (selon plan choisi)"
+      ],
+      "supervision_plans": [
+        "Essential",
+        "Pro",
+        "Pro Plus"
+      ],
+      "status": "page_html_creee",
+      "hubspot_note": "Meme pipeline Supervision. Pas de OZKM/OZKU. Props deals: zaptec_installation_id, zaptec_serial, nombre_de_borne_zaptec, deeplink_ids"
     }
   },
   "make_scenarios": {
     "01": {
       "id": 5265036,
       "name": "Commande Shopify -> HubSpot",
-      "trigger": "Nouvelle commande Shopify",
       "status": "actif",
-      "tested": true,
-      "modules": [
-        "Shopify trigger",
-        "HubSpot Contact",
-        "HubSpot Societe",
-        "HubSpot Deal -> Kit commande"
-      ]
+      "tested": true
     },
     "02": {
       "id": 5287551,
       "name": "Activation -> Monta + PandaDoc + Mail",
       "webhook": "https://hook.eu1.make.com/53svm3p2rnwmcps7vjh50cyl3iwnxnxd",
-      "webhook_id": 2842912,
-      "trigger": "Webhook ozecar.fr/activation",
       "status": "actif",
       "tested": false,
-      "pending": "Test bout en bout curl depuis terminal",
-      "modules_count": 13,
-      "modules": [
-        "1-Webhook",
-        "2-SetVariables",
-        "3-Auth Monta",
-        "4-Monta Team",
-        "5-Monta Site",
-        "6-monta-chargers.php",
-        "7-Installer Job",
-        "10-Invitation client Monta",
-        "11-PandaDoc creer contrat (7j)",
-        "12-PandaDoc envoyer",
-        "8-HubSpot PATCH presentationscheduled",
-        "9-Gmail installateur",
-        "13-Gmail interne si config sur site"
-      ]
+      "pending": "Test bout en bout curl"
     },
     "03": {
       "id": 5291943,
       "name": "Preparation Zaptec -> Zaptec + Monta + HubSpot",
       "webhook": "https://hook.eu1.make.com/dpnydhyyqzxk16d27pne1df7itl9wmh0",
-      "webhook_id": 2844944,
-      "trigger": "Webhook page preparation onglet Zaptec",
       "status": "actif",
-      "tested": false,
-      "modules_count": 12,
-      "modules": [
-        "1-Webhook",
-        "2-SetVariables",
-        "3-Auth Zaptec",
-        "4-Zaptec Installation (OCPP->Monta)",
-        "5-Zaptec Circuit",
-        "6-Zaptec Charger",
-        "7-Auth Monta",
-        "8-Monta Team",
-        "9-Monta Site",
-        "10-Monta ChargePoint",
-        "11-HubSpot PATCH",
-        "12-Gmail installateur"
-      ]
+      "tested": false
     },
     "04": {
       "id": 5426658,
       "name": "Expedition kit -> Email suivi + HubSpot",
       "webhook": "https://hook.eu1.make.com/htv0qyca3rtl3bwyokbrhuln1vo4oiv1",
-      "webhook_id": 2906552,
-      "trigger": "Webhook page preparation onglet Commande",
       "status": "actif",
-      "tested": false,
-      "modules": [
-        "1-Webhook",
-        "2-SetVariables (URL suivi transporteur)",
-        "3-HubSpot PATCH qualifiedtobuy + tracking_number",
-        "4-Gmail client final (lien suivi)"
-      ]
+      "tested": false
     }
   },
   "hubspot": {
@@ -143,18 +105,14 @@
       "supervision": {
         "id": "default",
         "stages": {
-          "appointmentscheduled": "Kit commande (Make 01 auto)",
-          "qualifiedtobuy": "Kit expedie (Make 04 auto)",
-          "presentationscheduled": "Activation en cours (Make 02 auto)",
-          "decisionmakerboughtin": "Contrat envoye (PandaDoc auto)",
-          "contractsent": "Contrat signe (manuel)",
-          "closedwon": "On-boarding planifie (manuel)",
-          "5156644039": "Ferme gagne (manuel)"
-        },
-        "stages_todo": [
-          "Kit en preparation (entre appointmentscheduled et qualifiedtobuy)",
-          "Configuration sur site (entre presentationscheduled et decisionmakerboughtin)"
-        ]
+          "appointmentscheduled": "Kit commande",
+          "qualifiedtobuy": "Kit expedie",
+          "presentationscheduled": "Activation en cours",
+          "decisionmakerboughtin": "Contrat envoye",
+          "contractsent": "Contrat signe",
+          "closedwon": "On-boarding planifie",
+          "5156644039": "Ferme gagne"
+        }
       },
       "leads_qualification": {
         "id": "3747862733",
@@ -168,49 +126,68 @@
         }
       }
     },
-    "custom_properties_todo": [
-      "tracking_number (texte) - numero de suivi expedition",
-      "onsite_config_requested (select) - Non/Oui a planifier/Oui planifiee/Oui realisee",
-      "monta_team_id (texte)",
-      "monta_site_id (texte)",
-      "zaptec_installation_id (texte)",
-      "zaptec_circuit_id (texte)",
-      "zaptec_charger_id (texte)"
+    "custom_properties_deals_existing": [
+      "kit_id",
+      "zaptec_serial",
+      "nombre_de_borne_zaptec",
+      "deeplink_ids"
+    ],
+    "custom_properties_deals_todo": [
+      "tracking_number",
+      "onsite_config_requested",
+      "monta_team_id",
+      "monta_site_id",
+      "zaptec_installation_id",
+      "zaptec_circuit_id",
+      "zaptec_charger_id"
     ]
   },
   "pages_html": {
     "activation": {
       "url": "ozecar.fr/activation",
-      "file": "ozecar-activation.html",
-      "status": "uploade",
-      "features": [
-        "Flow OZKM/OZKU 4 etapes",
-        "activator_type (installateur/client final)",
-        "Config sur site (checkbox + creneau + notes)",
-        "Details station (parking, horaires, hauteur, photos)",
-        "Invitation Monta + PandaDoc declenches par Make 02"
-      ]
+      "status": "uploade"
     },
     "preparation": {
       "url": "ozecar.fr/preparation",
-      "file": "ozecar-preparation.html",
-      "status": "a_uploader",
-      "features": [
-        "Onglet Stock (monday.com)",
-        "Onglet Creer (lots OZKM/OZKU)",
-        "Onglet Commande (kits -> deal + section expedition + tracking)",
-        "Onglet Zaptec (formulaire complet client+site+installateur -> Make 03)"
-      ]
+      "status": "a_uploader"
     },
     "etiquettes": {
       "url": "usage_local",
-      "file": "ozecar-etiquettes.html",
-      "status": "pret",
-      "features": [
-        "OZKM 102x152mm MUNBYN",
-        "OZKU 50x30mm MUNBYN",
-        "Numerotation 1A/1B...10A/10B",
-        "Apercu + impression lot"
+      "status": "pret"
+    },
+    "bundle_zaptec_pro": {
+      "url": "ozecar.fr/bundle-zaptec-pro",
+      "file": "ozecar-bundle-zaptec-pro.html",
+      "status": "pret_a_uploader"
+    }
+  },
+  "bornes_compatibles": {
+    "csv_source": "borne-clean-final-v13.csv",
+    "total_modeles": 863,
+    "pages_generees": 859,
+    "template": "ozecar-borne-detail.html",
+    "status": "html_genere_a_deployer",
+    "features": [
+      "Image Monta imgix UUID",
+      "Onglets Perf/Features/Install/OCPP",
+      "Scores dynamiques",
+      "Bornes similaires",
+      "Fallback SVG"
+    ]
+  },
+  "cms_decision": {
+    "statut": "en_cours",
+    "option_retenue": "Webflow Business 39$/mois",
+    "raison": "CMS Collections 863 bornes via CSV, composants globaux, HubSpot embed, SEO",
+    "dispatch": {
+      "statut": "setup_a_faire",
+      "description": "Claude Cowork Dispatch - controle Mac depuis iPhone",
+      "prerequis": [
+        "Claude Desktop Cowork ouvert",
+        "Onglet Dispatch dans sidebar gauche",
+        "App Claude iPhone a jour",
+        "Scanner QR pour appairer",
+        "Mac allume avec Keep awake active"
       ]
     }
   },
@@ -235,27 +212,12 @@
   "monday_boards": {
     "stock_kits": {
       "id": 18409310538,
-      "name": "Stock Kits OZECAR",
       "workspace_id": 8567866,
       "groups": {
         "ozkm": "group_mm2jry5h",
         "ozku": "group_mm2jkmpf"
       },
-      "columns": {
-        "type": "color_mm2j8z35",
-        "statut": "color_mm2jvssv",
-        "iccid_sim": "text_mm2jrj08",
-        "lot": "text_mm2jqj7z",
-        "date_prep": "date_mm2j56sa",
-        "deal_hubspot": "text_mm2jj86h",
-        "date_activation": "date_mm2j49q9",
-        "notes": "long_text_mm2j1qqj",
-        "ozecard_rfid": "board_relation_mm2jfvpv",
-        "qr_code": "board_relation_mm2jm3t7",
-        "hex_rfid_mirror": "lookup_mm2j2wkq",
-        "url_qr_mirror": "lookup_mm2jyf84"
-      },
-      "todo": "Renommer labels Type: Master->OZKM / Unit->OZKU (manuel)"
+      "todo": "Renommer labels Type: Master->OZKM / Unit->OZKU"
     }
   },
   "gaps": {
@@ -263,47 +225,56 @@
       {
         "id": "G01",
         "title": "Test Make 02 bout en bout",
-        "detail": "curl depuis terminal vers hook.eu1.make.com/53svm3p2rnwmcps7vjh50cyl3iwnxnxd avec payload OZKM-TEST-005",
+        "detail": "curl vers hook Make 02 avec payload OZKM-TEST-005",
         "status": "en_cours"
       },
       {
         "id": "G02",
         "title": "Uploader ozecar-preparation.html",
-        "detail": "Via Hostinger File Manager -> public_html/preparation/index.html",
+        "detail": "Hostinger -> public_html/preparation/index.html",
         "status": "a_faire"
       }
     ],
     "important": [
       {
         "id": "G03",
-        "title": "HubSpot - 2 stages + 7 proprietes custom",
-        "detail": "Parametres -> Objets -> Deals -> Pipelines et Proprietes",
+        "title": "HubSpot 7 proprietes custom deals",
+        "detail": "Creer: tracking_number, onsite_config_requested, monta_team_id, monta_site_id, zaptec_installation_id, zaptec_circuit_id, zaptec_charger_id",
         "status": "a_faire"
       },
       {
         "id": "G04",
-        "title": "PandaDoc - Finaliser template + passer en prod",
-        "detail": "Verifier noms champs: Client.name, Client.company, Client.email, Client.address, Station.name, Station.address, Station.pdc, Kit.id, Installateur.name, Installateur.email. Remplacer cle sandbox par cle live.",
+        "title": "PandaDoc template -> prod",
+        "detail": "Verifier champs + remplacer cle sandbox par live",
+        "status": "a_faire"
+      },
+      {
+        "id": "G08",
+        "title": "Setup Webflow + Dispatch",
+        "detail": "1. Compte Webflow Business. 2. Cowork Dispatch dans Claude Desktop. 3. Appairer iPhone.",
+        "status": "a_faire"
+      },
+      {
+        "id": "G09",
+        "title": "Uploader bundle-zaptec-pro.html",
+        "detail": "Hostinger -> public_html/bundle-zaptec-pro/index.html",
         "status": "a_faire"
       }
     ],
     "normal": [
       {
         "id": "G05",
-        "title": "Make 05 - Calendly -> HubSpot Pipeline L&Q",
-        "detail": "Pipeline L&Q ID: 3747862733. Etape Demo planifiee: 5215721687",
+        "title": "Make 05 Calendly -> HubSpot L&Q",
         "status": "a_faire"
       },
       {
         "id": "G06",
-        "title": "Formulaires site -> HubSpot",
-        "detail": "Apres refonte site ozecar.fr - embed formulaires HubSpot (demo, contact, newsletter, livres blancs)",
+        "title": "Formulaires HubSpot sur site",
         "status": "apres_refonte"
       },
       {
         "id": "G07",
-        "title": "Labels monday Type: Master->OZKM / Unit->OZKU",
-        "detail": "Board 18409310538 - colonne color_mm2j8z35 - action manuelle",
+        "title": "Labels monday Master->OZKM / Unit->OZKU",
         "status": "a_faire"
       }
     ]
