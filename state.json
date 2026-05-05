@@ -1,34 +1,40 @@
 {
   "_meta": {
-    "version": "1.4",
+    "version": "1.7",
     "updated": "2026-05-04",
     "updated_by": "Claude (chat automation)",
     "description": "Source de verite OZECAR. Lire via web_fetch en debut de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
-    "instructions": "Token GitHub dans system prompt Claude. PUT avec SHA pour mettre a jour. Note: api.github.com bloque dans sandbox Claude - push manuel via GitHub web UI requis tant que pas de relay PHP deploye.",
+    "instructions": "Token GitHub dans system prompt. Note: api.github.com bloque dans sandbox - push manuel via GitHub web UI requis.",
     "session_changelog": {
-      "v1.4 (2026-05-04 evening)": [
-        "Validation technique flow QR deeplink: PATCH Monta /deeplinks/{id} fonctionne avec scope deeplinks:write",
-        "Ajout colonne 'Monta deeplink_id' (text_mm317zn1) au board QR code monday",
-        "Sync 800/804 deeplinks Monta vers monday termine",
-        "4 deeplinks ozecar.app (BE300020-23) non synchronises - autre operator_id Monta inaccessible",
-        "Comprehension complete architecture monday: 3 boards relies (Stock Kits, QR code, Ozecards)",
-        "Page preparation existante analysee - 4 onglets Stock/Creer/Commande/Zaptec",
-        "Decision: pochette installateur generique imprimee en serie + zone QR collee a la prep"
+      "v1.7 (2026-05-04 night 2)": [
+        "FLOW PDC FINAL : 8 sous-etapes par PDC + 1 photo station finale",
+        "Etapes inversees : Acces (2) AVANT Connexion Internet (3) - l'acces est le vrai goulot d'etranglement",
+        "4 modes de connexion guides : SIM 4G OZECAR / Modem 4G externe / WiFi / Cable Ethernet",
+        "SIM 4G OZECAR : APN 'simbase' (sans .com), Utilisateur+Mdp laisser vide, ICCID auto-rempli depuis monday OZKM (col text_mm2jrj08)",
+        "WiFi : note simple + mention 'seulement si la borne a le WiFi integre' - pas de saisie SSID/mdp dans formulaire",
+        "LAN et Modem 4G : pas d'instructions specifiques",
+        "Photo niveau station (pas par PDC) car API Monta partner n'expose pas d'upload photo",
+        "Test charge etape 8 : ajout bouton 'Tester plus tard' avec statut online_not_tested",
+        "monta-search.php v3 livre avec action lookup_deeplink",
+        "Fiche A6 station existante designee (kraft 350g, charte coherente pochette installateur)"
       ],
-      "v1.3 (2026-05-04 afternoon)": [
-        "Design final packaging: sleeve kraft + double compartiment installateur/proprietaire",
-        "Pochette installateur validee (recto + verso B+C avec scenarios OU)",
-        "Pochette proprietaire en cours de validation",
-        "Convention numerotation 1A/1B sequentielle (mention Tesla supprimee)",
-        "Programme Certified Installer 3 paliers defini",
-        "monta-search.php deploye avec lookup chargepoint/sites"
+      "v1.6 (2026-05-04 night 1)": [
+        "FLOW UNIFIE : ozecar.fr/activation point d'entree unique mobile + desktop",
+        "Camera in-app comme scanner universel - mobile auto, desktop sur clic",
+        "Plus de concept OZKE - juste mini fiche A6 papier pour stations existantes",
+        "Parser intelligent : ?kit=OZKM (master) vs /d/c{id} (deeplink)"
+      ],
+      "v1.5 (2026-05-04 evening)": [
+        "Plus d'OZKU comme objet physique - juste autocollants QR",
+        "Pochettes proprietaires scellees a l'avance avec 10 RFID anonymes",
+        "Carte RFID v2 minimaliste : QR app + 2 lignes + UID en pill"
       ]
     }
   },
   "project": {
     "name": "OZECAR",
-    "description": "Kits de supervision de bornes de recharge electrique OZKM / OZKU vendus en B2B",
+    "description": "Kits de supervision de bornes de recharge electrique OZKM vendus en B2B",
     "hubspot_account": "143920450",
     "make_org": "320851",
     "make_team": "197685",
@@ -39,7 +45,6 @@
     "pandadoc_template_id": "9twwWCrbRe7ECUgAyzSpom",
     "pandadoc_status": "sandbox - a remplacer par cle live",
     "shopify_store": "ozecar-store.myshopify.com",
-    "shop_url": "shop.ozecar.fr",
     "wordpress_staging": "staging.ozecar.fr",
     "wordpress_prod": "ozecar.fr",
     "gmail_sender": "hello@ozecar.fr",
@@ -60,357 +65,271 @@
     "OZKM": {
       "name": "Kit Master",
       "format": "Sleeve kraft + 2 pochettes scellees A5",
-      "structure": "Sleeve kraft exterieure -> Pochette installateur (kraft) + Pochette proprietaire (noir scellee jaune)",
+      "structure": "Sleeve kraft + Pochette installateur generique + Pochette proprietaire scellee 10 RFID",
       "qr_url_pattern": "https://ozecar.fr/activation?kit=OZKM-XXXX",
-      "label_format": "Etiquette QR Ø60mm + Colissimo A6",
       "monta_role": "Cree le Site (station)",
       "qr_role": "Active le formulaire d'installation - cree la station Monta"
     },
-    "OZKU": {
-      "name": "Kit Unit",
-      "format": "Petite enveloppe scellee inseree dans pochette installateur",
-      "contents": [
-        "1 autocollant QR deeplink Monta vinyle anti-UV (a coller sur la borne)",
-        "1 Ozecard RFID nominative (pour le proprietaire)"
-      ],
-      "qr_role": "Le QR deeplink (deja imprime) sera scanne dans le formulaire pour ajouter le PDC + colle sur la borne",
-      "monta_role": "Cree le ChargePoint et lie au deeplink existant via PATCH /deeplinks/{id}",
-      "deeplink_strategy": "Reuse stock pre-imprime - aucune generation a la demande",
-      "no_qr_on_envelope": "L'enveloppe OZKU n'a PAS de QR colle dessus - seul le QR deeplink interieur est scanne"
+    "extension_station_existante": {
+      "name": "Pas un kit, juste un envoi",
+      "format": "Enveloppe simple + autocollants QR + mini fiche A6",
+      "purpose": "Ajouter N PDC a une station OZECAR existante",
+      "no_master_needed": "Installateur ouvre ozecar.fr/activation et scanne d'abord une borne existante",
+      "fiche_a6_designed": "ozecar-fiche-station-existante.html (livre 2026-05-04)",
+      "fiche_a6_specs": {
+        "format": "148 x 105 mm paysage",
+        "papier": "Carton kraft 350g",
+        "impression": "Recto+verso, 2 couleurs (noir + Pantone 116C)",
+        "personnalisation_recto": "Variables {station_name} + {sticker_list}",
+        "contenu_recto": "Logo + nom station + headline 'Bonjour, on agrandit votre station' + liste autocollants",
+        "contenu_verso": "3 etapes : 1.Ouvrir ozecar.fr/activation 2.Scanner borne existante 3.Scanner les autocollants + signature Dominique"
+      }
     }
   },
-  "monta_deeplinks": {
-    "concept": "Stock pre-genere de deeplinks Monta avec autocollants vinyle anti-UV deja imprimes",
-    "endpoint_api": "https://partner-api.monta.com/api/v1/deeplinks",
-    "scopes_requis": ["deeplinks:read", "deeplinks:write"],
-    "scope_deeplinks_delete": "non actif - pas critique pour le flow",
-    "total_deeplinks_compte_2257": 1371,
-    "format_url_existant": "https://ozecar.monta.app/d/c{numero}",
-    "format_url_marque_blanche": "https://ozecar.app/d/c{numero}",
-    "exemple_id_format": "c120065 (numero 120065 = ID partenaire imprime sur autocollant)",
-    "exemple_deeplink_id_interne": "336965 (necessaire pour PATCH)",
-    "patch_endpoint": "PATCH /deeplinks/{deeplink_id}",
-    "patch_payload": {
-      "destinationType": "resource",
-      "destination": {
-        "resourceType": "charge-point",
-        "resourceId": "<chargepoint_id>"
-      },
-      "comment": "OZKM-XXXX (traceabilite)"
-    },
-    "validation_2026_05_04": "Test reussi sur deeplink c120099 (id 336965) -> chargepoint 3430505. Reverted apres test.",
-    "limitation_marque_blanche": "Les deeplinks ozecar.app/c174xxx (4 items BE300020-23) ne sont pas accessibles avec le token actuel - probablement autre operator_id"
-  },
-  "kit_master_packaging": {
-    "concept": "Sleeve kraft + double compartiment installateur/proprietaire",
-    "validation_session_2026_05_04": [
-      "Pochette installateur recto+verso valides par utilisateur",
-      "Pochette installateur en version GENERIQUE (impression serie sans serialisation)",
-      "Emplacement QR vide (cadre pointille Ø90mm) reserve pour autocollant a coller a la prep",
-      "Pochette proprietaire encore en cours de validation"
-    ],
-    "sleeve_exterieure": {
-      "matiere": "Carton kraft 300g, interieur jaune Pantone 116C",
-      "format": "158 x 220 mm",
-      "details": [
-        "Logo OZECAR embosse a sec",
-        "Headline Fraunces italique 'Activez votre station en scan'",
-        "Bande de scellage perforee noire avec '#OzecarKit · Tag @ozecar' en jaune",
-        "Etiquette Colissimo collee sur la sleeve (pas sur l'enveloppe noire)"
+  "flow_activation_unifie": {
+    "concept": "ozecar.fr/activation = scanner OZECAR universel - point d'entree pour TOUS les scenarios",
+    "comportement_mobile": "Auto-camera a l'ouverture + permission",
+    "comportement_desktop": "Camera optionnelle au clic + formulaire fallback",
+    "parser_qr": {
+      "patterns": [
+        {"regex": "ozecar\\.fr/activation\\?kit=(OZKM-\\w+)", "type": "master"},
+        {"regex": "ozecar\\.monta\\.app/d/c(\\d+)", "type": "deeplink"},
+        {"regex": "ozecar\\.app/d/c(\\d+)", "type": "deeplink_whitelabel"}
       ]
     },
-    "pochette_installateur": {
-      "marquage": "01 - Installateur",
-      "matiere": "Papier kraft 120g, grain visible",
-      "fermeture": "Rabat colle point-tac",
-      "impression": "1 couleur noir monocolor + embossage a sec logo + cadre QR pointille",
-      "format": "A5 - 148 x 210 mm",
-      "cout_unitaire": "0.12 EUR par 500 unites",
-      "production": "Imprimee EN SERIE chez l'imprimeur - pochettes generiques sans n° kit",
-      "personnalisation": "Autocollant QR d'activation OZKM-XXXX colle a la preparation dans la zone vide reservee",
-      "contenu_pochette": [
-        "SIM 4G Simbase (facultative)",
-        "Planche autocollants 1A->10B (20 ronds Ø50mm vinyle noir uniforme)",
-        "First Action Card (A6, 2 pictos minimalistes scan->online)",
-        "N enveloppes OZKU pre-assemblees (selon nb PDC commandes)"
+    "logique_routage": {
+      "master": "Mode nouvelle station - pre-rempli kit_id, recupere ICCID depuis monday",
+      "deeplink_libre": "Si pas de site identifie : propose scan borne existante OU recherche manuelle. Si site identifie : ajout PDC.",
+      "deeplink_attribue": "Identifie la station via chargepoint_id->site_id, propose ajout PDC"
+    },
+    "memoire_session": "sessionStorage : kit_id, site_id, site_name, pdc_list",
+    "cas_limite": "Si scan natif d'un autocollant libre AVANT ouverture formulaire -> redirige Monta. Mitigation : doc fiche A6"
+  },
+  "flow_pdc_8_sous_etapes": {
+    "concept": "Chaque PDC suit 8 sous-etapes guidees + 1 etape finale niveau station",
+    "philosophy": "Maximum de guidance pour eviter erreurs humaines (QR colle sur mauvais PDC, etc.)",
+    "etape_1_identification": {
+      "objectif": "Marque, modele, n. serie/BoxID, puissance, connector",
+      "api": "GET /charge-point-models (940 modeles disponibles)",
+      "auto_complete": "Selecteur cascade marque -> modele -> chargePointModelId + maxKw"
+    },
+    "etape_2_acces": {
+      "objectif": "S'assurer que l'installateur peut acceder a l'interface borne",
+      "options": [
+        "Oui j'ai tout (continue)",
+        "Demander au proprietaire (email auto via Make 06)",
+        "Reinitialisation usine (procedure marque-specifique)"
       ],
-      "recto": "Tampon en cadre + zone QR pointillee + headline 'Activez la station' (Fraunces) + checklist contenu + tagline 'supervision de bornes'",
-      "verso_finalise": {
-        "section_b_pose_autocollants": {
-          "scenario_a": "2 bornes doubles : 1A·1B + 2A·2B (4 PDC, 4 autocollants)",
-          "separateur": "Cercle 'OU' central pointille",
-          "scenario_b": "3 bornes simples : 1A, 1B, 2A (3 PDC, 3 autocollants)",
-          "regles": [
-            "Chiffre = position sequentielle dans l'ordre d'ajout des PDC",
-            "Lettre = prise A ou B sur une meme borne (A pour les bornes simples)",
-            "Coller a hauteur de prise, cote droit du connecteur, sans masquer la LED",
-            "Ne pas melanger l'ordre - attribution automatique dans le formulaire"
-          ]
+      "ordre_inverse_v17": "Pose AVANT la connexion car c'est le vrai goulot - sans acces rien ne peut se faire"
+    },
+    "etape_3_connexion": {
+      "objectif": "Choix mode reseau + guidance par mode",
+      "modes": {
+        "sim_4g_ozecar": {
+          "afficher": [
+            "APN: simbase",
+            "Utilisateur: laisser vide",
+            "Mot de passe: laisser vide",
+            "ICCID: auto depuis monday Stock Kits col text_mm2jrj08"
+          ],
+          "note": "SIM dans la pochette installateur"
         },
-        "section_c_support": {
-          "card_1": "Guides par marque (Zaptec, ABB, Schneider, Wallbox) - QR vers ozecar.fr/guides",
-          "card_2": "Centre d'aide (FAQ, depannage SIM, OCPP) - QR vers ozecar.fr/aide",
-          "contact_box": "hello@ozecar.fr · Lun-Ven 9h-18h · reponse sous 4h"
+        "modem_4g_externe": {
+          "exemples": "Teltonika RUT240/241/956",
+          "note": "L'installateur en fait son affaire (configuration modem + APN selon SIM)",
+          "pas_d_instructions": true
+        },
+        "wifi_client": {
+          "note": "Demander SSID + mdp au proprietaire, configurer dans interface borne section Reseau / WiFi",
+          "warning": "Seulement si la borne a le WiFi integre",
+          "fallback_button": "Pas compatible - autre mode"
+        },
+        "lan_ethernet": {
+          "note": "Cable RJ45 entre borne et routeur, DHCP automatique",
+          "pas_d_instructions_detaillees": true
         }
       }
     },
-    "pochette_proprietaire": {
-      "marquage": "02 - Owner",
-      "matiere": "Papier noir mat 250g pelliculé soft-touch",
-      "fermeture": "Sceau jaune autocollant Ø48mm 'A ouvrir apres activation' (eclair central)",
-      "impression": "2 couleurs serigraphie : Pantone 116C + blanc",
-      "format": "A5 - 148 x 210 mm",
-      "details": "2 bandes jaunes 6mm top + bottom + zone QR pointillee jaune",
-      "cout_unitaire": "0.38 EUR par 500 unites (sceau inclus)",
-      "production": "Imprimee EN SERIE chez l'imprimeur - generique",
-      "personnalisation": "Autocollant QR OZKM-XXXX colle a la preparation",
-      "contenu_pochette": [
-        "Pochette N Ozecards RFID nominatives (extraites des OZKU au chantier)",
-        "Carte postale signee Dominique (verso personnalise)",
-        "Welcome card hub.ozecar.app"
+    "etape_4_ocpp": {
+      "objectif": "Jumelage OCPP backend Monta",
+      "afficher": [
+        "URL Backend: wss://ocpp.monta.app",
+        "BoxID: numero de serie de la borne (saisi en etape 1)",
+        "Protocole: OCPP 1.6J"
       ],
-      "recto": "Tampon jaune + zone QR pointillee + sceau 'A ouvrir apres activation' + headline 'Bienvenue dans le reseau' + liste numerotee + tagline 'le reseau prend la route'",
-      "verso": "Mockup hub.ozecar.app (3 stat cards + liste bornes live) + QR access + 3 features (Temps reel, Utilisateurs, Rapports)"
+      "guides_marque_specifiques": "Lien vers ozecar.fr/guides/{brand}-{model} pour la procedure UI exacte",
+      "boutons_copy_to_clipboard": true
     },
-    "enveloppe_ozku": {
-      "format": "Petite enveloppe (taille a definir, ~120x80mm)",
-      "production": "Pre-assemblees a l'avance hors commande (lot)",
-      "contenu": [
-        "1 autocollant QR deeplink Monta deja imprime (vinyle anti-UV)",
-        "1 Ozecard RFID nominative"
+    "etape_5_numerotation": {
+      "objectif": "Coller autocollant rond numerotation (ex: 3A)",
+      "instructions": [
+        "A hauteur de prise",
+        "Cote droit du connecteur",
+        "Sans masquer la LED",
+        "Nettoyer la zone, appliquer a plat sans bulles"
       ],
-      "no_qr_dessus": "Aucun QR colle sur l'enveloppe - le QR deeplink est a l'interieur, scanne directement quand on l'ouvre",
-      "destinataire_a_la_remise": "Apres extraction du QR deeplink colle sur la borne, l'enveloppe avec son Ozecard RFID rejoint la pochette proprietaire"
+      "checkpoint_manuel": true
+    },
+    "etape_6_qr_deeplink": {
+      "objectif": "Scanner l'autocollant QR avec camera in-app, valider la disponibilite, coller au meme endroit que la numerotation",
+      "api": "monta-search.php?action=lookup_deeplink",
+      "validations": [
+        "status=free -> OK, on peut continuer",
+        "status=assigned -> alerte, deja attribue ailleurs",
+        "status=not_found -> alerte, code inconnu"
+      ]
+    },
+    "etape_7_mise_en_ligne": {
+      "objectif": "Creer le chargepoint cote Monta + lier le deeplink + attendre la heartbeat OCPP",
+      "api_sequence": [
+        "POST /charge-points (teamId, siteId, chargePointModelId, maxKw, name, visibility, type) -> chargepoint_id",
+        "PATCH /deeplinks/{deeplink_id} (destinationType=resource, resourceId=chargepoint_id)",
+        "Polling GET /charge-points/{id} toutes les 5s pendant 2 minutes max",
+        "Condition success: disconnectedAt=null ET lastConnectedAt recent"
+      ],
+      "timeout_2min": "Ouvre ecran diagnostic si timeout",
+      "diagnostic": [
+        "Verifier sous tension",
+        "Verifier reseau (4G/WiFi)",
+        "Verifier URL OCPP sauvegardee",
+        "Redemarrer la borne"
+      ]
+    },
+    "etape_8_test_charge": {
+      "objectif": "Test charge avec carte RFID OU validation 'tester plus tard'",
+      "api": "GET /charge-sessions polling pour detecter demarrage",
+      "options": [
+        "Tester maintenant : statut=validated",
+        "Tester plus tard : statut=online_not_tested"
+      ]
+    },
+    "etape_station_finale_photo": {
+      "objectif": "Une seule photo de la station entiere apres TOUTES les bornes activees",
+      "raison_pas_par_pdc": "API Monta partner n'expose pas d'upload photo (verifie 2026-05-04)",
+      "api": "POST ozecar.fr/api/upload-photo.php (a creer) -> URL stockee monday Stock Kits",
+      "specs_photo": "Cadrage large + toutes bornes + stickers et QR colles"
     }
   },
-  "ozku_qr_deeplink_strategy": {
-    "decision": "Reutiliser le stock existant de deeplinks Monta (1371 deja generes, 800 indexes monday)",
-    "no_generation": "On ne genere pas de QR a la commande - on attribue ceux du stock",
-    "flow_activation_simplifie": [
-      "1. Scan QR Kit Master OZKM (sur enveloppe exterieure) -> cree station Monta",
-      "2. Configure station (nom, adresse, proprietaire)",
-      "3. Tap 'Ajouter une borne'",
-      "4. Scan QR autocollant OZKU (dans enveloppe, pre-imprime) - parse 'c120065' depuis URL",
-      "5. Lookup monday board QR code par URL -> recupere deeplink_id Monta",
-      "6. Renseigner details borne (marque, modele, n° serie, position 1A/1B)",
-      "7. Validation -> POST Monta /charge-points + PATCH /deeplinks/{id} avec resourceId",
-      "8. Installateur colle l'autocollant scanne sur la borne (deja active cote Monta)"
-    ],
-    "no_qr_activation_ozku": "Le QR d'activation OZKU separe est SUPPRIME - le QR deeplink suffit",
-    "validation_technique_2026_05_04": "PATCH Monta teste avec succes sur c120099"
+  "monta_api_findings": {
+    "validations_2026_05_04": {
+      "PATCH_deeplinks_OK": "Test reussi sur deeplink c120099 (id 336965) -> chargepoint 3430505",
+      "POST_chargepoints_required": ["teamId", "chargePointModelId", "maxKw", "name", "visibility", "type", "siteId"],
+      "GET_chargepoint_status_fields": ["state", "lastConnectedAt", "disconnectedAt", "firmwareVersion", "protocolData"],
+      "polling_logic_online": "disconnectedAt:null ET lastConnectedAt < 5 min = en ligne",
+      "GET_chargepoint_models_endpoint": "GET /charge-point-models?pageSize=10&page=N - 940 modeles disponibles",
+      "photo_upload_NOT_AVAILABLE": "Tous endpoints /photos /files /images /attachments /media retournent 404 sur chargepoint ET site"
+    }
+  },
+  "monta_deeplinks": {
+    "endpoint": "https://partner-api.monta.com/api/v1/deeplinks",
+    "scopes": ["deeplinks:read", "deeplinks:write"],
+    "total": 1371,
+    "format_url_existant": "https://ozecar.monta.app/d/c{numero}",
+    "format_url_marque_blanche": "https://ozecar.app/d/c{numero}",
+    "patch_payload": {
+      "destinationType": "resource",
+      "destination": {"resourceType": "charge-point", "resourceId": "<chargepoint_id>"},
+      "comment": "OZKM-XXXX"
+    }
   },
   "monday_boards": {
     "stock_kits": {
       "id": 18409310538,
       "name": "Stock Kits OZECAR",
-      "workspace_id": 8567866,
-      "items_count": 1,
-      "groups": {
-        "ozkm": "group_mm2jry5h",
-        "ozku": "group_mm2jkmpf"
-      },
+      "groups": {"ozkm": "group_mm2jry5h", "ozku": "group_mm2jkmpf"},
       "columns": {
         "type": "color_mm2j8z35",
         "statut": "color_mm2jvssv",
-        "iccid_sim": "text_mm2jrj08",
+        "iccid_sim": "text_mm2jrj08 (utilise par formulaire activation pour SIM 4G OZECAR)",
         "lot": "text_mm2jqj7z",
         "date_prep": "date_mm2j56sa",
         "deal_hubspot": "text_mm2jj86h",
         "date_activation": "date_mm2j49q9",
-        "notes": "long_text_mm2j1qqj",
         "ozecard_rfid_relation": "board_relation_mm2jfvpv",
-        "qr_code_relation": "board_relation_mm2jm3t7",
-        "hex_rfid_mirror": "lookup_mm2j2wkq",
-        "url_qr_mirror": "lookup_mm2jyf84"
+        "qr_code_relation": "board_relation_mm2jm3t7"
       },
-      "statut_labels": {
-        "En stock": 5,
-        "Vendu": 0,
-        "Active": 1,
-        "Defectueux": 2
-      },
-      "type_labels": {
-        "OZKM": 1,
-        "OZKU": 2
-      },
-      "todo_labels_rename": "Action manuelle - dans monday changer 'Master' -> 'OZKM' et 'Unit' -> 'OZKU' si pas deja fait"
+      "todo_v17": [
+        "Ajouter colonne 'Photo station' (file ou link) pour stocker URL photo finale",
+        "Le groupe OZKU peut etre repurpose ou supprime"
+      ]
     },
     "qr_code_deeplink": {
       "id": 18398433019,
-      "name": "QR code (lien profond)",
       "items_count": 804,
-      "purpose": "Catalogue des autocollants QR deeplink Monta deja imprimes",
       "columns": {
-        "name": "name (ex: BE300023, FRC100001)",
-        "status": "status (Working on it / Done / Stuck)",
-        "lien_internet": "link_mm07t37q (URL deeplink Monta)",
-        "extract_info": "text_mm07yh9s (vide pour tous)",
-        "monta_deeplink_id": "text_mm317zn1 (CREE 2026-05-04 - ID interne Monta pour PATCH)"
-      },
-      "groups": {
-        "qr_code": "group_mm07vwbs"
-      },
-      "sync_status": {
-        "total": 804,
-        "with_deeplink_id": 800,
-        "without_deeplink_id": 4,
-        "missing_items": [
-          "BE300020 (https://ozecar.app/d/c174231)",
-          "BE300021 (https://ozecar.app/d/c174232)",
-          "BE300022 (https://ozecar.app/d/c174233)",
-          "BE300023 (https://ozecar.app/d/c174234)"
-        ],
-        "missing_reason": "Marque blanche ozecar.app - autre operator_id Monta inaccessible avec token actuel",
-        "url_patterns_observes": [
-          "https://ozecar.monta.app/d/c{number} (800 items - ancien partner subdomain)",
-          "https://ozecar.app/d/c{number} (4 items - nouveau marque blanche)"
-        ]
+        "name": "name (BE300023, FRC100001...)",
+        "status": "status",
+        "lien_internet": "link_mm07t37q",
+        "monta_deeplink_id": "text_mm317zn1 (cree 2026-05-04, sync 800/804)"
       }
     },
     "ozecards_rfid": {
       "id": 7803753810,
-      "name": "Ozecards",
-      "items_count": 802,
-      "purpose": "Catalogue des badges RFID OZECAR (utilisateur final)",
-      "columns": {
-        "id_hex": "texte_1__1",
-        "couleur": "statut__1",
-        "statut": "statut2__1 (En attente / Activee / Desactivee / Envoyee / En cours de Prepa / HS)",
-        "remarques": "long_texte__1",
-        "contacts_relation": "link_to_contacts_mkmnt5j0"
-      },
-      "groups": {
-        "ozecards_actives": "1730991837_carte_rfid__1___1",
-        "ozecards_desactivees": "nouveau_groupe85653__1",
-        "cartes_pre_enregistrees": "group_mkrtd6he"
-      }
+      "items_count": 802
     }
   },
   "make_scenarios": {
-    "01": {
-      "id": 5265036,
-      "name": "Commande Shopify -> HubSpot",
-      "trigger": "Nouvelle commande Shopify",
-      "status": "actif",
-      "tested": true,
-      "modules": ["Shopify trigger", "HubSpot Contact", "HubSpot Societe", "HubSpot Deal -> Kit commande"]
-    },
+    "01": {"id": 5265036, "name": "Commande Shopify -> HubSpot", "status": "actif"},
     "02": {
       "id": 5287551,
       "name": "Activation -> Monta + PandaDoc + Mail",
       "webhook": "https://hook.eu1.make.com/53svm3p2rnwmcps7vjh50cyl3iwnxnxd",
-      "webhook_id": 2842912,
-      "trigger": "Webhook ozecar.fr/activation",
       "status": "actif",
-      "tested": false,
-      "pending": "Test bout en bout curl avec payload OZKM-TEST-005",
-      "todo_2026_05_04": "Ajouter etape PATCH Monta /deeplinks/{deeplink_id} apres creation chargepoint pour lier autocollant existant",
-      "modules_count": 13
+      "todo_v17": [
+        "Branche conditionnelle nouvelle station vs ajout PDC station existante",
+        "Apres POST /charge-points, PATCH /deeplinks/{deeplink_id}",
+        "Polling GET /charge-points/{id} pour heartbeat OCPP",
+        "Recuperer deeplink_id depuis monday lookup via monta-search.php"
+      ]
     },
-    "03": {
-      "id": 5291943,
-      "name": "Preparation Zaptec -> Zaptec + Monta + HubSpot",
-      "webhook": "https://hook.eu1.make.com/dpnydhyyqzxk16d27pne1df7itl9wmh0",
-      "webhook_id": 2844944,
-      "status": "actif",
-      "tested": false,
-      "todo_2026_05_04": "Ajouter etape PATCH Monta /deeplinks/{deeplink_id} apres creation chargepoint pour pre-attribution"
-    },
-    "04": {
-      "id": 5426658,
-      "name": "Expedition kit -> Email suivi + HubSpot",
-      "webhook": "https://hook.eu1.make.com/htv0qyca3rtl3bwyokbrhuln1vo4oiv1",
-      "webhook_id": 2906552,
-      "status": "actif",
-      "tested": false,
-      "todo_2026_05_04": "Integrer impression carte postale signee avec variables {{client_prenom}}, {{kit_id}}, {{client_societe}}, {{site_adresse}}"
+    "03": {"id": 5291943, "name": "Preparation Zaptec", "status": "actif"},
+    "04": {"id": 5426658, "name": "Expedition kit", "status": "actif"},
+    "05": {"name": "Calendly -> HubSpot L&Q", "status": "a_creer"},
+    "06_NEW_v17": {
+      "name": "Email proprietaire pour identifiants borne (etape 2.3)",
+      "trigger": "Webhook depuis ozecar.fr/activation quand installateur clique 'Demander au proprietaire'",
+      "payload": "{ pdc_id, brand, model, serial, owner_email, installer_email }",
+      "actions": [
+        "Composer email avec template 'Votre installateur a besoin des identifiants'",
+        "Lien vers page web ozecar.fr/aide-installateur?token=xyz",
+        "Notifier installateur quand reponse recue (push web ou SMS)"
+      ],
+      "status": "a_creer"
     }
-  },
-  "hubspot": {
-    "account_id": "143920450",
-    "pipelines": {
-      "supervision": {
-        "id": "default",
-        "stages": {
-          "appointmentscheduled": "Kit commande (Make 01)",
-          "qualifiedtobuy": "Kit expedie (Make 04)",
-          "presentationscheduled": "Activation en cours (Make 02)",
-          "decisionmakerboughtin": "Contrat envoye (PandaDoc)",
-          "contractsent": "Contrat signe (manuel)",
-          "closedwon": "On-boarding planifie (manuel)",
-          "5156644039": "Ferme gagne (manuel)"
-        }
-      },
-      "leads_qualification": {
-        "id": "3747862733",
-        "stages": {
-          "5215721685": "Formulaire recu",
-          "5215721686": "Lead qualifie",
-          "5215721687": "Demo planifiee",
-          "5215721688": "Demo realisee",
-          "5215721689": "Devis envoye",
-          "5215721690": "Kit envoye"
-        }
-      }
-    },
-    "custom_properties_deals_existing": ["kit_id", "zaptec_serial", "nombre_de_borne_zaptec", "deeplink_ids"],
-    "custom_properties_deals_todo": [
-      "tracking_number",
-      "onsite_config_requested",
-      "monta_team_id",
-      "monta_site_id",
-      "zaptec_installation_id",
-      "zaptec_circuit_id",
-      "zaptec_charger_id"
-    ]
   },
   "pages_html": {
     "activation": {
       "url": "ozecar.fr/activation",
-      "file": "ozecar-activation.html",
-      "status": "uploade",
-      "features": [
-        "Flow OZKM/OZKU 4 etapes tout-smartphone",
-        "Mode station existante: scan QR deeplink borne active -> monta-search.php -> site_id auto",
-        "Mode station existante backup: recherche par nom/adresse",
-        "Numerotation PDC auto 1A/1B/2A/2B en lecture seule",
-        "Renumerotation automatique si suppression d'un PDC",
-        "APN SIM: tableau complet (simbase, auto-APN off, auth none, DHCP, roaming on)"
+      "file_actuel": "ozecar-activation.html (a refondre)",
+      "wireframe_v5": "ozecar-activation-wireframe-v5.html (livre 2026-05-04)",
+      "todo_v17": [
+        "Detection mobile vs desktop a l'ouverture",
+        "Mobile : auto-camera + permission",
+        "Desktop : bouton 'Activer le scanner' optionnel + formulaire fallback",
+        "Parser QR intelligent (master / deeplink / whitelabel)",
+        "sessionStorage memoire kit_id et site_id",
+        "Pour chaque PDC : 8 sous-etapes guidees (cf flow_pdc_8_sous_etapes)",
+        "Etape station finale unique : photo globale",
+        "Lookup ICCID depuis monday OZKM si SIM 4G OZECAR selectionnee",
+        "Polling OCPP heartbeat 2 min via GET /charge-points/{id}",
+        "Statut PDC : validated / online_not_tested / pending"
       ],
-      "todo_2026_05_04": [
-        "Modifier step 4 (Ajouter borne) pour scanner directement le QR deeplink OZKU",
-        "Parser URL ozecar.monta.app/d/c{id} ou ozecar.app/d/c{id}",
-        "Lookup monday board QR code par URL pour recuperer deeplink_id",
-        "Validation: l'autocollant scanne doit etre dans la liste assignee au kit (anti-erreur)"
-      ]
+      "librairie_qr": "html5-qrcode (12kb, le plus complet) ou jsQR (3kb minimal)"
     },
     "preparation": {
       "url": "ozecar.fr/preparation",
       "file": "ozecar-preparation.html",
-      "status": "uploade",
-      "tabs": {
-        "stock": "Charge items du board Stock Kits via monday.php - tableau filtres + recherche + stats",
-        "creer_stock": "Crer lots OZKM/OZKU avec quantite + lot + ICCID/RFID + impression QR labels",
-        "commande": "Recherche deal HubSpot + selection OZKM + N OZKU -> passage statut Vendu",
-        "zaptec": "Formulaire complet client+site+installateur -> Make 03 (preparation pre-active)"
-      },
-      "todo_2026_05_04": [
-        "Onglet Creer mode OZKU: ajouter selecteur QR deeplink (autocomplete sur board QR code, items libres)",
-        "Onglet Creer mode OZKU: SUPPRIMER generation QR ozecar.fr/activation?kit=OZKU-XXXX (plus utilise)",
-        "Onglet Creer mode OZKU: a la creation, faire change_multiple_column_values pour relation board_relation_mm2jm3t7",
-        "Mettre a jour status item QR code en 'Working on it' (Done quand active)",
-        "Onglet Stock: afficher l'URL QR (mirror lookup_mm2jyf84) dans le tableau",
-        "Onglet Commande: remonter les URLs deeplinks et deeplink_ids vers deal HubSpot custom property"
+      "todo_v17": [
+        "Onglet 'Creer stock' : SUPPRIMER mode OZKU",
+        "Onglet 'Commande' : selecteur autocollants QR libres dans board QR code",
+        "Onglet 'Stock' : afficher pochettes proprietaires scellees disponibles"
       ]
     },
-    "etiquettes": {
-      "url": "usage_local",
-      "file": "ozecar-etiquettes.html",
-      "status": "pret",
-      "todo_2026_05_04": [
-        "Recentrer sur etiquettes QR Kit Master (Ø60mm) uniquement",
-        "Supprimer generation QR OZKU (plus genere - venue du stock pre-imprime)"
-      ]
+    "aide_installateur_NEW": {
+      "url": "ozecar.fr/aide-installateur",
+      "purpose": "Page web destination email Make 06 - proprietaire saisit IP/login/mdp pour son installateur",
+      "format": "Token-based, expire 24h",
+      "status": "a_creer"
     }
   },
   "proxies_php": {
@@ -418,240 +337,151 @@
     "monday": {"url": "ozecar.fr/api/monday.php", "status": "operationnel"},
     "monta": {
       "url": "ozecar.fr/api/monta.php",
-      "status": "operationnel",
-      "version": "v2 patched 2026-05-04",
-      "features": [
-        "Authentification automatique via clientId/clientSecret",
-        "Cache token /tmp/ozecar_monta_token.json (1h)",
-        "Force refresh: ajouter 'force_refresh': true dans body POST ou ?force_refresh=1 en query",
-        "Methodes supportees: GET, POST, PATCH, DELETE",
-        "Marque blanche - jamais 'Monta' expose cote client"
-      ]
+      "version": "v2 patched (force_refresh)",
+      "status": "operationnel"
     },
     "monta_chargers": {"url": "ozecar.fr/api/monta-chargers.php", "status": "uploade"},
     "monta_search": {
       "url": "ozecar.fr/api/monta-search.php",
-      "status": "operationnel",
-      "actions": [
-        "get_chargepoint: chargepoint_id -> site_id, site_name, address, pdc_count",
-        "search_sites: query (min 3 chars) -> [{id, name, address, pdc_count}]"
-      ],
-      "todo_2026_05_04": [
-        "Ajouter action 'lookup_deeplink_by_url': URL -> {item_id_monday, deeplink_id_monta, status}",
-        "Implementer via requete monday GraphQL board 18398433019 filter sur link_mm07t37q",
-        "Retourner aussi le statut pour valider que le deeplink est libre"
-      ]
+      "version": "v3 (livre 2026-05-04)",
+      "fichier_outputs": "monta-search.php",
+      "status": "a_uploader_hostinger",
+      "actions": {
+        "get_chargepoint": "chargepoint_id -> {site_id, site_name, address, pdc_count}",
+        "search_sites": "query (min 3 chars) -> [{id, name, address, pdc_count}]",
+        "lookup_deeplink_NEW_v3": "code/url -> {status:free|assigned|not_found|unknown|error, deeplink_id, monday_item_id, monday_item_name, qr_url, +chargepoint_id|site_id|site_name|address|pdc_count si assigned}"
+      }
+    },
+    "upload_photo_NEW": {
+      "url": "ozecar.fr/api/upload-photo.php",
+      "purpose": "Upload photo station finale -> stockage Hostinger /uploads/photos/{site_id}/{ts}.jpg",
+      "status": "a_creer"
     }
   },
-  "kit_units_ozku_design": {
-    "format_carton_carte": "85 x 55 mm carton 350g (deja designed)",
-    "decision_2026_05_04": "Carton OZKU SUPPRIME - utilisation directe d'enveloppes pre-assemblees",
-    "enveloppe_format": "Petite enveloppe ~120x80mm",
-    "contenu": [
-      "1 autocollant QR deeplink Monta (vinyle anti-UV deja imprime)",
-      "1 Ozecard RFID nominative"
-    ],
-    "preparation_lot": "Pre-assemblees en lot dans atelier - empillees pour stock",
-    "no_qr_d_activation": "L'enveloppe n'a PAS de QR d'activation OZKU - le QR deeplink interieur suffit"
-  },
-  "carte_postale_signee": {
-    "format": "A6 148x105mm",
-    "papier": "250g recto-verso",
-    "recto": "Illustration editoriale style Saul Bass: paysage francais + 3 pylones electriques + voiture stylisee + soleil jaune",
-    "verso": "Mot manuscrit Caveat signe Dominique + adresse client + zone timbre Pantone 116C",
-    "variables_personnalisees": ["{{client_prenom}}", "{{kit_id}}", "{{client_societe}}", "{{site_adresse}}", "{{site_cp_ville}}"],
-    "imprimee_a_la_preparation": true,
-    "place_dans": "Pochette proprietaire",
-    "todo": "Designer le visuel final + integrer impression dans Make 04"
+  "ozecards_rfid_v2": {
+    "design_validated": "ozecar-ozecard-redesign-v2.html",
+    "uid_format": "OZCD-XXXX",
+    "production": "Pre-loaded en pochettes proprietaires (10 par pochette)"
   },
   "first_action_card": {
     "format": "A6 148x105mm",
-    "papier": "Carton 400g pelliculé soft-touch",
-    "recto": "2 pictos seulement: Scanner le QR -> Borne en ligne (Fraunces italique)",
-    "verso": "Invitation #OzecarKit + Certified Installer + bouton LinkedIn 'Partager'",
-    "footer": "Le smartphone vous guide pour le reste - SIM, config, bornes",
     "place_dans": "Pochette installateur"
+  },
+  "carte_postale_signee": {
+    "format": "A6 148x105mm",
+    "variables": ["{{client_prenom}}", "{{kit_id}}", "{{client_societe}}"],
+    "place_dans": "Pochette proprietaire"
+  },
+  "fiche_a6_station_existante_v17": {
+    "designed_2026_05_04": true,
+    "file": "ozecar-fiche-station-existante.html",
+    "format": "148 x 105 mm paysage",
+    "papier": "Carton kraft 350g",
+    "personnalisation": ["station_name", "sticker_list"]
   },
   "numerotation_pdc": {
     "convention": "1A/1B/2A/2B... - chiffre = position borne, lettre = prise A ou B",
-    "logique": "Numerotation sequentielle par PDC, sans distinction borne simple/double",
-    "formule": "num = ceil(position/2), lettre = position%2===1 ? A : B",
-    "attribution": "Automatique dans le formulaire d'activation - lecture seule pour l'installateur",
-    "autocollants_finaux": "Ronds vinyle Ø50mm fond noir uniforme - pip jaune (A) ou blanc attenue (B)",
-    "lisibilite": "Fond noir uniforme priorise pour lisibilite jour/nuit a distance pour l'utilisateur final"
-  },
-  "programme_certified_installer": {
-    "concept": "3 paliers cumulatifs pour fideliser les installateurs",
-    "hashtag": "#OzecarKit",
-    "tier_1_partner": {
-      "seuil": "1ere station activee",
-      "avantages": [
-        "Profil public sur ozecar.fr/installateurs (genere des leads B2B)",
-        "Cap OZECAR envoyee apres 1er post LinkedIn taggant @ozecar",
-        "Acces Slack installateurs"
-      ]
-    },
-    "tier_2_pro": {
-      "seuil": "10 stations activees",
-      "avantages": [
-        "Profil mis en avant sur la page installateurs",
-        "Tarif preferentiel 15% sur Kit Master suivants",
-        "1 Kit Master gratuit au prochain installateur parraine",
-        "Pack vetements OZECAR Pro (cap, t-shirt, gilet floque)"
-      ]
-    },
-    "tier_3_master": {
-      "seuil": "50 stations activees",
-      "avantages": [
-        "Referent regional - prospects rediriges",
-        "Co-branding sur supports marketing",
-        "Acces beta produits et roadmap",
-        "Invitation evenements (Mobility Days, salons)",
-        "Commission sur ventes parrainees"
-      ]
-    }
-  },
-  "files_design_session_2026_05": {
-    "ozecar-pochette-installateur-rv.html": "Pochette installateur recto+verso cote a cote (validee)",
-    "ozecar-pochette-installateur-generique.html": "Version generique avec emplacement QR + contenu 3 PDC",
-    "ozecar-pochettes-design.html": "Rectos pochettes installateur + proprietaire (taille reelle A5)",
-    "ozecar-pochettes-versos.html": "Versos finalises - installateur (B+C) + proprietaire (A)",
-    "ozecar-kit-double-compartiment.html": "Vue ensemble structure double compartiment + flow transmission",
-    "ozecar-sleeve-postcard.html": "Sleeve kraft + bande scellage + carte postale recto/verso",
-    "ozecar-first-action-card.html": "First Action Card 2 pictos + verso #OzecarKit",
-    "ozecar-enveloppe-premium.html": "Enveloppe Fraunces Activez votre station en scan",
-    "ozecar-numerotation-pdc.html": "Planche autocollants finale fond noir uniforme",
-    "ozecar-kit-master-complet.html": "Planche TOUT recto/verso + Kit Units OZKU declines",
-    "monta.php (patched)": "Avec force_refresh pour invalider cache token (livre 2026-05-04)"
+    "autocollants": "Ronds vinyle Ø50mm fond noir uniforme"
   },
   "gaps": {
     "urgent": [
       {
-        "id": "G01",
-        "title": "Test Make 02 bout en bout",
-        "detail": "curl depuis terminal vers hook.eu1.make.com/53svm3p2rnwmcps7vjh50cyl3iwnxnxd avec payload OZKM-TEST-005",
-        "status": "en_cours"
-      },
-      {
-        "id": "G18",
-        "title": "Modifier ozecar-preparation.html onglet Creer OZKU",
-        "detail": "Ajouter selecteur QR deeplink (autocomplete board QR code items libres) + relation board_relation_mm2jm3t7. Supprimer generation QR ozecar.fr/activation?kit=OZKU-XXXX",
+        "id": "G19_v17",
+        "title": "Refondre ozecar-activation.html selon wireframe v5",
+        "detail": "Mobile auto-camera, desktop optionnel. Parser QR intelligent. 8 sous-etapes par PDC + photo station finale. SessionStorage. Lookup ICCID monday. Polling OCPP 2min. Bouton 'Tester plus tard'.",
         "status": "a_faire",
-        "session_origin": "2026-05-04"
+        "wireframe": "ozecar-activation-wireframe-v5.html"
       },
       {
-        "id": "G19",
-        "title": "Modifier ozecar-activation.html step 4",
-        "detail": "Scanner directement le QR deeplink OZKU au lieu d'un QR d'activation. Parser URL ozecar.monta.app/c{id} ou ozecar.app/c{id}. Lookup monday pour recuperer deeplink_id Monta.",
-        "status": "a_faire",
-        "session_origin": "2026-05-04"
-      },
-      {
-        "id": "G20",
-        "title": "Make 02 - ajouter PATCH /deeplinks/{id}",
-        "detail": "Apres creation chargepoint, PATCH /deeplinks/{deeplink_id} avec destinationType=resource, destination.resourceType=charge-point, destination.resourceId={chargepoint_id}, comment=OZKM-XXXX",
-        "status": "a_faire",
-        "session_origin": "2026-05-04"
-      },
-      {
-        "id": "G11",
-        "title": "Designer welcome card hub.ozecar.app",
-        "detail": "Pochette proprietaire - format A6 ou carte - QR + identifiants",
+        "id": "G20_v17",
+        "title": "Make 02 - branche conditionnelle + sequence API complete",
+        "detail": "Nouvelle station vs ajout PDC. POST /charge-points -> chargepoint_id. PATCH /deeplinks/{id}. Polling GET /charge-points/{id}.",
         "status": "a_faire"
       },
       {
-        "id": "G12",
-        "title": "Designer carte postale signee Dominique",
-        "detail": "Recto illustration editoriale + verso manuscrit avec variables Make",
+        "id": "G21_v17",
+        "title": "Uploader monta-search.php v3 sur Hostinger",
+        "detail": "Action lookup_deeplink ajoutee. Combine monday GraphQL + Monta API.",
+        "status": "fichier_pret",
+        "fichier": "/mnt/user-data/outputs/monta-search.php"
+      },
+      {
+        "id": "G31_v17",
+        "title": "Imprimer mini fiche A6 station existante",
+        "detail": "Carton kraft 350g, recto+verso 2 couleurs noir+jaune, variables {station_name} {sticker_list} via Make 04",
+        "status": "design_valide",
+        "fichier": "/mnt/user-data/outputs/ozecar-fiche-station-existante.html"
+      },
+      {
+        "id": "G32_v17_NEW",
+        "title": "Creer Make 06 : email proprietaire pour identifiants borne",
+        "detail": "Webhook depuis activation etape 2.3. Composer email + lien token. Notifier installateur quand reponse recue.",
         "status": "a_faire"
       },
       {
-        "id": "G13",
-        "title": "Designer sleeve kraft + bande de scellage perforee",
-        "detail": "Format 158x220mm - kraft 300g - interieur jaune Pantone 116C",
+        "id": "G33_v17_NEW",
+        "title": "Creer ozecar.fr/aide-installateur",
+        "detail": "Page destination email Make 06 - proprietaire saisit IP/login/mdp.",
         "status": "a_faire"
+      },
+      {
+        "id": "G34_v17_NEW",
+        "title": "Creer ozecar.fr/api/upload-photo.php",
+        "detail": "Endpoint upload photo station finale -> /uploads/photos/{site_id}/{ts}.jpg + retour URL publique",
+        "status": "a_faire"
+      },
+      {
+        "id": "G18_v17",
+        "title": "Modifier ozecar-preparation.html",
+        "detail": "Onglet Creer: supprimer mode OZKU. Onglet Commande: selecteur autocollants QR libres. Onglet Stock: pochettes proprietaires.",
+        "status": "a_faire"
+      },
+      {
+        "id": "G35_v17_NEW",
+        "title": "Ajouter colonne 'Photo station' au board Stock Kits monday",
+        "detail": "Type file ou link, pour stocker URL photo finale generee par upload-photo.php",
+        "status": "a_faire"
+      },
+      {
+        "id": "G11", "title": "Pochette proprietaire validation finale", "status": "a_faire"
+      },
+      {
+        "id": "G12", "title": "Designer carte postale signee Dominique", "status": "a_faire"
+      },
+      {
+        "id": "G13", "title": "Designer sleeve kraft + bande scellage", "status": "a_faire"
       }
     ],
     "important": [
-      {
-        "id": "G03",
-        "title": "HubSpot - 7 proprietes custom deals",
-        "detail": "tracking_number, onsite_config_requested, monta_team_id, monta_site_id, zaptec_installation_id, zaptec_circuit_id, zaptec_charger_id",
-        "status": "a_faire"
-      },
-      {
-        "id": "G04",
-        "title": "PandaDoc template -> prod",
-        "detail": "Verifier champs Client.name, Client.company, Client.email, Client.address, Station.name, Station.address, Station.pdc, Kit.id, Installateur.name, Installateur.email. Remplacer cle sandbox par cle live.",
-        "status": "a_faire"
-      },
-      {
-        "id": "G14",
-        "title": "Pages ozecar.fr/installateurs (programme Certified Installer)",
-        "detail": "Lister installateurs partenaires + 3 paliers + formulaire candidature",
-        "status": "a_faire"
-      },
-      {
-        "id": "G15",
-        "title": "Pages ozecar.fr/guides + ozecar.fr/aide",
-        "detail": "QR sur verso pochette installateur pointent vers ces pages",
-        "status": "a_faire"
-      },
-      {
-        "id": "G21",
-        "title": "Etendre monta-search.php avec lookup_deeplink_by_url",
-        "detail": "Action: input URL -> output {monday_item_id, deeplink_id, status}. Requete monday GraphQL filter board 18398433019 sur link_mm07t37q",
-        "status": "a_faire",
-        "session_origin": "2026-05-04"
-      },
-      {
-        "id": "G22",
-        "title": "Resoudre access deeplinks ozecar.app (4 BE300020-23)",
-        "detail": "Le batch marque blanche n'est pas accessible avec token actuel - probablement autre operator_id Monta. Ces 4 items sont non utilises - non bloquant aujourd'hui mais a resoudre avant epuisement stock c12xxxx",
-        "status": "a_faire",
-        "session_origin": "2026-05-04"
-      },
-      {
-        "id": "G23",
-        "title": "Activer scope deeplinks:delete cote Monta (non critique)",
-        "detail": "Permet de 'libérer' un deeplink (vol, panne, recyclage). Pas necessaire pour le flow d'activation",
-        "status": "a_faire",
-        "priorite": "basse"
-      }
+      {"id": "G03", "title": "HubSpot 7 proprietes custom deals", "status": "a_faire"},
+      {"id": "G04", "title": "PandaDoc template -> prod", "status": "a_faire"},
+      {"id": "G14", "title": "Pages installateurs (Certified)", "status": "a_faire"},
+      {"id": "G15", "title": "Pages guides + aide", "status": "a_faire"},
+      {"id": "G22", "title": "Resoudre 4 deeplinks ozecar.app non sync", "status": "a_faire"},
+      {"id": "G28", "title": "Workflow attribution RFID portail hub", "status": "a_faire"},
+      {"id": "G29", "title": "Stock pochettes proprietaires workflow", "status": "a_faire"}
     ],
     "normal": [
-      {
-        "id": "G05",
-        "title": "Make 05 Calendly -> HubSpot L&Q",
-        "detail": "Pipeline L&Q ID 3747862733, etape Demo planifiee 5215721687",
-        "status": "a_faire"
-      },
-      {
-        "id": "G06",
-        "title": "Formulaires site ozecar.fr -> HubSpot",
-        "detail": "Apres refonte site - embed formulaires HubSpot (demo, contact, newsletter, livres blancs)",
-        "status": "apres_refonte"
-      },
-      {
-        "id": "G07",
-        "title": "Labels monday Type renommer",
-        "detail": "Board 18409310538 colonne color_mm2j8z35 - Master->OZKM / Unit->OZKU si pas deja fait",
-        "status": "a_faire"
-      },
-      {
-        "id": "G16",
-        "title": "Make 04 - integrer impression carte postale variables",
-        "detail": "Variables {{client_prenom}}, {{kit_id}}, {{client_societe}}, {{site_adresse}} - generation PDF + impression",
-        "status": "a_faire"
-      },
-      {
-        "id": "G24",
-        "title": "Deployer github-relay.php sur ozecar.fr/api/",
-        "detail": "Permet a Claude de pusher state.json automatiquement (api.github.com bloque dans sandbox)",
-        "status": "a_faire",
-        "priorite": "basse",
-        "session_origin": "2026-05-04"
-      }
+      {"id": "G05", "title": "Make 05 Calendly -> HubSpot L&Q", "status": "a_faire"},
+      {"id": "G07", "title": "Labels monday Master->OZKM Unit->OZKU", "status": "a_faire"},
+      {"id": "G24", "title": "github-relay.php pour push state.json auto", "status": "a_faire"}
+    ]
+  },
+  "files_livres_session_2026_05_04": {
+    "wireframes": [
+      "ozecar-activation-wireframe-v2.html (scanner unifie initial)",
+      "ozecar-activation-wireframe-v3.html (9 sous-etapes par PDC)",
+      "ozecar-activation-wireframe-v4.html (8 par PDC + photo station)",
+      "ozecar-activation-wireframe-v5.html (etapes inversees + 4 modes - VERSION VALIDEE)"
+    ],
+    "designs": [
+      "ozecar-fiche-station-existante.html (mini fiche A6 - VALIDEE)",
+      "ozecar-ozecard-redesign-v2.html (carte RFID v2 - VALIDEE)",
+      "ozecar-deck-slide-zaptec-plug-play.html"
+    ],
+    "code": [
+      "monta.php (v2 force_refresh)",
+      "monta-search.php (v3 lookup_deeplink - A UPLOADER)"
     ]
   },
   "resources": {
@@ -662,31 +492,5 @@
     "monday_stock_kits": "https://ozecar.monday.com/boards/18409310538",
     "monday_qr_code": "https://ozecar.monday.com/boards/18398433019",
     "monday_ozecards": "https://ozecar.monday.com/boards/7803753810"
-  },
-  "session_notes": {
-    "2026-05-04_design_packaging": [
-      "Validation pochette installateur generique avec emplacement QR a coller",
-      "Concept double compartiment confirme: kraft (installateur) + noir scelle (proprietaire)",
-      "Carte postale signee Dominique - personnalisation par Make 04",
-      "Programme Certified Installer 3 paliers (Partner/Pro/Master)"
-    ],
-    "2026-05-04_validation_technique": [
-      "PATCH Monta /deeplinks/{id} valide - assigne a chargepoint avec succes",
-      "Scope deeplinks:write actif (deeplinks:delete optionnel)",
-      "Cache token monta.php peut etre force-refresh via flag",
-      "Pochette installateur valide DEFINITIVEMENT par utilisateur"
-    ],
-    "2026-05-04_architecture_monday": [
-      "3 boards relies: Stock Kits (18409310538) + QR code (18398433019) + Ozecards (7803753810)",
-      "Mirrors automatiques de URL et HEX RFID dans Stock Kits",
-      "Page preparation existe deja avec 4 onglets fonctionnels",
-      "Colonne Monta deeplink_id (text_mm317zn1) ajoutee, 800/804 items syncs"
-    ],
-    "design_outputs_to_review_with_user": [
-      "Pochette proprietaire - encore a valider",
-      "Carte postale recto illustration - styles a explorer",
-      "Welcome card hub.ozecar.app - format a definir",
-      "Sleeve kraft + bande de scellage - design final"
-    ]
   }
 }
