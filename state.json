@@ -1,12 +1,26 @@
 {
   "_meta": {
-    "version": "1.12",
+    "version": "1.13",
     "updated": "2026-05-06",
     "updated_by": "Claude (chat WP refonte staging)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-06",
+        "version_from": "1.12",
+        "version_to": "1.13",
+        "author": "Claude (chat WP refonte staging)",
+        "changes": [
+          "CORRECTION : ancienne section wxr_genere_2026_05_06 (contenu invente) supprimee",
+          "WXR HTML 1:1 genere a partir d'ozecar.store (source de verite reelle, pas /mnt/project)",
+          "5 pages : Accueil, Supervision IRVE, Kit OZECAR, Bornes compatibles, Contact",
+          "Approche : 1 bloc HTML core Gutenberg par page contenant <style> + body extrait entre </header> et <footer>",
+          "Decision user : les 18 blocs Gutenberg OZECAR restent deployes sur staging mais pas utilises pour migration initiale",
+          "Inventaire complet des 27 pages d'ozecar.store fait (cf pages_restantes_a_migrer pour la suite)"
+        ]
+      },
       {
         "date": "2026-05-06",
         "version_from": "1.11",
@@ -942,107 +956,82 @@
       "QA visuel : tester chaque page V5 avec les nouveaux blocs",
       "Si OK : prevoir migration prod (cloner staging vers prod)"
     ],
-    "wxr_genere_2026_05_06": {
-      "fichier": "ozecar-pages-5.xml",
-      "size_bytes": 26574,
-      "pages_count": 5,
-      "blocks_total": 34,
-      "pages": [
-        {
-          "slug": "homepage",
-          "title": "Accueil",
-          "blocks_count": 8,
-          "blocks": [
-            "banner-announcement",
-            "hero-standard",
-            "logo-grid",
-            "steps-3",
-            "feature-table",
-            "testimonial-case",
-            "cta-final-dark",
-            "big-marquee"
-          ]
+    "wxr_html_1to1_2026_05_06": {
+      "approche": "HTML 1:1 fidele d'ozecar.store dans des blocs HTML core Gutenberg (1 bloc par page)",
+      "rationale": "User a refuse l'approche Gutenberg natif avec 18 blocs OZECAR. Demande pages WP qui ressemblent 1:1 aux pages HTML mais editables. Realise via : extraction du <body> entre </header> et <footer> de chaque page d'ozecar.store + embed des <style> du <head> + neutralisation des <?php dans commentaires JS",
+      "source_de_verite": "ozecar.store (et NON les fichiers /mnt/project/ qui sont une version V5 plus ancienne)",
+      "fichiers_generes": {
+        "groupe_5_pages": {
+          "path": "/mnt/user-data/outputs/ozecar-pages-5-html.xml",
+          "size_bytes": 481144,
+          "validation_xml": "OK"
         },
-        {
-          "slug": "supervision",
-          "title": "Supervision IRVE",
-          "blocks_count": 7,
-          "blocks": [
-            "banner-announcement",
-            "hero-standard",
-            "feature-table",
-            "comparison-2col",
-            "tariff-calculator-js",
-            "faq-accordion",
-            "cta-final-dark"
-          ]
-        },
-        {
-          "slug": "kit",
-          "title": "Kit OZECAR",
-          "blocks_count": 7,
-          "blocks": [
-            "banner-announcement",
-            "hero-duo-product",
-            "schema-master-units",
-            "steps-3",
-            "product-pricing-cards",
-            "faq-accordion",
-            "cta-final-dark"
-          ]
-        },
-        {
-          "slug": "bornes-compatibles",
-          "title": "Bornes compatibles",
-          "blocks_count": 7,
-          "blocks": [
-            "banner-announcement",
-            "hero-standard",
-            "logo-grid",
-            "feature-table",
-            "faq-accordion",
-            "cta-inline-cream",
-            "cta-final-dark"
-          ]
-        },
-        {
-          "slug": "contact",
-          "title": "Contact",
-          "blocks_count": 5,
-          "blocks": [
-            "banner-announcement",
-            "hero-standard",
-            "columns-flexible",
-            "simple-text",
-            "cta-final-dark"
-          ]
-        }
+        "individuels": [
+          {
+            "slug": "homepage",
+            "path": "/mnt/user-data/outputs/wxr-html/ozecar-page-homepage.xml",
+            "size_bytes": 123492
+          },
+          {
+            "slug": "supervision",
+            "path": "/mnt/user-data/outputs/wxr-html/ozecar-page-supervision.xml",
+            "size_bytes": 86680
+          },
+          {
+            "slug": "kit",
+            "path": "/mnt/user-data/outputs/wxr-html/ozecar-page-kit.xml",
+            "size_bytes": 67810
+          },
+          {
+            "slug": "bornes-compatibles",
+            "path": "/mnt/user-data/outputs/wxr-html/ozecar-page-bornes-compatibles.xml",
+            "size_bytes": 180486
+          },
+          {
+            "slug": "contact",
+            "path": "/mnt/user-data/outputs/wxr-html/ozecar-page-contact.xml",
+            "size_bytes": 27708
+          }
+        ]
+      },
+      "import_action_user": [
+        "Aller sur staging.ozecar.fr/wp-admin/import.php",
+        "Si pas deja installe : installer le plugin 'WordPress Importer'",
+        "Choisir 'WordPress' dans la liste, cliquer 'Lancer l'importateur'",
+        "Si fichier groupe (480K) trop gros, importer 1 par 1 depuis wxr-html/",
+        "Verifier que les pages avec slugs 'homepage', 'supervision', 'kit', 'bornes-compatibles', 'contact' n'existent pas deja",
+        "Au mapping auteur, choisir admin",
+        "Apres import : Reglages > Lecture > 'Page d'accueil affiche : Une page statique' > selectionner 'Accueil'"
       ],
-      "import_action_needed": "User doit aller sur staging.ozecar.fr/wp-admin/import.php > WordPress > Choisir le fichier ozecar-pages-5.xml > Importer. Verifier qu'aucune des 5 pages (slugs: homepage, supervision, kit, bornes-compatibles, contact) n'existe deja - sinon les supprimer ou choisir un autre slug.",
-      "post_import_steps": [
-        "Aller dans Pages > rechercher les 5 pages importees",
-        "Verifier le rendu front via les permaliens",
-        "Pour la homepage : Reglages > Lecture > 'La page d'accueil affiche : Une page statique' > selectionner Accueil",
-        "Si le rendu OK : decision migration prod (cloner staging vers prod)"
+      "blocs_gutenberg_18_natifs": "GARDES en place sur staging.ozecar.fr/wp-content/themes/ozecar-child/. Decision user : on les utilise pour les futures pages, pas pour la migration initiale.",
+      "next_after_5_pages_imported": [
+        "QA visuel des 5 pages : verifier qu'elles ressemblent a 1:1 aux pages d'ozecar.store",
+        "Si OK : importer les 22 autres pages (a-propos, secteurs/*, cas-clients/*, blog, guides, etc.)",
+        "Decision : continuer en HTML 1:1 ou commencer a recoder en blocs Gutenberg natifs"
       ],
-      "encoding_notes": "JSON unicode preserve (emojis 📊 💳 🔍 📧 etc affiches en clair, pas en \\u escape). Format Gutenberg comments standard.",
-      "remaining_pages_v5_to_do": [
-        "ozecar-secteur-supermarches.html",
-        "ozecar-secteur-flottes.html",
-        "ozecar-secteur-hotellerie.html",
-        "ozecar-secteur-transport.html",
-        "ozecar-secteurs-hub.html",
-        "ozecar-cas-clients.html",
-        "ozecar-blog.html",
-        "ozecar-guides.html (et sous-pages guides)",
-        "ozecar-livres-blancs.html",
-        "ozecar-newsletter.html",
-        "ozecar-revendeurs.html",
-        "ozecar-installateurs.html",
-        "ozecar-entreprise.html",
-        "ozecar-carrieres.html",
-        "ozecar-centre-aide.html",
-        "ozecar-bornes-compatibles.html (variantes par marque)"
+      "pages_restantes_a_migrer": [
+        "a-propos",
+        "blog",
+        "bundle-zaptec-pro",
+        "carrieres",
+        "cas-clients",
+        "cas-clients-weldom",
+        "centre-aide (redirect vers support)",
+        "confidentialite",
+        "guides",
+        "installateurs",
+        "livres-blancs",
+        "mentions-legales",
+        "newsletter",
+        "politique-de-cookies",
+        "revendeurs",
+        "se-connecter",
+        "secteurs",
+        "secteurs-flottes",
+        "secteurs-hotellerie",
+        "secteurs-supermarches",
+        "secteurs-transport",
+        "support"
       ]
     }
   }
