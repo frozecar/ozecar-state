@@ -5,12 +5,36 @@
     "updated_by": "Claude (chat automation)",
     "description": "Source de verite OZECAR. Lire via web_fetch en debut de session ET consulter le board orchestration monday.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
+    "WARNING_FOR_FUTURE_CHATS": {
+      "incident_2026_05_06": "Le state.json a ete ecrase par un chat qui n'avait pas lu la version actuelle avant de pusher. Resultat : v2.0 (avec systeme multi-agents, packaging simplifie, etc.) reset en v1.0 ancienne. Reconstruction necessaire.",
+      "rules_to_follow": [
+        "REGLE 1 : TOUJOURS lire le state.json actuel via web_fetch raw.githubusercontent AVANT de pusher une mise a jour. Ne pas se baser sur ses souvenirs ou sur une version locale.",
+        "REGLE 2 : Si la version actuelle a un numero plus eleve que ce que tu pensais, c'est qu'un autre chat a fait des updates. Lire le changelog pour comprendre, puis fusionner ses modifs avec les tiennes.",
+        "REGLE 3 : INCREMENTER le numero de version a chaque update structurelle. v2.1 -> v2.2 -> v2.3, etc. Format : major.minor.patch ou simplement major.minor.",
+        "REGLE 4 : NE JAMAIS DECREMENTER le numero de version. Si la version actuelle est 2.5 et tu fais une modif mineure, passe a 2.6, pas a 2.0.",
+        "REGLE 5 : Loguer les changements dans 'session_changelog' avec la date et un resume des modifications. Ne pas effacer les changelogs precedents.",
+        "REGLE 6 : Le board orchestration monday (id 18411921057) est la source de verite pour les TACHES. state.json est la source de verite pour la STRUCTURE et les DECISIONS.",
+        "REGLE 7 : Si tu modifies une section structurelle (packaging, flow activation, gaps), met a jour AUSSI le board orchestration en meme temps."
+      ],
+      "deprecated_keys_REMOVED": [
+        "OZKU comme objet physique : SUPPRIME en v1.5 - n'existe plus, juste autocollants QR",
+        "First Action Card : SUPPRIME en v1.9 - doublon avec pochette + formulaire",
+        "Concept de sleeve : SUPPRIME en v1.8 - poupee russe inutile, enveloppe Colissimo + 2 pochettes directement"
+      ]
+    },
     "session_changelog": {
+      "v2.1 (2026-05-06)": [
+        "RECUPERATION : state.json ecrase en v1.0 par un autre chat - reconstruction v2.1 depuis l'historique des sessions",
+        "Ajout section WARNING_FOR_FUTURE_CHATS pour eviter futurs ecrasements",
+        "wp-deploy.php DEPLOYE et OPERATIONNEL (https://ozecar.fr/api/wp-deploy.php)",
+        "Token wp-deploy : -w_GRavF4OmBd2WtRGYOoPVJFhxa94Ntj9i0gbJmULg",
+        "Fonctionnalites : list, read, write, delete, mkdir, exists - whitelist dossiers + extensions, backup auto, 10MB max",
+        "Test reussi : list /api/ retourne 9 fichiers PHP existants"
+      ],
       "v2.0 (2026-05-04 night 5)": [
         "SYSTEME MULTI-AGENTS via monday.com - chaque chat est un agent (Design / Backend / Frontend / Marketing / PM / Packaging / Infrastructure)",
-        "Board orchestration cree : id 18411921057 (Ozecar V2 workspace) - hub central de coordination entre chats",
-        "github-relay.php DEPLOYE et OPERATIONNEL - state.json autonome confirme via push v1.9 (commit 0858d671)",
-        "20 taches peuplees dans le board (12 urgent + 5 important + 3 normal + 5 done)"
+        "Board orchestration cree : id 18411921057",
+        "github-relay.php deploye et operationnel"
       ],
       "v1.9 (2026-05-04 night 4)": [
         "Simplification radicale packaging : workflow prep <1min/kit",
@@ -21,15 +45,14 @@
         "Suppression du concept de sleeve",
         "Pochette installateur validee"
       ],
-      "v2.1 (2026-05-06)": [
-        "Ajout section wordpress_refonte - tracking complet du chantier WordPress + Gutenberg natifs",
-        "11 nouvelles taches WP01-WP11 ajoutees au board orchestration (parent 11937196789)",
-        "4 taches Done ajoutees pour tracabilite : WP-D1 site V5 / WP-D2 theme v1 / WP-D3 plugin Monta / WP-D4 POC bloc schema",
-        "Documentation 3 blocages reseau actifs : SSH datacenter, proxy sandbox, permission File Manager"
+      "v1.7 (2026-05-04 night 2)": [
+        "Flow PDC final : 8 sous-etapes + photo station finale",
+        "4 modes connexion guides",
+        "monta-search.php v3 livre"
       ]
     }
   },
-  "orchestration_v2": {
+  "orchestration": {
     "concept": "Board monday central coordinne les chats Claude entre eux. Chaque chat est un agent specialise. Le board fait le suivi de qui fait quoi pour eviter chevauchement et double travail.",
     "monday_board_id": 18411921057,
     "monday_board_url": "https://ozecar.monday.com/boards/18411921057",
@@ -37,20 +60,20 @@
     "agents": {
       "Design": "Wireframes, mockups, identite visuelle, supports imprimes",
       "Backend": "API, scenarios Make, proxies PHP, integrations",
-      "Frontend": "Pages web ozecar.fr, formulaires, dashboards",
+      "Frontend": "Pages web ozecar.fr, formulaires, dashboards, blocs Gutenberg",
       "Marketing": "Site marque, programme installateurs, communication",
       "PM": "Coordination, planning, decisions strategiques",
       "Packaging": "Production physique, sourcing, fournisseurs",
-      "Infrastructure": "Hostinger, monday, GitHub, deploiements"
+      "Infrastructure": "Hostinger, monday, GitHub, deploiements, relais PHP"
     },
     "workflow_chat": [
-      "1. En debut de session, lire state.json (web_fetch raw.githubusercontent) ET le board orchestration (get_board_items_page filter Statut Todo+In Progress)",
+      "1. En debut de session, lire state.json (web_fetch raw.githubusercontent) ET le board orchestration",
       "2. Filtrer les taches par Agent selon le sujet du chat",
-      "3. Identifier les taches deja In Progress par d'autres chats - ne pas marcher dessus",
-      "4. Prendre une tache en Todo, la passer In Progress (change_item_column_values)",
-      "5. Travailler sur la tache, logger les decisions dans le champ Contexte",
-      "6. Si dependance avec un autre agent, creer une nouvelle tache pour cet agent",
-      "7. A la fin, passer Done (ou Blocked si attente externe) et update state.json via github-relay"
+      "3. Ne pas marcher sur ce qu'un autre chat fait (filter Statut In Progress)",
+      "4. Prendre une tache en Todo, la passer In Progress",
+      "5. Travailler, logger les decisions dans le champ Contexte",
+      "6. Si dependance avec un autre agent, creer une nouvelle tache",
+      "7. A la fin, passer Done et update state.json (avec les regles WARNING_FOR_FUTURE_CHATS)"
     ],
     "colonnes_board": {
       "name": "Titre tache",
@@ -59,16 +82,16 @@
       "color_mm33amyx": "Priorite (Urgent/Important/Normal/Low)",
       "color_mm339423": "Domaine fonctionnel",
       "text_mm33w81s": "Gap ID (reference state.json)",
-      "long_text_mm33sx80": "Contexte (briefing complet pour reprise)",
-      "dependency_mm33knfv": "Depend de (autres taches)",
-      "link_mm33qnnm": "Livrables (URL fichier ou page)",
-      "pulse_updated_mm33q3e6": "Derniere update (auto)"
+      "long_text_mm33sx80": "Contexte (briefing complet)",
+      "dependency_mm33knfv": "Depend de",
+      "link_mm33qnnm": "Livrables",
+      "pulse_updated_mm33q3e6": "Derniere update auto"
     },
     "groupes_board": {
-      "group_mm333dqr": "Backlog (nouvelles taches en attente)",
-      "group_mm33wqka": "En cours (un agent travaille dessus)",
-      "group_mm33q056": "Bloque (attente externe)",
-      "group_mm33szp8": "Done (taches terminees - tracabilite)"
+      "group_mm333dqr": "Backlog",
+      "group_mm33wqka": "En cours",
+      "group_mm33q056": "Bloque",
+      "group_mm33szp8": "Done"
     }
   },
   "infrastructure_autonome": {
@@ -76,26 +99,38 @@
       "url": "https://ozecar.fr/api/github-relay.php",
       "deployed": true,
       "purpose": "Permet a Claude de pusher state.json sur GitHub depuis n'importe quelle session",
-      "actions": [
-        "get_sha",
-        "update"
-      ],
-      "first_push_confirmed": "v1.9 commit 0858d671 - 2026-05-04"
+      "actions": ["get_sha", "update"],
+      "warning": "TOUJOURS web_fetch le state.json actuel AVANT de pusher pour ne pas ecraser le travail d'un autre chat"
     },
-    "monta_search_php_v3": {
+    "wp_deploy_php": {
+      "url": "https://ozecar.fr/api/wp-deploy.php",
+      "deployed": true,
+      "auth_token": "-w_GRavF4OmBd2WtRGYOoPVJFhxa94Ntj9i0gbJmULg",
+      "auth_header": "Authorization: Bearer <token>",
+      "purpose": "Permet aux chats de deployer fichiers WordPress sur Hostinger sans upload manuel",
+      "actions": {
+        "list": "{action:list, path:dossier}",
+        "read": "{action:read, path:chemin}",
+        "write": "{action:write, path:chemin, content:contenu}",
+        "delete": "{action:delete, path:chemin, confirm:true}",
+        "mkdir": "{action:mkdir, path:dossier}",
+        "exists": "{action:exists, path:chemin}"
+      },
+      "allowed_dirs": ["api", "activation", "preparation", "project", "copilot", "hub", "aide-installateur", "guides", "aide", "installateurs", "wp-content/themes/ozecar", "wp-content/themes/ozecar-child", "wp-content/plugins/ozecar", "wp-content/uploads/ozecar", "assets", "uploads/photos"],
+      "allowed_extensions": ["php", "html", "htm", "css", "js", "json", "md", "txt", "svg", "xml"],
+      "max_file_size": "10MB",
+      "security_features": ["Backup automatique avant write/delete", "Whitelist dossiers et extensions", "Pas de path traversal", "Token Bearer obligatoire"]
+    },
+    "monta_search_php": {
       "url": "https://ozecar.fr/api/monta-search.php",
-      "deployed_v3": false,
-      "version_actuelle": "v2 sans lookup_deeplink",
-      "actions": [
-        "get_chargepoint",
-        "search_sites",
-        "lookup_deeplink (NEW v3)"
-      ]
+      "version": "v3",
+      "deployed": true,
+      "actions": ["get_chargepoint", "search_sites", "lookup_deeplink"]
     },
     "upload_photo_php": {
       "url": "https://ozecar.fr/api/upload-photo.php",
       "deployed": false,
-      "purpose": "Upload photo station finale - Hostinger storage car API Monta n'expose pas d'upload"
+      "purpose": "Upload photo station finale - peut etre cree via wp-deploy.php maintenant"
     }
   },
   "project": {
@@ -117,16 +152,17 @@
     "gmail_connection_id": 6724564
   },
   "brand": {
-    "font_display": "Fraunces (italique pour headlines)",
+    "font_display": "Fraunces (italique pour headlines editoriales)",
     "font_body": "DM Sans",
     "font_mono": "DM Mono",
     "font_hand": "Caveat (signatures manuscrites)",
     "color_bg": "#F5F0EB",
     "color_black": "#0F141E",
     "color_accent": "#FAC828",
-    "pantone_yellow": "116 C"
+    "pantone_yellow": "116 C",
+    "color_violet_deck": "#5F2DFF"
   },
-  "packaging_v19_simplifie": {
+  "packaging_simplifie": {
     "philosophy": "Moins de 1 minute par kit a la prep. 4 supports imprimes max.",
     "workflow_prep_kit_master": [
       "1. Imprimer sticker QR OZKM-XXXX (~5s)",
@@ -138,10 +174,10 @@
       "TOTAL CIBLE: ~50 secondes"
     ],
     "supports_imprimes": {
-      "1_pochette_installateur": "A5 kraft 120g - VALIDE",
+      "1_pochette_installateur": "A5 kraft 120g - VALIDE - ozecar-kit-master-complet.html",
       "2_pochette_proprietaire": "A5 noir mat 250g pellicule - validation finale en attente",
-      "3_fiche_a6_station_existante": "148x105mm kraft 350g - VALIDE",
-      "4_carte_welcome_a6_fusionnee": "148x105mm 250g - signee en lot par Dominique - a designer"
+      "3_fiche_a6_station_existante": "148x105mm kraft 350g - VALIDE - ozecar-fiche-station-existante.html",
+      "4_carte_welcome_a6_fusionnee": "148x105mm 250g - signee en lot par Dominique - a designer (G37)"
     },
     "stickers_externes": {
       "qr_master_ozkm": "Sticker imprime a la prep sur MUNBYN",
@@ -156,49 +192,33 @@
     "etape_1_identification": "Marque, modele, n.serie, puissance, connector (940 modeles Monta)",
     "etape_2_acces": "Oui j'ai tout / Demander proprio / Reset usine",
     "etape_3_connexion": {
-      "modes": [
-        "SIM 4G OZECAR (APN simbase, ICCID auto)",
-        "Modem 4G externe (Teltonika)",
-        "WiFi client",
-        "Cable Ethernet"
-      ]
+      "modes": ["SIM 4G OZECAR (APN simbase, ICCID auto)", "Modem 4G externe (Teltonika)", "WiFi client", "Cable Ethernet"]
     },
     "etape_4_ocpp": "URL wss://ocpp.monta.app + BoxID + protocole 1.6J + lien guide marque",
     "etape_5_numerotation": "Coller sticker rond a hauteur de prise",
     "etape_6_qr_deeplink": "Scanner + valider + coller au meme endroit",
     "etape_7_mise_en_ligne": "POST /charge-points + PATCH /deeplinks + polling 2 min",
     "etape_8_test_charge": "Carte RFID OU 'Tester plus tard'",
-    "etape_station_photo": "Une photo niveau station - upload Hostinger"
+    "etape_station_photo": "Une photo niveau station - upload Hostinger via wp-deploy.php"
   },
   "monta_api_findings": {
     "PATCH_deeplinks_OK": "Test reussi sur c120099 (id 336965)",
-    "POST_chargepoints_required": [
-      "teamId",
-      "chargePointModelId",
-      "maxKw",
-      "name",
-      "visibility",
-      "type",
-      "siteId"
-    ],
+    "POST_chargepoints_required": ["teamId", "chargePointModelId", "maxKw", "name", "visibility", "type", "siteId"],
     "polling_logic_online": "disconnectedAt:null ET lastConnectedAt < 5 min",
     "GET_chargepoint_models": "GET /charge-point-models - 940 modeles",
-    "photo_upload_NOT_AVAILABLE": "Tous endpoints retournent 404 - stockage Hostinger requis"
+    "photo_upload_NOT_AVAILABLE_via_monta": "Tous endpoints retournent 404 - utiliser wp-deploy.php pour stockage Hostinger"
   },
   "monta_deeplinks": {
     "endpoint": "https://partner-api.monta.com/api/v1/deeplinks",
-    "scopes": [
-      "deeplinks:read",
-      "deeplinks:write"
-    ],
+    "scopes": ["deeplinks:read", "deeplinks:write"],
     "total": 1371,
     "format_url_existant": "https://ozecar.monta.app/d/c{numero}",
     "format_url_marque_blanche": "https://ozecar.app/d/c{numero}"
   },
   "monday_boards": {
-    "orchestration_v2_NEW": {
+    "orchestration": {
       "id": 18411921057,
-      "name": "OZECAR — Orchestration Agents",
+      "name": "OZECAR - Orchestration Agents",
       "purpose": "Hub central multi-agents - coordination entre chats Claude"
     },
     "stock_kits": {
@@ -229,57 +249,41 @@
     }
   },
   "make_scenarios": {
-    "01": {
-      "id": 5265036,
-      "name": "Commande Shopify -> HubSpot",
-      "status": "actif"
-    },
+    "01": {"id": 5265036, "name": "Commande Shopify -> HubSpot", "status": "actif"},
     "02": {
       "id": 5287551,
       "name": "Activation -> Monta + PandaDoc + Mail",
       "webhook": "https://hook.eu1.make.com/53svm3p2rnwmcps7vjh50cyl3iwnxnxd",
       "status": "actif - a refondre"
     },
-    "03": {
-      "id": 5291943,
-      "name": "Preparation Zaptec",
-      "status": "actif"
-    },
-    "04": {
-      "id": 5426658,
-      "name": "Expedition kit",
-      "status": "actif"
-    },
-    "05": {
-      "name": "Calendly -> HubSpot L&Q",
-      "status": "a_creer"
-    },
-    "06": {
-      "name": "Email proprietaire identifiants borne",
-      "status": "a_creer"
-    }
+    "03": {"id": 5291943, "name": "Preparation Zaptec", "status": "actif"},
+    "04": {"id": 5426658, "name": "Expedition kit", "status": "actif"},
+    "05": {"name": "Calendly -> HubSpot L&Q", "status": "a_creer"},
+    "06": {"name": "Email proprietaire identifiants borne", "status": "a_creer"}
   },
-  "designs_validated_v19": {
-    "pochette_installateur": "ozecar-kit-master-complet.html / ozecar-pochette-installateur-validee.html",
+  "designs_validated": {
+    "pochette_installateur": "ozecar-kit-master-complet.html",
     "fiche_a6_station_existante": "ozecar-fiche-station-existante.html",
     "ozecard_rfid_v3": "ozecar-ozecard-redesign-v2.html",
     "wireframe_activation_v5": "ozecar-activation-wireframe-v5.html"
   },
-  "designs_pending_v19": {
+  "designs_pending": {
     "pochette_proprietaire": "Design final + production scellage en lot (G11)",
-    "carte_welcome_a6_fusionnee": "A designer (G37 - remplace G12 + G26)",
+    "carte_welcome_a6_fusionnee": "A designer (G37)",
     "planche_autocollants_numerotation": "Specs imprimeur a finaliser"
   },
-  "gaps_summary_v20": {
+  "gaps_summary": {
     "note": "Suivi detaille dans le board orchestration monday id 18411921057",
-    "urgent_count": 12,
-    "important_count": 5,
+    "urgent_count": 11,
+    "important_count": 7,
     "normal_count": 3,
-    "done_count": 5,
-    "supprimes_v19": [
+    "done_count": 7,
+    "supprimes": [
       "G12 carte postale Dominique (fusionnee dans G37)",
       "G26 welcome card hub (fusionnee dans G37)",
-      "First Action Card (doublon avec pochette + formulaire)"
+      "First Action Card (doublon)",
+      "wp-deploy.php (Done v2.1)",
+      "github-relay.php (Done v2.0)"
     ]
   },
   "resources": {
@@ -287,223 +291,11 @@
     "copilot": "https://ozecar.fr/copilot/index.html",
     "state_json": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "github_relay": "https://ozecar.fr/api/github-relay.php",
+    "wp_deploy": "https://ozecar.fr/api/wp-deploy.php",
     "monday_workspace": "https://ozecar.monday.com",
     "monday_orchestration": "https://ozecar.monday.com/boards/18411921057",
     "monday_stock_kits": "https://ozecar.monday.com/boards/18409310538",
     "monday_qr_code": "https://ozecar.monday.com/boards/18398433019",
     "monday_ozecards": "https://ozecar.monday.com/boards/7803753810"
-  },
-  "wordpress_refonte": {
-    "concept": "Refonte du site ozecar.fr deploye sur staging.ozecar.fr (Hostinger u560872904). Stack actuelle Hello Elementor + Elementor Pro + Woodmart + WPBakery remplacee par theme custom ozecar-theme + blocs Gutenberg natifs (sans plugin paye, sans ACF Pro).",
-    "raison_du_chantier": [
-      "WPBakery strippe les SVG a la sauvegarde via wp_kses_post -- les sections riches du V5 ne survivent pas",
-      "Elementor + Woodmart trop lourd pour le besoin",
-      "Volonte de reprendre la main editoriale via Gutenberg natif accessible aux non-tech",
-      "Versionnable Git, design verrouille dans le theme, edition guidee dans WP admin"
-    ],
-    "wordpress_staging": {
-      "url": "https://staging.ozecar.fr",
-      "wp_version": "6.7",
-      "ssh_host": "178.16.128.183",
-      "ssh_port": 65002,
-      "ssh_user": "u560872904",
-      "ssh_status": "active mais bloque par firewall datacenter Hostinger depuis sandbox cloud",
-      "file_manager_host": "srv1179-files.hstgr.io",
-      "deploy_workaround": "wp-deploy.php a creer (cf WP03) pour pousser depuis sandbox via API REST type github-relay.php"
-    },
-    "ozecar_theme": {
-      "version": "v1",
-      "livrable": "ozecar-theme.zip 107 Ko",
-      "deployed_on_staging": false,
-      "fichiers_principaux": [
-        "style.css",
-        "functions.php",
-        "header.php",
-        "footer.php",
-        "front-page.php",
-        "page.php",
-        "single-borne_recharge.php (V2 pixel-match V5)",
-        "404.php",
-        "archive-borne_recharge.php",
-        "archive-guide.php",
-        "single-guide.php",
-        "inc/ (11 modules: setup, enqueue, borne-helpers, cpt-guide, template-tags, security, admin, blocks, gutenberg-blocks, cleanup, raw-content)",
-        "template-parts/blocks/ (5 ACF Blocks legacy)",
-        "blocks/ (Gutenberg natifs nouveaux - cf wordpress_refonte.gutenberg_blocks)",
-        "page-templates/",
-        "assets/css/",
-        "assets/js/"
-      ]
-    },
-    "monta_hardware_connector": {
-      "version": "v1.2",
-      "livrable": "monta-hardware-connector-v1.2.zip ~21 Ko",
-      "deployed_on_staging": false,
-      "modules_inc": [
-        "cpt-registration",
-        "csv-importer V2.3",
-        "ajax-search",
-        "monta-sync",
-        "image-cache",
-        "sitemap",
-        "migrate-wpbakery (DESACTIVE par defaut)",
-        "diagnostic",
-        "enqueue"
-      ],
-      "wpbakery_force_flag": "define('MHC_FORCE_WPBAKERY', true) pour reactiver"
-    },
-    "gutenberg_blocks": {
-      "approche": "Blocs natifs (sans build step). block.json + render.php (server-side) + editor.js (React Gutenberg) + style.css scope .oz-<slug>-*. Categorie 'OZECAR' creee dans le selecteur de blocs. Inscription via inc/gutenberg-blocks.php qui boucle sur dossiers /blocks/.",
-      "deja_codes_valides_local": [
-        {
-          "slug": "schema-master-units",
-          "status": "done_local_to_deploy",
-          "task_id_monday": "11937154738",
-          "fichiers": [
-            "block.json",
-            "render.php",
-            "editor.js",
-            "style.css"
-          ],
-          "tests_playwright": {
-            "desktop_1440": "OK 1440x817px",
-            "mobile_375": "OK 375x1192px"
-          },
-          "calculs_verifies": [
-            "parc 5 bornes = 194 euros HT",
-            "parc 10 bornes = 339 euros HT"
-          ],
-          "livrable": "ozecar-block-schema.zip (9 Ko, 4 fichiers)"
-        },
-        {
-          "slug": "hero-duo-product",
-          "status": "done_local_to_deploy",
-          "fichiers": [
-            "block.json (113 lignes 21 attributs)",
-            "render.php (6 SVG inline)",
-            "editor.js (5 PanelBody)",
-            "style.css (304 lignes)"
-          ],
-          "livrable": "ozecar-blocks-lot1.zip (avec schema + hero-duo)"
-        }
-      ],
-      "a_coder": [
-        "hero-standard (eyebrow + titre + sous-titre + 2 CTAs + image laterale)",
-        "hero-secteur (avec mockup a droite)",
-        "steps-3 (couleur de fond par etape)",
-        "comparison-2col (Vous / Le Kit)",
-        "feature-table",
-        "product-pricing-cards (1 ou 2 cartes type Master/Unit)",
-        "tariff-calculator-js (calculateur tarif avec champ JS)",
-        "cta-final-dark",
-        "cta-inline-cream (bouton sur fond creme)",
-        "logo-grid (logos compatibles)",
-        "simple-text (titre + paragraphe + CTA)",
-        "columns-flexible (1/2-1/2 1/3x3 1/4x4 - le bloc le plus WPBakery-like)",
-        "faq-accordion",
-        "testimonial-case (cas client)",
-        "big-marquee (le 'ozecar.' geant en bas de page)",
-        "banner-announcement"
-      ],
-      "estimation_total": "~17h (~1h par bloc) pour les 16 blocs restants apres WP04 et hero-duo"
-    },
-    "pages_v5_a_importer": {
-      "approche": "Fichier WXR (XML import WordPress) genere depuis V5 + remplissage automatique des blocs Gutenberg. Premier WXR livre : ozecar-pages.xml (581 Ko, 21 pages post_id 10000-10020) avec contenu HTML brut MAIS les blocs Gutenberg natifs ne sont pas encore utilises. A regenerer apres WP04+WP05.",
-      "pages": [
-        "homepage (V5)",
-        "supervision",
-        "kit (49eur/29eur)",
-        "secteurs/flottes",
-        "secteurs/hotellerie",
-        "secteurs/supermarches",
-        "secteurs/transport",
-        "secteurs (hub)",
-        "installateurs",
-        "revendeurs",
-        "a-propos",
-        "carrieres",
-        "contact",
-        "cas-clients",
-        "blog",
-        "livres-blancs",
-        "newsletter",
-        "aide",
-        "activation-kit",
-        "preparation",
-        "ozecar-one",
-        "weldom"
-      ],
-      "livrables_existants": [
-        "ozecar-pages.xml (581 Ko WXR)",
-        "ozecar-kit-update.xml (66 Ko WXR mise a jour Kit V5.2)"
-      ]
-    },
-    "guides_modeles_bornes": {
-      "phase_1_v5_livres": 18,
-      "liste_phase_1": [
-        "abb-terra-ac-w7",
-        "schneider-evlink-pro-ac",
-        "wallbox-pulsar-plus",
-        "evbox-elvi",
-        "easee-home",
-        "zaptec-pro",
-        "hager-witty-park",
-        "legrand-greenup",
-        "delta-ac-mini-plus",
-        "alpitronic-hypercharger",
-        "kempower-satellite",
-        "webasto-next",
-        "phoenix-contact-ev-charger",
-        "circontrol-evc",
-        "scame-wall",
-        "mennekes-amtron",
-        "ensto-chago",
-        "garo-wallbox"
-      ],
-      "phase_2_a_produire": 42,
-      "validation_pending": "Frederic Pommet (DT) doit valider contenu technique des 18 phase_1 avant phase_2"
-    },
-    "monday_tasks": {
-      "parent": "11937196789",
-      "sous_taches_to_do": [
-        "WP01",
-        "WP02",
-        "WP03",
-        "WP04",
-        "WP05",
-        "WP06",
-        "WP07",
-        "WP08",
-        "WP09",
-        "WP10",
-        "WP11"
-      ],
-      "sous_taches_done": [
-        "WP-D1",
-        "WP-D2",
-        "WP-D3",
-        "WP-D4"
-      ]
-    },
-    "blocages_actuels": [
-      {
-        "id": "B1",
-        "titre": "SSH 65002 timeout depuis sandbox Claude",
-        "cause": "Hostinger filtre les IP datacenter (anti-bruteforce)",
-        "deblocage": "Soit upload manuel via File Manager Chrome, soit deployer wp-deploy.php (cf WP03) pour API REST"
-      },
-      {
-        "id": "B2",
-        "titre": "ozecar.fr et staging.ozecar.fr renvoient 403 depuis sandbox curl",
-        "cause": "Proxy sandbox Anthropic bloque ces hosts",
-        "deblocage": "Ajouter ozecar.fr et staging.ozecar.fr dans whitelist Project sandbox"
-      },
-      {
-        "id": "B3",
-        "titre": "Permission Claude in Chrome srv1179-files.hstgr.io manquante",
-        "cause": "L'extension demande autorisation explicite par domaine",
-        "deblocage": "Autoriser dans extension Claude Chrome OU passer par hpanel.hostinger.com"
-      }
-    ]
   }
 }
