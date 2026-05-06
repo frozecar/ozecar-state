@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "2.1",
+    "version": "2.2",
     "updated": "2026-05-06",
     "updated_by": "Claude (chat automation)",
     "description": "Source de verite OZECAR. Lire via web_fetch en debut de session ET consulter le board orchestration monday.",
@@ -49,6 +49,14 @@
         "Flow PDC final : 8 sous-etapes + photo station finale",
         "4 modes connexion guides",
         "monta-search.php v3 livre"
+      ],
+      "v2.2 (2026-05-06)": [
+        "Ajout section wordpress_refonte (re-creee apres ecrasement v2.0->v1.0 par autre chat)",
+        "Approche : theme enfant ozecar-child herite de ozecar-theme. Pas de touche prod.",
+        "DEPLOYE sur staging.ozecar.fr/wp-content/themes/ozecar-child : style.css + functions.php + inc/gutenberg-blocks.php + blocks/schema-master-units/ (4 fichiers)",
+        "Bloc Gutenberg #1/18 schema-master-units PUSH OK via wp-deploy.php sur staging",
+        "Reste a faire : activer ozecar-child cote WP admin Apparence>Themes (action user)",
+        "Methodologie validee pour les 16 blocs restants : code local -> test Playwright -> push wp-deploy"
       ]
     }
   },
@@ -99,7 +107,10 @@
       "url": "https://ozecar.fr/api/github-relay.php",
       "deployed": true,
       "purpose": "Permet a Claude de pusher state.json sur GitHub depuis n'importe quelle session",
-      "actions": ["get_sha", "update"],
+      "actions": [
+        "get_sha",
+        "update"
+      ],
       "warning": "TOUJOURS web_fetch le state.json actuel AVANT de pusher pour ne pas ecraser le travail d'un autre chat"
     },
     "wp_deploy_php": {
@@ -116,16 +127,53 @@
         "mkdir": "{action:mkdir, path:dossier}",
         "exists": "{action:exists, path:chemin}"
       },
-      "allowed_dirs": ["api", "activation", "preparation", "project", "copilot", "hub", "aide-installateur", "guides", "aide", "installateurs", "wp-content/themes/ozecar", "wp-content/themes/ozecar-child", "wp-content/plugins/ozecar", "wp-content/uploads/ozecar", "assets", "uploads/photos"],
-      "allowed_extensions": ["php", "html", "htm", "css", "js", "json", "md", "txt", "svg", "xml"],
+      "allowed_dirs": [
+        "api",
+        "activation",
+        "preparation",
+        "project",
+        "copilot",
+        "hub",
+        "aide-installateur",
+        "guides",
+        "aide",
+        "installateurs",
+        "wp-content/themes/ozecar",
+        "wp-content/themes/ozecar-child",
+        "wp-content/plugins/ozecar",
+        "wp-content/uploads/ozecar",
+        "assets",
+        "uploads/photos"
+      ],
+      "allowed_extensions": [
+        "php",
+        "html",
+        "htm",
+        "css",
+        "js",
+        "json",
+        "md",
+        "txt",
+        "svg",
+        "xml"
+      ],
       "max_file_size": "10MB",
-      "security_features": ["Backup automatique avant write/delete", "Whitelist dossiers et extensions", "Pas de path traversal", "Token Bearer obligatoire"]
+      "security_features": [
+        "Backup automatique avant write/delete",
+        "Whitelist dossiers et extensions",
+        "Pas de path traversal",
+        "Token Bearer obligatoire"
+      ]
     },
     "monta_search_php": {
       "url": "https://ozecar.fr/api/monta-search.php",
       "version": "v3",
       "deployed": true,
-      "actions": ["get_chargepoint", "search_sites", "lookup_deeplink"]
+      "actions": [
+        "get_chargepoint",
+        "search_sites",
+        "lookup_deeplink"
+      ]
     },
     "upload_photo_php": {
       "url": "https://ozecar.fr/api/upload-photo.php",
@@ -192,7 +240,12 @@
     "etape_1_identification": "Marque, modele, n.serie, puissance, connector (940 modeles Monta)",
     "etape_2_acces": "Oui j'ai tout / Demander proprio / Reset usine",
     "etape_3_connexion": {
-      "modes": ["SIM 4G OZECAR (APN simbase, ICCID auto)", "Modem 4G externe (Teltonika)", "WiFi client", "Cable Ethernet"]
+      "modes": [
+        "SIM 4G OZECAR (APN simbase, ICCID auto)",
+        "Modem 4G externe (Teltonika)",
+        "WiFi client",
+        "Cable Ethernet"
+      ]
     },
     "etape_4_ocpp": "URL wss://ocpp.monta.app + BoxID + protocole 1.6J + lien guide marque",
     "etape_5_numerotation": "Coller sticker rond a hauteur de prise",
@@ -203,14 +256,25 @@
   },
   "monta_api_findings": {
     "PATCH_deeplinks_OK": "Test reussi sur c120099 (id 336965)",
-    "POST_chargepoints_required": ["teamId", "chargePointModelId", "maxKw", "name", "visibility", "type", "siteId"],
+    "POST_chargepoints_required": [
+      "teamId",
+      "chargePointModelId",
+      "maxKw",
+      "name",
+      "visibility",
+      "type",
+      "siteId"
+    ],
     "polling_logic_online": "disconnectedAt:null ET lastConnectedAt < 5 min",
     "GET_chargepoint_models": "GET /charge-point-models - 940 modeles",
     "photo_upload_NOT_AVAILABLE_via_monta": "Tous endpoints retournent 404 - utiliser wp-deploy.php pour stockage Hostinger"
   },
   "monta_deeplinks": {
     "endpoint": "https://partner-api.monta.com/api/v1/deeplinks",
-    "scopes": ["deeplinks:read", "deeplinks:write"],
+    "scopes": [
+      "deeplinks:read",
+      "deeplinks:write"
+    ],
     "total": 1371,
     "format_url_existant": "https://ozecar.monta.app/d/c{numero}",
     "format_url_marque_blanche": "https://ozecar.app/d/c{numero}"
@@ -249,17 +313,35 @@
     }
   },
   "make_scenarios": {
-    "01": {"id": 5265036, "name": "Commande Shopify -> HubSpot", "status": "actif"},
+    "01": {
+      "id": 5265036,
+      "name": "Commande Shopify -> HubSpot",
+      "status": "actif"
+    },
     "02": {
       "id": 5287551,
       "name": "Activation -> Monta + PandaDoc + Mail",
       "webhook": "https://hook.eu1.make.com/53svm3p2rnwmcps7vjh50cyl3iwnxnxd",
       "status": "actif - a refondre"
     },
-    "03": {"id": 5291943, "name": "Preparation Zaptec", "status": "actif"},
-    "04": {"id": 5426658, "name": "Expedition kit", "status": "actif"},
-    "05": {"name": "Calendly -> HubSpot L&Q", "status": "a_creer"},
-    "06": {"name": "Email proprietaire identifiants borne", "status": "a_creer"}
+    "03": {
+      "id": 5291943,
+      "name": "Preparation Zaptec",
+      "status": "actif"
+    },
+    "04": {
+      "id": 5426658,
+      "name": "Expedition kit",
+      "status": "actif"
+    },
+    "05": {
+      "name": "Calendly -> HubSpot L&Q",
+      "status": "a_creer"
+    },
+    "06": {
+      "name": "Email proprietaire identifiants borne",
+      "status": "a_creer"
+    }
   },
   "designs_validated": {
     "pochette_installateur": "ozecar-kit-master-complet.html",
@@ -297,5 +379,73 @@
     "monday_stock_kits": "https://ozecar.monday.com/boards/18409310538",
     "monday_qr_code": "https://ozecar.monday.com/boards/18398433019",
     "monday_ozecards": "https://ozecar.monday.com/boards/7803753810"
+  },
+  "wordpress_refonte": {
+    "concept": "Refonte du site staging.ozecar.fr (Hostinger). Ne pas toucher prod ozecar.fr. Approche : theme enfant 'ozecar-child' herite de 'ozecar-theme' actuel + blocs Gutenberg natifs scope .oz-* (sans plugin paye, sans ACF Pro, sans WPBakery).",
+    "ne_pas_deployer_sur_prod": true,
+    "wordpress_staging": {
+      "url": "https://staging.ozecar.fr",
+      "theme_parent": "ozecar-theme",
+      "theme_enfant": "ozecar-child",
+      "wp_deploy_relay": "https://staging.ozecar.fr/api/wp-deploy.php",
+      "auth_token_var": "voir infrastructure_autonome.wp_deploy_php.auth_token",
+      "deployed_2026_05_06": true
+    },
+    "ozecar_child_theme": {
+      "deployed_on_staging": true,
+      "path": "wp-content/themes/ozecar-child",
+      "structure": {
+        "style.css": "Header WordPress + commentaire (Template: ozecar-theme)",
+        "functions.php": "Enqueue parent style + load inc/gutenberg-blocks.php",
+        "inc/gutenberg-blocks.php": "Cree categorie OZECAR + boucle sur /blocks/<slug>/ pour register_block_type",
+        "blocks/schema-master-units/": "Premier bloc Gutenberg natif (block.json + render.php + editor.js + style.css)"
+      },
+      "activation_pending": "L'utilisateur doit activer le theme enfant via WP admin > Apparence > Themes > ozecar-child > Activer"
+    },
+    "gutenberg_blocks": {
+      "approche": "Blocs natifs sans build step. block.json + render.php (server-side) + editor.js (React Gutenberg avec wp.blocks/wp.blockEditor/wp.components) + style.css scope .oz-<slug>-*.",
+      "categorie_gutenberg": "OZECAR (creee en 1ere position du selecteur)",
+      "deja_codes_et_deployes": [
+        {
+          "slug": "schema-master-units",
+          "deployed_2026_05_06": true,
+          "description": "Schema visuel duo Master+Units avec exemple de prix calcule",
+          "attributs": 14,
+          "tests_local": "validated Playwright desktop+mobile, calculs verifies (5 bornes=194eur, 10 bornes=339eur)"
+        }
+      ],
+      "a_coder": [
+        "hero-duo-product (deja code en local mais pas redeploye)",
+        "hero-standard",
+        "hero-secteur",
+        "steps-3",
+        "comparison-2col",
+        "feature-table",
+        "product-pricing-cards",
+        "tariff-calculator-js",
+        "cta-final-dark",
+        "cta-inline-cream",
+        "logo-grid",
+        "simple-text",
+        "columns-flexible",
+        "faq-accordion",
+        "testimonial-case",
+        "big-marquee",
+        "banner-announcement"
+      ]
+    },
+    "monday_tasks": {
+      "parent": "11937196789",
+      "todo": [
+        "WP01 (deprecated - on garde theme parent), WP02, WP03 (Done v2.1), WP04, WP05, WP06, WP07, WP08, WP09, WP10, WP11"
+      ],
+      "done": [
+        "WP-D1 site V5",
+        "WP-D2 theme v1 code",
+        "WP-D3 plugin Monta code",
+        "WP-D4 POC bloc schema",
+        "WP-D5 (NEW) ozecar-child deploye sur staging avec bloc schema-master-units"
+      ]
+    }
   }
 }
