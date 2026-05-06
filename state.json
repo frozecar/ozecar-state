@@ -1,30 +1,88 @@
 {
   "_meta": {
-    "version": "1.9",
+    "version": "2.0",
     "updated": "2026-05-04",
     "updated_by": "Claude (chat automation)",
-    "description": "Source de verite OZECAR. Lire via web_fetch en debut de session.",
+    "description": "Source de verite OZECAR. Lire via web_fetch en debut de session ET consulter le board orchestration monday.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "session_changelog": {
+      "v2.0 (2026-05-04 night 5)": [
+        "SYSTEME MULTI-AGENTS via monday.com - chaque chat est un agent (Design / Backend / Frontend / Marketing / PM / Packaging / Infrastructure)",
+        "Board orchestration cree : id 18411921057 (Ozecar V2 workspace) - hub central de coordination entre chats",
+        "github-relay.php DEPLOYE et OPERATIONNEL - state.json autonome confirme via push v1.9 (commit 0858d671)",
+        "20 taches peuplees dans le board (12 urgent + 5 important + 3 normal + 5 done)"
+      ],
       "v1.9 (2026-05-04 night 4)": [
-        "SIMPLIFICATION RADICALE PACKAGING : moins de 1 min par kit a la prep",
-        "SUPPRESSION First Action Card - doublon avec pochette + formulaire",
-        "FUSION Welcome card + carte postale Dominique en UNE SEULE carte A6 'Welcome + acces hub'",
-        "Carte welcome signee EN LOT par Dominique (pas par commande) - reduit le temps de prep",
-        "4 supports imprimes au total : pochette installateur, pochette proprietaire, fiche A6 station existante, carte welcome A6",
-        "Pas d'enveloppe imprimee - generique Colissimo achat fournisseur",
-        "Workflow prep cible < 1 min par kit"
+        "Simplification radicale packaging : workflow prep <1min/kit",
+        "Suppression First Action Card (doublon)",
+        "Fusion Welcome card + carte postale Dominique en UNE carte A6"
       ],
       "v1.8 (2026-05-04 night 3)": [
         "Suppression du concept de sleeve",
-        "Pochette installateur validee (ozecar-kit-master-complet.html mis a jour)",
-        "Option A : enveloppe generique Colissimo + 2 pochettes directement"
-      ],
-      "v1.7 (2026-05-04 night 2)": [
-        "Flow PDC final : 8 sous-etapes + photo station finale",
-        "4 modes connexion guides",
-        "monta-search.php v3 livre"
+        "Pochette installateur validee"
       ]
+    }
+  },
+  "orchestration_v2": {
+    "concept": "Board monday central coordinne les chats Claude entre eux. Chaque chat est un agent specialise. Le board fait le suivi de qui fait quoi pour eviter chevauchement et double travail.",
+    "monday_board_id": 18411921057,
+    "monday_board_url": "https://ozecar.monday.com/boards/18411921057",
+    "monday_workspace_id": 8567866,
+    "agents": {
+      "Design": "Wireframes, mockups, identite visuelle, supports imprimes",
+      "Backend": "API, scenarios Make, proxies PHP, integrations",
+      "Frontend": "Pages web ozecar.fr, formulaires, dashboards",
+      "Marketing": "Site marque, programme installateurs, communication",
+      "PM": "Coordination, planning, decisions strategiques",
+      "Packaging": "Production physique, sourcing, fournisseurs",
+      "Infrastructure": "Hostinger, monday, GitHub, deploiements"
+    },
+    "workflow_chat": [
+      "1. En debut de session, lire state.json (web_fetch raw.githubusercontent) ET le board orchestration (get_board_items_page filter Statut Todo+In Progress)",
+      "2. Filtrer les taches par Agent selon le sujet du chat",
+      "3. Identifier les taches deja In Progress par d'autres chats - ne pas marcher dessus",
+      "4. Prendre une tache en Todo, la passer In Progress (change_item_column_values)",
+      "5. Travailler sur la tache, logger les decisions dans le champ Contexte",
+      "6. Si dependance avec un autre agent, creer une nouvelle tache pour cet agent",
+      "7. A la fin, passer Done (ou Blocked si attente externe) et update state.json via github-relay"
+    ],
+    "colonnes_board": {
+      "name": "Titre tache",
+      "color_mm339zjj": "Agent",
+      "color_mm33mp8w": "Statut (Backlog/Todo/In Progress/Review/Done/Blocked)",
+      "color_mm33amyx": "Priorite (Urgent/Important/Normal/Low)",
+      "color_mm339423": "Domaine fonctionnel",
+      "text_mm33w81s": "Gap ID (reference state.json)",
+      "long_text_mm33sx80": "Contexte (briefing complet pour reprise)",
+      "dependency_mm33knfv": "Depend de (autres taches)",
+      "link_mm33qnnm": "Livrables (URL fichier ou page)",
+      "pulse_updated_mm33q3e6": "Derniere update (auto)"
+    },
+    "groupes_board": {
+      "group_mm333dqr": "Backlog (nouvelles taches en attente)",
+      "group_mm33wqka": "En cours (un agent travaille dessus)",
+      "group_mm33q056": "Bloque (attente externe)",
+      "group_mm33szp8": "Done (taches terminees - tracabilite)"
+    }
+  },
+  "infrastructure_autonome": {
+    "github_relay_php": {
+      "url": "https://ozecar.fr/api/github-relay.php",
+      "deployed": true,
+      "purpose": "Permet a Claude de pusher state.json sur GitHub depuis n'importe quelle session",
+      "actions": ["get_sha", "update"],
+      "first_push_confirmed": "v1.9 commit 0858d671 - 2026-05-04"
+    },
+    "monta_search_php_v3": {
+      "url": "https://ozecar.fr/api/monta-search.php",
+      "deployed_v3": false,
+      "version_actuelle": "v2 sans lookup_deeplink",
+      "actions": ["get_chargepoint", "search_sites", "lookup_deeplink (NEW v3)"]
+    },
+    "upload_photo_php": {
+      "url": "https://ozecar.fr/api/upload-photo.php",
+      "deployed": false,
+      "purpose": "Upload photo station finale - Hostinger storage car API Monta n'expose pas d'upload"
     }
   },
   "project": {
@@ -38,7 +96,7 @@
     "monta_partner_subdomain": "ozecar.monta.app",
     "monta_whitelabel_subdomain": "ozecar.app",
     "pandadoc_template_id": "9twwWCrbRe7ECUgAyzSpom",
-    "pandadoc_status": "sandbox - a remplacer par cle live",
+    "pandadoc_status": "sandbox",
     "shopify_store": "ozecar-store.myshopify.com",
     "wordpress_staging": "staging.ozecar.fr",
     "wordpress_prod": "ozecar.fr",
@@ -58,121 +116,30 @@
   "packaging_v19_simplifie": {
     "philosophy": "Moins de 1 minute par kit a la prep. 4 supports imprimes max.",
     "workflow_prep_kit_master": [
-      "1. Imprimer sticker QR OZKM-XXXX (~5s sur MUNBYN)",
+      "1. Imprimer sticker QR OZKM-XXXX (~5s)",
       "2. Coller sticker sur pochette installateur (~5s)",
-      "3. Glisser SIM + planche numerotation + N stickers QR dans pochette installateur (~20s)",
-      "4. Sortir une pochette proprietaire scellee du stock (~5s)",
-      "5. Mettre les 2 pochettes dans enveloppe Colissimo (~10s)",
+      "3. Glisser SIM + planche numerotation + N stickers QR (~20s)",
+      "4. Sortir pochette proprietaire scellee (~5s)",
+      "5. Mettre dans enveloppe Colissimo (~10s)",
       "6. Etiquette Colissimo (~5s)",
       "TOTAL CIBLE: ~50 secondes"
     ],
-    "supports_imprimes_total": 4,
-    "details": {
-      "pochette_installateur": {
-        "format": "A5 portrait 148x210mm",
-        "papier": "Kraft 120g",
-        "production": "Lot generique - tous imprimeurs - 2 couleurs noir + Pantone 116C",
-        "marquage": "01 - Installateur",
-        "design_validated": "ozecar-kit-master-complet.html (mis a jour v1.8)",
-        "qr_ozkm": "Sticker QR colle a la prep sur zone prevue",
-        "contenu": [
-          "Carte SIM 4G OZECAR (ICCID rattache au kit dans monday)",
-          "Planche autocollants numerotation 1A -> 10B (20 ronds vinyle)",
-          "N autocollants QR deeplink Monta (1 par PDC, preleves du stock)"
-        ],
-        "supprime_v19": "First Action Card retiree (doublon avec pochette + formulaire)"
-      },
-      "pochette_proprietaire": {
-        "format": "A5 portrait 148x210mm",
-        "papier": "Noir mat 250g pellicule soft-touch",
-        "marquage": "02 - Owner",
-        "fermeture": "Sceau jaune autocollant",
-        "production": "Pre-assemblee SCELLEE A L'AVANCE - stock pret a l'emploi",
-        "contenu_v19": [
-          "10 Ozecards RFID anonymes preloadees",
-          "1 carte A6 'Welcome + acces hub' (fusion welcome card + carte postale Dominique)"
-        ],
-        "fusion_v19": "Welcome card et carte postale Dominique fusionnees en une seule A6 - signee EN LOT par Dominique (pas par commande)",
-        "design_status": "Validation finale en attente (G11)"
-      },
-      "fiche_a6_station_existante": {
-        "format": "148 x 105 mm paysage",
-        "papier": "Carton kraft 350g",
-        "production": "Lot generique - 2 couleurs noir + Pantone 116C",
-        "personnalisation_v19": "Generique imprimee - nom station et liste autocollants ecrits au stylo a la prep (style postcard) - pas de variables Make",
-        "design_validated": "ozecar-fiche-station-existante.html"
-      },
-      "carte_welcome_a6_NEW_v19": {
-        "format": "148 x 105 mm paysage",
-        "papier": "Carton 250g",
-        "production": "Lot generique - 2 couleurs noir + Pantone 116C - signee EN LOT par Dominique avant insertion",
-        "contenu_recto": "QR vers hub.ozecar.app + headline d'accueil",
-        "contenu_verso": "Message generique signe Dominique au stylo + contact",
-        "place_dans": "Pochette proprietaire scellee",
-        "design_status": "A designer - remplace G12 (carte postale) et G26 (welcome card)"
-      },
-      "enveloppe_expedition": {
-        "type": "Generique kraft Colissimo-compatible",
-        "production": "Achat en gros chez fournisseur packaging - PAS DE DESIGN CUSTOM",
-        "branding": "Etiquette Colissimo seule"
-      }
-    }
-  },
-  "stickers_et_planches": {
-    "qr_master_ozkm": {
-      "format": "Sticker imprime a la prep",
-      "support": "MUNBYN 102x152mm",
-      "url": "ozecar.fr/activation?kit=OZKM-XXXX",
-      "production": "Impression locale a la commande"
+    "supports_imprimes": {
+      "1_pochette_installateur": "A5 kraft 120g - VALIDE",
+      "2_pochette_proprietaire": "A5 noir mat 250g pellicule - validation finale en attente",
+      "3_fiche_a6_station_existante": "148x105mm kraft 350g - VALIDE",
+      "4_carte_welcome_a6_fusionnee": "148x105mm 250g - signee en lot par Dominique - a designer"
     },
-    "qr_deeplinks_monta": {
-      "format": "Vinyle anti-UV rond",
-      "production": "Pre-imprimes en serie - 800 actifs en stock dans monday",
-      "urls": "ozecar.monta.app/d/c{id} ou ozecar.app/d/c{id}"
+    "stickers_externes": {
+      "qr_master_ozkm": "Sticker imprime a la prep sur MUNBYN",
+      "qr_deeplinks_monta": "Stock pre-imprime 800 unites en monday board QR code",
+      "autocollants_numerotation": "Planche pre-imprimee 1A->10B"
     },
-    "autocollants_numerotation": {
-      "format": "Ronds vinyle Ø50mm fond noir uniforme",
-      "production": "Planche pre-imprimee 1A -> 10B (20 ronds par planche)",
-      "design_status": "Specs definies, planche imprimeur a finaliser"
-    }
-  },
-  "designs_validated_v19": {
-    "pochette_installateur": "ozecar-kit-master-complet.html / ozecar-pochette-installateur-validee.html (mis a jour)",
-    "fiche_a6_station_existante": "ozecar-fiche-station-existante.html",
-    "ozecard_rfid_v3": "ozecar-ozecard-redesign-v2.html",
-    "wireframe_activation_v5": "ozecar-activation-wireframe-v5.html"
-  },
-  "designs_pending_v19": {
-    "pochette_proprietaire": "Design final + production scellage en lot (G11)",
-    "carte_welcome_a6_fusionnee": "A designer (remplace G12 + G26 fusionnes)",
-    "planche_autocollants_numerotation": "Specs imprimeur a finaliser"
-  },
-  "ozecards_rfid_v2": {
-    "design_validated": "ozecar-ozecard-redesign-v2.html",
-    "uid_format": "OZCD-XXXX",
-    "production": "Pre-loaded en pochettes proprietaires (10 par pochette)"
-  },
-  "products": {
-    "OZKM": {
-      "name": "Kit Master",
-      "structure_v19": "Enveloppe Colissimo + Pochette installateur + Pochette proprietaire scellee",
-      "qr_url_pattern": "https://ozecar.fr/activation?kit=OZKM-XXXX",
-      "monta_role": "Cree le Site (station)"
-    },
-    "extension_station_existante": {
-      "name": "Pas un kit, juste un envoi",
-      "format": "Enveloppe Colissimo + autocollants QR + mini fiche A6 generique (nom station ecrit au stylo)",
-      "purpose": "Ajouter N PDC a une station OZECAR existante"
-    }
-  },
-  "flow_activation_unifie": {
-    "concept": "ozecar.fr/activation = scanner OZECAR universel - point d'entree unique mobile + desktop",
-    "comportement_mobile": "Auto-camera + permission a l'ouverture",
-    "comportement_desktop": "Camera optionnelle au clic",
-    "memoire_session": "sessionStorage : kit_id, site_id, site_name, pdc_list"
+    "enveloppe_expedition": "Generique kraft Colissimo - achat fournisseur, pas de design"
   },
   "flow_pdc_8_sous_etapes": {
     "concept": "8 sous-etapes par PDC + 1 photo station finale",
+    "wireframe_validated": "ozecar-activation-wireframe-v5.html",
     "etape_1_identification": "Marque, modele, n.serie, puissance, connector (940 modeles Monta)",
     "etape_2_acces": "Oui j'ai tout / Demander proprio / Reset usine",
     "etape_3_connexion": {
@@ -189,7 +156,7 @@
     "PATCH_deeplinks_OK": "Test reussi sur c120099 (id 336965)",
     "POST_chargepoints_required": ["teamId", "chargePointModelId", "maxKw", "name", "visibility", "type", "siteId"],
     "polling_logic_online": "disconnectedAt:null ET lastConnectedAt < 5 min",
-    "GET_chargepoint_models": "GET /charge-point-models - 940 modeles disponibles",
+    "GET_chargepoint_models": "GET /charge-point-models - 940 modeles",
     "photo_upload_NOT_AVAILABLE": "Tous endpoints retournent 404 - stockage Hostinger requis"
   },
   "monta_deeplinks": {
@@ -200,6 +167,11 @@
     "format_url_marque_blanche": "https://ozecar.app/d/c{numero}"
   },
   "monday_boards": {
+    "orchestration_v2_NEW": {
+      "id": 18411921057,
+      "name": "OZECAR — Orchestration Agents",
+      "purpose": "Hub central multi-agents - coordination entre chats Claude"
+    },
     "stock_kits": {
       "id": 18409310538,
       "columns": {
@@ -217,7 +189,7 @@
       "id": 18398433019,
       "items_count": 804,
       "columns": {
-        "name": "name (BE300023, FRC100001...)",
+        "name": "name",
         "lien_internet": "link_mm07t37q",
         "monta_deeplink_id": "text_mm317zn1 (sync 800/804)"
       }
@@ -233,69 +205,43 @@
       "id": 5287551,
       "name": "Activation -> Monta + PandaDoc + Mail",
       "webhook": "https://hook.eu1.make.com/53svm3p2rnwmcps7vjh50cyl3iwnxnxd",
-      "status": "actif"
+      "status": "actif - a refondre"
     },
     "03": {"id": 5291943, "name": "Preparation Zaptec", "status": "actif"},
     "04": {"id": 5426658, "name": "Expedition kit", "status": "actif"},
-    "06_NEW": {"name": "Email proprietaire pour identifiants borne", "status": "a_creer"}
+    "05": {"name": "Calendly -> HubSpot L&Q", "status": "a_creer"},
+    "06": {"name": "Email proprietaire identifiants borne", "status": "a_creer"}
   },
-  "pages_html": {
-    "activation": {
-      "url": "ozecar.fr/activation",
-      "wireframe_v5_validated": "ozecar-activation-wireframe-v5.html"
-    },
-    "preparation": {
-      "url": "ozecar.fr/preparation",
-      "todo_v19": "Supprimer mode OZKU + selecteur autocollants QR libres + fluidifier prep < 1 min"
-    }
+  "designs_validated_v19": {
+    "pochette_installateur": "ozecar-kit-master-complet.html / ozecar-pochette-installateur-validee.html",
+    "fiche_a6_station_existante": "ozecar-fiche-station-existante.html",
+    "ozecard_rfid_v3": "ozecar-ozecard-redesign-v2.html",
+    "wireframe_activation_v5": "ozecar-activation-wireframe-v5.html"
   },
-  "proxies_php": {
-    "monta_search_v3": {
-      "status": "fichier pret, a uploader",
-      "actions": ["get_chargepoint", "search_sites", "lookup_deeplink"]
-    },
-    "upload_photo_NEW": {"status": "a_creer"}
+  "designs_pending_v19": {
+    "pochette_proprietaire": "Design final + production scellage en lot (G11)",
+    "carte_welcome_a6_fusionnee": "A designer (G37 - remplace G12 + G26)",
+    "planche_autocollants_numerotation": "Specs imprimeur a finaliser"
   },
-  "gaps": {
-    "urgent": [
-      {"id": "G19", "title": "Refondre ozecar-activation.html selon wireframe v5", "status": "a_faire"},
-      {"id": "G20", "title": "Make 02 - branche conditionnelle + sequence API", "status": "a_faire"},
-      {"id": "G21", "title": "Uploader monta-search.php v3 sur Hostinger", "status": "fichier_pret"},
-      {"id": "G34", "title": "Creer ozecar.fr/api/upload-photo.php", "status": "a_faire"},
-      {"id": "G18", "title": "Modifier ozecar-preparation.html (cible <1min/kit)", "status": "a_faire"},
-      {"id": "G36", "title": "Sourcer enveloppe generique Colissimo en gros", "status": "a_faire"},
-      {"id": "G11", "title": "Pochette proprietaire validation finale + scellage en lot", "status": "a_faire"},
-      {"id": "G37_v19_NEW", "title": "Designer carte welcome A6 fusionnee (remplace G12+G26)", "detail": "Recto QR hub + verso message Dominique - signee en lot", "status": "a_faire"},
-      {"id": "G31", "title": "Imprimer mini fiche A6 station existante (generique, nom au stylo)", "status": "design_valide"},
-      {"id": "G32", "title": "Creer Make 06 email proprietaire", "status": "a_faire"},
-      {"id": "G33", "title": "Creer ozecar.fr/aide-installateur", "status": "a_faire"},
-      {"id": "G35", "title": "Ajouter colonne Photo station au board Stock Kits", "status": "a_faire"}
-    ],
+  "gaps_summary_v20": {
+    "note": "Suivi detaille dans le board orchestration monday id 18411921057",
+    "urgent_count": 12,
+    "important_count": 5,
+    "normal_count": 3,
+    "done_count": 5,
     "supprimes_v19": [
-      {"id": "G12", "title": "Designer carte postale signee Dominique", "raison": "Fusionnee dans G37"},
-      {"id": "G26", "title": "Designer Welcome card hub.ozecar.app", "raison": "Fusionnee dans G37"},
-      {"id": "First Action Card", "raison": "Doublon avec pochette + formulaire - supprimee"}
-    ],
-    "important": [
-      {"id": "G03", "title": "HubSpot 7 proprietes custom deals", "status": "a_faire"},
-      {"id": "G04", "title": "PandaDoc template -> prod", "status": "a_faire"},
-      {"id": "G14", "title": "Pages installateurs Certified", "status": "a_faire"},
-      {"id": "G15", "title": "Pages guides + aide", "status": "a_faire"},
-      {"id": "G22", "title": "Resoudre 4 deeplinks ozecar.app non sync", "status": "a_faire"},
-      {"id": "G28", "title": "Workflow attribution RFID portail hub", "status": "a_faire"},
-      {"id": "G29", "title": "Stock pochettes proprietaires workflow scellage en lot", "status": "a_faire"}
-    ],
-    "normal": [
-      {"id": "G05", "title": "Make 05 Calendly", "status": "a_faire"},
-      {"id": "G07", "title": "Labels monday Master/Unit", "status": "a_faire"},
-      {"id": "G24", "title": "github-relay.php pour push state.json auto", "status": "a_faire"}
+      "G12 carte postale Dominique (fusionnee dans G37)",
+      "G26 welcome card hub (fusionnee dans G37)",
+      "First Action Card (doublon avec pochette + formulaire)"
     ]
   },
   "resources": {
     "flowchart": "https://ozecar.fr/project/index.html",
     "copilot": "https://ozecar.fr/copilot/index.html",
     "state_json": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
+    "github_relay": "https://ozecar.fr/api/github-relay.php",
     "monday_workspace": "https://ozecar.monday.com",
+    "monday_orchestration": "https://ozecar.monday.com/boards/18411921057",
     "monday_stock_kits": "https://ozecar.monday.com/boards/18409310538",
     "monday_qr_code": "https://ozecar.monday.com/boards/18398433019",
     "monday_ozecards": "https://ozecar.monday.com/boards/7803753810"
