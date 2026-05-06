@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.11",
+    "version": "1.12",
     "updated": "2026-05-06",
     "updated_by": "Claude (chat WP refonte staging)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-06",
+        "version_from": "1.11",
+        "version_to": "1.12",
+        "author": "Claude (chat WP refonte staging)",
+        "changes": [
+          "WXR : fichier ozecar-pages-5.xml genere (26574 bytes, 5 pages, 34 blocs Gutenberg natifs OZECAR)",
+          "Pages couvertes : Accueil, Supervision IRVE, Kit OZECAR, Bornes compatibles, Contact",
+          "Encoding correct : emojis et accents preserves (pas d'escape unicode)",
+          "Action user requise : importer sur staging via /wp-admin/import.php",
+          "Reste 16 pages V5 a faire dans un futur WXR (secteurs, ressources, partenaires)"
+        ]
+      },
       {
         "date": "2026-05-06",
         "version_from": "1.10",
@@ -928,6 +941,109 @@
       "Importer le WXR sur staging via WP > Outils > Importer",
       "QA visuel : tester chaque page V5 avec les nouveaux blocs",
       "Si OK : prevoir migration prod (cloner staging vers prod)"
-    ]
+    ],
+    "wxr_genere_2026_05_06": {
+      "fichier": "ozecar-pages-5.xml",
+      "size_bytes": 26574,
+      "pages_count": 5,
+      "blocks_total": 34,
+      "pages": [
+        {
+          "slug": "homepage",
+          "title": "Accueil",
+          "blocks_count": 8,
+          "blocks": [
+            "banner-announcement",
+            "hero-standard",
+            "logo-grid",
+            "steps-3",
+            "feature-table",
+            "testimonial-case",
+            "cta-final-dark",
+            "big-marquee"
+          ]
+        },
+        {
+          "slug": "supervision",
+          "title": "Supervision IRVE",
+          "blocks_count": 7,
+          "blocks": [
+            "banner-announcement",
+            "hero-standard",
+            "feature-table",
+            "comparison-2col",
+            "tariff-calculator-js",
+            "faq-accordion",
+            "cta-final-dark"
+          ]
+        },
+        {
+          "slug": "kit",
+          "title": "Kit OZECAR",
+          "blocks_count": 7,
+          "blocks": [
+            "banner-announcement",
+            "hero-duo-product",
+            "schema-master-units",
+            "steps-3",
+            "product-pricing-cards",
+            "faq-accordion",
+            "cta-final-dark"
+          ]
+        },
+        {
+          "slug": "bornes-compatibles",
+          "title": "Bornes compatibles",
+          "blocks_count": 7,
+          "blocks": [
+            "banner-announcement",
+            "hero-standard",
+            "logo-grid",
+            "feature-table",
+            "faq-accordion",
+            "cta-inline-cream",
+            "cta-final-dark"
+          ]
+        },
+        {
+          "slug": "contact",
+          "title": "Contact",
+          "blocks_count": 5,
+          "blocks": [
+            "banner-announcement",
+            "hero-standard",
+            "columns-flexible",
+            "simple-text",
+            "cta-final-dark"
+          ]
+        }
+      ],
+      "import_action_needed": "User doit aller sur staging.ozecar.fr/wp-admin/import.php > WordPress > Choisir le fichier ozecar-pages-5.xml > Importer. Verifier qu'aucune des 5 pages (slugs: homepage, supervision, kit, bornes-compatibles, contact) n'existe deja - sinon les supprimer ou choisir un autre slug.",
+      "post_import_steps": [
+        "Aller dans Pages > rechercher les 5 pages importees",
+        "Verifier le rendu front via les permaliens",
+        "Pour la homepage : Reglages > Lecture > 'La page d'accueil affiche : Une page statique' > selectionner Accueil",
+        "Si le rendu OK : decision migration prod (cloner staging vers prod)"
+      ],
+      "encoding_notes": "JSON unicode preserve (emojis 📊 💳 🔍 📧 etc affiches en clair, pas en \\u escape). Format Gutenberg comments standard.",
+      "remaining_pages_v5_to_do": [
+        "ozecar-secteur-supermarches.html",
+        "ozecar-secteur-flottes.html",
+        "ozecar-secteur-hotellerie.html",
+        "ozecar-secteur-transport.html",
+        "ozecar-secteurs-hub.html",
+        "ozecar-cas-clients.html",
+        "ozecar-blog.html",
+        "ozecar-guides.html (et sous-pages guides)",
+        "ozecar-livres-blancs.html",
+        "ozecar-newsletter.html",
+        "ozecar-revendeurs.html",
+        "ozecar-installateurs.html",
+        "ozecar-entreprise.html",
+        "ozecar-carrieres.html",
+        "ozecar-centre-aide.html",
+        "ozecar-bornes-compatibles.html (variantes par marque)"
+      ]
+    }
   }
 }
