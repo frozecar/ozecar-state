@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "2.2",
+    "version": "2.3",
     "updated": "2026-05-06",
     "updated_by": "Claude (chat automation)",
     "description": "Source de verite OZECAR. Lire via web_fetch en debut de session ET consulter le board orchestration monday.",
@@ -57,6 +57,13 @@
         "Bloc Gutenberg #1/18 schema-master-units PUSH OK via wp-deploy.php sur staging",
         "Reste a faire : activer ozecar-child cote WP admin Apparence>Themes (action user)",
         "Methodologie validee pour les 16 blocs restants : code local -> test Playwright -> push wp-deploy"
+      ],
+      "v2.3 (2026-05-06)": [
+        "3 NOUVEAUX blocs Gutenberg deployes sur staging via wp-deploy.php : hero-standard, cta-final-dark, cta-inline-cream",
+        "Total : 4/18 blocs Gutenberg deployes sur staging.ozecar.fr/wp-content/themes/ozecar-child/",
+        "G07 (renommage labels Master->OZKM) DEJA fait par autre chat - tache cloturee",
+        "G35 (colonne Photo station board Stock Kits) DEPLOYE - column_id link_mm332ec8",
+        "Push 19 fichiers en 1 fois via wp-deploy.php REST API"
       ]
     }
   },
@@ -404,33 +411,47 @@
     },
     "gutenberg_blocks": {
       "approche": "Blocs natifs sans build step. block.json + render.php (server-side) + editor.js (React Gutenberg avec wp.blocks/wp.blockEditor/wp.components) + style.css scope .oz-<slug>-*.",
-      "categorie_gutenberg": "OZECAR (creee en 1ere position du selecteur)",
-      "deja_codes_et_deployes": [
+      "categorie_gutenberg": "OZECAR (1ere position du selecteur)",
+      "deployes_sur_staging_2026_05_06": [
         {
           "slug": "schema-master-units",
-          "deployed_2026_05_06": true,
+          "title": "Schéma Master + N Units",
           "description": "Schema visuel duo Master+Units avec exemple de prix calcule",
-          "attributs": 14,
-          "tests_local": "validated Playwright desktop+mobile, calculs verifies (5 bornes=194eur, 10 bornes=339eur)"
+          "attributs": 14
+        },
+        {
+          "slug": "hero-standard",
+          "title": "Hero standard",
+          "description": "Hero principal de page : eyebrow + titre H1 (avec partie italique violette) + sous-titre + 2 CTAs + 3 bullets de reassurance. 3 variantes de fond : cream/white/ink.",
+          "attributs": 14
+        },
+        {
+          "slug": "cta-final-dark",
+          "title": "CTA final (fond sombre)",
+          "description": "Section CTA finale en fond sombre — eyebrow + grand titre + sous-titre + 2 boutons (jaune + ghost). Bottom-of-page conversion.",
+          "attributs": 9
+        },
+        {
+          "slug": "cta-inline-cream",
+          "title": "CTA inline (fond creme)",
+          "description": "Petite bande CTA entre 2 sections — titre court + bouton jaune. Inter-section.",
+          "attributs": 5
         }
       ],
       "a_coder": [
-        "hero-duo-product (deja code en local mais pas redeploye)",
-        "hero-standard",
-        "hero-secteur",
-        "steps-3",
-        "comparison-2col",
+        "hero-duo-product (deja code en local lors d'une session precedente, mais perdu - a recoder)",
+        "hero-secteur (avec mockup a droite)",
+        "steps-3 (couleur fond par etape)",
+        "comparison-2col (Vous / Le Kit)",
         "feature-table",
-        "product-pricing-cards",
+        "product-pricing-cards (Master/Unit cards page Kit)",
         "tariff-calculator-js",
-        "cta-final-dark",
-        "cta-inline-cream",
-        "logo-grid",
+        "logo-grid (logos compatibles)",
         "simple-text",
-        "columns-flexible",
+        "columns-flexible (1/2-1/2 1/3x3 1/4x4)",
         "faq-accordion",
         "testimonial-case",
-        "big-marquee",
+        "big-marquee (ozecar geant)",
         "banner-announcement"
       ]
     },
