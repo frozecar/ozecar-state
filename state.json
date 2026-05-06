@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "2.4",
+    "version": "2.5",
     "updated": "2026-05-06",
     "updated_by": "Claude (chat automation)",
     "description": "Source de verite OZECAR. Lire via web_fetch en debut de session ET consulter le board orchestration monday.",
@@ -63,6 +63,12 @@
         "Total : 7/18 blocs Gutenberg deployes sur staging.ozecar.fr/wp-content/themes/ozecar-child/",
         "Reste 11 blocs a coder : hero-duo-product, hero-secteur, steps-3, comparison-2col, feature-table, tariff-calculator-js, simple-text, columns-flexible, testimonial-case, big-marquee, banner-announcement",
         "Methodologie wp-deploy.php confirmee : 13 fichiers pushed en 1 fois sans erreur"
+      ],
+      "v2.5 (2026-05-06)": [
+        "FIX : reconstruction de la liste deployes_sur_staging suite a un ecrasement partiel en v2.4 (cache CDN raw.githubusercontent.com en retard)",
+        "Liste exhaustive des 7 blocs Gutenberg DEPLOYES sur staging.ozecar.fr/wp-content/themes/ozecar-child/blocks/ : schema-master-units, hero-standard, cta-final-dark, cta-inline-cream, product-pricing-cards, faq-accordion, logo-grid",
+        "Source de verite : appel wp-deploy.php list sur staging confirme les 7 dossiers presents",
+        "Reste 11 blocs a coder. Methodologie : code local en /home/claude/dev/ozecar-child/blocks/<slug>/, push 4 fichiers via wp-deploy.php"
       ]
     }
   },
@@ -410,7 +416,7 @@
     },
     "gutenberg_blocks": {
       "approche": "Blocs natifs sans build step. block.json + render.php (server-side) + editor.js (React Gutenberg avec wp.blocks/wp.blockEditor/wp.components) + style.css scope .oz-<slug>-*.",
-      "categorie_gutenberg": "OZECAR (creee en 1ere position du selecteur)",
+      "categorie_gutenberg": "OZECAR (1ere position du selecteur)",
       "deja_codes_et_deployes": [
         {
           "slug": "schema-master-units",
@@ -421,7 +427,7 @@
         }
       ],
       "a_coder": [
-        "hero-duo-product (deja code en local lors d'une session precedente, perdu - a recoder)",
+        "hero-duo-product",
         "hero-secteur (avec mockup a droite)",
         "steps-3 (couleur fond par etape)",
         "comparison-2col (Vous / Le Kit)",
@@ -435,24 +441,57 @@
       ],
       "deployes_sur_staging_2026_05_06": [
         {
+          "slug": "schema-master-units",
+          "title": "Schéma Master + N Units",
+          "description": "Schema visuel duo Master+Units avec exemple de prix calcule (1 Master + N Units = X eur HT)",
+          "attributs": 14,
+          "deployed_date": "2026-05-06"
+        },
+        {
+          "slug": "hero-standard",
+          "title": "Hero standard",
+          "description": "Hero principal de page : eyebrow + titre H1 (avec partie italique violette) + sous-titre + 2 CTAs + 3 bullets de reassurance. 3 variantes de fond : cream/white/ink.",
+          "attributs": 14,
+          "deployed_date": "2026-05-06"
+        },
+        {
+          "slug": "cta-final-dark",
+          "title": "CTA final (fond sombre)",
+          "description": "Section CTA finale en fond sombre — eyebrow jaune + grand titre + sous-titre + 2 boutons (jaune + ghost). Bottom-of-page conversion.",
+          "attributs": 9,
+          "deployed_date": "2026-05-06"
+        },
+        {
+          "slug": "cta-inline-cream",
+          "title": "CTA inline (fond creme)",
+          "description": "Petite bande CTA inter-section — titre court + bouton jaune. Fond creme.",
+          "attributs": 5,
+          "deployed_date": "2026-05-06"
+        },
+        {
           "slug": "product-pricing-cards",
           "title": "Cartes produit prix",
           "description": "2 cartes produit cote a cote (Master+Unit ou autre duo). Cartes fond sombre avec prix mis en avant en jaune, liste features, bouton CTA jaune.",
-          "attributs": 17
+          "attributs": 17,
+          "deployed_date": "2026-05-06"
         },
         {
           "slug": "faq-accordion",
           "title": "FAQ accordeon",
           "description": "Section FAQ avec questions/reponses qui s'ouvrent (HTML <details>, fonctionne sans JS). Items dynamiques via JSON dans editor.",
-          "attributs": 3
+          "attributs": 3,
+          "deployed_date": "2026-05-06"
         },
         {
           "slug": "logo-grid",
           "title": "Grille de logos",
           "description": "Grille de logos compatibles (marques bornes, partenaires). 1 logo = 1 ligne dans editor. Auto-grid 2-3-4-6 colonnes selon viewport.",
-          "attributs": 6
+          "attributs": 6,
+          "deployed_date": "2026-05-06"
         }
-      ]
+      ],
+      "nombre_total_deployes": 7,
+      "nombre_total_a_coder": 11
     },
     "monday_tasks": {
       "parent": "11937196789",
