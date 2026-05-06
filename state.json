@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "version": "2.0",
-    "updated": "2026-05-04",
+    "version": "2.1",
+    "updated": "2026-05-06",
     "updated_by": "Claude (chat automation)",
     "description": "Source de verite OZECAR. Lire via web_fetch en debut de session ET consulter le board orchestration monday.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
@@ -20,6 +20,12 @@
       "v1.8 (2026-05-04 night 3)": [
         "Suppression du concept de sleeve",
         "Pochette installateur validee"
+      ],
+      "v2.1 (2026-05-06)": [
+        "Ajout section wordpress_refonte - tracking complet du chantier WordPress + Gutenberg natifs",
+        "11 nouvelles taches WP01-WP11 ajoutees au board orchestration (parent 11937196789)",
+        "4 taches Done ajoutees pour tracabilite : WP-D1 site V5 / WP-D2 theme v1 / WP-D3 plugin Monta / WP-D4 POC bloc schema",
+        "Documentation 3 blocages reseau actifs : SSH datacenter, proxy sandbox, permission File Manager"
       ]
     }
   },
@@ -70,14 +76,21 @@
       "url": "https://ozecar.fr/api/github-relay.php",
       "deployed": true,
       "purpose": "Permet a Claude de pusher state.json sur GitHub depuis n'importe quelle session",
-      "actions": ["get_sha", "update"],
+      "actions": [
+        "get_sha",
+        "update"
+      ],
       "first_push_confirmed": "v1.9 commit 0858d671 - 2026-05-04"
     },
     "monta_search_php_v3": {
       "url": "https://ozecar.fr/api/monta-search.php",
       "deployed_v3": false,
       "version_actuelle": "v2 sans lookup_deeplink",
-      "actions": ["get_chargepoint", "search_sites", "lookup_deeplink (NEW v3)"]
+      "actions": [
+        "get_chargepoint",
+        "search_sites",
+        "lookup_deeplink (NEW v3)"
+      ]
     },
     "upload_photo_php": {
       "url": "https://ozecar.fr/api/upload-photo.php",
@@ -143,7 +156,12 @@
     "etape_1_identification": "Marque, modele, n.serie, puissance, connector (940 modeles Monta)",
     "etape_2_acces": "Oui j'ai tout / Demander proprio / Reset usine",
     "etape_3_connexion": {
-      "modes": ["SIM 4G OZECAR (APN simbase, ICCID auto)", "Modem 4G externe (Teltonika)", "WiFi client", "Cable Ethernet"]
+      "modes": [
+        "SIM 4G OZECAR (APN simbase, ICCID auto)",
+        "Modem 4G externe (Teltonika)",
+        "WiFi client",
+        "Cable Ethernet"
+      ]
     },
     "etape_4_ocpp": "URL wss://ocpp.monta.app + BoxID + protocole 1.6J + lien guide marque",
     "etape_5_numerotation": "Coller sticker rond a hauteur de prise",
@@ -154,14 +172,25 @@
   },
   "monta_api_findings": {
     "PATCH_deeplinks_OK": "Test reussi sur c120099 (id 336965)",
-    "POST_chargepoints_required": ["teamId", "chargePointModelId", "maxKw", "name", "visibility", "type", "siteId"],
+    "POST_chargepoints_required": [
+      "teamId",
+      "chargePointModelId",
+      "maxKw",
+      "name",
+      "visibility",
+      "type",
+      "siteId"
+    ],
     "polling_logic_online": "disconnectedAt:null ET lastConnectedAt < 5 min",
     "GET_chargepoint_models": "GET /charge-point-models - 940 modeles",
     "photo_upload_NOT_AVAILABLE": "Tous endpoints retournent 404 - stockage Hostinger requis"
   },
   "monta_deeplinks": {
     "endpoint": "https://partner-api.monta.com/api/v1/deeplinks",
-    "scopes": ["deeplinks:read", "deeplinks:write"],
+    "scopes": [
+      "deeplinks:read",
+      "deeplinks:write"
+    ],
     "total": 1371,
     "format_url_existant": "https://ozecar.monta.app/d/c{numero}",
     "format_url_marque_blanche": "https://ozecar.app/d/c{numero}"
@@ -200,17 +229,35 @@
     }
   },
   "make_scenarios": {
-    "01": {"id": 5265036, "name": "Commande Shopify -> HubSpot", "status": "actif"},
+    "01": {
+      "id": 5265036,
+      "name": "Commande Shopify -> HubSpot",
+      "status": "actif"
+    },
     "02": {
       "id": 5287551,
       "name": "Activation -> Monta + PandaDoc + Mail",
       "webhook": "https://hook.eu1.make.com/53svm3p2rnwmcps7vjh50cyl3iwnxnxd",
       "status": "actif - a refondre"
     },
-    "03": {"id": 5291943, "name": "Preparation Zaptec", "status": "actif"},
-    "04": {"id": 5426658, "name": "Expedition kit", "status": "actif"},
-    "05": {"name": "Calendly -> HubSpot L&Q", "status": "a_creer"},
-    "06": {"name": "Email proprietaire identifiants borne", "status": "a_creer"}
+    "03": {
+      "id": 5291943,
+      "name": "Preparation Zaptec",
+      "status": "actif"
+    },
+    "04": {
+      "id": 5426658,
+      "name": "Expedition kit",
+      "status": "actif"
+    },
+    "05": {
+      "name": "Calendly -> HubSpot L&Q",
+      "status": "a_creer"
+    },
+    "06": {
+      "name": "Email proprietaire identifiants borne",
+      "status": "a_creer"
+    }
   },
   "designs_validated_v19": {
     "pochette_installateur": "ozecar-kit-master-complet.html / ozecar-pochette-installateur-validee.html",
@@ -245,5 +292,218 @@
     "monday_stock_kits": "https://ozecar.monday.com/boards/18409310538",
     "monday_qr_code": "https://ozecar.monday.com/boards/18398433019",
     "monday_ozecards": "https://ozecar.monday.com/boards/7803753810"
+  },
+  "wordpress_refonte": {
+    "concept": "Refonte du site ozecar.fr deploye sur staging.ozecar.fr (Hostinger u560872904). Stack actuelle Hello Elementor + Elementor Pro + Woodmart + WPBakery remplacee par theme custom ozecar-theme + blocs Gutenberg natifs (sans plugin paye, sans ACF Pro).",
+    "raison_du_chantier": [
+      "WPBakery strippe les SVG a la sauvegarde via wp_kses_post -- les sections riches du V5 ne survivent pas",
+      "Elementor + Woodmart trop lourd pour le besoin",
+      "Volonte de reprendre la main editoriale via Gutenberg natif accessible aux non-tech",
+      "Versionnable Git, design verrouille dans le theme, edition guidee dans WP admin"
+    ],
+    "wordpress_staging": {
+      "url": "https://staging.ozecar.fr",
+      "wp_version": "6.7",
+      "ssh_host": "178.16.128.183",
+      "ssh_port": 65002,
+      "ssh_user": "u560872904",
+      "ssh_status": "active mais bloque par firewall datacenter Hostinger depuis sandbox cloud",
+      "file_manager_host": "srv1179-files.hstgr.io",
+      "deploy_workaround": "wp-deploy.php a creer (cf WP03) pour pousser depuis sandbox via API REST type github-relay.php"
+    },
+    "ozecar_theme": {
+      "version": "v1",
+      "livrable": "ozecar-theme.zip 107 Ko",
+      "deployed_on_staging": false,
+      "fichiers_principaux": [
+        "style.css",
+        "functions.php",
+        "header.php",
+        "footer.php",
+        "front-page.php",
+        "page.php",
+        "single-borne_recharge.php (V2 pixel-match V5)",
+        "404.php",
+        "archive-borne_recharge.php",
+        "archive-guide.php",
+        "single-guide.php",
+        "inc/ (11 modules: setup, enqueue, borne-helpers, cpt-guide, template-tags, security, admin, blocks, gutenberg-blocks, cleanup, raw-content)",
+        "template-parts/blocks/ (5 ACF Blocks legacy)",
+        "blocks/ (Gutenberg natifs nouveaux - cf wordpress_refonte.gutenberg_blocks)",
+        "page-templates/",
+        "assets/css/",
+        "assets/js/"
+      ]
+    },
+    "monta_hardware_connector": {
+      "version": "v1.2",
+      "livrable": "monta-hardware-connector-v1.2.zip ~21 Ko",
+      "deployed_on_staging": false,
+      "modules_inc": [
+        "cpt-registration",
+        "csv-importer V2.3",
+        "ajax-search",
+        "monta-sync",
+        "image-cache",
+        "sitemap",
+        "migrate-wpbakery (DESACTIVE par defaut)",
+        "diagnostic",
+        "enqueue"
+      ],
+      "wpbakery_force_flag": "define('MHC_FORCE_WPBAKERY', true) pour reactiver"
+    },
+    "gutenberg_blocks": {
+      "approche": "Blocs natifs (sans build step). block.json + render.php (server-side) + editor.js (React Gutenberg) + style.css scope .oz-<slug>-*. Categorie 'OZECAR' creee dans le selecteur de blocs. Inscription via inc/gutenberg-blocks.php qui boucle sur dossiers /blocks/.",
+      "deja_codes_valides_local": [
+        {
+          "slug": "schema-master-units",
+          "status": "done_local_to_deploy",
+          "task_id_monday": "11937154738",
+          "fichiers": [
+            "block.json",
+            "render.php",
+            "editor.js",
+            "style.css"
+          ],
+          "tests_playwright": {
+            "desktop_1440": "OK 1440x817px",
+            "mobile_375": "OK 375x1192px"
+          },
+          "calculs_verifies": [
+            "parc 5 bornes = 194 euros HT",
+            "parc 10 bornes = 339 euros HT"
+          ],
+          "livrable": "ozecar-block-schema.zip (9 Ko, 4 fichiers)"
+        },
+        {
+          "slug": "hero-duo-product",
+          "status": "done_local_to_deploy",
+          "fichiers": [
+            "block.json (113 lignes 21 attributs)",
+            "render.php (6 SVG inline)",
+            "editor.js (5 PanelBody)",
+            "style.css (304 lignes)"
+          ],
+          "livrable": "ozecar-blocks-lot1.zip (avec schema + hero-duo)"
+        }
+      ],
+      "a_coder": [
+        "hero-standard (eyebrow + titre + sous-titre + 2 CTAs + image laterale)",
+        "hero-secteur (avec mockup a droite)",
+        "steps-3 (couleur de fond par etape)",
+        "comparison-2col (Vous / Le Kit)",
+        "feature-table",
+        "product-pricing-cards (1 ou 2 cartes type Master/Unit)",
+        "tariff-calculator-js (calculateur tarif avec champ JS)",
+        "cta-final-dark",
+        "cta-inline-cream (bouton sur fond creme)",
+        "logo-grid (logos compatibles)",
+        "simple-text (titre + paragraphe + CTA)",
+        "columns-flexible (1/2-1/2 1/3x3 1/4x4 - le bloc le plus WPBakery-like)",
+        "faq-accordion",
+        "testimonial-case (cas client)",
+        "big-marquee (le 'ozecar.' geant en bas de page)",
+        "banner-announcement"
+      ],
+      "estimation_total": "~17h (~1h par bloc) pour les 16 blocs restants apres WP04 et hero-duo"
+    },
+    "pages_v5_a_importer": {
+      "approche": "Fichier WXR (XML import WordPress) genere depuis V5 + remplissage automatique des blocs Gutenberg. Premier WXR livre : ozecar-pages.xml (581 Ko, 21 pages post_id 10000-10020) avec contenu HTML brut MAIS les blocs Gutenberg natifs ne sont pas encore utilises. A regenerer apres WP04+WP05.",
+      "pages": [
+        "homepage (V5)",
+        "supervision",
+        "kit (49eur/29eur)",
+        "secteurs/flottes",
+        "secteurs/hotellerie",
+        "secteurs/supermarches",
+        "secteurs/transport",
+        "secteurs (hub)",
+        "installateurs",
+        "revendeurs",
+        "a-propos",
+        "carrieres",
+        "contact",
+        "cas-clients",
+        "blog",
+        "livres-blancs",
+        "newsletter",
+        "aide",
+        "activation-kit",
+        "preparation",
+        "ozecar-one",
+        "weldom"
+      ],
+      "livrables_existants": [
+        "ozecar-pages.xml (581 Ko WXR)",
+        "ozecar-kit-update.xml (66 Ko WXR mise a jour Kit V5.2)"
+      ]
+    },
+    "guides_modeles_bornes": {
+      "phase_1_v5_livres": 18,
+      "liste_phase_1": [
+        "abb-terra-ac-w7",
+        "schneider-evlink-pro-ac",
+        "wallbox-pulsar-plus",
+        "evbox-elvi",
+        "easee-home",
+        "zaptec-pro",
+        "hager-witty-park",
+        "legrand-greenup",
+        "delta-ac-mini-plus",
+        "alpitronic-hypercharger",
+        "kempower-satellite",
+        "webasto-next",
+        "phoenix-contact-ev-charger",
+        "circontrol-evc",
+        "scame-wall",
+        "mennekes-amtron",
+        "ensto-chago",
+        "garo-wallbox"
+      ],
+      "phase_2_a_produire": 42,
+      "validation_pending": "Frederic Pommet (DT) doit valider contenu technique des 18 phase_1 avant phase_2"
+    },
+    "monday_tasks": {
+      "parent": "11937196789",
+      "sous_taches_to_do": [
+        "WP01",
+        "WP02",
+        "WP03",
+        "WP04",
+        "WP05",
+        "WP06",
+        "WP07",
+        "WP08",
+        "WP09",
+        "WP10",
+        "WP11"
+      ],
+      "sous_taches_done": [
+        "WP-D1",
+        "WP-D2",
+        "WP-D3",
+        "WP-D4"
+      ]
+    },
+    "blocages_actuels": [
+      {
+        "id": "B1",
+        "titre": "SSH 65002 timeout depuis sandbox Claude",
+        "cause": "Hostinger filtre les IP datacenter (anti-bruteforce)",
+        "deblocage": "Soit upload manuel via File Manager Chrome, soit deployer wp-deploy.php (cf WP03) pour API REST"
+      },
+      {
+        "id": "B2",
+        "titre": "ozecar.fr et staging.ozecar.fr renvoient 403 depuis sandbox curl",
+        "cause": "Proxy sandbox Anthropic bloque ces hosts",
+        "deblocage": "Ajouter ozecar.fr et staging.ozecar.fr dans whitelist Project sandbox"
+      },
+      {
+        "id": "B3",
+        "titre": "Permission Claude in Chrome srv1179-files.hstgr.io manquante",
+        "cause": "L'extension demande autorisation explicite par domaine",
+        "deblocage": "Autoriser dans extension Claude Chrome OU passer par hpanel.hostinger.com"
+      }
+    ]
   }
 }
