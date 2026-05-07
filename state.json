@@ -1,12 +1,28 @@
 {
   "_meta": {
-    "version": "1.13",
-    "updated": "2026-05-06",
-    "updated_by": "Claude (chat WP refonte staging)",
+    "version": "1.14",
+    "updated": "2026-05-07",
+    "updated_by": "Claude (chat Shopify brief)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-07",
+        "version_from": "1.13",
+        "version_to": "1.14",
+        "author": "Claude (chat Shopify brief)",
+        "changes": [
+          "Nouvelle section 'shopify' ajoutee : plan d'attaque complet du store ozecar-store.myshopify.com",
+          "Brief de 29KB / 580 lignes genere pour Claude Code (avec Shopify AI Toolkit) : SHOPIFY-BRIEF-CLAUDE-CODE.md",
+          "Catalogue defini : 9 produits (OZKM, OZKU, SIM extra, 2 Zaptec, 3 colonnes, pack RFID)",
+          "Regle critique cart : OZKM jamais seul, toujours avec OZKU. OZKU peut etre seul.",
+          "Pricing : public visible sans login, prix partenaire apres login (4 paliers Demarrage/Bronze/Argent/Or)",
+          "Paiement : immediat (CB/Apple/Google/SEPA) ET sur facture 30 jours net (B2B approved)",
+          "Domaine cible : shop.ozecar.fr (sous-domaine ozecar.fr)",
+          "Coordination : 'shopify' = chantier Claude Code. 'wordpress_refonte' = chantier autre Claude. NE PAS croiser."
+        ]
+      },
       {
         "date": "2026-05-06",
         "version_from": "1.12",
@@ -1034,5 +1050,100 @@
         "support"
       ]
     }
+  },
+  "shopify": {
+    "_note": "Boutique e-commerce B2B OZECAR. Sera servie sur shop.ozecar.fr (sous-domaine du site principal). En cours de setup par Claude Code avec le plugin Shopify AI Toolkit (depuis 2026-05-07).",
+    "current_state": "password_protected",
+    "admin_url": "ozecar-store.myshopify.com",
+    "future_public_url": "shop.ozecar.fr",
+    "implementation_chat": "Claude Code (avec Shopify AI Toolkit) — l'autre Claude (claude.ai web) coordonne mais ne touche pas directement",
+    "brief_file": "SHOPIFY-BRIEF-CLAUDE-CODE.md (29KB, 580 lignes) genere 2026-05-07. A donner a Claude Code en input.",
+    "rules": {
+      "kit_master_requires_kit_unit": "OZKM ne peut JAMAIS etre achete seul, toujours avec au moins 1 OZKU",
+      "kit_unit_can_be_alone": "OZKU peut etre achete seul (reappro)",
+      "public_pricing_visible_no_login": "Tous les prix publics visibles sans inscription",
+      "partner_pricing_after_login": "Apres login, partenaires voient leurs prix remises selon palier (Demarrage -25%, Bronze -28%, Argent -30%, Or -33%)",
+      "supervision_NOT_on_shop": "Les forfaits supervision (Essential, Pro, Pro Plus, Transit) ne sont PAS sur Shopify. Vendus via PandaDoc + Stripe Subscriptions separe.",
+      "payment_methods": [
+        "immediate_card_apple_google_sepa",
+        "net_30_days_invoice_for_approved_b2b"
+      ],
+      "branding": "Charte OZECAR stricte (couleurs ink/cream/yellow/violet, fonts DM Sans + Instrument Serif + Space Mono)"
+    },
+    "products_to_create": [
+      {
+        "sku": "OZKM",
+        "name": "Kit Master",
+        "price_ht": 49.0,
+        "rules": "Requires at least 1 OZKU in cart"
+      },
+      {
+        "sku": "OZKU",
+        "name": "Kit Unit",
+        "price_ht": 29.0,
+        "rules": "Can be sold alone"
+      },
+      {
+        "sku": "OZSIM-EXTRA",
+        "name": "Carte SIM additionnelle",
+        "price_ht": 15.0,
+        "rules": "Visible only if OZKM in cart (TBC with Dominique)"
+      },
+      {
+        "sku": "ZAPTEC-PRO-22",
+        "name": "Zaptec Pro 22 kW pre-configuree OZECAR",
+        "price_ht": 1325.0
+      },
+      {
+        "sku": "ZAPTEC-GO2-22",
+        "name": "Zaptec GO 2 22 kW pre-configuree OZECAR",
+        "price_ht": 890.0
+      },
+      {
+        "sku": "COL-ZAPTEC-ST",
+        "name": "Colonne Zaptec Single/Twin",
+        "price_ht": 325.0
+      },
+      {
+        "sku": "COL-ONEPOLE-ST",
+        "name": "Colonne OnePole Zaptec Pro Single/Twin",
+        "price_ht": 410.0
+      },
+      {
+        "sku": "COL-ONEPOLE-TW-SBS",
+        "name": "Colonne OnePole Twin Side-by-Side",
+        "price_ht": 530.0,
+        "rules": "Pas compatible Zaptec GO 2"
+      },
+      {
+        "sku": "RFID-PACK10",
+        "name": "Pack de 10 cartes RFID OZECARD",
+        "price_ht": 59.0
+      }
+    ],
+    "products_NOT_to_create": [
+      "Forfaits supervision (Essential / Pro / Pro Plus / Transit) — vendus via PandaDoc + Stripe Subscriptions",
+      "Activation services (remote 79 EUR/PDC, onsite 390 EUR/site) — passent par devis HubSpot/PandaDoc en v1",
+      "OZECARD vente unitaire — deja vendu via lien Stripe direct buy.stripe.com/bIYdTZ4xi9yA8mYcMN"
+    ],
+    "integrations_to_respect": {
+      "make_01_shopify_to_hubspot": "Existe deja (scenario 5265036). Trigger Shopify webhook order/create. NE PAS CASSER.",
+      "hubspot_pipeline_supervision": "Pipeline default. Etape 'Kit commande' (appointmentscheduled) = entry point",
+      "monday_stock_kits": "Board 18409310538. Source de verite physique. NE PAS toucher depuis Shopify en v1.",
+      "ozecar_fr_activation": "Page WP ozecar.fr/activation reste le point d'entree pour activation kit. Aucune modification."
+    },
+    "open_questions_to_dominique": [
+      "Plan Shopify actuel (Basic / Shopify / Advanced / Plus) ?",
+      "Prix carte SIM additionnelle — 15 EUR HT ok ?",
+      "Photos produits pro disponibles ? Si non Claude Code utilise placeholders.",
+      "Premier partenaire test pour valider le pricing partenaire ?",
+      "Budget apps Shopify (Net Terms ~10$/mois) ou tout custom ?"
+    ],
+    "next_steps": [
+      "[USER] Generer token Admin API Shopify (Settings > Apps > Develop apps)",
+      "[USER] Donner le token + le brief a Claude Code",
+      "[CLAUDE CODE] Suivre la roadmap Phase 1 a Phase 8 du brief",
+      "[CLAUDE.AI] Suivre l'avancement via les updates state.json + monday board"
+    ]
   }
 }
