@@ -1,12 +1,29 @@
 {
   "_meta": {
-    "version": "1.18",
+    "version": "1.19",
     "updated": "2026-05-08",
-    "updated_by": "Claude Code Shopify (final présentation client)",
+    "updated_by": "Claude Code Shopify (page revendeurs + form partenaire)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-08",
+        "version_from": "1.18",
+        "version_to": "1.19",
+        "author": "Claude Code Shopify",
+        "changes": [
+          "Page /pages/revendeurs créée avec template_suffix=revendeurs (template page.revendeurs.json + section ozecar-revendeurs.liquid)",
+          "Reproduction fidèle de staging.ozecar.fr/revendeurs : hero Distribuez OZECAR, 3 stats (20% / ∞ / 24h), 3 niveaux (Installateur 15% / Revendeur 20% / Distributeur sur mesure)",
+          "Section Paliers de remise (4 paliers) intégrée en complément des 3 niveaux",
+          "Formulaire d'inscription partenaire avec champs : Raison sociale, SIRET, TVA, Adresse, Niveau souhaité (radio), Volume estimé, Prénom/Nom, Email, Téléphone, Message",
+          "Form Shopify {% form contact %} natif → email automatique à dominique@ozecar.fr",
+          "Process en 3 étapes affiché : 1) form 2) validation manuelle OZECAR 3) email confirmation + accès",
+          "Tagline OZECAR finale : « À la fin de la journée, on déplace juste des électrons. »",
+          "Header + footer mis à jour pour pointer Partenaires → /pages/revendeurs",
+          "Workflow approbation : admin reçoit email, vérifie SIRET, crée customer avec tag partner-tier-X manuellement"
+        ]
+      },
       {
         "date": "2026-05-08",
         "version_from": "1.17",
@@ -1417,6 +1434,34 @@
         "Marque blanche Monta sur surfaces publiques (internal naming gardé)",
         "Photos officielles colonnes Zaptec + mockups OZECAR brandés"
       ]
+    },
+    "partner_program_page": {
+      "url": "/pages/revendeurs",
+      "shopify_page_id": 170001793353,
+      "template_suffix": "revendeurs",
+      "inspired_by": "staging.ozecar.fr/revendeurs",
+      "niveaux_partenaire": [
+        {
+          "nom": "Installateur",
+          "commission_pct": 15,
+          "cible": "Installateurs IRVE"
+        },
+        {
+          "nom": "Revendeur",
+          "commission_pct": 20,
+          "cible": "Distributeurs matériel IRVE",
+          "recommande": true
+        },
+        {
+          "nom": "Distributeur",
+          "commission_pct": "Sur mesure",
+          "cible": "Sonepar, Rexel, Yesss, etc."
+        }
+      ],
+      "paliers_de_remise": "4 paliers (Démarrage/Bronze/Argent/Or) gardés en parallèle — palier auto selon volume",
+      "workflow_inscription": "Form Shopify contact → email à dominique@ozecar.fr → admin valide manuellement → créé customer avec tag partner-tier-X",
+      "email_destinataire": "dominique@ozecar.fr (configuré dans Settings > General > Sender email)",
+      "TODO_admin": "À chaque demande reçue : 1) vérifier SIRET via Pappers, 2) créer customer Shopify (Admin > Customers > Add) avec SIRET en metafield + tag partner-tier-X selon volume estimé, 3) envoyer invitation client à se créer un compte (le code partenaire s'applique auto via le snippet ozecar-partner-discount au login)"
     }
   },
   "marque_blanche_monta": {
