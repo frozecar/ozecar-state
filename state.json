@@ -1,12 +1,31 @@
 {
   "_meta": {
-    "version": "1.14",
-    "updated": "2026-05-07",
-    "updated_by": "Claude (chat Shopify brief)",
+    "version": "1.15",
+    "updated": "2026-05-08",
+    "updated_by": "Claude Code Shopify (chat shopify-ozecar setup)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-08",
+        "version_from": "1.14",
+        "version_to": "1.15",
+        "author": "Claude Code Shopify",
+        "changes": [
+          "Phase 1 setup terminée : projet shopify-ozecar/ initialisé sur poste local Dominique",
+          "Custom app \"Claude Code Integration v1.1\" créée dans Dev Dashboard + installée sur OZECAR Store",
+          "Token OAuth récupéré (shpat_) via flow standard avec redirect=example.com",
+          "Phase 2a migration C exécutée : 5 anciens SKU renommés + 4 nouveaux créés (DRAFT) + 2 anciens archivés",
+          "Renames : SIM-PDC→OZSIM-EXTRA, ZAPTEC-PRO→ZAPTEC-PRO-22, ZAPTEC-GO→ZAPTEC-GO2-22, ZAPTEC-COLONNE→COL-ZAPTEC-ST, RFID-PACK-10→RFID-PACK10",
+          "Créations DRAFT : OZKM (Kit Master 49€), OZKU (Kit Unit 29€), COL-ONEPOLE-ST (410€), COL-ONEPOLE-TW-SBS (530€)",
+          "Archives : PACK-BASIC-PDC, QR-PDC (remplacés par OZKU bundle)",
+          "Phase 2b collections créées : kits, bornes, colonnes, partenaires (les 4 collections legacy restent inchangées)",
+          "Section shopify.catalog_state ajoutée avec inventaire complet à jour",
+          "Plan Shopify confirmé : Basic (pas Plus) → B2B sera custom via tags + discount codes",
+          "Prochaine étape : Phase 3 customisation thème Dawn aux couleurs OZECAR"
+        ]
+      },
       {
         "date": "2026-05-07",
         "version_from": "1.13",
@@ -119,7 +138,7 @@
         "price_biennial_discount_pct": 15,
         "operator_fees_pct": 0,
         "roaming_fees_pct": 0,
-        "wallet_option_monthly": 5.0,
+        "wallet_option_monthly": 5,
         "wallet_option_operator_fees_pct": 12.5,
         "features_included": [
           "Surveillance des états des bornes",
@@ -236,20 +255,20 @@
     "products": {
       "ozkm": {
         "label": "Kit OZKM (Master)",
-        "price_catalog_ht": 49.0,
-        "cogs_estimated": 15.0,
+        "price_catalog_ht": 49,
+        "cogs_estimated": 15,
         "description": "Crée la station Monta. 1 par site (1 à 10 PDC). SIM multi-opérateurs, QR code, étiquettes 1A à 10B"
       },
       "ozku": {
         "label": "Kit OZKU (Unit)",
-        "price_catalog_ht": 29.0,
-        "cogs_estimated": 5.0,
+        "price_catalog_ht": 29,
+        "cogs_estimated": 5,
         "description": "Ajoute un PDC à une station. 1 par borne. Carte RFID, QR code, étiquette MUNBYN 50x30mm"
       },
       "zaptec_pro_22kw": {
         "label": "Zaptec Pro 22 kW pré-configurée",
-        "price_catalog_ht": 1325.0,
-        "price_zaptec_official_quote": 1390.0,
+        "price_catalog_ht": 1325,
+        "price_zaptec_official_quote": 1390,
         "_note_price": "Zaptec officiel 1390 EUR HT (borne+plaque). Tarif catalogue OZECAR 1325 EUR (négocié plus bas). Prix variables observés sur internet entre 1145 et 1390. À clarifier.",
         "includes": [
           "Plaque arrière",
@@ -267,7 +286,7 @@
       },
       "zaptec_go2_22kw": {
         "label": "Zaptec GO 2 22 kW pré-configurée",
-        "price_catalog_ht": 890.0,
+        "price_catalog_ht": 890,
         "_note_price": "Borne résidentielle. Prix observé Serpollet à 840 EUR catalogue (différence à clarifier).",
         "includes": [
           "Modem 4G intégré",
@@ -278,35 +297,35 @@
       },
       "colonne_zaptec_single_twin": {
         "label": "Colonne Zaptec Single/Twin",
-        "price_catalog_ht": 325.0,
+        "price_catalog_ht": 325,
         "description": "Pour 1 ou 2 bornes Zaptec en dos-à-dos (compatible Pro et GO 2)"
       },
       "colonne_onepole_single_twin": {
         "label": "Colonne OnePole Zaptec Single/Twin",
-        "price_catalog_ht": 410.0,
+        "price_catalog_ht": 410,
         "description": "Pied de fixation pour 1 ou 2 bornes Zaptec Pro (dos à dos)"
       },
       "colonne_onepole_twin_sbs": {
         "label": "Colonne OnePole Twin Side by Side",
-        "price_catalog_ht": 530.0,
+        "price_catalog_ht": 530,
         "description": "Pied de fixation pour 2 bornes Zaptec Pro côte à côte. Non compatible GO 2."
       }
     },
     "options": {
       "wallet_essential": {
         "label": "Wallet — Monétisation Essential",
-        "price_monthly_ht": 5.0,
+        "price_monthly_ht": 5,
         "operator_fees_pct": 12.5,
         "_note": "Permet de facturer la recharge sur Essential (sans rendre la borne publique). Si besoin public, prendre Pro+"
       },
       "data_4g_5g": {
         "label": "Data — Connexion internet 4G/5G",
-        "price_monthly_ht": 2.0,
+        "price_monthly_ht": 2,
         "_note": "Inclus dans Pro, Pro Plus, Transit. Payant sur Essential."
       },
       "customer_success_manager": {
         "label": "Responsable client dédié (CSM)",
-        "price_monthly_ht": 49.0,
+        "price_monthly_ht": 49,
         "_note": "Inclus dans Transit. Optionnel sur autres forfaits."
       },
       "recharge_collaborateur_domicile": {
@@ -316,18 +335,18 @@
       },
       "carte_rfid_ozecard_unit": {
         "label": "Carte RFID OZECARD (1 incluse par PDC)",
-        "price_ht": 0.0,
+        "price_ht": 0,
         "_note": "1 carte gratuite par PDC. Carte additionnelle non documentée."
       },
       "pack_10_cartes_rfid": {
         "label": "Pack de 10 cartes RFID OZECARD",
-        "price_ht": 59.0
+        "price_ht": 59
       }
     },
     "activation": {
       "remote": {
         "label": "Activation à distance",
-        "price_ht_per_pdc": 79.0,
+        "price_ht_per_pdc": 79,
         "includes": [
           "Activation PDC",
           "Configuration supervision",
@@ -339,7 +358,7 @@
       },
       "onsite": {
         "label": "Mise en service sur site",
-        "price_ht_per_site": 390.0,
+        "price_ht_per_site": 390,
         "_note_v1": "Prix précédent 450 EUR (template Essential). Aligné à 390 EUR sur template Serpollet récent. À clarifier.",
         "scope": "1 site jusqu'à 10 PDC, déplacement technicien OZECAR inclus",
         "includes": [
@@ -352,7 +371,7 @@
       },
       "config_connectivite_onsite": {
         "label": "Configuration connectivité sur site",
-        "price_ht_per_site": 250.0,
+        "price_ht_per_site": 250,
         "scope": "1 site jusqu'à 10 PDC",
         "includes": [
           "Déplacement",
@@ -1074,51 +1093,51 @@
       {
         "sku": "OZKM",
         "name": "Kit Master",
-        "price_ht": 49.0,
+        "price_ht": 49,
         "rules": "Requires at least 1 OZKU in cart"
       },
       {
         "sku": "OZKU",
         "name": "Kit Unit",
-        "price_ht": 29.0,
+        "price_ht": 29,
         "rules": "Can be sold alone"
       },
       {
         "sku": "OZSIM-EXTRA",
         "name": "Carte SIM additionnelle",
-        "price_ht": 15.0,
+        "price_ht": 15,
         "rules": "Visible only if OZKM in cart (TBC with Dominique)"
       },
       {
         "sku": "ZAPTEC-PRO-22",
         "name": "Zaptec Pro 22 kW pre-configuree OZECAR",
-        "price_ht": 1325.0
+        "price_ht": 1325
       },
       {
         "sku": "ZAPTEC-GO2-22",
         "name": "Zaptec GO 2 22 kW pre-configuree OZECAR",
-        "price_ht": 890.0
+        "price_ht": 890
       },
       {
         "sku": "COL-ZAPTEC-ST",
         "name": "Colonne Zaptec Single/Twin",
-        "price_ht": 325.0
+        "price_ht": 325
       },
       {
         "sku": "COL-ONEPOLE-ST",
         "name": "Colonne OnePole Zaptec Pro Single/Twin",
-        "price_ht": 410.0
+        "price_ht": 410
       },
       {
         "sku": "COL-ONEPOLE-TW-SBS",
         "name": "Colonne OnePole Twin Side-by-Side",
-        "price_ht": 530.0,
+        "price_ht": 530,
         "rules": "Pas compatible Zaptec GO 2"
       },
       {
         "sku": "RFID-PACK10",
         "name": "Pack de 10 cartes RFID OZECARD",
-        "price_ht": 59.0
+        "price_ht": 59
       }
     ],
     "products_NOT_to_create": [
@@ -1144,6 +1163,161 @@
       "[USER] Donner le token + le brief a Claude Code",
       "[CLAUDE CODE] Suivre la roadmap Phase 1 a Phase 8 du brief",
       "[CLAUDE.AI] Suivre l'avancement via les updates state.json + monday board"
+    ],
+    "canonical_domain": "uef1fi-hx.myshopify.com",
+    "plan": "Basic",
+    "progress_2026_05_08": {
+      "phase_1_setup": "DONE",
+      "phase_2a_catalog_migration": "DONE",
+      "phase_2b_collections": "DONE",
+      "phase_2c_images": "TODO",
+      "phase_3_theme": "TODO",
+      "phase_4_cart_logic": "TODO",
+      "phase_5_partner_pricing": "TODO",
+      "phase_6_payments": "TODO",
+      "phase_7_make01_verification": "TODO",
+      "phase_8_softlaunch": "TODO"
+    },
+    "catalog_state": {
+      "total_products_active": 7,
+      "total_products_draft": 4,
+      "total_products_archived": 2,
+      "total_collections": 8,
+      "details": {
+        "active": [
+          {
+            "sku": "ZAPTEC-PRO-22",
+            "title": "Zaptec Pro 22 kW pré-configurée OZECAR",
+            "price_ht_eur": 1325,
+            "stock": 6
+          },
+          {
+            "sku": "ZAPTEC-GO2-22",
+            "title": "Zaptec GO 2 22 kW pré-configurée OZECAR",
+            "price_ht_eur": 890,
+            "stock": 9
+          },
+          {
+            "sku": "COL-ZAPTEC-ST",
+            "title": "Colonne Zaptec Single/Twin",
+            "price_ht_eur": 325,
+            "stock": 9
+          },
+          {
+            "sku": "OZSIM-EXTRA",
+            "title": "Carte SIM additionnelle",
+            "price_ht_eur": 6.5,
+            "stock": 6
+          },
+          {
+            "sku": "RFID-PACK10",
+            "title": "Pack de 10 cartes RFID OZECARD",
+            "price_ht_eur": 59,
+            "stock": 10
+          }
+        ],
+        "draft": [
+          {
+            "sku": "OZKM",
+            "title": "Kit Master",
+            "price_ht_eur": 49,
+            "stock": 0,
+            "note": "À activer après QA Dominique"
+          },
+          {
+            "sku": "OZKU",
+            "title": "Kit Unit",
+            "price_ht_eur": 29,
+            "stock": 0,
+            "note": "À activer après QA Dominique"
+          },
+          {
+            "sku": "COL-ONEPOLE-ST",
+            "title": "Colonne OnePole Single/Twin (dos-à-dos)",
+            "price_ht_eur": 410,
+            "stock": 0
+          },
+          {
+            "sku": "COL-ONEPOLE-TW-SBS",
+            "title": "Colonne OnePole Twin Side-by-Side",
+            "price_ht_eur": 530,
+            "stock": 0,
+            "note": "Compatible Zaptec Pro UNIQUEMENT"
+          }
+        ],
+        "archived": [
+          {
+            "sku": "PACK-BASIC-PDC",
+            "reason": "Remplacé par OZKU 29€/PDC"
+          },
+          {
+            "sku": "QR-PDC",
+            "reason": "Inclus dans OZKU (1 QR sticker par Kit Unit)"
+          }
+        ],
+        "renamed_in_migration_C": [
+          {
+            "from": "SIM-PDC",
+            "to": "OZSIM-EXTRA",
+            "price_change": "5,00€ → 6,50€"
+          },
+          {
+            "from": "ZAPTEC-PRO",
+            "to": "ZAPTEC-PRO-22",
+            "price_change": "1349,00€ → 1325,00€"
+          },
+          {
+            "from": "ZAPTEC-GO",
+            "to": "ZAPTEC-GO2-22",
+            "price_change": "849,00€ → 890,00€"
+          },
+          {
+            "from": "ZAPTEC-COLONNE",
+            "to": "COL-ZAPTEC-ST",
+            "price_change": "300,00€ → 325,00€"
+          },
+          {
+            "from": "RFID-PACK-10",
+            "to": "RFID-PACK10",
+            "price_change": "45,00€ → 59,00€"
+          }
+        ],
+        "new_collections": [
+          "kits",
+          "bornes",
+          "colonnes",
+          "partenaires"
+        ],
+        "legacy_collections_left_alone": [
+          "frontpage",
+          "materiel-de-recharge",
+          "accessoires",
+          "accessoire-de-supervision"
+        ]
+      }
+    },
+    "decisions_recorded": {
+      "catalog_strategy": "Migration C (rename + update + create missing + archive obsolete)",
+      "catalog_strategy_chosen_by": "Dominique (chat 2026-05-08)",
+      "catalog_strategy_reason": "54 commandes existantes étaient des tests, donc ok de remplacer/renommer la nomenclature",
+      "shopify_plan": "Basic (pas Plus) → B2B custom via tags + discount codes, pas catalogs natifs",
+      "ozsim_extra_price_final": "6,50€ HT (validé par Dominique en chat 2026-05-07, le brief disait 15€ qui était une suggestion)"
+    },
+    "shopify_app_credentials": {
+      "app_name": "Claude Code Integration v1.1",
+      "client_id": "c12d35262ab86eaaa80bc6b97e56a5fd",
+      "auth_method": "OAuth standard avec redirect_uri=https://example.com (code copié depuis URL après install)",
+      "access_token_format": "shpat_... (offline access token via OAuth grant)",
+      "access_token_storage": "shopify-ozecar/.dev.vars (jamais committé)"
+    },
+    "next_actions": [
+      "[CLAUDE CODE] Phase 3 — Customiser thème Dawn aux couleurs OZECAR",
+      "[CLAUDE CODE] Phase 4 — Cart logic Master+Unit validation",
+      "[CLAUDE CODE] Phase 5 — 4 discount codes paliers partenaire",
+      "[USER] Activer les 4 produits DRAFT (OZKM, OZKU, 2 colonnes OnePole) après QA",
+      "[USER] Fournir photos pro produits (kits + Zaptec) ou valider placeholders",
+      "[USER] Confirmer prix de la Zaptec GO 2 (849 → 890€ : +4,8%) et colonne (300 → 325€ : +8%)",
+      "[USER] Décider si on cleanup les 54 commandes test ou on les garde comme historique"
     ]
   }
 }
