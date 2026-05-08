@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.21",
+    "version": "1.22",
     "updated": "2026-05-08",
-    "updated_by": "Claude (chat audit post Code Shopify)",
+    "updated_by": "Claude Code Shopify (logo officiel)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-08",
+        "version_from": "1.21",
+        "version_to": "1.22",
+        "author": "Claude Code Shopify",
+        "changes": [
+          "Logo officiel OZECAR installé : 3 variantes via sharp (header sombre / footer cream avec bolt jaune préservé / favicon 512x512)",
+          "Pipeline pixel-par-pixel pour version footer : conserve pixels jaunes (R>200, G>180, B<100), remplace pixels sombres par cream",
+          "Header + Footer + theme.liquid patchés (img + favicon links)",
+          "Scripts réutilisables : install-logo.mjs + patch-logo-in-theme.mjs"
+        ]
+      },
       {
         "date": "2026-05-08",
         "version_from": "1.20",
@@ -1523,6 +1535,18 @@
         "page revendeurs hero : Programme ouvert à la France et à l'Union européenne"
       ],
       "admin_TODO_user": "Voir docs/CHECKLIST-UE-ADMIN.md — config Markets, Shipping, Taxes, Policies (~1h30 admin)"
+    },
+    "assets": {
+      "logo_official": {
+        "source": "refs/ozecar-logo-official.png (5001x1029 PNG fourni par Dominique 2026-05-08)",
+        "variants": [
+          "theme/assets/ozecar-logo.png — header (800px wide, version sombre, transparent bg)",
+          "theme/assets/ozecar-logo-light.png — footer (800px wide, version cream avec bolt jaune préservé)",
+          "theme/assets/ozecar-favicon.png — 512x512 carré (cropped à gauche, fond cream)"
+        ],
+        "rendering": "Header h:38px / Footer h:32px / Favicon via <link rel=icon> dans theme.liquid",
+        "pipeline_scripts": "scripts/install-logo.mjs (sharp pixel-par-pixel) + scripts/patch-logo-in-theme.mjs"
+      }
     }
   },
   "marque_blanche_monta": {
