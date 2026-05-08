@@ -1,12 +1,33 @@
 {
   "_meta": {
-    "version": "1.17",
+    "version": "1.18",
     "updated": "2026-05-08",
-    "updated_by": "Claude Code Shopify (marque blanche directive)",
+    "updated_by": "Claude Code Shopify (final présentation client)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-08",
+        "version_from": "1.17",
+        "version_to": "1.18",
+        "author": "Claude Code Shopify",
+        "changes": [
+          "Site complet livré en mode présentation client",
+          "Header OZECAR custom avec mega-menu Catalogue (3 cols) + nav Partenaires/Ressources/Contact + cart + Mon hub OZECAR CTA",
+          "Footer OZECAR dark : brand+tagline / Boutique / Solutions / Contact + trust strip + copyright",
+          "Page collection /collections/* custom : grid one-click add, badge BUNDLE sur Zaptec Pro",
+          "Page produit /products/* custom : galerie, infos, bundle highlight pour Zaptec Pro, cross-sells related",
+          "4 pages content créées : /pages/contact, /pages/faq, /pages/comment-ca-marche, /pages/devenir-partenaire",
+          "Template page.json simplifié (ozecar-page section sans titre Dawn dupliqué)",
+          "4 collections publiées sur Online Store (étaient créées mais pas publiées)",
+          "Cross-sells cart enrichis : 5 cards (Zaptec Pro bundle, Zaptec GO 2, Colonne, SIM extra, Pack RFID), tous one-click",
+          "Bundle Zaptec Pro : badge BUNDLE OZECAR + section INCLUS DANS VOTRE ACHAT (1 KM + 1 KU + activation supervision OZECAR + 3 mois supervision Pro offerts)",
+          "Mockups produits OZECAR générés via node-canvas (1200x1200 brandés) pour OZKM, OZKU, OZSIM-EXTRA, RFID-PACK10",
+          "Photos officielles colonnes Zaptec uploadées (4 sur COL-ZAPTEC-ST + placeholders sur OnePole)",
+          "Welcome to our store Dawn désactivé (announcement bar OZECAR dans header global)"
+        ]
+      },
       {
         "date": "2026-05-08",
         "version_from": "1.16",
@@ -1366,6 +1387,36 @@
       "partner-tier-1": "OZECAR-BRONZE",
       "partner-tier-2": "OZECAR-ARGENT",
       "partner-tier-3": "OZECAR-OR"
+    },
+    "progress_2026_05_08_final": {
+      "status": "COMPLETE — site présentable client",
+      "theme_dev_id": 184664260937,
+      "preview_url": "https://ozecar-store.myshopify.com/?preview_theme_id=184664260937",
+      "pages_render": {
+        "homepage": "OZECAR custom (hero + kit-builder + how-it-works + collections + partner CTA)",
+        "product": "OZECAR custom (gallery + bundle Zaptec Pro highlight + cross-sells related)",
+        "collection": "OZECAR custom (grid one-click add)",
+        "cart": "OZECAR custom (validation Master+Unit + bundle render + cross-sells one-click + récap TTC)",
+        "pages_content": [
+          "contact",
+          "faq",
+          "comment-ca-marche",
+          "devenir-partenaire"
+        ],
+        "header": "OZECAR sticky cream + announcement bar dark + mega-menu 3 colonnes",
+        "footer": "OZECAR dark ink + 4 colonnes (Brand/Boutique/Solutions/Contact) + trust strip + legal"
+      },
+      "fonctionnalites_cles": [
+        "Configurateur kit-builder en accueil (1 KM + N KU, slider 1-10)",
+        "Bundle Zaptec Pro auto avec line item property _bundle_includes pour Make 01",
+        "Cross-sells one-click sur cart (SIM, colonne, bornes, RFID) sans redirection",
+        "4 discount codes partenaire (OZECAR-DEMARRAGE/BRONZE/ARGENT/OR -25/-28/-30/-33%)",
+        "Snippet ozecar-partner-discount auto-apply selon customer.tags",
+        "Validation Master+Unit (warning + checkout disabled si OZKM sans OZKU)",
+        "Récap TTC : Sous-total / Total HT / TVA 20% / Total TTC",
+        "Marque blanche Monta sur surfaces publiques (internal naming gardé)",
+        "Photos officielles colonnes Zaptec + mockups OZECAR brandés"
+      ]
     }
   },
   "marque_blanche_monta": {
