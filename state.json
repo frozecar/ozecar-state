@@ -1,12 +1,27 @@
 {
   "_meta": {
-    "version": "1.16",
+    "version": "1.17",
     "updated": "2026-05-08",
-    "updated_by": "Claude Code Shopify (chat shopify-ozecar setup)",
+    "updated_by": "Claude Code Shopify (marque blanche directive)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-08",
+        "version_from": "1.16",
+        "version_to": "1.17",
+        "author": "Claude Code Shopify",
+        "changes": [
+          "CRITIQUE : ajout section marque_blanche_monta — Monta ne doit jamais apparaître sur surfaces publiques (white-label OZECAR/Monta)",
+          "Shopify (chantier Claude Code) : toutes refs Monta purgées du store (theme + descriptions produits + descriptions collections + tags + metafields)",
+          "Theme files updated : ozecar-cart.liquid (warning Master+Unit), ozecar-homepage.liquid (How it works step 2 + collection card)",
+          "Tags products : monta-station → site-station, monta-chargepoint → chargepoint",
+          "Metafields renommés : namespace ozecar key monta_role → device_role",
+          "Descriptions : \"supervision Monta\" → \"supervision OZECAR\" partout",
+          "WordPress (chantier autre Claude) : doit faire le même nettoyage sur staging.ozecar.fr avant bascule prod"
+        ]
+      },
       {
         "date": "2026-05-08",
         "version_from": "1.15",
@@ -1352,5 +1367,31 @@
       "partner-tier-2": "OZECAR-ARGENT",
       "partner-tier-3": "OZECAR-OR"
     }
+  },
+  "marque_blanche_monta": {
+    "_critical": "OZECAR opère en marque blanche avec Monta. Monta ne doit JAMAIS apparaître sur les surfaces publiques.",
+    "surfaces_publiques_concernees": [
+      "shop.ozecar.fr (boutique Shopify - chantier Claude Code)",
+      "ozecar.fr (site WP prod - ne pas toucher)",
+      "staging.ozecar.fr (refonte WP - chantier autre Claude)",
+      "Communications client (emails transactionnels Shopify, mailings HubSpot, factures, devis PandaDoc)",
+      "Documents légaux et CGV"
+    ],
+    "remplacements_recommandes": [
+      "supervision Monta → supervision OZECAR",
+      "plateforme Monta → plateforme OZECAR",
+      "bornes compatibles Monta → bornes IRVE compatibles",
+      "Pré-configuration Monta → Pré-configuration OZECAR",
+      "API Monta → API supervision (en interne uniquement)"
+    ],
+    "references_internes_OK": [
+      "Make scenarios (Make 02, Make 03, etc) — backend invisible client",
+      "state.json _meta + technique sections (monta_team_id, monta_chargers, monta_client_id, etc.)",
+      "PHP proxies sur ozecar.fr (api/monta.php, api/monta-chargers.php) — backend",
+      "monday.com fields techniques (monta_role en interne)",
+      "Documentation interne OZECAR"
+    ],
+    "shopify_2026_05_08_executed": "Toutes refs Monta sur le shop ont été purgées : descriptions produits, descriptions collections, sections thème (cart + homepage), tags produits, metafields renommés (monta_role → device_role).",
+    "wordpress_TODO_other_claude": "[CHAT WP REFONTE] Vérifier et purger toutes refs Monta sur staging.ozecar.fr (pages, blocs Gutenberg, scripts WP, méta SEO). À faire AVANT bascule prod."
   }
 }
