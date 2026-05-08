@@ -1,12 +1,28 @@
 {
   "_meta": {
-    "version": "1.20",
+    "version": "1.21",
     "updated": "2026-05-08",
-    "updated_by": "Claude Code Shopify (ouverture UE)",
+    "updated_by": "Claude (chat audit post Code Shopify)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-08",
+        "version_from": "1.20",
+        "version_to": "1.21",
+        "author": "Claude (chat audit post Code Shopify)",
+        "changes": [
+          "AUDIT COMPLET du travail de Claude Code Shopify (versions 1.14-1.20)",
+          "Verification site Shopify : password OK, theme dev ID 184664260937 cree, 7 produits actifs + 4 DRAFT + 2 archives",
+          "Verification staging WP : 18 blocs Gutenberg + 90 SVG en place. 5 pages WP importees (homepage/supervision/kit/bornes-compatibles/contact)",
+          "FUITE MARQUE BLANCHE detectee sur staging.ozecar.fr/bornes-compatibles/ : URLs <img src='https://monta.imgix.net/...'> visibles dans le code source. Section marque_blanche_monta enrichie avec wordpress_audit_2026_05_08 + solution recommandee (proxy PHP).",
+          "INFRASTRUCTURE : github-relay.php sur ozecar.fr a son PAT GitHub expire ('Bad credentials' sur get_sha). Action user requise pour generer nouveau PAT et l'inserer dans le relay.",
+          "2 nouveaux items monday crees : WP-MARQUE-BLANCHE (id 11965641976) + SHOPIFY-USER-TODO (id 11965641603)",
+          "Section _meta.infrastructure_health_2026_05_08 ajoutee pour tracer l'etat des proxies",
+          "ATTENTION : ce push v1.21 ne peut pas etre fait via github-relay.php (PAT KO). User doit pousser manuellement OU regenerer le PAT."
+        ]
+      },
       {
         "date": "2026-05-08",
         "version_from": "1.19",
@@ -186,7 +202,20 @@
           "PRESERVATION : aucune section existante (make_scenarios, hubspot, pages_html, proxies_php, monday_boards, gaps, resources) modifiée"
         ]
       }
-    ]
+    ],
+    "infrastructure_health_2026_05_08": {
+      "checked_by": "Claude (chat audit)",
+      "checked_at": "2026-05-08",
+      "results": {
+        "raw_githubusercontent_state_json": "OK - lecture libre",
+        "wp_deploy_php_staging": "OK - tests reussis (read/write/list)",
+        "wp_deploy_php_prod": "OK - lecture github-relay.php confirmee",
+        "github_relay_php_pat": "❌ ECHEC - 'Bad credentials' (PAT GitHub expire ou revoque). Action user requise : generer nouveau PAT (scope repo) sur github.com/settings/personal-access-tokens, le mettre dans api/github-relay.php ligne 'define GITHUB_TOKEN' via wp-deploy.php write. PAT actuel expire : github_pat_<REVOKED_FORMER_TOKEN_REDACTED_FOR_PUSH_PROTECTION>",
+        "shopify_oauth_token": "OK selon state.json (shpat_... dans shopify-ozecar/.dev.vars sur le poste local Dominique)",
+        "monday_mcp": "OK - tests CRUD reussis",
+        "shopify_storefront_password": "OK - 401 sur /products.json comme attendu (storefront protege)"
+      }
+    }
   },
   "project": {
     "name": "OZECAR",
@@ -1520,6 +1549,30 @@
       "Documentation interne OZECAR"
     ],
     "shopify_2026_05_08_executed": "Toutes refs Monta sur le shop ont été purgées : descriptions produits, descriptions collections, sections thème (cart + homepage), tags produits, metafields renommés (monta_role → device_role).",
-    "wordpress_TODO_other_claude": "[CHAT WP REFONTE] Vérifier et purger toutes refs Monta sur staging.ozecar.fr (pages, blocs Gutenberg, scripts WP, méta SEO). À faire AVANT bascule prod."
+    "wordpress_TODO_other_claude": "[CHAT WP REFONTE] Vérifier et purger toutes refs Monta sur staging.ozecar.fr (pages, blocs Gutenberg, scripts WP, méta SEO). À faire AVANT bascule prod.",
+    "wordpress_audit_2026_05_08": {
+      "audit_par": "Claude (chat audit complet)",
+      "etat": "WP staging a encore 1 fuite identifiee - URLs imgix.net visibles dans la source HTML",
+      "fuites_constatees": [
+        {
+          "page": "/bornes-compatibles/",
+          "type": "img.src vers https://monta.imgix.net/charge_point_models/...",
+          "occurrences": "10+ images de modeles de bornes (Alpitronic, Schneider, Keba, Etrel, etc.)",
+          "exposition": "Visible dans devtools (view source / network tab) - le client peut voir 'monta' en inspectant la page",
+          "criticite": "MOYENNE - le client lambda ne le verra pas, mais un concurrent ou journaliste tech qui inspecte oui"
+        }
+      ],
+      "fuites_OK": [
+        "fr.ozecar.monta.ozecarone (bundle id Android) - normal, pas exposable client",
+        "monta.imgix.net dans descriptions techniques cote backend (PHP api/monta.php) - backend, OK"
+      ],
+      "solutions_recommandees": [
+        "Creer ozecar.fr/api/img-proxy.php?url=... qui proxifie les images depuis n'importe quel CDN externe en cachant l'origine. Replacer ensuite les <img src='https://monta.imgix.net/...'> par <img src='https://ozecar.fr/api/img-proxy.php?url=...'>",
+        "Alternative : telecharger les images de bornes en local sur ozecar.fr/wp-content/uploads/ozecar/borne-models/ et utiliser ces URLs",
+        "Le proxy est plus elegant car automatique : pas de sync manuelle des nouveaux modeles ajoutes par Monta"
+      ],
+      "priorite": "MOYENNE - a faire avant bascule prod WP. Pas urgent tant que staging est interne.",
+      "monday_item": "WP-MARQUE-BLANCHE (id 11965641976)"
+    }
   }
 }
