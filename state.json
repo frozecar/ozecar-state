@@ -1,12 +1,26 @@
 {
   "_meta": {
-    "version": "1.19",
+    "version": "1.20",
     "updated": "2026-05-08",
-    "updated_by": "Claude Code Shopify (page revendeurs + form partenaire)",
+    "updated_by": "Claude Code Shopify (ouverture UE)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-08",
+        "version_from": "1.19",
+        "version_to": "1.20",
+        "author": "Claude Code Shopify",
+        "changes": [
+          "Form revendeur : Option B implémentée — sélecteur pays UE (27 options + Hors UE) avec logique conditionnelle",
+          "Si France → SIRET requis (Pappers verif)",
+          "Si UE hors FR → TVA intracom requise avec préfixe pays auto-rempli (VIES verif)",
+          "Si Hors UE → message contact dédié + champ ID international texte libre",
+          "Copies de livraison mises à jour partout : Livraison 48h FR · 3-5 j UE",
+          "docs/CHECKLIST-UE-ADMIN.md créé : guide pas à pas pour user (Markets / Shipping / Taxes / Policies / Tests / Communication clients BE existants)"
+        ]
+      },
       {
         "date": "2026-05-08",
         "version_from": "1.18",
@@ -1461,7 +1475,25 @@
       "paliers_de_remise": "4 paliers (Démarrage/Bronze/Argent/Or) gardés en parallèle — palier auto selon volume",
       "workflow_inscription": "Form Shopify contact → email à dominique@ozecar.fr → admin valide manuellement → créé customer avec tag partner-tier-X",
       "email_destinataire": "dominique@ozecar.fr (configuré dans Settings > General > Sender email)",
-      "TODO_admin": "À chaque demande reçue : 1) vérifier SIRET via Pappers, 2) créer customer Shopify (Admin > Customers > Add) avec SIRET en metafield + tag partner-tier-X selon volume estimé, 3) envoyer invitation client à se créer un compte (le code partenaire s'applique auto via le snippet ozecar-partner-discount au login)"
+      "TODO_admin": "À chaque demande reçue : 1) vérifier SIRET via Pappers, 2) créer customer Shopify (Admin > Customers > Add) avec SIRET en metafield + tag partner-tier-X selon volume estimé, 3) envoyer invitation client à se créer un compte (le code partenaire s'applique auto via le snippet ozecar-partner-discount au login)",
+      "scope_geo": "France + Union européenne (26 pays)",
+      "form_logic": {
+        "pays_FR": "SIRET requis (regex 14 chiffres) + TVA intracom optionnelle",
+        "pays_UE_hors_FR": "TVA intracom requise (regex 2 lettres + chiffres) + ID national optionnel + préfixe pays auto-rempli",
+        "pays_hors_UE": "Champ unique texte libre + message contact dédié + traitement cas par cas (devise/fiscalité/logistique)"
+      }
+    },
+    "ouverture_UE_2026_05_08": {
+      "copy_updates": [
+        "header announcement bar : déjà UE-friendly",
+        "product page : Livraison 48h en France · 3-5 j en UE",
+        "footer trust strip : 📦 Livraison 48h FR · 3-5 j UE",
+        "footer brand tagline : France et Union européenne (au lieu de France seule)",
+        "cart trust strip : 📦 48h FR · 3-5j UE",
+        "homepage hero live counter : bornes supervisées en France & UE ce mois",
+        "page revendeurs hero : Programme ouvert à la France et à l'Union européenne"
+      ],
+      "admin_TODO_user": "Voir docs/CHECKLIST-UE-ADMIN.md — config Markets, Shipping, Taxes, Policies (~1h30 admin)"
     }
   },
   "marque_blanche_monta": {
