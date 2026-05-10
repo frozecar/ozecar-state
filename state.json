@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.23",
-    "updated": "2026-05-09",
-    "updated_by": "Claude (chat WP refonte staging)",
+    "version": "1.24",
+    "updated": "2026-05-10",
+    "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-10",
+        "version_from": "1.23",
+        "version_to": "1.24",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Décision pricing #1 : supprimé _pending_clarifications.wp08_supervision_price. Le prix '9€/borne/mois' n'existe pas (résidu ancien tarif). Les forfaits supervision ne vont PAS sur Shopify (règle supervision_NOT_on_shop déjà actée). WP08 monday à fermer.",
+          "Décision pricing #2 : confirmé Zaptec Pro 22 kW à 1325 EUR HT catalogue. Ajout price_catalog_confirmed=true. Les 1145 EUR observés sont des prix post-remise volume (-35% sur 101 unités).",
+          "Décision pricing #3 : supprimé pricing.activation.remote (79 EUR/PDC). Process automatisé ozecar.fr/activation rend la prestation obsolète, l'installateur active lui-même. Ajout _removed_remote audit + _default_activation. Activation onsite (390 EUR/site) et config connectivité onsite (250 EUR/site) inchangées."
+        ]
+      },
       {
         "date": "2026-05-09",
         "version_from": "1.22",
@@ -420,7 +431,7 @@
         "label": "Zaptec Pro 22 kW pré-configurée",
         "price_catalog_ht": 1325,
         "price_zaptec_official_quote": 1390,
-        "_note_price": "Zaptec officiel 1390 EUR HT (borne+plaque). Tarif catalogue OZECAR 1325 EUR (négocié plus bas). Prix variables observés sur internet entre 1145 et 1390. À clarifier.",
+        "_note_price": "Prix catalogue OZECAR confirmé à 1325 EUR HT (décision 2026-05-10). Zaptec officiel 1390 EUR HT (borne + plaque). Les prix observés à 1145 EUR sont des prix post-remise volume (35% sur 101 unités, devis Serpollet).",
         "includes": [
           "Plaque arrière",
           "Modem 4G intégré",
@@ -433,7 +444,9 @@
           "60_units": 30,
           "100_units": 35
         },
-        "_note_discount": "Remise volume observée sur devis Serpollet (101 unités à -35%, 60 unités à -30%). Pour 10 unités, -25% est cohérent."
+        "_note_discount": "Remise volume observée sur devis Serpollet (101 unités à -35%, 60 unités à -30%). Pour 10 unités, -25% est cohérent.",
+        "price_catalog_confirmed": true,
+        "price_catalog_confirmed_at": "2026-05-10"
       },
       "zaptec_go2_22kw": {
         "label": "Zaptec GO 2 22 kW pré-configurée",
@@ -495,18 +508,6 @@
       }
     },
     "activation": {
-      "remote": {
-        "label": "Activation à distance",
-        "price_ht_per_pdc": 79,
-        "includes": [
-          "Activation PDC",
-          "Configuration supervision",
-          "Mise en place tarifs",
-          "Cartes RFID",
-          "1h on-boarding visio"
-        ],
-        "_note": "Statut en pleine évolution v1.10 : process automatisé d'activation via ozecar.fr/activation pourrait rendre cette prestation gratuite/incluse"
-      },
       "onsite": {
         "label": "Mise en service sur site",
         "price_ht_per_site": 390,
@@ -530,7 +531,24 @@
           "Mise en sécurité",
           "Test connectivité"
         ]
-      }
+      },
+      "_removed_remote": {
+        "removed_at": "2026-05-10",
+        "reason": "Process automatisé via ozecar.fr/activation rend la prestation obsolète. L'installateur active lui-même gratuitement.",
+        "previous_value": {
+          "label": "Activation à distance",
+          "price_ht_per_pdc": 79,
+          "includes": [
+            "Activation PDC",
+            "Configuration supervision",
+            "Mise en place tarifs",
+            "Cartes RFID",
+            "1h on-boarding visio"
+          ],
+          "_note": "Statut en pleine évolution v1.10 : process automatisé d'activation via ozecar.fr/activation pourrait rendre cette prestation gratuite/incluse"
+        }
+      },
+      "_default_activation": "Activation autonome via ozecar.fr/activation (gratuite, par l'installateur)"
     }
   },
   "partner_program": {
@@ -1028,25 +1046,7 @@
       }
     ]
   },
-  "_pending_clarifications": {
-    "wp08_supervision_price": {
-      "question": "L'item monday WP08 mentionne 'supervision 9eur HT par borne par mois' à synchroniser sur Stripe + Shopify. Ce prix ne correspond à AUCUN forfait OZECAR (Essential 4.90 / Pro 14.90 / Pro Plus 24.90 / Transit 54.90).",
-      "hypotheses": [
-        "Ancien tarif Essential simplifié (sans Wallet) pour Shopify e-commerce ?",
-        "Tarif promotionnel à supprimer ?",
-        "Variante d'un forfait pour usage spécifique non documenté ?"
-      ],
-      "action_needed": "Clarifier avec Dominique avant toute synchronisation Stripe/Shopify"
-    },
-    "zaptec_pro_price": {
-      "question": "Plusieurs prix observés pour Zaptec Pro 22 kW : 1145 EUR (template Serpollet, après remise), 1325 EUR (catalogue OZECAR observé), 1390 EUR (annoncé par Zaptec officiellement)",
-      "action_needed": "Confirmer le prix catalogue de référence à utiliser"
-    },
-    "activation_remote_pricing": {
-      "question": "Le nouveau modèle d'activation automatisé via ozecar.fr/activation rend potentiellement obsolète le forfait 79 EUR HT / PDC d'activation à distance (puisque c'est l'installateur qui active gratuitement)",
-      "action_needed": "Décider si l'activation 79 EUR est conservée comme prestation premium ou supprimée"
-    }
-  },
+  "_pending_clarifications": {},
   "resources": {
     "flowchart": "https://ozecar.fr/project/index.html",
     "copilot": "https://ozecar.fr/copilot/index.html",
