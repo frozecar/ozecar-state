@@ -1,12 +1,33 @@
 {
   "_meta": {
-    "version": "1.22",
-    "updated": "2026-05-08",
-    "updated_by": "Claude Code Shopify (logo officiel)",
+    "version": "1.23",
+    "updated": "2026-05-09",
+    "updated_by": "Claude (chat WP refonte staging)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-09",
+        "version_from": "1.22",
+        "version_to": "1.23",
+        "author": "Claude (chat WP refonte staging)",
+        "changes": [
+          "Refonte massive WP staging : 25 pages migrees HTML 1:1 fideles a ozecar.store",
+          "4 bugs majeurs WXR corriges : <p><style>, SVG strippes, scripts post-footer perdus, Tailwind CDN strip KSES",
+          "Menu V5 natif WP via Walker custom (inc/nav-render.php) avec icones SVG hardcoded par URL",
+          "Logo natif WP via custom_logo Customizer + inline style height:40px",
+          "Tarifs alignes state.json : 3 cards (Essential 4,9 / Pro 14,9 / Pro Plus & Transit Sur devis)",
+          "Front-page.php fix : the_content() loop standard au lieu de apply_filters() qui rendait <article> vide",
+          "Page d'accueil basculee sur 22462 (homepage-2)",
+          "Centre d'aide /support/ : 5 articles sous-pages crees + recherche WP fonctionnelle (form action=/ name=s)",
+          "CPT guide : 25 guides imports (posts 22568-22592). single-guide.php full-width, raw-content.php etendu, Tailwind scope etendu.",
+          "Lien guides<->bornes : carte 'Guide de configuration' dans single-borne_recharge.php panel OCPP. 124 bornes/861 ont desormais un guide.",
+          "Page /livres-blancs/ avec workflow HubSpot lead capture (modal email + form HS Forms v3 API). User a fait le form GUID a configurer cote HubSpot.",
+          "Shopify niveau 1 : CTAs Commander -> shop.ozecar.fr avec UTMs traceables. Item Boutique ajoute au menu V5.",
+          "Analytics enrichi : 8 events dataLayer custom (shop_cta_click, lead_magnet_submit, content_click, borne_view, contact_intent, menu_click, guide_search) + wp_context. GTM-M593SGD existant utilise. Doc GTM admin fournie."
+        ]
+      },
       {
         "date": "2026-05-08",
         "version_from": "1.21",
@@ -1116,10 +1137,12 @@
       "specificite_tariff_calculator": "Premier bloc avec view.js JS frontend (sliders + calcul live)"
     },
     "next_steps": [
-      "Regenerer ozecar-pages.xml WXR avec ces 18 blocs Gutenberg natifs (au lieu de WPBakery)",
-      "Importer le WXR sur staging via WP > Outils > Importer",
-      "QA visuel : tester chaque page V5 avec les nouveaux blocs",
-      "Si OK : prevoir migration prod (cloner staging vers prod)"
+      "Configurer HubSpot form GUID pour /livres-blancs/ et remplacer TODO_REPLACE_WITH_FORM_GUID",
+      "Configurer DNS shop.ozecar.fr cote Shopify (Settings -> Domains)",
+      "Configurer GTM tags + variables + triggers + cross-domain linker (voir analytics_datalayer_install.todo_user_gtm)",
+      "Decider du sort des 2 pages 404 livres-blancs et newsletter (livres-blancs deja recreee en interne)",
+      "Nettoyer doublons WP : 1001 (homepage WPBakery), 1002-1005, 11221 (bornes-compatibles WPBakery), 3148 (Home OZECAR home -> WPBakery, ne plus utiliser)",
+      "Si CPT guide doit etre etendu (>25 entrees), planifier la migration via meme pipeline"
     ],
     "wxr_html_1to1_2026_05_06": {
       "approche": "HTML 1:1 fidele d'ozecar.store dans des blocs HTML core Gutenberg (1 bloc par page)",
@@ -1198,6 +1221,171 @@
         "secteurs-transport",
         "support"
       ]
+    },
+    "session_2026_05_07_to_05_09": {
+      "description": "Session de refonte massive : 25 pages migrees HTML 1:1, menu V5 natif WP via Walker custom, logo natif, tarifs alignes state.json, support articles + recherche, shopify CTAs, analytics dataLayer.",
+      "fixes_initiaux_5_pages_v1_to_1_corrigees": {
+        "bug_p_style_wrapper": "Strip <p> autour de <style>/<script> dans 3 pages (homepage-2 22462, supervision-3 22463, kit-3 22464). 14 chars/page.",
+        "bug_svg_strippes_par_wxr": "WXR import precedent stripe 95% des <svg> inline. Solution : pipeline wp eval-file qui fetch ozecar.store + extrait + bypass kses_remove_filters() pendant wp_update_post. <svg> inline preserves.",
+        "bug_scripts_post_footer_non_extraits": "calcUpdate (kit calculator), toggleFaq, mobileCta etaient apres </footer> dans la source, perdus a l'extraction. Pattern eleve : </header>(.*?)</body> + strip <footer> + strip <script id=nav-js-block>.",
+        "bug_tailwind_cdn_strippe_par_kses": "<script src=...> retire au render. Solution : wp_enqueue_script('tailwind-cdn-jit') dans ozecar-child/functions.php scope aux templates V5 (template-wide, template-supervision, template-secteur)."
+      },
+      "pages_migrees_total_25": {
+        "initiales_5_corrigees": [
+          "homepage-2 (22462)",
+          "supervision-3 (22463)",
+          "kit-3 (22464)",
+          "bornes-compatibles-3 (22465)",
+          "contact-5 (22466)"
+        ],
+        "nouvelles_22_05_07": {
+          "pages_existantes_refetchees_13": [
+            "a-propos (22418)",
+            "blog-2 (22422)",
+            "carrieres (22419)",
+            "cas-clients (22421)",
+            "weldom-2 (22429)",
+            "aide (22425)",
+            "installateurs-2 (22416)",
+            "revendeurs (22417)",
+            "secteurs (22415)",
+            "flottes (22411)",
+            "hotellerie (22412)",
+            "supermarches (22413)",
+            "transport (22414)"
+          ],
+          "legacy_2_template_force": [
+            "mentions-legales (10808, template-secteur -> template-wide)",
+            "politique-de-cookies (10819, template-secteur -> template-wide)"
+          ],
+          "creees_5": [
+            "confidentialite (22502)",
+            "bundle-zaptec-pro (22504)",
+            "guides-irve (22506, slug renomme pour eviter conflit avec CPT guide archive)",
+            "se-connecter (22508)",
+            "support (22509)"
+          ],
+          "skippees_404": [
+            "livres-blancs (404 sur ozecar.store, recreee from scratch en 1.23)",
+            "newsletter (404 sur source)"
+          ]
+        },
+        "recherche_guides": "page /guides-irve/recherche/ importee post 22593, parent guides-irve"
+      },
+      "fix_secteurs_template_2026_05_07": "Les 4 secteurs (flottes, hotellerie, supermarches, transport) etaient en template-secteur.php qui squeeze le contenu en .prose 800px max. Passes en template-wide.php pour render full-width V5.",
+      "cpt_guide_25_articles_importes": {
+        "description": "Tous les guides ozecar.store/guides/<slug>/ importes en CPT 'guide' (posts 22568-22592). single-guide.php simplifie en full-width. raw-content.php etendu pour is_singular('guide'). Tailwind CDN scope etendu au CPT guide.",
+        "slugs": [
+          "abb-terra-ac-w7",
+          "activer-kit-ozecar",
+          "alpitronic-hypercharger",
+          "circontrol-evc",
+          "conformite-afir",
+          "delta-ac-mini-plus",
+          "easee-home",
+          "ensto-chago",
+          "evbox-elvi",
+          "garo-wallbox",
+          "guide-ocpp-general",
+          "hager-witty-park",
+          "kempower-satellite",
+          "legrand-greenup",
+          "mennekes-amtron",
+          "monetiser",
+          "ocpp-16j",
+          "phoenix-contact-ev-charger",
+          "recharge-collaborateurs",
+          "scame-wall",
+          "schneider-evlink-pro-ac",
+          "smart-charging",
+          "wallbox-pulsar-plus",
+          "webasto-next",
+          "zaptec-pro"
+        ]
+      },
+      "logo_natif_wp": {
+        "description": "Logo bascule en custom_logo WP-natif (Customizer -> Site Identity). add_theme_support('custom-logo') deja present. header.php : the_custom_logo() avec fallback SVG. Inline style height:40px sur <img> pour cache-bust. Image utilisee : attachment 10892 (main.png 1953x443, servie en 'large' = 1300x295)."
+      },
+      "menu_v5_natif_wp_phase_2": {
+        "description": "Walker custom inc/nav-render.php dans ozecar-child : produit le HTML V5 mega-menu EXACT depuis un menu WP. Hierarchie 3 niveaux (Solutions/Secteurs/Tarifs/Cas clients/Ressources avec colonnes). Icones SVG hardcodees par URL/title dans la fonction. header.php : remplace <nav class='nav-links'> hardcode (210 lignes) par <?php ozecar_render_main_nav(); ?>. MMM desactive sur primary location.",
+        "menu_term_id": 1603,
+        "menu_name": "Main navigation V5",
+        "items_count": 31,
+        "classes_css_speciales": {
+          "separator-before": "trait fin avant l item (Bornes compatibles, Voir tous les secteurs)",
+          "muted": "label gris (Voir tous les secteurs)",
+          "badge-new": "badge jaune New (Newsletter)",
+          "dd-grid-mode": "sur parent : render dropdown en grille 4 colonnes (Ressources)"
+        },
+        "editable_par": "WP Admin -> Apparence -> Menus (admin peut renommer/reordonner/ajouter sans coder, sauf icones qui restent dans le Walker)"
+      },
+      "tarifs_3_cards_state_json": {
+        "description": "Cards tarifs alignees sur state.json (4 forfaits Essential/Pro/Pro Plus/Transit) puis simplifiees a 3 cards : Essential (4,9 EUR), Pro featured (14,9 EUR), Pro Plus & Transit en CTA Sur devis. Layout md:grid-cols-3, classes V5 originales (.price-card, .price-amount, .price-badge).",
+        "pages": [
+          "supervision-3 (22463)",
+          "homepage-2 (22462)"
+        ]
+      },
+      "fix_front_page_php": "L'ancien front-page.php utilisait apply_filters('the_content', $page->post_content) qui ne declenche pas do_blocks() correctement -> <article> vide. Reecrit avec loop WP standard (have_posts/the_post/the_content). Page d'accueil maintenant rend bien le contenu V5.",
+      "page_on_front_basculee": "page_on_front mis a 22462 (homepage-2). La home publique ozecar.fr/ rend desormais le contenu V5 (etait sur 3148, ancien WPBakery).",
+      "support_centre_aide": {
+        "description": "Page /support/ rendue fonctionnelle. 5 articles crees comme sous-pages (parent 22509). Help-rows wrappes en <a href> cliquables. Search form action='/' name='s' soumet a WP search natif (retourne articles + guides + bornes matchant la query).",
+        "articles_crees_5": {
+          "comment-activer-mon-kit-ozecar (22605)": "Demarrage & Kit",
+          "ma-borne-apparait-hors-ligne (22607)": "Depannage",
+          "comment-configurer-ocpp-sur-ma-borne (22609)": "Demarrage & Kit",
+          "comment-ajouter-un-utilisateur-au-portail (22611)": "Portail & supervision",
+          "ou-trouver-mes-factures-ozecar (22613)": "Facturation & paiement"
+        },
+        "restant": "4 cat-cards (Demarrage/Portail/Facturation/Depannage) restent decoratives, non cliquables. A faire si on veut filtrage par categorie."
+      },
+      "lien_guides_bornes": {
+        "description": "Carte 'Guide de configuration' ajoutee dans le panel OCPP de single-borne_recharge.php. Affichee uniquement si la marque a un guide associe (via ozecar_borne_get_guide_slug, mapping 22 marques deja dans inc/borne-helpers.php).",
+        "couverture": "124 bornes sur 861 ont desormais un lien vers leur guide modele.",
+        "syntax_fix": "Note : ozecar_get_borne() renvoie un stdClass object, pas un array. Acces via $borne->guide_slug, pas $borne[guide_slug]."
+      },
+      "livres_blancs_hubspot_modal": {
+        "description": "Page /livres-blancs/ refondue avec workflow lead capture HubSpot. 6 cards : 4 PDFs ouvrent un modal (form firstname/company/email/lead_magnet hidden + RGPD), 2 sont des liens directs (article LOM + guide OCPP). Submit POST sur HubSpot Forms v3 API. Account ID 143920450 (state.json). Form GUID a creer cote HubSpot par l'utilisateur, placeholder TODO_REPLACE_WITH_FORM_GUID dans le code.",
+        "magnets_4_pdfs": [
+          "etude-marche-irve-2026",
+          "roi-borne-supermarche",
+          "smart-charging-equilibrage",
+          "conformite-afir-2027"
+        ],
+        "todo_user_hubspot": "Creer form HubSpot avec champs firstname/company/email/lead_magnet/lead_source. Configurer email auto-reponse smart-content selon lead_magnet (envoie URL PDF). Recuperer le form GUID dans embed code et remplacer TODO_REPLACE_WITH_FORM_GUID dans /livres-blancs/ post 22423."
+      },
+      "newsletter_livres_blancs_lies_dans_nav": {
+        "description": "Items menu Newsletter (custom #) et Livres blancs (custom #) convertis en post_type=page items pointant vers les vraies pages (22424 et 22423). Drawer mobile dans header.php aussi patche (sed sur les <a href='#'>)."
+      },
+      "shopify_niveau_1_integration": {
+        "description": "Phase 1 : tous les CTAs 'Commander' du site WP pointent vers shop.ozecar.fr/products/<slug> avec UTMs systematiques. Item 'Boutique' ajoute au menu sous 'Nos solutions' (term 1603, item ID 22618).",
+        "shop_url_base": "https://shop.ozecar.fr (DNS a configurer cote Shopify : Settings -> Domains -> Connect existing domain)",
+        "utm_pattern": "?utm_source=ozecar.fr&utm_medium=cta&utm_campaign=<page>&utm_content=<product>",
+        "product_slugs_supposes": {
+          "kit-master": "OK ozecar-store.myshopify.com/products/kit-master",
+          "kit-unit": "OK",
+          "zaptec-pro-22-kw-pre-configuree-ozecar": "OK",
+          "zaptec-go-2-22-kw-pre-configuree-ozecar": "OK",
+          "pack-de-10-cartes-rfid-ozecard": "OK",
+          "colonne-zaptec-single-twin": "OK",
+          "colonne-onepole-single-twin-dos-a-dos": "OK",
+          "colonne-onepole-twin-side-by-side": "OK",
+          "carte-sim-additionnelle": "OK",
+          "note": "Tous testes via curl, retournent 302 vers password page (shop encore protege en dev). Slugs auto-generes par Shopify suivent la convention standard (lowercase, accents enleves, espaces -> -)."
+        },
+        "fichiers_modifies": [
+          "wp-content/themes/ozecar-theme/header.php (CTA droit Commander + drawer mobile)",
+          "wp-content/themes/ozecar-theme/footer.php (CTA Commander un kit)",
+          "pages content : 22462 homepage-2, 22465 bornes-compatibles-3, 22504 bundle-zaptec-pro",
+          "menu V5 (term 1603) : item Boutique ajoute"
+        ]
+      },
+      "analytics_datalayer_install": {
+        "description": "Tracking enrichi pour GTM-M593SGD : assets/js/analytics-events.js (5.8 KB) ecoute clics et soumissions, push 8 events dataLayer (page_view_enriched, shop_cta_click, lead_magnet_submit, content_click, borne_view, contact_intent, menu_click, guide_search). Plus wp_context push dans wp_head : wp_post_id, wp_post_type, wp_post_slug, wp_user_logged_in.",
+        "gtm_container": "GTM-M593SGD (deja injecte via plugin insert-headers-and-footers, option ihaf_insert_header)",
+        "ga4_property": "G-15HETB1C73 (a configurer dans GTM via une GA4 Config Tag, et a ajouter cross-domain sur shop.ozecar.fr)",
+        "todo_user_gtm": "Creer dans admin GTM les variables Data Layer (page_type, product_handle, lead_magnet, etc.), les triggers Custom Event sur chaque event nom, les tags GA4 Event mappant vers events GA4 standards (select_content, generate_lead, search, view_item). Plus configurer le linker.domains : ozecar.fr,shop.ozecar.fr pour le cross-domain."
+      }
     }
   },
   "shopify": {
