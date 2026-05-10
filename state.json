@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.24",
+    "version": "1.25",
     "updated": "2026-05-10",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-10",
+        "version_from": "1.24",
+        "version_to": "1.25",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Marque blanche Monta RÉSOLUE sur staging WP : (1) création img-proxy.php sur ozecar.fr prod (5160b, allowlist=monta.imgix.net, cache 7j browser + 30j disque, 6 tests sécurité OK), (2) filtre output_buffer dans functions.php du theme enfant qui réécrit toutes les URLs Monta vers le proxy en sortie HTML — couvre toutes les surfaces (pages, archives CPT, search, taxonomies, etc).",
+          "Posts WP réécrits aussi en base : 22465 (bornes-compatibles-3, 823 occurrences + 2 double-slash) et 22593 (recherche, 59 occurrences). Le filtre output sert maintenant de filet pour tout ce qui passe par les templates PHP non-Gutenberg.",
+          "Vérification live : staging.ozecar.fr/bornes-compatibles/ a 0 URL monta.imgix directe dans <img src> (19 désormais via proxy). Image proxifiée chargée OK (PNG 30316b, cache MISS puis HIT).",
+          "proxies_php.img_proxy_php ajouté dans state.json avec spec complète. marque_blanche_monta.wordpress_audit_2026_05_10 ajouté avec statut RESOLU.",
+          "Helper temporaire post-rewrite-tmp.php supprimé après usage (backup wp-deploy conservé)."
+        ]
+      },
       {
         "date": "2026-05-10",
         "version_from": "1.23",
@@ -913,6 +926,35 @@
     "monta_chargers": {
       "url": "ozecar.fr/api/monta-chargers.php",
       "status": "uploade"
+    },
+    "img_proxy_php": {
+      "url": "https://ozecar.fr/api/img-proxy.php",
+      "purpose": "Proxy d'images CDN externes pour marque blanche (cache l'origine Monta). Allowlist stricte = monta.imgix.net uniquement.",
+      "auth": "Aucune (proxy public, sans auth — la sécurité passe par l'allowlist de hosts)",
+      "deployed_at": "2026-05-10",
+      "deployed_by": "Claude PM (claude.ai)",
+      "cache": {
+        "server_disk_ttl_days": 30,
+        "browser_ttl_days": 7,
+        "header_x_img_proxy_cache": "HIT|MISS"
+      },
+      "usage": "<img src='https://ozecar.fr/api/img-proxy.php?url=https://monta.imgix.net/charge_point_models/UUID'>",
+      "limits": {
+        "max_image_size_mb": 5,
+        "fetch_timeout_seconds": 10,
+        "allowed_mime": [
+          "image/jpeg",
+          "image/png",
+          "image/webp",
+          "image/gif",
+          "image/svg+xml",
+          "image/avif"
+        ]
+      },
+      "allowed_hosts": [
+        "monta.imgix.net"
+      ],
+      "tests_2026_05_10": "T1-T6 OK : sécurité (400 sans url, 400 http, 403 host non whitelisté), MISS puis HIT, PNG valides servis"
     }
   },
   "monday_boards": {
@@ -1785,6 +1827,18 @@
       ],
       "priorite": "MOYENNE - a faire avant bascule prod WP. Pas urgent tant que staging est interne.",
       "monday_item": "WP-MARQUE-BLANCHE (id 11965641976)"
+    },
+    "wordpress_audit_2026_05_10": {
+      "audit_par": "Claude PM (claude.ai)",
+      "etat": "RESOLU. Plus aucune URL https://monta.imgix.net/ visible côté frontend staging.",
+      "solution_appliquee": [
+        "1. Création du proxy ozecar.fr/api/img-proxy.php (5160 bytes, allowlist stricte, cache 7j/30j)",
+        "2. Filtre output buffer global ajouté dans wp-content/themes/ozecar-child/functions.php (hook template_redirect) qui réécrit toutes les URLs https://monta.imgix.net/* du HTML final vers le proxy. Idempotent. Couvre TOUTES les surfaces : pages, posts, archives CPT borne_recharge (1 page + 17 images), single, search, taxonomies, blocs Gutenberg, Elementor, etc.",
+        "3. Post 22465 (bornes-compatibles-3 doublon) et 22593 (recherche guide) ont aussi été réécrits en base — pas strictement nécessaire avec le filtre output, mais propre pour l'export WXR futur."
+      ],
+      "verification_live": "/bornes-compatibles/ : 0 direct monta.imgix dans <img src>, 19 via proxy. /recherche/ : 0 direct, 59 via proxy. Sample image testée HTTP 200 PNG 30316 bytes via proxy.",
+      "filtre_dans_functions_php": "À retirer le jour où ozecar-theme + plugins Monta seront refactorisés pour n'utiliser que des URLs OZECAR-native.",
+      "monday_item": "WP-MARQUE-BLANCHE (id 11965641976) → Done"
     }
   }
 }
