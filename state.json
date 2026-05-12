@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.29",
+    "version": "1.30",
     "updated": "2026-05-12",
-    "updated_by": "Claude PM (claude.ai) — chat levée de fonds",
+    "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-12",
+        "version_from": "1.29",
+        "version_to": "1.30",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Refonte section 'fundraise' basée sur le vrai deck v1.9 (PitchDeck_OZECAR_042026_v1_9.pptx)",
+          "Création de 2 nouvelles slides standalone: A (Iceberg CPMS=partie émergée) + B (Moat 4 couches)",
+          "Files: ozecar-slides-iceberg-moat.html + .pdf dans outputs",
+          "Documenté plan de refactoring deck v2.0 complet pour étape suivante (post-validation 2 slides)"
+        ]
+      },
       {
         "date": "2026-05-12",
         "version_from": "1.28",
@@ -2046,110 +2058,38 @@
     "session_brief_format_example": "Voir explication PM du 2026-05-10 : brief markdown avec sections Contexte / Objectif / Fichiers à modifier / Actions précises / Vérification / À mettre à jour dans state.json"
   },
   "fundraise": {
-    "deck_v1": {
+    "source_deck": "PitchDeck_OZECAR_042026_v1_9.pptx",
+    "angle_pivot": "Le CPMS = composant interchangeable (partie émergée iceberg). Le vrai produit OZECAR = process activation + kit + réseau installateurs + service (partie submergée).",
+    "new_slides_v1": {
       "created": "2026-05-12",
-      "file": "ozecar-deck-fundraise-v1.html",
-      "angle": "Industrialisation activation IRVE — CPMS Monta repositionné comme composant interchangeable",
-      "status": "draft v1, à compléter avec KPIs réels post-pilote",
+      "files": [
+        "ozecar-slides-iceberg-moat.html",
+        "ozecar-slides-iceberg-moat.pdf"
+      ],
       "slides": [
-        "01 Cover",
-        "02 Problem — activation = goulot d'étranglement",
-        "03 Insight — quote slide",
-        "04 Solution — architecture stack (CPMS swappable)",
-        "05 Before/After — 20 PDC : 2 jours/€3600 → 2h/€400",
-        "06 Traction — KPIs à figer post-pilote",
-        "07 Market — TAM €2.4Md / SAM €680M / SOM €42M (hypothèses)",
-        "08 Moat — 4 couches : network, data, end-user, brand",
-        "09 Business model — kit one-shot + supervision récurrent",
-        "10 Risk Q&A — désamorçage questions VC critiques (Monta dep, copie, premium service, constructeurs)",
-        "11 Ask — montant TBD + breakdown 40/25/20/15"
+        "A · Iceberg — Le CPMS c'est la partie émergée. SVG iceberg visuel avec 6 layers du produit OZECAR sous la ligne d'eau. Punchline foot: 'Un concurrent peut acheter le même CPMS demain. Il ne peut pas acheter ce qu'il y a en dessous.'",
+        "B · Moat — 4 couches défensives: Network (réseau installateurs Fauché/Serpollet, CAC÷5), Process (kit propriétaire, 48h vs 2-4 semaines), Contract (530 PDC, BE fin 2024, 521K€ CA, contrats 2-5 ans), Optionality (OCPP natif, réversibilité 6-10 semaines)."
       ],
-      "blanks_to_fill": [
-        "Slide 6 : KPIs réels (stations activées, ARR, NPS, churn, temps activation)",
-        "Slide 7 : valider hypothèses TAM/SAM/SOM avec sources (AFIR, AVERE, ENEDIS, Gireve)",
-        "Slide 9 : prix de vente kits OZKM/OZKU",
-        "Slide 11 : montant cible levée + ARR cible T4 2027",
-        "Slide 12+ à ajouter : Équipe, Roadmap détaillée, Compétition"
-      ],
-      "next_actions": [
-        "Définir KPIs à tracker dès 5 premières activations pilotes",
-        "Audit P&L marge OZECAR vs Monta (slide caché pour DD)",
-        "POC technique abstraction OCPP / second CPMS (preuve réversibilité)",
-        "Affiner sizing marché avec sources officielles"
+      "design": "Style strictement aligné sur deck v1.9: ink/jaune/violet/crème, Space Mono + DM Sans, format 1280x720, logo pastille jaune bas-droite",
+      "data_used_from_v1_9": [
+        "300k PDC partenaire SaaS sous gestion (slide 3 v1.9)",
+        "530 PDC supervisés total + 110 France continent (slide 6)",
+        "Fauché, Serpollet installateurs (slide 11)",
+        "Time-to-revenue 48h vs 2-4 semaines (slide 8)",
+        "521K€ CA, BE atteint fin 2024, ARR trajectoire 540K€→4,5M€ (slide 11)",
+        "CAC ÷ 5 via installateurs (slide 10)",
+        "OCPP natif + SIM multi-opérateurs (slide 8)"
       ]
     },
-    "deck_v1_6": {
-      "created": "2026-05-12",
-      "file": "PitchDeck_OZECAR_042026_v1_6.pptx",
-      "status": "présenté — call Thomas Herlin + Delphine Margot",
-      "problemes_identifies": [
-        "11k PDC 2030 non justifié — pas relié à la capacité commerciale",
-        "Go-to-Market trop abstrait — manque de cas concrets et ratios canaux",
-        "Corse présentée comme 'laboratoire' — formulation fragile",
-        "Référence 'technologie danoise' — question sur la valeur propriétaire OZECAR",
-        "Wording 'hyper-croissance' et 'géant de la tech' — peu crédible",
-        "Slide financement : 'salaires fondateurs' + 'sortie Smalt Capital' visibles — mal perçu",
-        "Process d'activation (IP principale) absent du deck"
-      ]
-    },
-    "deck_v1_9": {
-      "created": "2026-05-12",
-      "file": "PitchDeck_OZECAR_042026_v1_9.pptx",
-      "slides_count": 18,
-      "status": "livré — prêt pour call 12h",
-      "modifications_v1_7": [
-        "Slide 3 : 'technologie danoise' → 'plateforme cloud SaaS leader'",
-        "Slide 6 (traction) : Corse conservée avec narrative 'marché test — validation modèle dense'",
-        "Slide 9 (marché) : Corse reformulée 'Marché test insulaire dense → modèle exportable'",
-        "Slide 10 (roadmap) : 'Hyper-Croissance' → 'Croissance & Structuration Nationale'",
-        "Slide 10 : 'géant de la tech' → 'énergéticiens (TotalEnergies, Engie), opérateurs de mobilité ou CPO'",
-        "Slide 13 (financement) : 'Salaires fondateurs' → 'Exécution & rémunérations équipe (24 mois)'",
-        "Slide 13 : 'Cession partielle fondateurs' → 'Liquidités opérationnelles & structuration'",
-        "Slide 13 : 'Sortie Smalt Capital' → 'Restructuration du tour d'amorçage (2022)'",
-        "NOUVELLE slide 8 : Process d'activation IP — 3 étapes + avantage 48h vs 2-4 semaines marché"
-      ],
-      "modifications_v1_8": [
-        "Slide 9 (marché) : '11k PDC → cf. trajectoire commerciale slide 15' ajouté",
-        "Slide 10 (GTM) : sous-titre '1 commercial = ~30 PDC/mois, 8 commerciaux en 2028 = +240 PDC/mois'",
-        "Slide 10 (GTM) : 3 canaux avec cas réels + ratios CA (Direct 40%, Partenaires 55%, Upsell 5%)",
-        "Slide 11 (roadmap) : phase 1 'Consolidation & Structuration 2025', phase 3 'Intensification Commerciale France'",
-        "Slide 11 : phase 5 'Leadership France & Opportunités Limitrophes' avec acquéreurs nommés",
-        "Slide 12 (exit) : acquéreurs précisés TotalEnergies/Engie/EDF Pulse + Mobilize/Bump/Driveco/Freshmile",
-        "Slide 14 (financement) : 'Amorçage' corrigé, 'BE atteint fin 2024', cession reformulée en milestones"
-      ],
-      "modifications_v1_9": [
-        "NOUVELLE slide 17 : Kit OZECAR — bipartite noir/crème, 'Une boite. Une borne supervisée.' + 3 features + prix",
-        "NOUVELLE slide 18 : Schéma process propriétaire — timeline 4 étapes (Commande/Installation/Activation QR/Supervision) + bande KPI 5 métriques",
-        "Note : photo réelle boite (image-10.png) à insérer manuellement dans Google Slides (CDN bloque DL automatique)"
-      ]
-    },
-    "fundraise_context": {
-      "montant_vise": "2,75 M EUR",
-      "valorisation_post_money": "8M+ EUR",
-      "dilution_estimee": "~30%",
-      "lead_potentiel": "VC Sud France — 1,5 M EUR lead",
-      "preference_dominique": "Plusieurs investisseurs, profils apportant réseau + expertise, pas juste cash",
-      "investisseurs_cibles": [
-        "VC & BA spécialisés Mobilité, Énergie, Climat",
-        "TotalEnergies Ventures",
-        "Engie New Ventures",
-        "Fonds régionaux Sud (PACA)"
-      ],
-      "appels_realises": [
-        {
-          "contact": "Thomas Herlin",
-          "date": "2026-05-12",
-          "statut": "feedback intégré en v1.7 à v1.9",
-          "points_cles": "Justifier 11k PDC, Go-to-Market concret, exit précis, retirer salaires fondateurs"
-        },
-        {
-          "contact": "Delphine Margot",
-          "date": "2026-05-12",
-          "statut": "feedback intégré",
-          "points_cles": "Deck oral vs envoyé, simplifier ouverture, problem B2B privé clair, cas Renault en avant"
-        }
-      ],
-      "next_call": "Call 12h 2026-05-12 avec le deck v1.9"
+    "refactoring_todo_v2_0_full_deck": {
+      "_note": "Le deck v1.9 doit être refactoré pour pousser l'angle iceberg/industrialisation. Tâches identifiées:",
+      "slide_3_les_solutions": "Reformuler 'utilisation plateforme cloud SaaS leader en marque blanche' → 'couche CPMS interchangeable OCPP-compliant, partenaire X aujourd'hui, swappable'",
+      "promote_slide_8": "Remonter le Process d'Activation Propriétaire en slide 3 ou 4 (c'est le produit, pas une feature)",
+      "insert_iceberg_after_slide_2": "Slide A iceberg entre slide 2 (angle mort) et slide 3 (solutions) pour cadrer la perspective",
+      "insert_moat_after_slide_8": "Slide B moat juste après le Process d'Activation (slide 8 actuelle) pour transformer la feature en thèse défensive",
+      "slide_9_marche": "Simplifier TAM/SAM/SOM, supprimer ambiguïté 630M€/1,2Md€",
+      "slide_12_vision": "Renverser 'Buy vs Build' en 'Build where it counts' pour ne pas paraître sans tech défendable",
+      "slide_15_risques": "Étoffer avec Q&A pré-écrite sur dépendance CPMS"
     }
   }
 }
