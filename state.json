@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.34",
+    "version": "1.35",
     "updated": "2026-05-12",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-12",
+        "version_from": "1.34",
+        "version_to": "1.35",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "G34 LIVRE : upload-photo.php deploye sur ozecar.fr/api/ (6603 bytes PHP). Accepte multipart OU JSON base64. Auth Bearer + validation MIME + sanitize site_id + 10Mo max + finfo MIME detection. 7 tests passes dont upload reel PNG 30Ko -> URL publique servie correctement. Monday 11936676302 -> Done.",
+          "G33 LIVRE : page ozecar.fr/aide-installateur deployee (8708 bytes HTML). Charte OZECAR complete (Instrument Serif, DM Sans, Space Mono, palette cream/ink/yellow). 4 champs (IP+login+password+notes), parse ?token=, fallback localStorage si webhook fail. PLACEHOLDER webhook Make 06 a remplacer quand G32 sera cree. Monday 11936677111 -> Done.",
+          "G21 marque DONE : monta-search.php v3 etait deja deploye et fonctionnel (verifie : POST lookup_deeplink c120099 retourne FR2000480 OK). Monday 11936666606 -> Done.",
+          "G03 + PART-01 + PART-02 props HubSpot BLOQUES : le token PAT du proxy hubspot.php n'a pas le scope crm.schemas.*.write. Test API direct retourne 403. Dominique doit (a) creer manuellement dans HubSpot UI Settings>Properties OU (b) regenerer le PAT avec scopes crm.schemas.deals.write + crm.schemas.companies.write. Specs JSON completes pretes dans la session PM, peuvent etre injectees en 30s des que scope ajoute.",
+          "Section proxies_php.upload_photo_php ajoutee + section hubspot_props_creation_blocked ajoutee avec les options de deblocage."
+        ]
+      },
       {
         "date": "2026-05-12",
         "version_from": "1.33",
@@ -1155,6 +1168,31 @@
         "monta.imgix.net"
       ],
       "tests_2026_05_10": "T1-T6 OK : sécurité (400 sans url, 400 http, 403 host non whitelisté), MISS puis HIT, PNG valides servis"
+    },
+    "upload_photo_php": {
+      "url": "https://ozecar.fr/api/upload-photo.php",
+      "purpose": "Upload photo station finale depuis formulaire activation (G19). API Monta partner ne supporte pas l'upload photo.",
+      "auth": "Bearer -w_GRavF4OmBd2WtRGYOoPVJFhxa94Ntj9i0gbJmULg (meme que wp-deploy)",
+      "deployed_at": "2026-05-12",
+      "deployed_by": "Claude PM (claude.ai)",
+      "accepts": [
+        "multipart/form-data (photo + site_id)",
+        "application/json ({site_id, data:base64})"
+      ],
+      "limits": {
+        "max_size_mb": 10,
+        "min_size_bytes": 100,
+        "allowed_mime": [
+          "image/jpeg",
+          "image/png",
+          "image/webp",
+          "image/heic",
+          "image/heif"
+        ]
+      },
+      "storage_path": "/uploads/photos/{site_id}/{YYYYMMDD-HHMMSS-rand6}.{ext}",
+      "monday_target_column": "Stock Kits board 18409310538, column 'Photo station' link_mm332ec8",
+      "tests": "7/7 OK : auth, validation, MIME, path traversal, taille min/max, upload reel"
     }
   },
   "monday_boards": {
@@ -2308,5 +2346,34 @@
       "4_backend_auto": "Lookup ICCID → Simbase API activate eSIM → RMS API push config OZECAR-NET + ordre download profil eSIM → routeur OTA → bascule sur SIM Simbase active.",
       "5_verification": "Page /activation polle RMS API jusqu'à online + Monta API jusqu'à borne online. Activation site complétée."
     }
+  },
+  "hubspot_props_creation_blocked": {
+    "date": "2026-05-12",
+    "blocker": "Le token PAT du proxy hubspot.php (api/hubspot.php sur ozecar.fr) n'a pas le scope crm.schemas.deals.write. Lecture OK (213 props deals listees), creation refusee HTTP 403.",
+    "props_pending_creation": {
+      "G03_deals": [
+        "tracking_number",
+        "onsite_config_requested",
+        "monta_team_id",
+        "monta_site_id",
+        "zaptec_installation_id",
+        "zaptec_circuit_id",
+        "zaptec_charger_id"
+      ],
+      "PART02_deals": [
+        "deal_for_partner",
+        "partner_referrer_id",
+        "partner_referral_source",
+        "partner_bounty_amount",
+        "partner_bounty_paid_at"
+      ],
+      "PART01_companies": "9 props non testees (probablement meme blocage scope crm.schemas.companies.write)"
+    },
+    "deblockage_options": [
+      "1. Dominique cree les props manuellement dans HubSpot UI > Settings > Properties (specs detaillees dans monday items G03 11936687693, PART-01 11938632076, PART-02 11938632447)",
+      "2. Dominique regenere un PAT HubSpot avec scopes crm.schemas.deals.write + crm.schemas.companies.write + crm.schemas.deals.read + crm.schemas.companies.read, le colle dans /api/hubspot.php ligne $token, et le PM relance le script de creation",
+      "3. Creer une Private App HubSpot dediee avec ces scopes et la stocker dans un nouveau proxy hubspot-admin.php"
+    ],
+    "specs_props": "Specs JSON completes pretes dans le PM Claude — peuvent etre injectees des que le scope est ajoute"
   }
 }
