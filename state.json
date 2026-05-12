@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.27",
-    "updated": "2026-05-10",
+    "version": "1.28",
+    "updated": "2026-05-12",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-12",
+        "version_from": "1.27",
+        "version_to": "1.28",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Ajout section 'fundraise' avec deck_v1 (HTML 11 slides)",
+          "Angle pitch : industrialisation activation IRVE, CPMS Monta = composant swappable",
+          "Slides 6/7/9/11 à compléter avec données réelles post-pilote et audit P&L"
+        ]
+      },
       {
         "date": "2026-05-10",
         "version_from": "1.26",
@@ -2019,5 +2030,39 @@
       "business_decisions_pricing_design": "Dominique (PM propose, Dominique valide)"
     },
     "session_brief_format_example": "Voir explication PM du 2026-05-10 : brief markdown avec sections Contexte / Objectif / Fichiers à modifier / Actions précises / Vérification / À mettre à jour dans state.json"
+  },
+  "fundraise": {
+    "deck_v1": {
+      "created": "2026-05-12",
+      "file": "ozecar-deck-fundraise-v1.html",
+      "angle": "Industrialisation activation IRVE — CPMS Monta repositionné comme composant interchangeable",
+      "status": "draft v1, à compléter avec KPIs réels post-pilote",
+      "slides": [
+        "01 Cover",
+        "02 Problem — activation = goulot d'étranglement",
+        "03 Insight — quote slide",
+        "04 Solution — architecture stack (CPMS swappable)",
+        "05 Before/After — 20 PDC : 2 jours/€3600 → 2h/€400",
+        "06 Traction — KPIs à figer post-pilote",
+        "07 Market — TAM €2.4Md / SAM €680M / SOM €42M (hypothèses)",
+        "08 Moat — 4 couches : network, data, end-user, brand",
+        "09 Business model — kit one-shot + supervision récurrent",
+        "10 Risk Q&A — désamorçage questions VC critiques (Monta dep, copie, premium service, constructeurs)",
+        "11 Ask — montant TBD + breakdown 40/25/20/15"
+      ],
+      "blanks_to_fill": [
+        "Slide 6 : KPIs réels (stations activées, ARR, NPS, churn, temps activation)",
+        "Slide 7 : valider hypothèses TAM/SAM/SOM avec sources (AFIR, AVERE, ENEDIS, Gireve)",
+        "Slide 9 : prix de vente kits OZKM/OZKU",
+        "Slide 11 : montant cible levée + ARR cible T4 2027",
+        "Slide 12+ à ajouter : Équipe, Roadmap détaillée, Compétition"
+      ],
+      "next_actions": [
+        "Définir KPIs à tracker dès 5 premières activations pilotes",
+        "Audit P&L marge OZECAR vs Monta (slide caché pour DD)",
+        "POC technique abstraction OCPP / second CPMS (preuve réversibilité)",
+        "Affiner sizing marché avec sources officielles"
+      ]
+    }
   }
 }
