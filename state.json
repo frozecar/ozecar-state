@@ -1,12 +1,28 @@
 {
   "_meta": {
-    "version": "1.32",
+    "version": "1.33",
     "updated": "2026-05-12",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-12",
+        "version_from": "1.32",
+        "version_to": "1.33",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Ajout produit OZRT (Routeur OZECAR 4G) — Teltonika RUT241 eSIM, vente CapEx 249€ HT, marge 84€/unité",
+          "Ajout section connectivity : provider eSIM Simbase (API v2 sur developer.simbase.com), provider router management Teltonika RMS, workflow d'activation site complet",
+          "Décision design : self-provisioning installateur via /activation (scan QR routeur déclenche cascade Simbase API + Teltonika RMS API, zéro config manuelle)",
+          "Décision design : pré-association routeur ↔ eSIM en stock atelier (~1 min/routeur), profil eSIM activé uniquement au scan installateur (zéro coût SIM en stock)",
+          "Ajout option pricing routeur_ozrt CapEx 249€ HT avec auto-recovery SLA inclus (Monta webhook → diagnostic différentiel → reboot via RMS API → re-check)",
+          "config_connectivite_onsite (250€) marqué en phase pilote, suppression prévue 3-6 mois",
+          "Ajout dashboard Simbase + Teltonika RMS dans resources",
+          "Item monday OZECAR-4G-ROUTER créé dans Backlog du board orchestration 18411921057 (voir tracking)"
+        ]
+      },
       {
         "date": "2026-05-12",
         "version_from": "1.31",
@@ -609,6 +625,13 @@
       "pack_10_cartes_rfid": {
         "label": "Pack de 10 cartes RFID OZECARD",
         "price_ht": 59
+      },
+      "routeur_ozrt": {
+        "label": "Routeur OZECAR 4G (vente unique)",
+        "price_ht": 249,
+        "model": "CapEx",
+        "sku": "OZRT-LITE",
+        "_note": "Inclut auto-recovery SLA automatique via Monta webhooks + Teltonika RMS API. data_4g_5g (2€/mois) facturée séparément ou incluse selon forfait supervision."
       }
     },
     "activation": {
@@ -634,7 +657,8 @@
           "Paramétrage réseau",
           "Mise en sécurité",
           "Test connectivité"
-        ]
+        ],
+        "_status_2026_05_12": "Maintenu en phase pilote pour sites où 4G ne passe pas (sous-sol parking, zone blanche). Suppression prévue après 3-6 mois si OZRT couvre tous les cas."
       },
       "_removed_remote": {
         "removed_at": "2026-05-10",
@@ -815,6 +839,75 @@
       "display_name_client": "Kit Borne",
       "legacy_name": "Kit Unit",
       "_note_naming": "SKU OZKU reste interne. Sur surfaces client, utiliser 'Kit Borne'. Voir naming_migration_2026_05_10."
+    },
+    "OZRT": {
+      "name": "Routeur OZECAR 4G",
+      "display_name_client": "Routeur OZECAR",
+      "sku_internal": "OZRT",
+      "format": "Boîtier industriel IP30/IP66, montage rail DIN ou mural",
+      "hardware": {
+        "model": "Teltonika RUT241 eSIM",
+        "_note_model": "Variante eSIM obligatoire (pas la version SIM physique seule). Comporte 1 slot SIM physique + eUICC eSIM SGP.22 jusqu'à 7 profils.",
+        "specs": [
+          "4G LTE Cat 4 — 150 Mbps DL / 50 Mbps UL",
+          "WiFi 4 (802.11n) 2.4 GHz",
+          "2x ports Gigabit Ethernet",
+          "PoE in passif (LAN1) / USB-C / 9-30 VDC",
+          "Bootstrap eSIM 10 MB pré-installé (valide 1 an depuis fabrication)",
+          "Antennes externes incluses (4G + WiFi)",
+          "RutOS — OpenVPN/IPsec/WireGuard/ZeroTier/Stunnel",
+          "Compatible Teltonika RMS"
+        ],
+        "purchase_price_eur_ht": 165,
+        "purchase_source": "Capestone (distributeur Teltonika Diamond Partner européen) ou autre revendeur",
+        "warranty": "2 ans constructeur Teltonika"
+      },
+      "connectivity": {
+        "esim_provider": "Simbase",
+        "_note": "1 profil eSIM Simbase pré-associé par routeur. Profil actif uniquement après scan QR sur /activation."
+      },
+      "pricing_client": {
+        "model": "CapEx unique (vente)",
+        "price_eur_ht": 249,
+        "_note_pricing": "Marge brute 84€ par unité. Data 4G/5G facturée séparément via option supervision 2€/mois (Essential) ou inclus (Pro/Pro+/Transit).",
+        "shopify_sku": "OZRT-LITE"
+      },
+      "scope_client": {
+        "when_recommended": [
+          "Toute borne sans data intégrée fiable (ABB, Schneider, Hager, Wallbox, etc.)",
+          "Sites avec 2+ bornes (hub Ethernet/WiFi via un seul routeur)",
+          "Clients SLA renforcé (flottes, hôtellerie, supermarchés, transport public)",
+          "Sites où le client refuse de partager son réseau interne",
+          "Zones à faible signal opérateur où le multi-IMSI eSIM aide"
+        ],
+        "when_optional": [
+          "Bornes Zaptec avec eSIM Zaptec native (parc <1% OZECAR — eSIM Zaptec couvre)"
+        ]
+      },
+      "activation_flow": {
+        "page": "https://ozecar.fr/activation",
+        "qr_url_pattern": "https://ozecar.fr/activation?device=OZRT-XXXX",
+        "self_provisioning_installer": true,
+        "_note": "Workflow décrit dans connectivity._workflow_activation_site. L'installateur n'a aucune config manuelle à faire — tout est piloté par le backend OZECAR via API Simbase + Teltonika RMS."
+      },
+      "auto_recovery_sla": {
+        "enabled_when_router_present": true,
+        "trigger": "Monta webhook charger.state_changed → offline",
+        "delay_before_reboot": "60 minutes",
+        "guardrails": [
+          "Max 1 reboot routeur / 24h / site",
+          "Pas de reboot pendant session de charge active (check Monta API)",
+          "Escalade humaine après 3 reboots/mois sur même site (problème matériel suspect)",
+          "Kill-switch global dans state.json"
+        ],
+        "outcome_logging": "HubSpot timeline Deal + log dans state.json + Slack #alerts si échec"
+      },
+      "future_variants": {
+        "OZRT-PRO": {
+          "model": "Teltonika RUT956",
+          "_note": "Avec RS485 Modbus pour intégration compteurs Linky, sous-comptage, capteurs additionnels. Reporté Phase 2 selon demande terrain."
+        }
+      }
     }
   },
   "make_scenarios": {
@@ -1189,7 +1282,9 @@
   "resources": {
     "flowchart": "https://ozecar.fr/project/index.html",
     "copilot": "https://ozecar.fr/copilot/index.html",
-    "state_json": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json"
+    "state_json": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
+    "simbase_dashboard": "https://simbase.com (dashboard SIM/eSIM)",
+    "teltonika_rms": "https://rms.teltonika-networks.com (parc routeurs OZRT)"
   },
   "wordpress_refonte": {
     "concept": "Refonte du site staging.ozecar.fr (Hostinger). Theme enfant 'ozecar-child' herite de 'ozecar-theme' actuel + 18 blocs Gutenberg natifs scope .oz-* (sans plugin paye, sans ACF Pro, sans WPBakery).",
@@ -2153,6 +2248,55 @@
         "Pull-quote en serif italique avec border violet/jaune (façon édito magazine)",
         "Top/bottom bars système avec OZECAR / FUNDRAISE 2026 + SLIDE 01"
       ]
+    }
+  },
+  "connectivity": {
+    "_note": "Connectivité 4G OZECAR pour les routeurs OZRT (Teltonika) déployés sur sites client. Distinct de la SIM physique présente dans le Kit Site OZKM (qui va dans les bornes à slot SIM type ABB/Schneider).",
+    "esim_provider": {
+      "name": "Simbase",
+      "url": "https://simbase.com",
+      "api_doc": "https://developer.simbase.com",
+      "support": "https://support.simbase.com",
+      "api_version": "v2",
+      "auth": "API key (account-scoped)",
+      "capabilities": [
+        "Activation/désactivation eSIM via API",
+        "Téléchargement profil eSIM via SM-DP+ (compatible RUT241 eSIM SGP.22)",
+        "Multi-network par pays + auto-failover",
+        "Fixed IP optionnel pour accès inbound direct",
+        "Monitoring data usage + CDR + location updates",
+        "IMEI lock disponible",
+        "SIM whitelabel et SIM custom-labeled OZECAR possibles (à confirmer côté sales)"
+      ],
+      "billing_model": "Pay-as-you-go usage-based, daily access charge quand SIM active",
+      "_note_activation": "L'eSIM reste inactive en stock (zéro coût) jusqu'au scan QR par l'installateur sur /activation. Le coût Simbase démarre uniquement à l'activation site."
+    },
+    "router_management_provider": {
+      "name": "Teltonika RMS",
+      "url": "https://rms.teltonika-networks.com",
+      "developer_portal": "https://developers.teltonika-networks.com",
+      "wiki_api": "https://wiki.teltonika-networks.com/view/RMS_API",
+      "api_type": "REST OpenAPI",
+      "free_quota": "100 000 requêtes API / 30 jours / société",
+      "device_licensing": "Management : packages 3/5/10 ans ou crédits 30 jours/device. 30 jours trial gratuit par nouveau device.",
+      "data_licensing": "Connect + VPN : 5 GB gratuits/société, puis packages 150 GB/10 ans ou crédits 2 GB",
+      "capabilities": [
+        "Provisioning device sans IP publique (tunnel chiffré sortant)",
+        "Push config groupée par template",
+        "Reboot device à distance",
+        "RMS Connect : accès LAN distant aux devices derrière le routeur (utile pour atteindre la borne en local)",
+        "RMS VPN : mesh VPN entre devices",
+        "Monitoring real-time : signal, conso data, état, logs",
+        "Multi-tenant + rôles + audit logs",
+        "Compatible third-party devices via SSH/RDP/VNC/HTTP"
+      ]
+    },
+    "_workflow_activation_site": {
+      "1_atelier_ozecar": "Pré-association routeur OZRT ↔ eSIM Simbase ICCID dans state.json + monday Stock OZRT. Étiquette QR collée. Aucun boot, aucune activation.",
+      "2_envoi_client": "Routeur expédié dans son emballage d'origine + sticker OZECAR sur logo Teltonika.",
+      "3_installateur_site": "Branche alim + Ethernet vers borne. Scan QR routeur sur /activation.",
+      "4_backend_auto": "Lookup ICCID → Simbase API activate eSIM → RMS API push config OZECAR-NET + ordre download profil eSIM → routeur OTA → bascule sur SIM Simbase active.",
+      "5_verification": "Page /activation polle RMS API jusqu'à online + Monta API jusqu'à borne online. Activation site complétée."
     }
   }
 }
