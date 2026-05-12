@@ -1,12 +1,26 @@
 {
   "_meta": {
-    "version": "1.28",
+    "version": "1.29",
     "updated": "2026-05-12",
-    "updated_by": "Claude PM (claude.ai)",
+    "updated_by": "Claude PM (claude.ai) — chat levée de fonds",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-12",
+        "version_from": "1.28",
+        "version_to": "1.29",
+        "author": "Claude PM (claude.ai) — chat levée de fonds",
+        "changes": [
+          "Section fundraise enrichie : deck v1.6 → v1.9 documentés avec toutes les modifications",
+          "v1.7 : corrections wording (Corse narrative, techno danoise, hyper-croissance, financement, slide IP process)",
+          "v1.8 : GTM enrichi avec cas réels + ratios CA, roadmap reformulée, exit acquéreurs nommés",
+          "v1.9 : 2 nouvelles slides (Kit OZECAR bipartite + schéma process propriétaire 4 étapes)",
+          "fundraise_context : montant 2.75M EUR, valo 8M+ post-money, calls Thomas Herlin + Delphine Margot documentés",
+          "Call 12h 2026-05-12 prévu avec deck v1.9 livré"
+        ]
+      },
       {
         "date": "2026-05-12",
         "version_from": "1.27",
@@ -2063,6 +2077,79 @@
         "POC technique abstraction OCPP / second CPMS (preuve réversibilité)",
         "Affiner sizing marché avec sources officielles"
       ]
+    },
+    "deck_v1_6": {
+      "created": "2026-05-12",
+      "file": "PitchDeck_OZECAR_042026_v1_6.pptx",
+      "status": "présenté — call Thomas Herlin + Delphine Margot",
+      "problemes_identifies": [
+        "11k PDC 2030 non justifié — pas relié à la capacité commerciale",
+        "Go-to-Market trop abstrait — manque de cas concrets et ratios canaux",
+        "Corse présentée comme 'laboratoire' — formulation fragile",
+        "Référence 'technologie danoise' — question sur la valeur propriétaire OZECAR",
+        "Wording 'hyper-croissance' et 'géant de la tech' — peu crédible",
+        "Slide financement : 'salaires fondateurs' + 'sortie Smalt Capital' visibles — mal perçu",
+        "Process d'activation (IP principale) absent du deck"
+      ]
+    },
+    "deck_v1_9": {
+      "created": "2026-05-12",
+      "file": "PitchDeck_OZECAR_042026_v1_9.pptx",
+      "slides_count": 18,
+      "status": "livré — prêt pour call 12h",
+      "modifications_v1_7": [
+        "Slide 3 : 'technologie danoise' → 'plateforme cloud SaaS leader'",
+        "Slide 6 (traction) : Corse conservée avec narrative 'marché test — validation modèle dense'",
+        "Slide 9 (marché) : Corse reformulée 'Marché test insulaire dense → modèle exportable'",
+        "Slide 10 (roadmap) : 'Hyper-Croissance' → 'Croissance & Structuration Nationale'",
+        "Slide 10 : 'géant de la tech' → 'énergéticiens (TotalEnergies, Engie), opérateurs de mobilité ou CPO'",
+        "Slide 13 (financement) : 'Salaires fondateurs' → 'Exécution & rémunérations équipe (24 mois)'",
+        "Slide 13 : 'Cession partielle fondateurs' → 'Liquidités opérationnelles & structuration'",
+        "Slide 13 : 'Sortie Smalt Capital' → 'Restructuration du tour d'amorçage (2022)'",
+        "NOUVELLE slide 8 : Process d'activation IP — 3 étapes + avantage 48h vs 2-4 semaines marché"
+      ],
+      "modifications_v1_8": [
+        "Slide 9 (marché) : '11k PDC → cf. trajectoire commerciale slide 15' ajouté",
+        "Slide 10 (GTM) : sous-titre '1 commercial = ~30 PDC/mois, 8 commerciaux en 2028 = +240 PDC/mois'",
+        "Slide 10 (GTM) : 3 canaux avec cas réels + ratios CA (Direct 40%, Partenaires 55%, Upsell 5%)",
+        "Slide 11 (roadmap) : phase 1 'Consolidation & Structuration 2025', phase 3 'Intensification Commerciale France'",
+        "Slide 11 : phase 5 'Leadership France & Opportunités Limitrophes' avec acquéreurs nommés",
+        "Slide 12 (exit) : acquéreurs précisés TotalEnergies/Engie/EDF Pulse + Mobilize/Bump/Driveco/Freshmile",
+        "Slide 14 (financement) : 'Amorçage' corrigé, 'BE atteint fin 2024', cession reformulée en milestones"
+      ],
+      "modifications_v1_9": [
+        "NOUVELLE slide 17 : Kit OZECAR — bipartite noir/crème, 'Une boite. Une borne supervisée.' + 3 features + prix",
+        "NOUVELLE slide 18 : Schéma process propriétaire — timeline 4 étapes (Commande/Installation/Activation QR/Supervision) + bande KPI 5 métriques",
+        "Note : photo réelle boite (image-10.png) à insérer manuellement dans Google Slides (CDN bloque DL automatique)"
+      ]
+    },
+    "fundraise_context": {
+      "montant_vise": "2,75 M EUR",
+      "valorisation_post_money": "8M+ EUR",
+      "dilution_estimee": "~30%",
+      "lead_potentiel": "VC Sud France — 1,5 M EUR lead",
+      "preference_dominique": "Plusieurs investisseurs, profils apportant réseau + expertise, pas juste cash",
+      "investisseurs_cibles": [
+        "VC & BA spécialisés Mobilité, Énergie, Climat",
+        "TotalEnergies Ventures",
+        "Engie New Ventures",
+        "Fonds régionaux Sud (PACA)"
+      ],
+      "appels_realises": [
+        {
+          "contact": "Thomas Herlin",
+          "date": "2026-05-12",
+          "statut": "feedback intégré en v1.7 à v1.9",
+          "points_cles": "Justifier 11k PDC, Go-to-Market concret, exit précis, retirer salaires fondateurs"
+        },
+        {
+          "contact": "Delphine Margot",
+          "date": "2026-05-12",
+          "statut": "feedback intégré",
+          "points_cles": "Deck oral vs envoyé, simplifier ouverture, problem B2B privé clair, cas Renault en avant"
+        }
+      ],
+      "next_call": "Call 12h 2026-05-12 avec le deck v1.9"
     }
   }
 }
