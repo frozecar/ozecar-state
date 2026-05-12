@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.30",
+    "version": "1.31",
     "updated": "2026-05-12",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-12",
+        "version_from": "1.30",
+        "version_to": "1.31",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Refonte slides Iceberg + Moat en VERSION DECK ENVOYÉ (feedback Delphine Margot)",
+          "Coupe de ~70% du texte: 50-70 mots/slide vs 200+ avant",
+          "Slide A: titre énorme + 1 phrase punch + tagline + SVG iceberg compact 4 piliers",
+          "Slide B: titre + sous-titre + 4 cartes (1 gros chiffre + 1 ligne preuve chacune)",
+          "Style préservé: charte v1.9 (ink/jaune/violet/crème, Space Mono + DM Sans)"
+        ]
+      },
       {
         "date": "2026-05-12",
         "version_from": "1.29",
@@ -2079,7 +2092,8 @@
         "521K€ CA, BE atteint fin 2024, ARR trajectoire 540K€→4,5M€ (slide 11)",
         "CAC ÷ 5 via installateurs (slide 10)",
         "OCPP natif + SIM multi-opérateurs (slide 8)"
-      ]
+      ],
+      "status": "DEPRECATED (format oral, remplacée par v2)"
     },
     "refactoring_todo_v2_0_full_deck": {
       "_note": "Le deck v1.9 doit être refactoré pour pousser l'angle iceberg/industrialisation. Tâches identifiées:",
@@ -2090,6 +2104,23 @@
       "slide_9_marche": "Simplifier TAM/SAM/SOM, supprimer ambiguïté 630M€/1,2Md€",
       "slide_12_vision": "Renverser 'Buy vs Build' en 'Build where it counts' pour ne pas paraître sans tech défendable",
       "slide_15_risques": "Étoffer avec Q&A pré-écrite sur dépendance CPMS"
+    },
+    "new_slides_v2_deck_envoye": {
+      "created": "2026-05-12",
+      "files": [
+        "ozecar-slides-iceberg-moat.html",
+        "ozecar-slides-iceberg-moat.pdf"
+      ],
+      "format": "Deck envoyé (3-4 min de lecture VC, scannable 15-20s par slide)",
+      "slides": [
+        "A · Iceberg — Titre 'Le CPMS, c'est la partie émergée.' + 1 phrase punch avec 'tout ce qu'il y a en dessous' surligné jaune + tagline bas. SVG iceberg compact avec 4 piliers (kit physique / process activation 48h / réseau installateurs / marque conducteur). ~58 mots.",
+        "B · Moat — Titre '4 barrières défendables.' + sous-titre 'Ce qui nous protège d'un concurrent qui rachète le même logiciel demain matin.' + 4 cartes avec gros chiffre (CAC÷5, 48h, 530 PDC, OCPP) + 1 ligne preuve max. ~60 mots."
+      ],
+      "feedback_delphine_margot_pris_en_compte": "Deck oral vs envoyé. VC passe 3-4 min sur un deck reçu donc scannable, peu de mots, visuel.",
+      "iteration_history": [
+        "v1 — slides prose verbeuses 200+ mots — rejetée car format deck oral",
+        "v2 — slides deck envoyé 50-70 mots — version livrée"
+      ]
     }
   }
 }
