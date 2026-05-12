@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.26",
+    "version": "1.27",
     "updated": "2026-05-10",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-10",
+        "version_from": "1.26",
+        "version_to": "1.27",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Ajout de la section operating_framework v1.0 : formalise comment les 3 acteurs (Dominique, PM chat claude.ai, Claude Code Shopify) se coordonnent. Validé par Dominique 2026-05-10 après clarification que les 'agents' ne sont PAS automatiques — chaque session est lancée manuellement par Dominique. La coordination se fait via state.json (versionné) et monday board (18411921057) qui servent de mémoire partagée asynchrone entre sessions.",
+          "Matrice de délégation explicite : qui fait quoi (PM direct via MCPs, PM brief Claude Code, ou Dominique en admin externe). Template de brief Claude Code documenté."
+        ]
+      },
       {
         "date": "2026-05-10",
         "version_from": "1.25",
@@ -1931,5 +1941,83 @@
       }
     },
     "stock_physique_status": "Confirme par Dominique 2026-05-10 : AUCUN stock physique imprime a ce jour. Aucun risque de casse logistique."
+  },
+  "operating_framework": {
+    "version": "1.0",
+    "validated_at": "2026-05-10",
+    "validated_by": "Dominique",
+    "description": "Comment les sessions Claude se coordonnent autour du projet OZECAR. Validé après clarification que les 'agents' ne sont PAS automatiques — chaque session est lancée manuellement par Dominique.",
+    "actors": {
+      "dominique": {
+        "role": "Décisionnaire + exécutant actions admin externes",
+        "scope": [
+          "Décisions business : pricing, design, priorités",
+          "Toutes les actions hors-API : admin Shopify (clics UI, DNS, Payments, activate DRAFT, photos, cleanup commandes)",
+          "Hostinger panel (DNS, hébergement)",
+          "Stripe création subscriptions/charges (lecture via MCP OK)",
+          "PandaDoc sandbox → prod",
+          "Signatures, paiements, validation CGV",
+          "Lancement des autres sessions Claude (Claude Code dans terminal, autres onglets claude.ai)"
+        ]
+      },
+      "pm_chat_claude_ai": {
+        "role": "PM / exécutant API + orchestrateur",
+        "session_url_pattern": "claude.ai chat dédié au projet OZECAR",
+        "scope_direct_execution": [
+          "state.json via github-relay.php",
+          "monday board 18411921057 + 18409310538 via MCP monday",
+          "WP staging via wp-deploy.php (theme ozecar-child, blocs, posts, api/)",
+          "HubSpot CRM via MCP HubSpot (contacts, deals, props, pipelines)",
+          "Make scenarios via MCP Make",
+          "Stripe LECTURE via MCP Stripe (produits, prix)",
+          "Google Calendar, Drive, Slack, Calendly via MCPs",
+          "Canva designs via MCP Canva"
+        ],
+        "scope_orchestration": [
+          "Rédige les briefs Claude Code quand il faut déléguer Shopify",
+          "Liste les actions admin à faire pour Dominique",
+          "Tient state.json + monday à jour à chaque action significative",
+          "Rapporte : ce qui est fait / ce qui reste / qui est attendu"
+        ],
+        "interdits_absolus": [
+          "Toucher ozecar.fr prod (HTML, theme, posts) sans OK explicite de Dominique",
+          "Lancer Claude Code à la place de Dominique (impossible techniquement)",
+          "Mentionner Monta publiquement (marque blanche)",
+          "Inclure des tokens dans state.json",
+          "Inventer du contenu (témoignages, stats, descriptions)",
+          "Écraser des sections du state.json gérées par d'autres sessions"
+        ]
+      },
+      "claude_code_shopify": {
+        "role": "Exécutant Shopify (theme Liquid, cart logic, Storefront API)",
+        "location": "Terminal local de Dominique avec Shopify AI Toolkit installé",
+        "scope": [
+          "Theme Liquid (templates, snippets, sections)",
+          "Cart logic JS",
+          "Storefront API",
+          "Shopify CLI deploy"
+        ],
+        "comment_on_le_sollicite": "Le PM (chat claude.ai) rédige un brief markdown structuré (contexte, objectif, fichiers, actions précises, vérification, mise à jour state.json). Dominique copie le brief dans sa session Claude Code. Claude Code exécute et push state.json via github-relay à la fin. Le PM relit le state.json au tour suivant.",
+        "brief_template_sections": [
+          "Contexte",
+          "Objectif (1 phrase)",
+          "Fichiers à modifier",
+          "Actions précises numérotées",
+          "Vérification",
+          "À mettre à jour dans state.json à la fin"
+        ]
+      }
+    },
+    "delegation_matrix": {
+      "state_json_+_monday": "PM (direct)",
+      "wp_staging": "PM (direct via wp-deploy)",
+      "wp_prod": "PM uniquement avec OK explicite Dominique",
+      "hubspot_make_stripe_read_calendar_drive_slack_canva": "PM (direct via MCPs)",
+      "shopify_theme_liquid_cart": "Claude Code (PM rédige brief)",
+      "shopify_admin_dns_payments_photos_activate_draft": "Dominique (PM liste étapes)",
+      "pandadoc_sandbox_to_prod": "Dominique (PM guide)",
+      "business_decisions_pricing_design": "Dominique (PM propose, Dominique valide)"
+    },
+    "session_brief_format_example": "Voir explication PM du 2026-05-10 : brief markdown avec sections Contexte / Objectif / Fichiers à modifier / Actions précises / Vérification / À mettre à jour dans state.json"
   }
 }
