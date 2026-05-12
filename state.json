@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.31",
+    "version": "1.32",
     "updated": "2026-05-12",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-12",
+        "version_from": "1.31",
+        "version_to": "1.32",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Refonte slides Iceberg+Moat en mode 'deck envoyé' (50-70 mots, scannable 30s)",
+          "Pivot design: style éditorial OZECAR custom (pas PowerPoint v1.9)",
+          "Slide A: bipartite crème/ink, title 96px mix DM Sans 900 + Instrument Serif italique",
+          "Slide B: fond ink, 4 colonnes ligne-séparées, big numbers 56px alternés jaune/violet",
+          "Labels système Space Mono partout (// VISIBLE, // SUBMERGED, ↓ moat ++)"
+        ]
+      },
       {
         "date": "2026-05-12",
         "version_from": "1.30",
@@ -2120,6 +2133,25 @@
       "iteration_history": [
         "v1 — slides prose verbeuses 200+ mots — rejetée car format deck oral",
         "v2 — slides deck envoyé 50-70 mots — version livrée"
+      ]
+    },
+    "new_slides_v2_envoye": {
+      "created": "2026-05-12",
+      "iteration": "v3 - design éditorial OZECAR custom (pas style PowerPoint v1.9)",
+      "format": "Deck envoyé scannable 30s - 50-70 mots/slide",
+      "design_direction": "Brutalisme éditorial doux. Slide A bipartite crème/ink avec iceberg jaune massif. Slide B fond ink full avec 4 cartes séparées par lignes. Typo: DM Sans 900 + Instrument Serif italique pour casser + Space Mono pour labels système (// VISIBLE, x: 0.5 y: 0.32, // SUBMERGED).",
+      "files": [
+        "ozecar-slides-iceberg-moat.html",
+        "ozecar-slides-iceberg-moat.pdf"
+      ],
+      "feedback_delphine_margot_intégré": "Deck oral vs envoyé, scannable 3-4 min, prose réduite à 70 mots/slide",
+      "differences_vs_v1": [
+        "Style: éditorial moderne (Linear/Vercel/Ramp) au lieu de pitch deck classique",
+        "Typo titres: 96-84px serif italique mix + DM Sans 900",
+        "Labels système Space Mono (// VISIBLE, // SUBMERGED — 80% of value, ↓ moat ++ over time)",
+        "Slide B fond ink full au lieu de blanc, 4 colonnes séparées par lignes (pas cartes border)",
+        "Pull-quote en serif italique avec border violet/jaune (façon édito magazine)",
+        "Top/bottom bars système avec OZECAR / FUNDRAISE 2026 + SLIDE 01"
       ]
     }
   }
