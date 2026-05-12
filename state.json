@@ -1,12 +1,28 @@
 {
   "_meta": {
-    "version": "1.25",
+    "version": "1.26",
     "updated": "2026-05-10",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-10",
+        "version_from": "1.25",
+        "version_to": "1.26",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "DECISION MAJEURE Dominique : migration vocabulaire 'Kit Master / Kit Unit' vers 'Kit Site / Kit Borne' sur toutes les surfaces client",
+          "Nouvelle section 'naming_migration_2026_05_10' ajoutee : decision, vocabulaire officiel, regles d'or, phasage 4 phases sur 10 jours",
+          "Section products.OZKM et OZKU enrichies avec display_name_client + legacy_name + _note_naming",
+          "Section pricing.products.ozkm/ozku : labels et descriptions mis a jour avec nouveau vocabulaire",
+          "Section shopify.naming_update_2026_05_10 ajoutee : actions detaillees pour Claude Code Shopify",
+          "Backend SKU OZKM/OZKU INCHANGES + Kit IDs (URLs activation) preserves : zero casse retroactive",
+          "Aucun stock physique imprime a ce jour (confirme par Dominique) : aucun risque logistique",
+          "Brief de reference complet : OZECAR-NAMING-MIGRATION.md (225 lignes, livre 2026-05-10)"
+        ]
+      },
       {
         "date": "2026-05-10",
         "version_from": "1.24",
@@ -429,16 +445,18 @@
     },
     "products": {
       "ozkm": {
-        "label": "Kit OZKM (Master)",
+        "label": "Kit Site (SKU OZKM)",
         "price_catalog_ht": 49,
         "cogs_estimated": 15,
-        "description": "Crée la station Monta. 1 par site (1 à 10 PDC). SIM multi-opérateurs, QR code, étiquettes 1A à 10B"
+        "description": "Composant de mise en service du site. 1 par parking/site (1 a 10 PDC). SIM multi-operateurs, QR code, etiquettes 1A a 10B.",
+        "display_name_client": "Kit Site"
       },
       "ozku": {
-        "label": "Kit OZKU (Unit)",
+        "label": "Kit Borne (SKU OZKU)",
         "price_catalog_ht": 29,
         "cogs_estimated": 5,
-        "description": "Ajoute un PDC à une station. 1 par borne. Carte RFID, QR code, étiquette MUNBYN 50x30mm"
+        "description": "Composant pour activer chaque borne. 1 par PDC. Carte RFID OZECARD, QR code de paiement, etiquette MUNBYN 50x30mm.",
+        "display_name_client": "Kit Borne"
       },
       "zaptec_pro_22kw": {
         "label": "Zaptec Pro 22 kW pré-configurée",
@@ -705,7 +723,10 @@
       ],
       "qr_url_pattern": "https://ozecar.fr/activation?kit=OZKM-XXXX",
       "label_format": "102x152mm MUNBYN",
-      "monta_role": "Cree le Site (station)"
+      "monta_role": "Cree le Site (station)",
+      "display_name_client": "Kit Site",
+      "legacy_name": "Kit Master",
+      "_note_naming": "SKU OZKM reste interne. Sur surfaces client, utiliser 'Kit Site'. Voir naming_migration_2026_05_10."
     },
     "OZKU": {
       "name": "Kit Unit",
@@ -717,7 +738,10 @@
       ],
       "qr_url_pattern": "https://ozecar.fr/activation?kit=OZKU-XXXX",
       "label_format": "50x30mm MUNBYN",
-      "monta_role": "Cree le ChargePoint (borne)"
+      "monta_role": "Cree le ChargePoint (borne)",
+      "display_name_client": "Kit Borne",
+      "legacy_name": "Kit Unit",
+      "_note_naming": "SKU OZKU reste interne. Sur surfaces client, utiliser 'Kit Borne'. Voir naming_migration_2026_05_10."
     }
   },
   "make_scenarios": {
@@ -1777,6 +1801,20 @@
         "rendering": "Header h:38px / Footer h:32px / Favicon via <link rel=icon> dans theme.liquid",
         "pipeline_scripts": "scripts/install-logo.mjs (sharp pixel-par-pixel) + scripts/patch-logo-in-theme.mjs"
       }
+    },
+    "naming_update_2026_05_10": {
+      "action_required_claude_code": [
+        "Creer un produit principal 'Kit OZECAR' avec configurateur PDC (1 Kit Site + N Kits Borne)",
+        "Renommer le produit OZKM : titre 'Kit Master' -> 'Kit Site OZECAR'",
+        "Renommer le produit OZKU : titre 'Kit Unit' -> 'Kit Borne OZECAR'",
+        "SKU INCHANGES : OZKM, OZKU restent les codes-barres internes",
+        "Refondre la page kit avec configurateur central + schema visuel parking",
+        "Mettre a jour les emails transactionnels (template confirmation commande) avec 'Kit Site' / 'Kit Borne'",
+        "Verifier que la cart logic Master+Unit (renommee Site+Borne en interne) fonctionne",
+        "Verifier que les 4 discount codes partenaires s'appliquent toujours"
+      ],
+      "brief_complet": "OZECAR-NAMING-MIGRATION.md",
+      "priorite": "Apres le softlaunch Shopify (les 8 actions admin user d'abord)"
     }
   },
   "marque_blanche_monta": {
@@ -1840,5 +1878,58 @@
       "filtre_dans_functions_php": "À retirer le jour où ozecar-theme + plugins Monta seront refactorisés pour n'utiliser que des URLs OZECAR-native.",
       "monday_item": "WP-MARQUE-BLANCHE (id 11965641976) → Done"
     }
+  },
+  "naming_migration_2026_05_10": {
+    "_note": "Decision majeure 2026-05-10 par Dominique : renommer 'Kit Master / Kit Unit' en 'Kit Site / Kit Borne' sur toutes les surfaces client + introduire un produit principal 'Kit OZECAR' avec configurateur PDC sur Shopify. SKU OZKM/OZKU et Kit IDs (URLs activation) restent INCHANGES pour zero casse.",
+    "decision_par": "Dominique Manfredi",
+    "decision_date": "2026-05-10",
+    "context": "Feedback employes + partenaires : vocabulaire Master/Unit pas clair pour la cible installateur. Friction cognitive, perte de leads.",
+    "approche": "Piste A (1 produit configurable) + alignement backend complet (facade client seulement, SKU/Kit IDs preserves)",
+    "brief_de_reference": "OZECAR-NAMING-MIGRATION.md (livre 2026-05-10)",
+    "vocabulaire_officiel": {
+      "produit_principal_shopify": "Kit OZECAR",
+      "ex_kit_master": "Kit Site",
+      "ex_kit_unit": "Kit Borne",
+      "sku_internes_inchanges": [
+        "OZKM",
+        "OZKU"
+      ],
+      "kit_ids_physiques_inchanges_format": "OZKM-XXXX et OZKU-XXXX",
+      "interdits_publics": [
+        "Master",
+        "Unit",
+        "Kit Master",
+        "Kit Unit"
+      ]
+    },
+    "rules_d_or": [
+      "Sur surfaces client (Shopify, emails, factures, notices, doc commerciale, WP) : utiliser 'Kit Site' et 'Kit Borne' UNIQUEMENT",
+      "Sur backend (monday Stock Kits, HubSpot, Make webhooks, base de donnees, code) : SKU OZKM/OZKU restent",
+      "Kit IDs physiques (OZKM-0001, OZKU-0001) restent INCHANGES car ils sont dans les QR codes des kits a imprimer + URLs activation",
+      "Make scenarios doivent lire le SKU (OZKM/OZKU) et non le titre du produit pour ne pas casser apres renommage Shopify"
+    ],
+    "phasage": {
+      "phase_1": {
+        "label": "Vocabulaire + state.json + brief + monday",
+        "qui": "claude.ai PM",
+        "duree_estimee": "jours 1-2"
+      },
+      "phase_2": {
+        "label": "Shopify : configurateur + renommage produits + theme",
+        "qui": "Claude Code Shopify",
+        "duree_estimee": "jours 3-5"
+      },
+      "phase_3": {
+        "label": "Backend : monday labels, HubSpot labels, Make audit, impression templates",
+        "qui": "claude.ai PM",
+        "duree_estimee": "jours 5-7"
+      },
+      "phase_4": {
+        "label": "Front-end pédagogie : page Kit WP, homepage, communication partenaires",
+        "qui": "claude.ai PM",
+        "duree_estimee": "jours 7-10"
+      }
+    },
+    "stock_physique_status": "Confirme par Dominique 2026-05-10 : AUCUN stock physique imprime a ce jour. Aucun risque de casse logistique."
   }
 }
