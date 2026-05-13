@@ -1,12 +1,27 @@
 {
   "_meta": {
-    "version": "1.36",
+    "version": "1.37",
     "updated": "2026-05-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-13",
+        "version_from": "1.36",
+        "version_to": "1.37",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Correction périmètre Phase 1 routeur OZRT : RETRAIT de la promesse 'pré-config OCPP automatique au scan QR' (formulation initiale v1.33 trop générique, ne tient pas face à la réalité multi-marques)",
+          "products.OZRT.features_phase_1 reformulé en 3 features solides : (1) connectivité 4G plug-and-play, (2) auto-recovery réseau via Monta webhook + reboot RMS API, (3) accès maintenance distant via RMS Connect (universel, marche pour TOUTE borne LAN-joignable derrière le routeur)",
+          "Différenciant clé identifié : RMS Connect permet de faire tourner les outils constructeur (ACE Service Installer Alfen, web UI ABB, etc.) DEPUIS le bureau OZECAR via tunnel chiffré → maintenance/debug/reconfig sans déplacement, indépendamment du protocole admin de chaque marque",
+          "products.OZRT.ocpp_preconfig_automation : section explicite documentant la décision d'exclusion Phase 1 + le rationale par marque (Schneider eSetup BLE only, Alfen ACE Windows desktop, ABB MyChargePlatform NDA, etc.)",
+          "connectivity._workflow_activation_site : étape 4_backend_auto corrigée pour ne plus mentionner 'config OCPP poussée' + nouvelle étape 5_installateur_borne explicitant que la config borne reste à la charge de l'installateur via app fabricant",
+          "Nouvelle section partnerships_constructeurs : décision Dominique de NE PAS lancer discussions avec Alfen/ABB/Schneider en Phase 1, candidats listés pour Phase 2 si la demande commerciale émerge",
+          "Aucun changement sur les autres sections (Simbase eSIM, RMS Teltonika, pricing 249€ HT, etc.) — la base technique reste identique"
+        ]
+      },
       {
         "date": "2026-05-13",
         "version_from": "1.35",
@@ -923,25 +938,52 @@
         "page": "https://ozecar.fr/activation",
         "qr_url_pattern": "https://ozecar.fr/activation?device=OZRT-XXXX",
         "self_provisioning_installer": true,
-        "_note": "Workflow décrit dans connectivity._workflow_activation_site. L'installateur n'a aucune config manuelle à faire — tout est piloté par le backend OZECAR via API Simbase + Teltonika RMS."
-      },
-      "auto_recovery_sla": {
-        "enabled_when_router_present": true,
-        "trigger": "Monta webhook charger.state_changed → offline",
-        "delay_before_reboot": "60 minutes",
-        "guardrails": [
-          "Max 1 reboot routeur / 24h / site",
-          "Pas de reboot pendant session de charge active (check Monta API)",
-          "Escalade humaine après 3 reboots/mois sur même site (problème matériel suspect)",
-          "Kill-switch global dans state.json"
-        ],
-        "outcome_logging": "HubSpot timeline Deal + log dans state.json + Slack #alerts si échec"
+        "scope": "Provisioning automatique du ROUTEUR uniquement (activation eSIM Simbase + push config réseau OZECAR-NET via Teltonika RMS API). La configuration OCPP de la borne reste de la responsabilité de l'installateur via les outils du fabricant (app mobile, web UI locale selon marque).",
+        "_note_revision_2026_05_13": "Spec initiale (v1.33) mentionnait 'config OCPP poussée automatique via API constructeur ou LAN' — formulation corrigée car la réalité varie radicalement par marque/firmware et nécessiterait des partenariats constructeurs (Alfen, ABB, Schneider) pour être universelle. Phase 1 : zéro promesse de pré-config OCPP automatique."
       },
       "future_variants": {
         "OZRT-PRO": {
           "model": "Teltonika RUT956",
           "_note": "Avec RS485 Modbus pour intégration compteurs Linky, sous-comptage, capteurs additionnels. Reporté Phase 2 selon demande terrain."
         }
+      },
+      "features_phase_1": {
+        "1_connectivity": {
+          "label": "Connectivité 4G plug-and-play",
+          "description": "Routeur eSIM Simbase pré-associé en stock OZECAR, activé au scan QR installateur via /activation. Aucune intervention IT client requise. Multi-opérateurs eSIM SGP.22, antennes externes, failover automatique.",
+          "status": "Phase 1 — coeur produit"
+        },
+        "2_auto_recovery": {
+          "label": "Auto-recovery réseau automatique",
+          "description": "Sur signal Monta webhook charger.state_changed → offline, après 60 min de persistence : diagnostic différentiel (routeur online vs borne offline) puis reboot routeur via Teltonika RMS API si pertinent, re-check Monta. Garde-fous : max 1 reboot/24h/site, pas pendant session de charge active, escalade après 3 reboots/mois.",
+          "status": "Phase 1 — feature SLA principale",
+          "guardrails": [
+            "Max 1 reboot routeur / 24h / site",
+            "Pas de reboot pendant session de charge active (check Monta API avant action)",
+            "Escalade humaine ticket HubSpot après 3 reboots/mois sur même site (problème matériel suspect)",
+            "Kill-switch global dans state.json"
+          ],
+          "outcome_logging": "HubSpot timeline Deal + log état dans state.json + Slack #alerts si auto-recovery échoue"
+        },
+        "3_remote_maintenance_access": {
+          "label": "Accès maintenance distant via RMS Connect",
+          "description": "Depuis le bureau OZECAR (support, dev, CSM), accès LAN à toute borne joignable derrière le routeur via tunnel chiffré Teltonika RMS Connect. Permet : ouvrir interface web/admin locale de la borne, faire tourner les outils constructeur depuis un laptop OZECAR (ex: ACE Service Installer pour Alfen via tunnel), debug avancé, reconfiguration OCPP runtime, mise à jour firmware via outil natif fabricant. Marche pour TOUTE borne joignable en Ethernet derrière le routeur, indépendamment du protocole d'admin du fabricant.",
+          "status": "Phase 1 — différenciant clé",
+          "_note": "C'est ce levier qui justifie 'route différente des concurrents' : pas de partenariat constructeur requis, OZECAR pose son infra réseau sur site et garde la clé d'entrée LAN. Vaut pour Schneider eSetup BLE (via laptop OZECAR connecté en LAN distant), Alfen ACE Service Installer, web UI ABB, etc."
+        }
+      },
+      "ocpp_preconfig_automation": {
+        "phase_1_decision_2026_05_13": "EXCLUE du périmètre Phase 1 (validée par Dominique).",
+        "rationale": [
+          "Schneider EVlink récent (Home Smart, Pro AC NG, Parking) : eSetup mobile BLE only, pas d'interface LAN.",
+          "Alfen Eve : ACE Service Installer = app Windows desktop avec auth par mot de passe leaflet physique par borne, automatisation = reverse-engineering fragile ou partenariat officiel.",
+          "ABB nouvelle gen : pousse vers MyChargePlatform cloud, API LAN restreinte aux intégrateurs sous NDA.",
+          "Wallbox / EVBox / Easee : majoritairement app mobile BLE only sur firmwares récents.",
+          "OCPP 1.6/2.0.1 SetVariables/ChangeConfiguration : utilisable uniquement RUNTIME (une fois borne déjà connectée à un CSMS), pas pour la première config."
+        ],
+        "what_we_do_instead_phase_1": "L'installateur configure la borne via les outils du fabricant (app mobile, web UI, ACE Service Installer) comme aujourd'hui. Le routeur OZRT assure ensuite connectivité + auto-recovery + accès maintenance distant (RMS Connect) pour toute la vie de la borne.",
+        "partnerships_phase_decision": "REFUSÉ pour l'instant (validé Dominique 2026-05-13) : pas de discussions partenariats constructeurs (Alfen, ABB, Schneider) en parallèle. OZECAR reste sur ce qu'on peut faire seuls et enrichit au fil des découvertes terrain.",
+        "future_revisit": "Re-évaluation post-pilote (mois 4-6) : si demande commerciale forte sur pre-config zéro intervention, ouvrir piste partenariats ou reverse-engineering au cas par cas."
       }
     }
   },
@@ -2355,8 +2397,9 @@
       "1_atelier_ozecar": "Pré-association routeur OZRT ↔ eSIM Simbase ICCID dans state.json + monday Stock OZRT. Étiquette QR collée. Aucun boot, aucune activation.",
       "2_envoi_client": "Routeur expédié dans son emballage d'origine + sticker OZECAR sur logo Teltonika.",
       "3_installateur_site": "Branche alim + Ethernet vers borne. Scan QR routeur sur /activation.",
-      "4_backend_auto": "Lookup ICCID → Simbase API activate eSIM → RMS API push config OZECAR-NET + ordre download profil eSIM → routeur OTA → bascule sur SIM Simbase active.",
-      "5_verification": "Page /activation polle RMS API jusqu'à online + Monta API jusqu'à borne online. Activation site complétée."
+      "4_backend_auto": "Lookup ICCID → Simbase API activate eSIM → Teltonika RMS API push config OZECAR-NET (SSID, firewall, VPN/Connect, NTP, syslog, admin LAN désactivé) + ordre download profil eSIM → routeur OTA → bascule sur SIM Simbase active. PAS de pré-config OCPP de la borne : reste à la charge de l'installateur via outils fabricant.",
+      "5_installateur_borne": "Installateur configure la borne via app fabricant (Schneider eSetup, MyEve Alfen, myWallbox, etc.) comme aujourd'hui — le routeur a juste assuré que le réseau est dispo. Une fois la borne configurée vers Monta CSMS, elle apparaît online dans Monta et l'activation site est validée par la page /activation.",
+      "6_verification": "Page /activation polle RMS API jusqu'à online + Monta API jusqu'à borne online. Activation site complétée."
     }
   },
   "hubspot_props_creation_blocked": {
@@ -2422,5 +2465,15 @@
       "created_by": "Claude PM (claude.ai)",
       "alternative_unblock": "Si Dominique régénère PAT HubSpot avec scope crm.schemas.deals.write et le colle dans /api/hubspot.php ligne $token, le PM peut créer les 12 props en 30s via API"
     }
+  },
+  "partnerships_constructeurs": {
+    "_decision_2026_05_13": "REFUSÉ Phase 1 (Dominique). OZECAR reste sur ce qu'il peut faire seul (connectivité + auto-recovery + remote admin via RMS Connect). Enrichissement par découvertes terrain au fil des pilotes.",
+    "candidats_potentiels_phase_2": [
+      "Alfen — API officielle CPO pour intégration OCPP backoffice (existe pour ChargePilot, E-Flux, Enphase)",
+      "ABB — MyChargePlatform Integration Partner program",
+      "Schneider — programme intégrateur EcoStruxure EV Charging",
+      "Wallbox — Partner API pour myWallbox cloud"
+    ],
+    "revisit_trigger": "Si pilote Phase 1 révèle demande commerciale forte sur pre-config zéro intervention installateur, ouvrir discussions au cas par cas avec le constructeur le plus représenté dans le parc."
   }
 }
