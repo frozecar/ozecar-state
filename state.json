@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.35",
-    "updated": "2026-05-12",
+    "version": "1.36",
+    "updated": "2026-05-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-13",
+        "version_from": "1.35",
+        "version_to": "1.36",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "G22 (4 deeplinks BE300020-23) DIAGNOSTIQUE et CLOTURE : impossible de creer un deeplink Monta avec slug force c174231-234 (Monta genere les slugs server-side, verifie par POST /deeplinks qui retourne c208529 aleatoire). 4 items monday board QR annotes ABANDONNE. Monday item G22 11936683060 -> Done. Action future = recyclage references lors prochaine commande QR physiques.",
+          "2 briefs ready-to-consume crees pour Dominique : (1) Brief Claude Code Shopify partner discount snippet (8554b) hostes a https://ozecar.fr/project/briefs/2026-05-13-claude-code-shopify-partner-discount.md (2) Brief HubSpot 12 props deals ready-to-paste (5810b) hostes a https://ozecar.fr/project/briefs/2026-05-13-hubspot-props-12-deals.md",
+          "MCP Make verifie : creation/modification scenarios bloquee par 'No approval received' au niveau du framework MCP. Ne peut donc PAS creer Make 05 / 06 / modifier Make 02 automatiquement. Pivot necessaire : creation manuelle dans Make UI ou injection via blueprint JSON quand l'approval sera donnee.",
+          "Sections ajoutees state.json : g22_4_deeplinks_diagnosis + briefs_ready_to_consume."
+        ]
+      },
       {
         "date": "2026-05-12",
         "version_from": "1.34",
@@ -2375,5 +2387,40 @@
       "3. Creer une Private App HubSpot dediee avec ces scopes et la stocker dans un nouveau proxy hubspot-admin.php"
     ],
     "specs_props": "Specs JSON completes pretes dans le PM Claude — peuvent etre injectees des que le scope est ajoute"
+  },
+  "g22_4_deeplinks_diagnosis": {
+    "date": "2026-05-13",
+    "status": "DIAGNOSTIC_COMPLETE - aucune action technique possible",
+    "context": "4 QR codes physiques BE300020-23 imprimés avec slugs c174231-234. Verification API Monta directe : ces 4 slugs n'existent PAS en base Monta. Test https://ozecar.app/d/c174231 = HTTP 200 page portail Monta vide.",
+    "blocker_technique": "Monta API génère les slugs SERVER-SIDE. POST /deeplinks crée un deeplink mais retourne un slug aléatoire (test: c208529). Impossible de forcer c174231-234.",
+    "next_actions": [
+      "Option 1 : Lors prochaine commande QR physiques, recycler les 4 références monday en les ré-associant à un autre QR physique disponible avec un slug Monta valide",
+      "Option 2 : Réimprimer 4 nouveaux QR codes physiques avec les bons slugs Monta (créés juste avant)"
+    ],
+    "monday_items_updated": [
+      "BE300020",
+      "BE300021",
+      "BE300022",
+      "BE300023"
+    ]
+  },
+  "briefs_ready_to_consume": {
+    "shopify_partner_discount_claude_code": {
+      "url": "https://ozecar.fr/project/briefs/2026-05-13-claude-code-shopify-partner-discount.md",
+      "size_bytes": 8554,
+      "destination": "Claude Code Shopify (Dominique colle le brief dans sa session terminal)",
+      "purpose": "Création snippet ozecar-partner-discount.liquid + include dans templates/cart.liquid pour appliquer une bannière de remise auto selon customer.tags (partner:certified/apporteur/revendeur). Mécanisme cart.attributes consommé post-commande par Make 04.",
+      "created_at": "2026-05-13",
+      "created_by": "Claude PM (claude.ai)"
+    },
+    "hubspot_12_props_deals_manual": {
+      "url": "https://ozecar.fr/project/briefs/2026-05-13-hubspot-props-12-deals.md",
+      "size_bytes": 5810,
+      "destination": "Dominique (action manuelle HubSpot UI ~10min) OU regenerate PAT + PM relance script",
+      "purpose": "Specs ready-to-paste des 12 props Deal HubSpot manquantes (G03 + PART-02) : tracking_number, onsite_config_requested, monta_team_id, monta_site_id, zaptec_installation_id, zaptec_circuit_id, zaptec_charger_id, deal_for_partner, partner_referrer_id, partner_referral_source, partner_bounty_amount, partner_bounty_paid_at. Property group 'OZECAR Integration' à créer d'abord.",
+      "created_at": "2026-05-13",
+      "created_by": "Claude PM (claude.ai)",
+      "alternative_unblock": "Si Dominique régénère PAT HubSpot avec scope crm.schemas.deals.write et le colle dans /api/hubspot.php ligne $token, le PM peut créer les 12 props en 30s via API"
+    }
   }
 }
