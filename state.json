@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.38",
+    "version": "1.39",
     "updated": "2026-05-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-13",
+        "version_from": "1.38",
+        "version_to": "1.39",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Slides v4: ajout photo kit OZECAR (image7 deck v1.9) sur slide A",
+          "Slides v4: ajout 4 icônes SVG custom par carte sur slide B",
+          "Slides v4: Monta nommé explicitement (CPMS layer tag + note investisseur + question VC + card 04)",
+          "Visuels présents par-slide comme dans deck v1.9 original"
+        ]
+      },
       {
         "date": "2026-05-13",
         "version_from": "1.37",
@@ -2360,6 +2372,25 @@
         "Slide B fond ink full au lieu de blanc, 4 colonnes séparées par lignes (pas cartes border)",
         "Pull-quote en serif italique avec border violet/jaune (façon édito magazine)",
         "Top/bottom bars système avec OZECAR / FUNDRAISE 2026 + SLIDE 01"
+      ]
+    },
+    "new_slides_v3_with_visuals": {
+      "created": "2026-05-13",
+      "iteration": "v4 - design éditorial avec photo kit OZECAR + icônes SVG + Monta explicite",
+      "files": [
+        "ozecar-slides-iceberg-moat.html",
+        "ozecar-slides-iceberg-moat.pdf"
+      ],
+      "visuels_ajoutés": {
+        "slide_A": "Photo composition kit OZECAR (app + OZECARD + ONE + dashboard + SIM + QR) extraite du deck v1.9 image7.png, en background côté ink",
+        "slide_B": "4 icônes SVG custom par carte: réseau triangulaire (NETWORK), carte/dashboard (PROCESS), document (CONTRACT), flèches doubles (OPTIONALITY)"
+      },
+      "monta_nommé": true,
+      "monta_mentions": [
+        "Slide A — Tag CPMS LAYER: 'Monta · 300k PDC partner SaaS · SWAP 6-10 wks'",
+        "Slide A — Note investisseur: 'Un concurrent peut racheter Monta demain matin'",
+        "Slide B — Question VC: '« Et si un concurrent rachète Monta demain matin ? »'",
+        "Slide B — Card 04 Optionality: 'Monta swappable en 6-10 semaines'"
       ]
     }
   },
