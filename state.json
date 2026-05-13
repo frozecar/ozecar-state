@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.37",
+    "version": "1.38",
     "updated": "2026-05-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-13",
+        "version_from": "1.37",
+        "version_to": "1.38",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "BRIEF SHOPIFY PARTNER DISCOUNT REJETE. Claude Code a challenge le brief : (1) scheme business invente par PM (Certified/Apporteur/Revendeur 10-20% au lieu du vrai Demarrage/Bronze/Argent/Or 25-33%), (2) mecanisme propose UX-regressif (cart.attribute + refund post-paiement au lieu du /discount/{code} natif Shopify qui marche deja).",
+          "Decision : option (A) garder l'existant Shopify, supprimer le snippet orphelin ozecar-partner-discount.liquid dupliquant la logique deja inlinee dans sections/ozecar-cart.liquid.",
+          "Lecon PM enregistree dans briefs_ready_to_consume.shopify_partner_discount_claude_code.lesson_for_pm : avant brief technique, LIRE le code existant + VERIFIER le scheme business dans state.json. Ne pas inventer de valeurs business meme plausibles."
+        ]
+      },
       {
         "date": "2026-05-13",
         "version_from": "1.36",
@@ -2454,7 +2465,10 @@
       "destination": "Claude Code Shopify (Dominique colle le brief dans sa session terminal)",
       "purpose": "Création snippet ozecar-partner-discount.liquid + include dans templates/cart.liquid pour appliquer une bannière de remise auto selon customer.tags (partner:certified/apporteur/revendeur). Mécanisme cart.attributes consommé post-commande par Make 04.",
       "created_at": "2026-05-13",
-      "created_by": "Claude PM (claude.ai)"
+      "created_by": "Claude PM (claude.ai)",
+      "status": "REJECTED_2026-05-13",
+      "rejection_reason": "Brief facticement faux. Le PM (Claude claude.ai) a invente le scheme Certified/Apporteur/Revendeur a 10-20% sans verifier l'existant. Le vrai scheme contractuel est Demarrage 25% / Bronze 28% / Argent 30% / Or 33% (cf partner_program.installer_certified.tier_thresholds). Apporteurs ne touchent PAS de remise cart - ils touchent une commission par client signe (30/100 EUR). Le mecanisme Shopify natif /discount/{code} marche deja et est UX-correct. Brief a NE PAS appliquer. Decision Dominique + Claude Code : option (A) garder existant, supprimer snippet orphelin.",
+      "lesson_for_pm": "Avant d'ecrire un brief technique, le PM DOIT lire le code existant ET verifier le scheme business dans state.json. Ne pas inventer de valeurs business meme plausibles."
     },
     "hubspot_12_props_deals_manual": {
       "url": "https://ozecar.fr/project/briefs/2026-05-13-hubspot-props-12-deals.md",
