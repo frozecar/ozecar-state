@@ -1,12 +1,30 @@
 {
   "_meta": {
-    "version": "1.40",
+    "version": "1.41",
     "updated": "2026-05-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-13",
+        "version_from": "1.40",
+        "version_to": "1.41",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "DECISION MAJEURE Dominique : extension catalogue OZECAR avec gamme DC Sungrow (3 modeles)",
+          "Nouvelle section 'sungrow_catalog' : 3 modeles (IDC30E achat direct, IDC50-80 devis, IDC120-180 devis)",
+          "Politique pricing : marges variables +35% sur DC30 / +30% sur 50-80 / +25% sur 120-180 (Dominique decision)",
+          "Politique uniforme : MID systematique + cable le plus puissant + Kit OZECAR Site+Borne inclus + OZRT-LITE inclus dans TOUTES les bornes Sungrow",
+          "OZRT reste OPTIONNEL pour Zaptec (certains ont eSIM native, decision Dominique)",
+          "Architecture Shopify : Sungrow IDC30E dans 'Bornes' self-service, IDC50-80 et IDC120-180 dans section dediee 'Bornes DC haute puissance' funnel devis",
+          "Funnel devis 50+ kW : form HubSpot deal pipeline Supervision etape 'Devis DC >= 80 kW' avec tag puissance",
+          "Prix de vente OZ calcules : DC30 7 250 EUR + 78 EUR Kit + 249 EUR OZRT = 7 577 EUR HT panier base. DC50-80 a partir de 12 350 EUR. DC120-180 a partir de 25 350 EUR.",
+          "Partenariat Sungrow deja actif (OZECAR a deja revendu des bornes DC Sungrow)",
+          "Phase 2 Shopify (Claude Code) lancee 'maintenant' par Dominique - mais PM recommande d'attendre que les 8 actions admin softlaunch + naming migration soient stabilisees avant pour eviter conflits theme"
+        ]
+      },
       {
         "date": "2026-05-13",
         "version_from": "1.39",
@@ -2558,153 +2576,204 @@
     "revisit_trigger": "Si pilote Phase 1 révèle demande commerciale forte sur pre-config zéro intervention installateur, ouvrir discussions au cas par cas avec le constructeur le plus représenté dans le parc."
   },
   "sungrow_catalog": {
-    "_note": "Gamme DC Sungrow chez OZECAR. Decision Dominique 2026-05-13 : 3 modeles avec configurateurs, IDC30E en vente directe + IDC50-80E et IDC120-180E sur devis. Politique : MID systematique + cable le plus puissant pour chaque modele. Kit OZECAR (Site + Borne) + OZRT inclus automatiquement.",
-    "partner_status": "OZECAR deja partenaire Sungrow, deja revendu plusieurs bornes DC",
-    "added_2026_05_13": true,
-    "policy": {
-      "mid_systematic": true,
-      "max_power_cable_each_model": true,
-      "kit_ozecar_included_automatically": true,
-      "ozrt_router_included_automatically": true,
-      "ozrt_optional_on_zaptec_ac": true,
-      "_note_ozrt": "OZRT systematique sur Sungrow car bornes DC sans eSIM native. Optionnel sur Zaptec (eSIM souvent native)."
+    "_note": "Decision Dominique 2026-05-13 : extension catalogue OZECAR avec gamme DC Sungrow (3 modeles). Politique uniforme : MID systematique + cable le plus puissant pour chaque modele.",
+    "decision_par": "Dominique Manfredi",
+    "decision_date": "2026-05-13",
+    "partnership_status": "Partenaire Sungrow actif - OZECAR a deja revendu des bornes DC Sungrow",
+    "perimetre_v1": "3 modeles : IDC30E (achat direct) + gamme 50-80 (devis) + gamme 120-180 (devis)",
+    "politique_pricing": {
+      "marge_dc_30": "+35%",
+      "marge_dc_moyenne_50_80": "+30%",
+      "marge_dc_fast_120_180": "+25%",
+      "_rationale": "Marges decroissantes avec le ticket : sur DC180E a 24 440 EUR achat, +25% = 6 110 EUR de marge brute absolue tres confortable. Sur DC30 a 5 356 EUR, +35% laisse 1 875 EUR pour couvrir le support self-service."
     },
-    "products": {
+    "politique_kit_inclus": "Kit OZECAR (Site + 1 Borne par PDC) INCLUS automatiquement dans toutes les bornes Sungrow (politique uniforme, comme Zaptec). Pour Zaptec, OZRT reste OPTIONNEL car certains modeles ont eSIM native.",
+    "politique_routeur_inclus": "Routeur OZECAR (OZRT-LITE) INCLUS systematiquement dans TOUTES les bornes Sungrow (Sungrow DC n'a pas de slot SIM/eSIM native, le routeur est obligatoire pour la supervision). Pour Zaptec, OZRT optionnel.",
+    "modeles": {
       "IDC30E": {
-        "display_name_client": "Sungrow IDC30E",
+        "display_name": "Sungrow IDC30E — Borne DC 30 kW",
+        "shopify_funnel": "achat_direct_self_service",
+        "shopify_collection": "bornes-dc",
         "puissance_kw": 30,
-        "type": "DC compact wallbox",
-        "achat_ddp_eur_ht": {
-          "base_mid_5m": 5356,
-          "mid_tpe_5m": 6032,
-          "non_mid_5m_legacy": 4680
-        },
-        "vente_ozecar_eur_ht": {
-          "base_mid_5m": 7250,
-          "mid_tpe_5m": 8150
-        },
-        "margin_percent": 35,
-        "accessoires_eur_ht": {
-          "piedestal_BB005802": {
-            "achat": 210,
-            "vente": 295,
-            "margin": 40
+        "connecteurs": "1x CCS2 5m",
+        "metrologie": "MID certifie FR (incluse)",
+        "configurations_vente": [
+          {
+            "sku_shopify": "SUNGROW-IDC30E-MID",
+            "ref_fournisseur": "ACH00086",
+            "achat_ht": 5356,
+            "marge_pct": 35,
+            "vente_ht_oz": 7250,
+            "config_label": "MID standard (sans TPE)"
           },
-          "chariot_mobile_BB006025": {
-            "achat": 575,
-            "vente": 775,
-            "margin": 35
-          },
-          "compteur_DLM_UT000156": {
-            "achat": 300,
-            "vente": 390,
-            "margin": 30
+          {
+            "sku_shopify": "SUNGROW-IDC30E-MID-TPE",
+            "ref_fournisseur": "ACH00085",
+            "achat_ht": 6032,
+            "marge_pct": 35,
+            "vente_ht_oz": 8150,
+            "config_label": "MID + TPE (paiement CB integre)"
           }
-        },
-        "warranty_extensions": {
-          "5_year_an_4_5": "+7,5% du prix de vente par an",
-          "10_year_an_6_10": "+10% du prix de vente par an"
-        },
-        "shopify_funnel": "Vente directe avec mini-configurateur (TPE / Montage murale-piedestal-chariot / DLM / Garantie)",
-        "shopify_sku_proposed": "SUNGROW-IDC30E",
-        "kit_included": "Kit OZECAR Site + 1 Borne (78 EUR HT) ajoute automatiquement au panier",
-        "ozrt_included": "Routeur OZECAR-LITE (249 EUR HT) ajoute automatiquement au panier",
-        "use_cases": [
-          "Parking commercial (sessions 1-2h)",
-          "Atelier reparation auto",
-          "Petit hub urbain",
-          "Flotte legere"
+        ],
+        "accessoires_addons": [
+          {
+            "sku_shopify": "SUNGROW-IDC30E-PIED",
+            "ref_fournisseur": "BB005802",
+            "label": "Piedestal IDC30E",
+            "achat_ht": 210,
+            "marge_pct": 40,
+            "vente_ht_oz": 295
+          },
+          {
+            "sku_shopify": "SUNGROW-IDC30E-CHARIOT",
+            "ref_fournisseur": "BB006025",
+            "label": "Chariot mobile IDC30E (uniquement avec IDC30E)",
+            "achat_ht": 575,
+            "marge_pct": 35,
+            "vente_ht_oz": 775
+          },
+          {
+            "sku_shopify": "SUNGROW-IDC30E-DLM",
+            "ref_fournisseur": "UT000156",
+            "label": "Compteur DLM (load balancing)",
+            "achat_ht": 300,
+            "marge_pct": 30,
+            "vente_ht_oz": 390
+          }
+        ],
+        "panier_type_base": {
+          "borne_idc30e_mid": 7250,
+          "routeur_ozrt_lite_inclus": 249,
+          "kit_ozecar_site_inclus": 49,
+          "kit_ozecar_borne_inclus": 29,
+          "total_ht_minimum": 7577,
+          "_note": "Total = 7 577 EUR HT borne nue MID. Options TPE/pied/chariot/DLM en sus."
+        }
+      },
+      "IDC_50_80": {
+        "display_name": "Sungrow Gamme DC 50-80 kW",
+        "shopify_funnel": "devis_lead_qualifie",
+        "shopify_collection": "bornes-dc-puissance",
+        "puissance_range_kw": "49.9 a 80",
+        "connecteurs": "2x CCS2 5m",
+        "metrologie": "MID certifie FR (incluse)",
+        "affichage_prix": "A partir de 12 350 EUR HT",
+        "configurations_devis": [
+          {
+            "sku_interne": "SUNGROW-IDC49E-MID",
+            "puissance": 49.9,
+            "achat_ht": 9490,
+            "marge_pct": 30,
+            "vente_ht_oz": 12350,
+            "config_label": "IDC49E - 49,9 kW - 2x CCS2 200A 5m - MID"
+          },
+          {
+            "sku_interne": "SUNGROW-IDC60E-MID",
+            "puissance": 60,
+            "achat_ht": 10480,
+            "marge_pct": 30,
+            "vente_ht_oz": 13650,
+            "config_label": "IDC60E - 60 kW - 2x CCS2 200A 5m - MID"
+          },
+          {
+            "sku_interne": "SUNGROW-IDC80E-MID",
+            "puissance": 80,
+            "achat_ht": 11470,
+            "marge_pct": 30,
+            "vente_ht_oz": 14950,
+            "config_label": "IDC80E - 80 kW - 2x CCS2 250A 5m - MID"
+          }
+        ],
+        "options_devis": [
+          "TPE (paiement CB integre)",
+          "Pied/socle galvanise",
+          "Cable rallonge 7m"
         ]
       },
-      "IDC50-80E_segment": {
-        "display_name_client": "Sungrow IDC 49 a 80 kW",
-        "puissance_kw_range": "49,9 - 80",
-        "type": "DC moyenne puissance",
-        "_note_periode": "1 produit visible avec configurateur de puissance (49E, 60E, 80E) + options MID+TPE",
-        "configurations": {
-          "IDC49E_mid_5m_200A": {
-            "achat": 9490,
-            "vente": 12350,
-            "margin": 30
+      "IDC_120_180": {
+        "display_name": "Sungrow Gamme DC Fast 120-180 kW",
+        "shopify_funnel": "devis_lead_qualifie",
+        "shopify_collection": "bornes-dc-puissance",
+        "puissance_range_kw": "120 a 180",
+        "connecteurs": "2x CCS2 5m (3m / 7m en option)",
+        "metrologie": "MID certifie FR (incluse)",
+        "affichage_prix": "A partir de 25 350 EUR HT",
+        "configurations_devis": [
+          {
+            "sku_interne": "SUNGROW-IDC120E-MID-250A",
+            "ref_fournisseur": "ACH0011",
+            "puissance": 120,
+            "achat_ht": 20280,
+            "marge_pct": 25,
+            "vente_ht_oz": 25350,
+            "config_label": "IDC120E - 120 kW - 2x CCS2 250A 5m - MID"
           },
-          "IDC60E_mid_5m_200A": {
-            "achat": 10480,
-            "vente": 13650,
-            "margin": 30
+          {
+            "sku_interne": "SUNGROW-IDC120E-MID-TPE-250A",
+            "ref_fournisseur": "ACH0012",
+            "puissance": 120,
+            "achat_ht": 21320,
+            "marge_pct": 25,
+            "vente_ht_oz": 26650,
+            "config_label": "IDC120E - 120 kW - 2x CCS2 250A 5m - MID + TPE"
           },
-          "IDC80E_mid_5m_250A": {
-            "achat": 11470,
-            "vente": 14950,
-            "margin": 30
+          {
+            "sku_interne": "SUNGROW-IDC180E-MID-400A",
+            "ref_fournisseur": "ACH00016",
+            "puissance": 180,
+            "achat_ht": 24440,
+            "marge_pct": 25,
+            "vente_ht_oz": 30550,
+            "config_label": "IDC180E - 180 kW - 2x CCS2 400A 5m - MID"
+          },
+          {
+            "sku_interne": "SUNGROW-IDC180E-MID-TPE-400A",
+            "ref_fournisseur": "ACH00135",
+            "puissance": 180,
+            "achat_ht": 25480,
+            "marge_pct": 25,
+            "vente_ht_oz": 31850,
+            "config_label": "IDC180E - 180 kW - 2x CCS2 400A 5m - MID + TPE"
           }
-        },
-        "shopify_funnel": "Page produit 'A partir de 12 350 EUR HT' + configurateur de qualification + bouton 'Demander un devis'",
-        "shopify_sku_proposed": "SUNGROW-IDC50-80E",
-        "hubspot_pipeline_step": "Devis DC 50-80 kW (a creer dans pipeline Supervision ou nouveau pipeline 'Devis DC')",
-        "kit_included": "Kit OZECAR Site + 2 Bornes (107 EUR HT) - 2 connecteurs CCS2 par defaut",
-        "ozrt_included": "Routeur OZECAR-LITE (249 EUR HT)",
-        "use_cases": [
-          "Hub urbain de proximite",
-          "Flotte logistique legere",
-          "Hotellerie/restauration mixte"
-        ]
-      },
-      "IDC120-180E_segment": {
-        "display_name_client": "Sungrow IDC 120 a 180 kW",
-        "puissance_kw_range": "120 - 180",
-        "type": "DC fast",
-        "_note_periode": "1 produit visible avec configurateur (120E vs 180E) + options MID+TPE + cable 5m/7m",
-        "configurations": {
-          "IDC120E_mid_5m_250A": {
-            "achat": 20280,
-            "vente": 25350,
-            "margin": 25
-          },
-          "IDC120E_mid_tpe_5m_250A": {
-            "achat": 21320,
-            "vente": 26650,
-            "margin": 25
-          },
-          "IDC180E_mid_5m_400A": {
-            "achat": 24440,
-            "vente": 30550,
-            "margin": 25
-          },
-          "IDC180E_mid_tpe_5m_400A": {
-            "achat": 25480,
-            "vente": 31850,
-            "margin": 25
-          },
-          "option_cable_7m_2x250A": {
-            "achat": 580,
-            "vente": 725,
-            "margin": 25
-          }
-        },
-        "shopify_funnel": "Page produit 'A partir de 25 350 EUR HT' + configurateur de qualification + bouton 'Demander un devis'",
-        "shopify_sku_proposed": "SUNGROW-IDC120-180E",
-        "hubspot_pipeline_step": "Devis DC 120-180 kW (a creer dans pipeline Supervision ou nouveau pipeline 'Devis DC')",
-        "kit_included": "Kit OZECAR Site + 2 Bornes (107 EUR HT)",
-        "ozrt_included": "Routeur OZECAR-LITE (249 EUR HT)",
-        "use_cases": [
-          "Station publique autoroute/peripherique",
-          "Depot flotte poids leger/moyen",
-          "Hub livraison logistique"
+        ],
+        "options_devis": [
+          "TPE (paiement CB integre)",
+          "Cable rallonge 7m (option +725 EUR HT)",
+          "Extension garantie 5 ans (+7.5%/an x 2 ans)",
+          "Extension garantie 10 ans (+10%/an x 5 ans)"
         ]
       }
     },
-    "shopify_navigation_decision": {
-      "mega_menu_structure": [
-        "Bornes AC : Zaptec Pro + Zaptec GO 2",
-        "Bornes DC (achat direct) : Sungrow IDC30E",
-        "Accessoires : Kit OZECAR (configurateur), OZRT 4G, Colonnes Zaptec, Cartes RFID",
-        "Section separee 'Bornes DC haute puissance' (sur devis) : IDC50-80E + IDC120-180E"
-      ],
-      "rationale": "Separe self-service (achat direct) des bornes a devis. Coherent avec le funnel commercial."
+    "extensions_garantie": {
+      "_note": "Applicable a tous les modeles DC Sungrow",
+      "garantie_standard": "3 ans constructeur",
+      "extension_5_ans": "7.5% du prix de vente par an, sur annee 4 et 5",
+      "extension_10_ans": "10% du prix de vente par an, sur annee 6 a 10"
     },
-    "timing": {
-      "phase_2_shopify_claude_code": "Fin mai 2026 (apres softlaunch Shopify + naming migration stabilises)",
-      "phase_1_state_brief_monday": "2026-05-13 (en cours)"
-    }
+    "architecture_shopify": {
+      "mega_menu": {
+        "bornes_ac": [
+          "Zaptec Pro 22 kW",
+          "Zaptec GO 2 22 kW"
+        ],
+        "bornes_dc_self_service": [
+          "Sungrow IDC30E"
+        ],
+        "bornes_dc_devis": [
+          "Sungrow IDC49E-80E (50-80 kW)",
+          "Sungrow IDC120E-180E (120-180 kW)"
+        ]
+      },
+      "section_separee_navigation": "Bornes DC haute puissance (sur devis)",
+      "funnel_devis_routing": "Submit form HubSpot deal pipeline Supervision, etape 'Devis DC >= 80 kW', tag custom indiquant la puissance demandee"
+    },
+    "next_steps": [
+      "[USER Dominique] Finaliser les 8 actions admin Shopify softlaunch d'abord",
+      "[USER Dominique] Donner GO Claude Code pour Phase 2 Sungrow apres softlaunch stabilise",
+      "[CLAUDE CODE] Phase 2 : creation 3 fiches produits Sungrow, configurateur 30 kW, refonte mega-menu, landing pages devis 50-80 et 120-180",
+      "[PM] Brief Claude Code 'SUNGROW-BRIEF-CLAUDE-CODE.md' a rediger en parallele",
+      "[PM] Update HubSpot pipeline Supervision : ajouter etape 'Devis DC >= 80 kW'",
+      "[PM] Verifier que Make 01 (Shopify -> HubSpot) gere bien les nouveaux SKU Sungrow"
+    ]
   }
 }
