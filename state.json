@@ -1,12 +1,27 @@
 {
   "_meta": {
-    "version": "1.48",
+    "version": "1.49",
     "updated": "2026-05-14",
-    "updated_by": "Claude fundraise (claude.ai)",
+    "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-14",
+        "version_from": "1.48",
+        "version_to": "1.49",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Audit complet du board orchestration 18411921057 par PM. 4 vraies anomalies corrigees :",
+          "(1) WP00 'Refonte site ozecar.fr parent' : long_text rafraichi avec l'etat reel 2026-05-14 (WP-D5/D6/D7/D8/MARQUE-BLANCHE faits, WP01/WP02 bloques SSH, WP05/06/07/09/10/11 reste, vocabulaire v1.42 a respecter).",
+          "(2) G14 'Pages installateurs - programme Certified' : long_text obsolete (mentionnait grille bounty 30-60%% v1.41 abandonnee) remplace par grille v1.42 (spiff one-shot fixe : Installateur 30/130, Apporteur 20/80, Revendeur 25/100, Distributeur 15/60).",
+          "(3) WP09 'Page Kit OZECAR' : long_text remplace 'Master 49eur / Unit 29eur' (vocabulaire INTERDIT v1.42) par 'Kit Site 49EUR / Kit Borne 29EUR'.",
+          "(4) SHOPIFY-01 status 'Fait' -> 'Done' pour coherence du board.",
+          "G35 (colonne Photo station Done) : ajout note pipeline expliquant que G34+G35 prets mais G19 manquant pour consommer.",
+          "Faux positifs identifies : G36 (enveloppe Colissimo) et G37 (carte welcome A6) restent correctement Todo - aucun design valide source dans state.json."
+        ]
+      },
       {
         "date": "2026-05-14",
         "version_from": "1.47",
