@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.42",
+    "version": "1.43",
     "updated": "2026-05-14",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-14",
+        "version_from": "1.42",
+        "version_to": "1.43",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Validation Dominique de la grille partner_program v1.42 (bounty spiff one-shot + remises kits paliers Installateur + remises Revendeur/Distributeur). Ajout _validated_by_dominique_at='2026-05-14' et _validation_note dans partner_program.bounty_grid_v1_42_final.",
+          "Plus de modifications attendues sur la grille v1.42 sauf nouveaux contrats C3 (Revendeur) et C4 (Distributeur) qui restent à construire (status: to_build_after_v1_42)."
+        ]
+      },
       {
         "date": "2026-05-14",
         "version_from": "1.41",
@@ -1034,7 +1044,9 @@
       "previous_errors_corrected": [
         "v1.0-1.41 : bounty_pct 30/50/60% × 12 mois du forfait annuel → consommait 60-100% de la marge brute annuelle. Insoutenable.",
         "Corrigé en v1.42 : grille spiff fixe one-shot, indépendante du forfait, calibrée sur CAC blended."
-      ]
+      ],
+      "_validated_by_dominique_at": "2026-05-14",
+      "_validation_note": "Grille bounty + remises kits confirmées par Dominique 2026-05-14 alignées avec contrats en main. Plus de modifications attendues sur cette v1.42 finale (sauf nouveaux contrats C3 Revendeur et C4 Distributeur à construire séparément)."
     }
   },
   "products": {
