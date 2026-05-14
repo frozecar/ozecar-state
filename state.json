@@ -1,12 +1,27 @@
 {
   "_meta": {
-    "version": "1.41",
-    "updated": "2026-05-13",
+    "version": "1.42",
+    "updated": "2026-05-14",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-14",
+        "version_from": "1.41",
+        "version_to": "1.42",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CORRECTION MAJEURE partner_program : suppression bounty_pct (% × forfait) remplacée par grille spiff one-shot fixe",
+          "installer_certified : tier_thresholds nettoyés (bounty_pct supprimé) + ajout bounty_per_signed_client_eur (Essential 30€, Pro+ 130€)",
+          "affiliate : commission_per_signed_client_eur Pro+ 100€->80€ (cohérence grille blended)",
+          "Ajout reseller_b2b (Revendeur, Essential 25€/Pro+ 100€) — status: to_build_after_v1_42",
+          "Ajout distributor_b2b (Distributeur, Essential 15€/Pro+ 60€) — status: to_build_after_v1_42",
+          "Ajout partner_program.bounty_grid_v1_42_final : synthèse 4 canaux + rationale CAC blended ~200€",
+          "Justification : CAC simulé OZECAR ~200€/client (organique, pas de paid), bounty calibrée 50-65% du CAC, payback < 3 mois marge brute"
+        ]
+      },
       {
         "date": "2026-05-13",
         "version_from": "1.40",
@@ -812,28 +827,24 @@
           "min_volume": 0,
           "max_volume": 4,
           "kit_discount_pct": 25,
-          "bounty_pct": 0,
           "label": "Démarrage"
         },
         "tier_1_bronze": {
           "min_volume": 5,
           "max_volume": 9,
           "kit_discount_pct": 28,
-          "bounty_pct": 30,
           "label": "Bronze"
         },
         "tier_2_argent": {
           "min_volume": 10,
           "max_volume": 19,
           "kit_discount_pct": 30,
-          "bounty_pct": 50,
           "label": "Argent"
         },
         "tier_3_or": {
           "min_volume": 20,
           "max_volume": null,
           "kit_discount_pct": 33,
-          "bounty_pct": 60,
           "label": "Or"
         }
       },
@@ -844,7 +855,15 @@
       "auto_invoice_legal_basis": "article 289-I-2 CGI",
       "ec_validation_required": true,
       "engagement_initial_months": 12,
-      "renewal": "tacite par périodes de 12 mois, dénonciation par LRAR 60 jours avant échéance"
+      "renewal": "tacite par périodes de 12 mois, dénonciation par LRAR 60 jours avant échéance",
+      "bounty_per_signed_client_eur": {
+        "essential": 30,
+        "pro": 130,
+        "pro_plus": 130,
+        "transit": 130,
+        "_note": "Spiff one-shot versé à l'activation du client (anti-churn 90j). Validé v1.42 après correction de la grille bounty_pct erronée."
+      },
+      "_correction_note_v1_42": "bounty_pct supprimé des tiers (était 0/30/50/60%, transformait la bounty en % du forfait annuel — modèle insoutenable). Remplacé par bounty fixe par client signé, indépendante du tier. Le tier ne pilote plus que la remise kits (kit_discount_pct)."
     },
     "affiliate": {
       "label": "Apporteur d'affaires OZECAR",
@@ -853,10 +872,11 @@
       "pandadoc_template_uuid": "TODO_TO_BE_CREATED_VIA_MAKE_ONESHOT",
       "contract_template_md_file": "C2-apporteur-affaires.md",
       "commission_per_signed_client_eur": {
-        "essential": 30,
-        "pro": 100,
-        "pro_plus": 100,
-        "transit": 100
+        "essential": 20,
+        "pro": 80,
+        "pro_plus": 80,
+        "transit": 80,
+        "_note": "Ajusté v1.42 : 100€->80€ Pro+ pour cohérence avec grille blended (Apporteur < Revendeur < Installateur). Apporteur fait intro seule, sans vente ni pose."
       },
       "payment_delay_days": 30,
       "min_paid_months_for_payment": 1,
@@ -913,7 +933,109 @@
         "type": "a_clarifier",
         "_note": "Mentionné dans projet OZECAR existant - relation à clarifier"
       }
-    ]
+    ],
+    "reseller_b2b": {
+      "label": "Revendeur OZECAR",
+      "model": "B_revendeur",
+      "target_profile": "Sites e-commerce IRVE, magasins spécialisés, intégrateurs énergie",
+      "status": "to_build_after_v1_42",
+      "contract_template_md_file": "C3-revendeur.md (à créer)",
+      "kit_discount_pct": 25,
+      "bundle_discount_pct": 10,
+      "bounty_per_signed_client_eur": {
+        "essential": 25,
+        "pro": 100,
+        "pro_plus": 100,
+        "transit": 100
+      },
+      "anti_churn_days": 90,
+      "min_paid_months_for_bounty": 3,
+      "bounty_calculation_date": "10 janvier N+1",
+      "bounty_payment_deadline": "31 janvier N+1",
+      "auto_invoice_legal_basis": "article 289-I-2 CGI",
+      "_note": "Modèle revendeur sans pose ni SAV N2 — fait intro + vente. Bounty entre Apporteur (80€) et Installateur (130€)."
+    },
+    "distributor_b2b": {
+      "label": "Distributeur OZECAR",
+      "model": "B_distributeur",
+      "target_profile": "Centrales d'achat, grossistes électricité (volume)",
+      "status": "to_build_after_v1_42",
+      "contract_template_md_file": "C4-distributeur.md (à créer)",
+      "kit_discount_tiers": {
+        "tier_1": {
+          "min_volume": 50,
+          "max_volume": 99,
+          "kit_discount_pct": 40
+        },
+        "tier_2": {
+          "min_volume": 100,
+          "max_volume": 199,
+          "kit_discount_pct": 45
+        },
+        "tier_3": {
+          "min_volume": 200,
+          "max_volume": null,
+          "kit_discount_pct": 50
+        }
+      },
+      "bundle_discount_pct": 20,
+      "bounty_per_signed_client_eur": {
+        "essential": 15,
+        "pro": 60,
+        "pro_plus": 60,
+        "transit": 60
+      },
+      "anti_churn_days": 90,
+      "min_paid_months_for_bounty": 3,
+      "bounty_calculation_date": "10 janvier N+1",
+      "bounty_payment_deadline": "31 janvier N+1",
+      "auto_invoice_legal_basis": "article 289-I-2 CGI",
+      "_note": "Bounty plus basse car le distributeur se rémunère majoritairement sur la remise kits (-40 à -50%) et le volume. Pas de relation client directe."
+    },
+    "bounty_grid_v1_42_final": {
+      "_decided_at": "2026-05-14",
+      "_model_type": "Spiff one-shot par client signé (pas de % récurrent)",
+      "_validation_rule": "min_paid_months_for_bounty=3, anti_churn 90 jours, versement annuel groupé 31 janvier N+1",
+      "_cac_reference": "CAC blended OZECAR estimé ~200€/client (canaux organiques SEO+réseau, pas de paid). Bounty calibrée 50-65% du CAC pour rester sous le payback 12 mois marge brute.",
+      "grid": {
+        "C2_apporteur": {
+          "essential": 20,
+          "pro": 80,
+          "pro_plus": 80,
+          "transit": 80
+        },
+        "C3_revendeur": {
+          "essential": 25,
+          "pro": 100,
+          "pro_plus": 100,
+          "transit": 100
+        },
+        "C1_installateur": {
+          "essential": 30,
+          "pro": 130,
+          "pro_plus": 130,
+          "transit": 130
+        },
+        "C4_distributeur": {
+          "essential": 15,
+          "pro": 60,
+          "pro_plus": 60,
+          "transit": 60
+        }
+      },
+      "rationale": [
+        "Installateur le mieux payé : fait intro + vente + pose + SAV N2 (économise une équipe terrain à OZECAR)",
+        "Revendeur intermédiaire : intro + vente, sans pose ni SAV terrain",
+        "Apporteur en bas de C2 : intro seule, basse intensité commerciale",
+        "Distributeur en bas : pas de relation client, rémunération principale via remise kits -40/-50%",
+        "Marge brute LTV (4 ans, 6 PDC moyens, forfait Pro) : 2851€. Spiff Installateur 130€ = 4.6% LTV.",
+        "Payback Installateur sur Pro 6 PDC : 2.2 mois de marge brute. Très sain."
+      ],
+      "previous_errors_corrected": [
+        "v1.0-1.41 : bounty_pct 30/50/60% × 12 mois du forfait annuel → consommait 60-100% de la marge brute annuelle. Insoutenable.",
+        "Corrigé en v1.42 : grille spiff fixe one-shot, indépendante du forfait, calibrée sur CAC blended."
+      ]
+    }
   },
   "products": {
     "OZKM": {
@@ -1303,7 +1425,7 @@
     "upload_photo_php": {
       "url": "https://ozecar.fr/api/upload-photo.php",
       "purpose": "Upload photo station finale depuis formulaire activation (G19). API Monta partner ne supporte pas l'upload photo.",
-      "auth": "Bearer -w_GRavF4OmBd2WtRGYOoPVJFhxa94Ntj9i0gbJmULg (meme que wp-deploy)",
+      "auth": "Bearer <REDACTED> (meme que wp-deploy)",
       "deployed_at": "2026-05-12",
       "deployed_by": "Claude PM (claude.ai)",
       "accepts": [
