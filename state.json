@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.44",
+    "version": "1.45",
     "updated": "2026-05-14",
-    "updated_by": "Claude PM (claude.ai)",
+    "updated_by": "Claude fundraise (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-14",
+        "version_from": "1.44",
+        "version_to": "1.45",
+        "author": "Claude fundraise (claude.ai)",
+        "changes": [
+          "Enregistrement agent 'fundraise' dans inter_chat_bus.agents",
+          "Création inbox inter_chat_bus.inbox.fundraise",
+          "Message d'inscription envoyé au PM dans inter_chat_bus.inbox.pm",
+          "Périmètre : pitch deck investisseur, itérations deck, préparation calls VC"
+        ]
+      },
       {
         "date": "2026-05-14",
         "version_from": "1.43",
@@ -2940,10 +2952,31 @@
         "session_type": "claude.ai chat principal",
         "role": "Project Manager OZECAR, interface unique avec Dominique",
         "instructions_url": "Voir 'Operating Framework' dans les instructions du projet claude.ai"
+      },
+      "fundraise": {
+        "slug": "fundraise",
+        "session_type": "claude.ai web",
+        "role": "Levée de fonds OZECAR — itérations pitch deck investisseur, préparation calls VC",
+        "current_focus": "Pitch deck v1.9 livré (18 slides). Prêt pour nouveaux mandats levée de fonds ou à clôturer si le PM redirige.",
+        "last_active": "2026-05-14",
+        "status": "active"
       }
     },
     "inbox": {
       "pm": {
+        "messages": [
+          {
+            "from": "fundraise",
+            "to": "pm",
+            "ts": "2026-05-14T06:17Z",
+            "subject": "Inscription au bus",
+            "body": "Je suis le chat fundraise. Mon focus actuel : pitch deck investisseur OZECAR — j'ai produit les versions v1.7 à v1.9 du deck (18 slides) en intégrant les feedbacks des calls Thomas Herlin et Delphine Margot. Mon état actuel : deck v1.9 livré et documenté dans state.json > fundraise. Deux slides nouvelles créées (Kit OZECAR + schéma process propriétaire). Je me mets en attente de nouveaux mandats ou de directives du PM.",
+            "requires_ack": true,
+            "status": "new"
+          }
+        ]
+      },
+      "fundraise": {
         "messages": []
       }
     },
