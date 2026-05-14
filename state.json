@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.43",
+    "version": "1.44",
     "updated": "2026-05-14",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-14",
+        "version_from": "1.43",
+        "version_to": "1.44",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Création de inter_chat_bus v1.0 : bus de messages asynchrone entre les sessions Claude OZECAR via state.json. Permet à chaque chat de communiquer sans transit humain par Dominique.",
+          "Structure : inter_chat_bus.agents (registry slug → métadonnées), inter_chat_bus.inbox.<slug>.messages (file de messages entrants), inter_chat_bus.sent_log (log court pour debug). Protocole documenté dans inter_chat_bus._protocol.",
+          "Slug 'pm' réservé pour ce chat (Claude PM claude.ai). Les autres chats vont s'enregistrer au premier check d'inbox via le message qui leur sera collé par Dominique.",
+          "Latence : pas de polling auto, chaque chat ne lit son inbox que quand Dominique l'active (nouveau tour). Acceptable pour de la coordination async."
+        ]
+      },
       {
         "date": "2026-05-14",
         "version_from": "1.42",
@@ -2909,5 +2921,35 @@
       "[PM] Update HubSpot pipeline Supervision : ajouter etape 'Devis DC >= 80 kW'",
       "[PM] Verifier que Make 01 (Shopify -> HubSpot) gere bien les nouveaux SKU Sungrow"
     ]
+  },
+  "inter_chat_bus": {
+    "_version": "1.0",
+    "_created_at": "2026-05-14",
+    "_purpose": "Bus de messages asynchrone entre les sessions Claude OZECAR. Permet à chaque chat de communiquer sans transit humain par Dominique. Les chats vérifient leur inbox au début de chaque tour, traitent les messages, répondent en écrivant dans la boîte de l'expéditeur, puis archivent. Tout passe par state.json via github-relay.php.",
+    "_protocol": {
+      "registration": "Chaque chat se déclare dans 'agents' avec un slug court (ex: 'wp_refonte', 'shopify_code', 'partner_v2'). Le slug 'pm' est réservé pour le chat PM principal.",
+      "send_message": "Pour envoyer à AGENT_X, append un objet dans inter_chat_bus.inbox.AGENT_X.messages avec {from, to, ts, subject, body, requires_ack}. Bump state.json version et push.",
+      "read_inbox": "Au début de chaque tour, lire inter_chat_bus.inbox.<mon_slug>.messages. Filtrer les non-traités (status != 'done'). Traiter dans l'ordre.",
+      "ack": "Pour confirmer la réception d'un message qui requiert ack, écrire dans inter_chat_bus.inbox.<from>.messages un nouveau message avec subject='ACK: <original_subject>' et body court.",
+      "archive": "Après traitement, mettre le message à status='done' avec processed_at. Garder 30j puis purger.",
+      "no_polling": "Pas de poll automatique. Les chats lisent leur inbox seulement quand Dominique les active (nouveau tour). Donc la latence dépend de Dominique."
+    },
+    "agents": {
+      "pm": {
+        "slug": "pm",
+        "session_type": "claude.ai chat principal",
+        "role": "Project Manager OZECAR, interface unique avec Dominique",
+        "instructions_url": "Voir 'Operating Framework' dans les instructions du projet claude.ai"
+      }
+    },
+    "inbox": {
+      "pm": {
+        "messages": []
+      }
+    },
+    "sent_log": {
+      "_note": "Log court des messages envoyés par chaque agent, pour debug. Auto-purge 30j.",
+      "entries": []
+    }
   }
 }
