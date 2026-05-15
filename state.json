@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.51",
+    "version": "1.52",
     "updated": "2026-05-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-15",
+        "version_from": "1.51",
+        "version_to": "1.52",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Correction : remplace 'o2switch' par 'Hostinger' dans qr_redirect_white_label.todo_dominique (Claude PM avait hallucine l'hebergeur dans v1.50/1.51 - confirme par Dominique 2026-05-15 que c'est Hostinger)"
+        ]
+      },
       {
         "date": "2026-05-15",
         "version_from": "1.50",
@@ -2822,7 +2831,7 @@
     "todo_dominique": [
       "DNS sur ozecar.app (zone que tu controles directement) : creer CNAME qr.ozecar.app -> ozecar.fr (ou A record vers la meme IP)",
       ".htaccess a deposer a la racine du site qr.ozecar.app : RewriteEngine On / RewriteRule ^([A-Za-z0-9_-]+)/?$ https://ozecar.fr/api/qr-redirect.php?slug=$1 [R=302,L]",
-      "Certificat TLS pour qr.ozecar.app (Let's Encrypt via hebergeur o2switch)",
+      "Certificat TLS pour qr.ozecar.app (Let's Encrypt via Hostinger (hPanel))",
       "Tester en grandeur reelle : scanner https://qr.ozecar.app/test-pm-001 doit ouvrir l'app Monta"
     ],
     "todo_apres_dns": [
