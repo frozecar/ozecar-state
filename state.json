@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.55",
+    "version": "1.56",
     "updated": "2026-05-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-15",
+        "version_from": "1.55",
+        "version_to": "1.56",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "support_architecture : ajout monday_items avec 5 item IDs trackes",
+          "SUP-NUMERO-UNIQUE (12026454494) cree dans groupe En cours, priorite Urgent",
+          "SUP-MONTA-IA-CONFIG (12026460637), SUP-WEB-INTEGRATION (12026454744), SUP-STICKER-NUMERO (12026481250), SUP-EMAIL-AUTORESPONDER (12026486536) crees en Backlog",
+          "Tous depend_de SUP-NUMERO-UNIQUE (chain : Dominique active numero -> reste se debloque)"
+        ]
+      },
       {
         "date": "2026-05-15",
         "version_from": "1.54",
@@ -3183,6 +3195,49 @@
       "Pas de numeros multiples par cible (decision : un seul numero, IA route)",
       "Pas de widget chat web (IA est vocale uniquement)",
       "Aucune fuite Monta dans la presentation IA, dans les emails, dans les redirections"
-    ]
+    ],
+    "monday_items": {
+      "board_id": "18411921057",
+      "SUP-NUMERO-UNIQUE": {
+        "item_id": "12026454494",
+        "url": "https://ozecar.monday.com/boards/18411921057/pulses/12026454494",
+        "owner": "Dominique",
+        "status": "En cours (groupe 🔥 En cours)",
+        "priorite": "Urgent",
+        "description": "Choisir et activer numero Ringover unique pour tout le support"
+      },
+      "SUP-MONTA-IA-CONFIG": {
+        "item_id": "12026460637",
+        "url": "https://ozecar.monday.com/boards/18411921057/pulses/12026460637",
+        "owner": "Dominique",
+        "status": "Backlog",
+        "depend_de": "SUP-NUMERO-UNIQUE",
+        "description": "Configurer IA vocale Monta brandee OZECAR + routes escalade"
+      },
+      "SUP-WEB-INTEGRATION": {
+        "item_id": "12026454744",
+        "url": "https://ozecar.monday.com/boards/18411921057/pulses/12026454744",
+        "owner": "Claude PM",
+        "status": "Backlog",
+        "depend_de": "SUP-NUMERO-UNIQUE",
+        "description": "Composant numero unique reutilisable sur pages staging"
+      },
+      "SUP-STICKER-NUMERO": {
+        "item_id": "12026481250",
+        "url": "https://ozecar.monday.com/boards/18411921057/pulses/12026481250",
+        "owner": "Claude PM (HTML) + Dominique (validation+impression)",
+        "status": "Backlog",
+        "depend_de": "SUP-NUMERO-UNIQUE",
+        "description": "Sticker compagnon numero d'urgence en clair (lisible sans smartphone)"
+      },
+      "SUP-EMAIL-AUTORESPONDER": {
+        "item_id": "12026486536",
+        "url": "https://ozecar.monday.com/boards/18411921057/pulses/12026486536",
+        "owner": "Claude PM via MCP HubSpot",
+        "status": "Backlog",
+        "depend_de": "SUP-NUMERO-UNIQUE",
+        "description": "Auto-responder support@ozecar.fr + ticket HubSpot auto"
+      }
+    }
   }
 }
