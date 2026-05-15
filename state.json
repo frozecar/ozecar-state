@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.56",
+    "version": "1.57",
     "updated": "2026-05-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-15",
+        "version_from": "1.56",
+        "version_to": "1.57",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "support_architecture.email_ticket_sav v1.0 : decision stack HubSpot Conversations + Make + Claude API",
+          "Chiffrage definitif : ~2.20€/mois marginal pour 150 tickets, gain 15h/mois",
+          "7 nouveaux items monday SUP-06 a SUP-12 (HubSpot setup, snippets, 4 scenarios Make, FAQ enrichment)",
+          "Volume cible 50-200 tickets/mois, equipe 2 personnes (Dominique + collaborateur)",
+          "Pas d'upgrade HubSpot Pro : Make Core 10€ deja suffisant (3000 ops sur 10k)"
+        ]
+      },
       {
         "date": "2026-05-15",
         "version_from": "1.55",
@@ -3238,6 +3251,131 @@
         "depend_de": "SUP-NUMERO-UNIQUE",
         "description": "Auto-responder support@ozecar.fr + ticket HubSpot auto"
       }
+    },
+    "email_ticket_sav": {
+      "version": "1.0",
+      "decision_date": "2026-05-15",
+      "equipe_taille": "Dominique + 1 collaborateur",
+      "volume_estime_tickets_mois": "50-200 (moyenne 150)",
+      "stack_choisie": {
+        "inbox_principale": "HubSpot Conversations (gratuit en Starter)",
+        "tickets": "Pipeline Tickets dedie SAV (a creer, separe de Supervision et L&Q)",
+        "automatisation": "Make scenarios (HubSpot Starter ne permet pas Workflows)",
+        "ai_engine": "Claude API (Haiku 4.5 triage + Sonnet 4.6 brouillon)",
+        "notifications": "Slack #support pour P1/P2 uniquement (eviter spam)"
+      },
+      "couches": {
+        "1_triage": {
+          "scenario_make": "07",
+          "model": "Haiku 4.5",
+          "purpose": "Classification segment/urgence/thematique a l'arrivee",
+          "cout_estime_mois_150tickets": "$0.34"
+        },
+        "2_brouillon": {
+          "scenario_make": "08",
+          "model": "Sonnet 4.6 (avec prompt caching 1h)",
+          "purpose": "Generer brouillon contextualise poste en commentaire interne ticket",
+          "cout_estime_mois_150tickets": "$1.65",
+          "validation_humaine": "OBLIGATOIRE (jamais envoi auto)"
+        },
+        "3_autoresolve": {
+          "scenario_make": "09",
+          "model": "Sonnet 4.6 batch API -50%",
+          "purpose": "Auto-reply P3/P4 avec lien FAQ + re-escalade si client repond",
+          "cout_estime_mois_60tickets_eligibles": "$0.36",
+          "thematiques_safe_initiales": [
+            "facturation",
+            "ajout_user",
+            "info_generale"
+          ],
+          "thematiques_a_ajouter_apres_monitoring": [
+            "statut_borne_simple",
+            "questions_portail"
+          ]
+        },
+        "4_sla_relances": {
+          "scenario_make": "10",
+          "model": "Aucun (logique HubSpot + email pure)",
+          "purpose": "Monitoring SLA + relance J+5 + NPS J+3",
+          "sla_par_urgence": {
+            "P1": "4h",
+            "P2": "24h",
+            "P3": "72h",
+            "P4": "1 semaine"
+          }
+        }
+      },
+      "cout_total_estime": {
+        "claude_api": "~$2.35/mois (≈2.20€)",
+        "make_ops": "Inclus dans plan Core 10€/mois actuel (3000 ops/mois sur 10k disponibles)",
+        "total_marginal": "~2.20€/mois"
+      },
+      "gain_estime": {
+        "temps_avant": "20h/mois (150 tickets × 8min × 2 personnes)",
+        "temps_apres": "5h/mois",
+        "gain_mensuel": "15h economisees pour 2.20€",
+        "ratio": "1h economisee = 0.15€"
+      },
+      "hubspot_setup_required": {
+        "pipeline_tickets_sav": "A creer (Nouveau / Triage / En attente client / En cours / Resolu / Clos)",
+        "custom_properties_ticket": [
+          "oze_segment (dropdown: conducteur, exploitant, installateur, partenaire, commercial)",
+          "oze_urgence (dropdown: P1, P2, P3, P4)",
+          "oze_thematique (dropdown: OCPP, portail, facturation, panne_borne, kit_activation, autre)",
+          "oze_borne_concernee (text - chargingPointKey)",
+          "oze_auto_resolved_attempt (checkbox)",
+          "oze_sla_target (datetime)",
+          "oze_draft_ready (checkbox)",
+          "oze_relance_sent (checkbox)"
+        ],
+        "snippets_a_creer": "15 templates (cf SUP-SNIPPETS)",
+        "inbox_email": "support@ozecar.fr connecte a Conversations"
+      },
+      "monday_items_email_sav": {
+        "SUP-HUBSPOT-CONVERSATIONS-SETUP": {
+          "id": "12026600458",
+          "owner": "Dominique",
+          "status": "Todo (En cours)",
+          "priorite": "Important"
+        },
+        "SUP-SNIPPETS": {
+          "id": "12026619011",
+          "owner": "Claude PM redige + Dominique valide",
+          "depend_de": "SUP-HUBSPOT-CONVERSATIONS-SETUP"
+        },
+        "SUP-MAKE-07-TRIAGE": {
+          "id": "12026621544",
+          "owner": "Claude PM via MCP Make",
+          "depend_de": "SUP-HUBSPOT-CONVERSATIONS-SETUP"
+        },
+        "SUP-MAKE-08-DRAFT": {
+          "id": "12026640369",
+          "owner": "Claude PM via MCP Make",
+          "depend_de": "SUP-MAKE-07-TRIAGE"
+        },
+        "SUP-MAKE-09-AUTORESOLVE": {
+          "id": "12026627993",
+          "owner": "Claude PM via MCP Make",
+          "depend_de": "SUP-MAKE-08-DRAFT"
+        },
+        "SUP-MAKE-10-SLA-NPS": {
+          "id": "12026627849",
+          "owner": "Claude PM via MCP Make",
+          "depend_de": "SUP-HUBSPOT-CONVERSATIONS-SETUP + SUP-SNIPPETS"
+        },
+        "SUP-FAQ-ENRICHMENT": {
+          "id": "12026664624",
+          "owner": "Claude PM redige + Dominique publie",
+          "depend_de": "Aucune (peut commencer en parallele)"
+        }
+      },
+      "anti_resurrection_email_sav": [
+        "Pas d'upgrade HubSpot Pro pour les Workflows (cout/benefice negatif, Make fait le job)",
+        "Pas d'envoi automatique de brouillons sans validation humaine (couche 2 = pose commentaire interne uniquement)",
+        "Pas de Slack-first (inbox HubSpot reste la source de verite, Slack juste pour notifs urgentes)",
+        "Pas de Zendesk/Intercom (cout 50-100€/mois vs 2.20€/mois solution custom)",
+        "Pas d'auto-resolve sur thematiques techniques complexes (OCPP, panne borne) tant que monitoring 1 mois pas fait"
+      ]
     }
   }
 }
