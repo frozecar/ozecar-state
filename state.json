@@ -1,12 +1,26 @@
 {
   "_meta": {
-    "version": "1.53",
+    "version": "1.54",
     "updated": "2026-05-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-15",
+        "version_from": "1.53",
+        "version_to": "1.54",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "EXPORT-PLAYBOOK-01 : decision architecture finale = option D subfolders sur ozecar.co (Dominique 15/05)",
+          "Rejet option C ccTLD (signale entites locales inexistantes) et option B .app (reserve supervision)",
+          "ozecar.fr reste asset SEO France, ozecar.co devient racine internationale neutre",
+          "Pattern operationnel : duplication contenu .fr avec ajustements TVA/mentions/primes par pays, pas creation from scratch",
+          "Pack BE mis a jour : effort revise a 1-2 semaines (duplication FR legere vs 3-4 semaines from scratch)",
+          "Langue de demarrage par defaut pour pays francophones/frontaliers = FR (BE-Wallonie, CH-Romandie, LU)"
+        ]
+      },
       {
         "date": "2026-05-15",
         "version_from": "1.52",
@@ -2880,19 +2894,35 @@
     "deliverables_location": "/home/claude/export-playbook/ - 3 fichiers MD (audit, template, BE pack)",
     "architecture_decision_2026_05_15": {
       "options_compared": [
-        "A. Site multilingue ozecar.fr/be, ozecar.fr/nl",
-        "B. Sous-domaines pays be.ozecar.app, nl.ozecar.app",
-        "C. Domaines pays distincts ozecar.be, ozecar.nl"
+        "A. Site multilingue ozecar.fr/be ozecar.fr/nl - REJETE (TLD .fr signale France-only)",
+        "B. Sous-domaines pays be.ozecar.app nl.ozecar.app - REJETE (ozecar.app reserve supervision)",
+        "C. ccTLD distincts ozecar.be ozecar.nl - REJETE (signale faussement entites locales, repart de zero SEO par pays)",
+        "D. Subfolders sur ozecar.co (ozecar.co/be ozecar.co/nl etc) - RETENU"
       ],
-      "recommendation": "B - sous-domaines sur ozecar.app",
-      "rationale": "Coherence avec decision QR du 15/05 (qr.ozecar.app, neutralite geo). Cout marginal nul par pays. Pas de dette technique multi-site. Reversible vers ccTLD si volume justifie. SEO autorite construite sur ozecar.app comme marque europeenne plutot que multiplier les .fr",
-      "evolution_phases": [
-        "P1 maintenant - ozecar.fr reste FR. Pas touche. Techno deja multi-pays.",
-        "P2 declencheur 1er pays commercial - creer be.ozecar.app ou xx.ozecar.app",
-        "P3 declencheur volume - envisager ccTLD ozecar.be avec 301 du sous-domaine",
-        "P4 declencheur multi-pays etablis - migrer ozecar.fr vers ozecar.app comme racine, FR devient fr.ozecar.app"
+      "decision_finale": "D - subfolders sur ozecar.co",
+      "decision_date": "2026-05-15",
+      "decision_by": "Dominique",
+      "rationale": [
+        "Coherence avec strategie reelle : pas d'entite locale, tout gere depuis France. ozecar.co signale honnetement ce que OZECAR est = boite FR servant l'Europe",
+        "Cout marginal d'un pays = nul. Un dossier de plus sur le meme WordPress, un theme localise, hreflang propre. Industrialise le processus",
+        "Autorite SEO concentree sur ozecar.co comme marque europeenne. Quand on lance un nouveau pays, on demarre avec boost SEO existant au lieu de partir de zero",
+        "Reversibilite totale : si demain un pays justifie un vrai ccTLD (ex ozecar.be), 301 propre de /be vers .be avec autorite accumulee a transferer",
+        "Dominique possede deja ozecar.co (asset existant)"
       ],
-      "status_decision": "recommandation_emise - validation Dominique requise"
+      "domain_strategy": {
+        "ozecar.fr": "Marche France inchange, asset SEO historique a preserver",
+        "ozecar.co": "Racine internationale neutre, multilangue",
+        "ozecar.co/[XX]": "Marche pays X, langue prioritaire = celle du marche",
+        "qr.ozecar.app": "Supervision uniquement, neutralite geo, decision QR du 15/05",
+        "shop.ozecar.fr": "E-commerce FR inchange"
+      },
+      "starting_language_policy": "FR par defaut pour les marches francophones et frontaliers (BE-Wallonie, CH-Romandie, LU). NL/DE/EN/ES/IT a ajouter quand le pays cible le justifie. Source de verite : country_packs.[XX].langue_default",
+      "evolution_phases_revised": [
+        "P1 maintenant : ozecar.fr reste FR. ozecar.co setup avec contenu international racine (EN ou FR).",
+        "P2 declencheur 1er pays commercial : creer ozecar.co/[XX] avec contenu localise. Modele BE = duplicat .fr avec ajustements TVA/mentions/primes",
+        "P3 declencheur volume sur un pays : envisager ccTLD ozecar.[XX] avec 301 propre depuis /[XX] (transfere autorite accumulee)",
+        "P4 declencheur multi-pays etablis : decision strategique sur OZECAR SAS FR vs holding internationale - hors scope playbook actuel"
+      ]
     },
     "audit_fr_assumptions_summary": {
       "techno": {
@@ -2986,7 +3016,18 @@
         "go_to_market",
         "etat_avancement",
         "premier_client"
-      ]
+      ],
+      "operational_pattern": {
+        "domain_pattern": "ozecar.co/[XX] ou XX = code ISO ISO 3166-1 alpha-2 (be, nl, de, es, it, ch, lu, etc.)",
+        "content_strategy": "Duplication du .fr avec ajustements locaux marques (TVA, mentions, droit, primes regionales) - NE PAS partir de zero",
+        "language_priority": [
+          "Pays francophones/frontaliers (BE-Wallonie, CH-Romandie, LU) : FR direct, duplication .fr legere",
+          "Pays UE non-francophones : EN d'abord (pragmatique pour demarrer), langue locale phase suivante",
+          "Pays cle (DE, NL) : langue locale prioritaire si volume justifie"
+        ],
+        "hreflang_setup": "ozecar.fr (fr-FR) + ozecar.co/be (fr-BE) + ozecar.co/ch (fr-CH) + ozecar.co/lu (fr-LU) avec hreflang croisé. x-default sur ozecar.co",
+        "wordpress_strategy": "Une instance WP unique avec multi-site OU un seul site et duplication de pages avec prefix URL. A trancher selon volume final"
+      }
     },
     "country_packs": {
       "belgique": {
@@ -3002,7 +3043,7 @@
         "mention_facture": "Autoliquidation par le preneur - art. 196 directive 2006/112/CE",
         "langue_default": "fr-BE",
         "langue_fallback": "en",
-        "site_subdomain": null,
+        "site_subdomain": "ozecar.co/be (a creer phase 2, langue FR par defaut)",
         "support_email": "hello@ozecar.fr",
         "support_phone_local": null,
         "stripe_account": "OZECAR FR",
@@ -3040,14 +3081,16 @@
         ],
         "active_clients": [],
         "decisions_pour_activer_commercial_be": [
-          "Creer be.ozecar.app contenu NL prioritaire (Flandre = gros marche EV)",
-          "Activer Bancontact sur Stripe",
-          "Cloner template PandaDoc en NL + adapter droit belge",
-          "Documenter primes Wallonie/Flandre sur page tarifs BE",
+          "Setup ozecar.co (domaine racine internationale) - prerequis",
+          "Creer ozecar.co/be par duplication du .fr avec ajustements : TVA 21% au lieu 20%, mentions facture autoliquidation, primes Wallonie/Flandre, footer OZECAR SAS FR explicite",
+          "Hreflang propre entre ozecar.fr (fr-FR) et ozecar.co/be (fr-BE)",
+          "Activer Bancontact sur Stripe pour clients BE",
+          "Cloner template PandaDoc avec ajustements droit BE (mandat conventionnel art.1984 CC belge, juridiction)",
           "Identifier 2-3 distributeurs IRVE BE pour programme partenaires",
           "Acquerir 1 reference client BE communicable"
         ],
-        "effort_estime_activation_commerciale": "3-4 semaines (BE proche FR culturel/juridique)"
+        "effort_estime_activation_commerciale": "1-2 semaines (BE-Wallonie en FR = duplication contenu + ajustements legers vs creation from scratch)",
+        "langue_secondaire_future": "nl-BE (Flandre, phase ulterieure)"
       }
     },
     "next_steps_dominique": [
