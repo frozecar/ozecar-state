@@ -1,12 +1,28 @@
 {
   "_meta": {
-    "version": "1.49",
-    "updated": "2026-05-14",
+    "version": "1.50",
+    "updated": "2026-05-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-15",
+        "version_from": "1.49",
+        "version_to": "1.50",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Nouveau chantier QR-WL-01 (item monday 12023725825) : redirector marque blanche qr.ozecar.fr -> Monta deeplinks",
+          "Deploye ozecar.fr/api/qr-redirect.php (lookup monday board QR 18398433019, cache 1h, fallback safe)",
+          "Ajoute colonne 'Slug OZECAR' (text_mm3crw57) sur le board QR (18398433019) comme cle de lookup primaire",
+          "Cree entree TEST-PM-001 (monday 12023686821) comme healthcheck permanent du redirector",
+          "Tests E2E OK : MISS 1.4s, HIT 152ms, fallback safe",
+          "Nouvelle section state : qr_redirect_white_label",
+          "Resolu : g22_4_deeplinks_diagnosis (le nouveau pattern rend le probleme des slugs Monta fixes obsolete)",
+          "TODO Dominique : DNS qr.ozecar.fr + .htaccess rewrite + cert TLS"
+        ]
+      },
       {
         "date": "2026-05-14",
         "version_from": "1.48",
@@ -2407,7 +2423,7 @@
   },
   "g22_4_deeplinks_diagnosis": {
     "date": "2026-05-13",
-    "status": "DIAGNOSTIC_COMPLETE - aucune action technique possible",
+    "status": "RESOLVED_BY_qr_redirect_white_label - voir cette section",
     "context": "4 QR codes physiques BE300020-23 imprimés avec slugs c174231-234. Verification API Monta directe : ces 4 slugs n'existent PAS en base Monta. Test https://ozecar.app/d/c174231 = HTTP 200 page portail Monta vide.",
     "blocker_technique": "Monta API génère les slugs SERVER-SIDE. POST /deeplinks crée un deeplink mais retourne un slug aléatoire (test: c208529). Impossible de forcer c174231-234.",
     "next_actions": [
@@ -2419,7 +2435,8 @@
       "BE300021",
       "BE300022",
       "BE300023"
-    ]
+    ],
+    "resolution_date": "2026-05-15"
   },
   "briefs_ready_to_consume": {
     "shopify_partner_discount_claude_code": {
@@ -2753,5 +2770,67 @@
       "_note": "Log court des messages envoyés par chaque agent, pour debug. Auto-purge 30j.",
       "entries": []
     }
+  },
+  "qr_redirect_white_label": {
+    "_critical": "Marque blanche - les QR codes physiques imprimes ne doivent JAMAIS exposer 'monta' dans leur URL.",
+    "date_phase1_deployed": "2026-05-15",
+    "status": "phase1_live - redirector deploye et teste, en attente DNS qr.ozecar.fr",
+    "architecture": {
+      "physical_qr_url_pattern": "https://qr.ozecar.fr/{slug_ozecar}",
+      "redirector_endpoint": "https://ozecar.fr/api/qr-redirect.php?slug={slug_ozecar}",
+      "lookup_storage": "monday board QR (18398433019), colonne text_mm3crw57 'Slug OZECAR' -> colonne text_mm317zn1 'Monta deeplink_id'",
+      "destination_pattern": "https://ozecar.app/d/{slug_monta}",
+      "fallback": "https://ozecar.app (si slug inconnu, slug invalide, ou erreur monday)",
+      "cache_ttl_seconds": 3600,
+      "cache_dir": "/api/.qr-redirect-cache (TTL 1h)"
+    },
+    "monday_columns_added_2026_05_15": {
+      "text_mm3crw57": {
+        "title": "Slug OZECAR",
+        "purpose": "Cle de lookup primaire pour qr-redirect.php. Slug court alphanumerique unique (max 32 chars, regex [A-Za-z0-9_-]).",
+        "added_by": "Claude PM (claude.ai)"
+      }
+    },
+    "test_entries_monday": {
+      "TEST-PM-001": {
+        "monday_id": "12023686821",
+        "slug_ozecar": "test-pm-001",
+        "slug_monta": "c119620",
+        "purpose": "Healthcheck redirector - NE PAS SUPPRIMER",
+        "test_results_2026_05_15": {
+          "miss_first_hit_ms": 1413,
+          "hit_cached_ms": 152,
+          "fallback_invalid_slug_ms": 1371,
+          "final_destination_resolves_ok": true
+        }
+      }
+    },
+    "todo_dominique": [
+      "DNS : configurer qr.ozecar.fr comme CNAME ou A record vers ozecar.fr (meme IP/hebergeur)",
+      "Apache .htaccess sur racine qr.ozecar.fr : rewrite /^([A-Za-z0-9_-]+)/?$/ vers https://ozecar.fr/api/qr-redirect.php?slug=$1 (302)",
+      "Certificat TLS pour qr.ozecar.fr (Let's Encrypt via hebergeur o2switch)",
+      "Tester en grandeur reelle : scan QR https://qr.ozecar.fr/test-pm-001 doit ouvrir l'app Monta"
+    ],
+    "todo_apres_dns": [
+      "Migrer les 96 entrees FRC1000xx existantes vers le nouveau format : remplir colonne 'Slug OZECAR' avec slug court (ex frc1, frc2...) et eventuellement reimprimer si on veut purger l'ancien format ozecar.monta.app",
+      "Generateur QR (script ou page admin) qui : (a) cree item monday avec slug OZECAR auto-genere, (b) cree deeplink Monta via API et store le slug retourne dans 'Monta deeplink_id', (c) genere le PNG du QR pointant sur qr.ozecar.fr/{slug}",
+      "Documenter dans le brief impression : format URL = qr.ozecar.fr/{slug}, jamais ozecar.app ni ozecar.monta.app"
+    ],
+    "abandon_options": [
+      "Make webhook pour le redirect : ABANDONNE car latence + quota Make + zero valeur ajoutee vs PHP direct",
+      "ozecar.fr/d/{slug} : ABANDONNE en faveur de qr.ozecar.fr (sous-domaine dedie, decision Dominique 2026-05-15)",
+      "Mapping fige 1:1 : ABANDONNE en faveur de mapping dynamique via colonne text editable (decision Dominique 2026-05-15)"
+    ],
+    "files_deployed": {
+      "https://ozecar.fr/api/qr-redirect.php": {
+        "deployed_at": "2026-05-15T16:50:51Z",
+        "sha256": "51e35b6439d5f8dc02ac2b646ada1b34fa059c881d6c363a18e57ad4acc09913",
+        "size_bytes": 5336
+      }
+    },
+    "monday_orchestration_item": "QR-WL-01 (id 12023725825)",
+    "blocks_resolved": [
+      "g22_4_deeplinks_diagnosis : ce chantier remplace la problematique 'slugs Monta fixes a l'impression'. Desormais, les slugs OZECAR sont fixes a l'impression et le mapping Monta est modifiable a tout moment sans reimpression."
+    ]
   }
 }
