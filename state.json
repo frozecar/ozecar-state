@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.54",
+    "version": "1.55",
     "updated": "2026-05-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-15",
+        "version_from": "1.54",
+        "version_to": "1.55",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Nouvelle section support_architecture v1.0 : decision Dominique sur archi unifiee",
+          "Routing humain : un seul numero Ringover unique (a definir), IA vocale Monta brandee OZECAR decroche",
+          "Centre d'aide /support/ + email support@ozecar.fr restent canal web/ecrit",
+          "Sticker borne enrichi avec numero d'urgence en clair (lisible sans smartphone)",
+          "4 segments couverts : conducteur (24/7) / exploitant (4h ouvrees) / installateur (2h) / revendeur (account manager)"
+        ]
+      },
       {
         "date": "2026-05-15",
         "version_from": "1.53",
@@ -3098,6 +3111,78 @@
       "Documenter clients BE actifs dans country_packs.belgique.active_clients",
       "Confirmer transporteur + delai expedition kit BE",
       "Designer le prochain pays cible (declenche creation country_pack vide a remplir)"
+    ]
+  },
+  "support_architecture": {
+    "version": "1.0",
+    "created": "2026-05-15",
+    "created_by": "Claude PM (claude.ai)",
+    "description": "Architecture support / SAV / assistance conducteur unifiee. Decision Dominique 2026-05-15.",
+    "decisions": {
+      "routing_humain": "Un seul numero Ringover unique (a creer). L'IA vocale Monta brandee OZECAR decroche, identifie le contexte, escalade si detresse via transfert Ringover interne.",
+      "canal_ia": "Vocal uniquement (pas de widget web). Brandee 100% OZECAR (la presentation IA dit 'OZECAR', jamais 'Monta').",
+      "canal_web": "Centre d'aide /support/ (staging deja fonctionnel, 5 articles) + email support@ozecar.fr unique.",
+      "marque_blanche": "Conforme regle absolue #2 : Monta jamais expose. IA presente comme assistant OZECAR."
+    },
+    "stack": {
+      "telephone": {
+        "provider": "Ringover",
+        "numero_unique": "A_DEFINIR_DOMINIQUE",
+        "ia_decroche": "Monta IA vocale brandee OZECAR",
+        "escalade": "Transfert Ringover interne selon contexte detecte par IA"
+      },
+      "web": {
+        "centre_aide": "https://staging.ozecar.fr/support/ (5 articles publies)",
+        "email_unique": "support@ozecar.fr",
+        "auto_responder": "A_CONFIGURER (HubSpot, accuse reception + numero unique)"
+      },
+      "physique": {
+        "sticker_kit_ozku": "QR code activation deja en place. A ajouter : sticker compagnon ou impression directe avec numero d'urgence lisible sans smartphone.",
+        "format_numero": "URGENCE 24/7 - 09 XX XX XX XX en gros"
+      }
+    },
+    "segments_cible": {
+      "conducteur": {
+        "contexte": "Panne en charge sur borne client",
+        "point_entree": "Sticker QR borne (deeplink /sos/?borne=XXX) ou numero unique en clair sur la borne",
+        "sla_humain": "Immediat (24/7 si IA tag 'urgence en charge')",
+        "ia_resout_typique": "Statut borne, redemarrage a distance, instructions decablage forcé"
+      },
+      "exploitant": {
+        "contexte": "Gestionnaire site (hotellerie, supermarche, flotte)",
+        "point_entree": "/support/ web + email + numero unique",
+        "sla_humain": "< 4h ouvrees, voicemail hors heures -> ticket HubSpot",
+        "ia_resout_typique": "FAQ portail, facturation, ajout utilisateur"
+      },
+      "installateur": {
+        "contexte": "Partenaire pro pose une borne, besoin assistance OCPP",
+        "point_entree": "/installateurs/ + partenaires@ozecar.fr + numero unique",
+        "sla_humain": "< 2h ouvrees",
+        "ia_resout_typique": "FAQ OCPP, configuration borne, troubleshooting connectivite"
+      },
+      "revendeur": {
+        "contexte": "Distributeur niveau 3 (custom terms)",
+        "point_entree": "Account manager dedie (contact direct, hors numero unique)",
+        "sla_humain": "Personnalise"
+      }
+    },
+    "todo_dominique": [
+      "Choisir et activer le numero Ringover unique (item SUP-NUMERO-UNIQUE)",
+      "Configurer console Monta IA vocale : decrochage sur ce numero + branding OZECAR (verifier que l'IA dit 'OZECAR', jamais 'Monta')",
+      "Valider HTML print-ready sticker numero d'urgence (item SUP-STICKER-NUMERO)",
+      "Confirmer email support@ozecar.fr unique (vs multi-aliases actuels) pour auto-responder HubSpot"
+    ],
+    "todo_claude_pm": [
+      "Integration WP staging : composant numero d'urgence reutilisable, variant par page (item SUP-WEB-INTEGRATION)",
+      "HTML print-ready sticker compagnon numero d'urgence (item SUP-STICKER-NUMERO)",
+      "Auto-responder HubSpot support@ozecar.fr (item SUP-EMAIL-AUTORESPONDER)",
+      "Page /sos/ deja prevue dans logique deeplinks G22.4 : enrichir avec affichage numero unique en clair"
+    ],
+    "anti_resurrection": [
+      "Pas de hotline 0800 (cout + pas credible B2B)",
+      "Pas de numeros multiples par cible (decision : un seul numero, IA route)",
+      "Pas de widget chat web (IA est vocale uniquement)",
+      "Aucune fuite Monta dans la presentation IA, dans les emails, dans les redirections"
     ]
   }
 }
