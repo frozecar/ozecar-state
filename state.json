@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.57",
+    "version": "1.58",
     "updated": "2026-05-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-15",
+        "version_from": "1.57",
+        "version_to": "1.58",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "support_architecture.email_ticket_sav : ajout couche 5_memorisation (few-shot learning)",
+          "Niveaux 1+2 actives : capture editions humaines + injection 3-5 exemples similaires dans prompt scenario 08",
+          "Niveau 3 (deduction regles) reporte a apres 500+ tickets accumules",
+          "Cout marginal +$0.30/mois -> total archi ~2.50€/mois",
+          "Item SUP-MAKE-11-LEARN (12026693131) cree, depend de SUP-MAKE-08-DRAFT"
+        ]
+      },
       {
         "date": "2026-05-15",
         "version_from": "1.56",
@@ -3303,12 +3316,28 @@
             "P3": "72h",
             "P4": "1 semaine"
           }
+        },
+        "5_memorisation": {
+          "scenario_make": "11",
+          "niveaux_actives": [
+            "niveau_1_capture",
+            "niveau_2_few_shot"
+          ],
+          "niveau_3_deduction_regles": "Pas active. A evaluer apres 500+ tickets accumules.",
+          "purpose": "Capturer les editions humaines des brouillons et injecter exemples similaires dans les futurs appels Claude (few-shot learning)",
+          "data_store": "oze_support_responses (Make Data Store)",
+          "cout_estime_mois": "+$0.30 (input tokens supplementaires sur scenario 08)",
+          "impact_attendu": {
+            "semaine_1": "Brouillons generiques, ~70% d'editions",
+            "semaine_4": "Style aligne, ~35% d'editions",
+            "mois_3": "70% des brouillons valides en <30s sans edition"
+          }
         }
       },
       "cout_total_estime": {
-        "claude_api": "~$2.35/mois (≈2.20€)",
+        "claude_api": "~$2.65/mois (≈2.50€) - inclut few-shot learning",
         "make_ops": "Inclus dans plan Core 10€/mois actuel (3000 ops/mois sur 10k disponibles)",
-        "total_marginal": "~2.20€/mois"
+        "total_marginal": "~2.50€/mois"
       },
       "gain_estime": {
         "temps_avant": "20h/mois (150 tickets × 8min × 2 personnes)",
@@ -3367,6 +3396,13 @@
           "id": "12026664624",
           "owner": "Claude PM redige + Dominique publie",
           "depend_de": "Aucune (peut commencer en parallele)"
+        },
+        "SUP-MAKE-11-LEARN": {
+          "id": "12026693131",
+          "owner": "Claude PM via MCP Make",
+          "depend_de": "SUP-MAKE-08-DRAFT",
+          "priorite": "Important",
+          "description": "Memorisation editions humaines + few-shot dans scenario 08"
         }
       },
       "anti_resurrection_email_sav": [
