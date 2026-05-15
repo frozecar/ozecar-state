@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.52",
+    "version": "1.53",
     "updated": "2026-05-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-15",
+        "version_from": "1.52",
+        "version_to": "1.53",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "EXPORT-PLAYBOOK-01 : creation section international_export avec audit FR-assumptions + country pack template + pack retroactif Belgique",
+          "Architecture recommandee : option B sous-domaines xx.ozecar.app (coherent avec decision QR du 15/05)",
+          "Audit 4 couches : techno 60% neutre / commerciale 5% neutre / juridique 30% neutre / operationnelle 10% neutre",
+          "Pack BE v1 retroactif : supervision techno only, mode actuel documente, trous identifies pour passage commercial",
+          "3 deliverables MD dans /home/claude/export-playbook/"
+        ]
+      },
       {
         "date": "2026-05-15",
         "version_from": "1.51",
@@ -2857,5 +2870,191 @@
       "g22_4_deeplinks_diagnosis : ce chantier remplace la problematique 'slugs Monta fixes a l'impression'. Desormais, les slugs OZECAR sont fixes a l'impression et le mapping Monta est modifiable a tout moment sans reimpression."
     ],
     "internationalization_rationale_2026_05_15": "qr.ozecar.app choisi vs qr.ozecar.fr : (a) Dominique controle deja le DNS d'ozecar.app, (b) coherent avec destination finale ozecar.app/d/..., (c) TLD .app neutre geographiquement, compatible OZECAR Belgique (deja actif) et futures expansions sans avoir a multiplier les domaines (qr.ozecar.be, qr.ozecar.es, etc)."
+  },
+  "international_export": {
+    "_note": "Playbook d'export international OZECAR. Conçu mai 2026 sur la base de la BE déjà active en supervision techno only. Architecture: country pack template + audit FR-assumptions + pack rétroactif BE = template pour tout pays N+1.",
+    "version": "1.0",
+    "created": "2026-05-15",
+    "created_by": "Claude PM (claude.ai)",
+    "status": "playbook_ready - en attente activation pays N+1",
+    "deliverables_location": "/home/claude/export-playbook/ - 3 fichiers MD (audit, template, BE pack)",
+    "architecture_decision_2026_05_15": {
+      "options_compared": [
+        "A. Site multilingue ozecar.fr/be, ozecar.fr/nl",
+        "B. Sous-domaines pays be.ozecar.app, nl.ozecar.app",
+        "C. Domaines pays distincts ozecar.be, ozecar.nl"
+      ],
+      "recommendation": "B - sous-domaines sur ozecar.app",
+      "rationale": "Coherence avec decision QR du 15/05 (qr.ozecar.app, neutralite geo). Cout marginal nul par pays. Pas de dette technique multi-site. Reversible vers ccTLD si volume justifie. SEO autorite construite sur ozecar.app comme marque europeenne plutot que multiplier les .fr",
+      "evolution_phases": [
+        "P1 maintenant - ozecar.fr reste FR. Pas touche. Techno deja multi-pays.",
+        "P2 declencheur 1er pays commercial - creer be.ozecar.app ou xx.ozecar.app",
+        "P3 declencheur volume - envisager ccTLD ozecar.be avec 301 du sous-domaine",
+        "P4 declencheur multi-pays etablis - migrer ozecar.fr vers ozecar.app comme racine, FR devient fr.ozecar.app"
+      ],
+      "status_decision": "recommandation_emise - validation Dominique requise"
+    },
+    "audit_fr_assumptions_summary": {
+      "techno": {
+        "neutre_pct": 60,
+        "configurable_pct": 30,
+        "a_dupliquer_pct": 10,
+        "bloquant_pays_n_plus_1": false,
+        "items_a_dupliquer": [
+          "PandaDoc template par locale"
+        ],
+        "items_configurable": [
+          "App mobile langue UI",
+          "HubSpot property country",
+          "Make routing par country",
+          "Stripe multi-devise",
+          "Connectivite Simbase reseau prefere local"
+        ]
+      },
+      "commerciale": {
+        "neutre_pct": 5,
+        "configurable_pct": 20,
+        "a_dupliquer_pct": 75,
+        "bloquant_pays_n_plus_1": "Oui si surface commerciale visee",
+        "items_a_dupliquer": [
+          "Site dans la langue",
+          "Contenu sectoriel localise",
+          "Blog/livres blancs",
+          "SEO mots-cles locaux",
+          "Annuaires pros locaux",
+          "Footer entite legale si entite locale",
+          "References clients locales"
+        ],
+        "items_configurable": [
+          "Page tarifs vat_rate par pays",
+          "Page activation siteCountry deja UE-aware",
+          "Programme partenaires deja UE 26 pays",
+          "Email transactionnel alias par pays"
+        ]
+      },
+      "juridique": {
+        "neutre_pct": 30,
+        "configurable_pct": 50,
+        "a_dupliquer_pct": 20,
+        "bloquant_pays_n_plus_1": "Non en UE B2B, Oui hors-UE",
+        "items_a_refonder": [
+          "Mandat supervision art.1984 CC FR vers equivalent local"
+        ],
+        "items_a_dupliquer": [
+          "CGV traduites + adaptees",
+          "Mentions legales si surface commerciale localisee",
+          "Label IRVE equivalent local"
+        ],
+        "items_configurable": [
+          "TVA par pays",
+          "Validation VIES via API",
+          "Entite emettrice OZECAR SAS FR ou locale"
+        ]
+      },
+      "operationnelle": {
+        "neutre_pct": 10,
+        "configurable_pct": 60,
+        "a_dupliquer_pct": 30,
+        "bloquant_pays_n_plus_1": "Non, mais image affectee",
+        "items_a_dupliquer": [
+          "Documentation installateur traduite",
+          "Adresse retour SAV",
+          "Numero support local"
+        ],
+        "items_configurable": [
+          "Transporteur kit par pays",
+          "Methodes de paiement locales Bancontact iDEAL etc",
+          "Banque Wise si multi-devise",
+          "Support email alias par pays"
+        ]
+      },
+      "conclusion": "Supervision techno deja livrable dans tout pays UE demain (= mode actuel BE). Verrou est la couche commerciale localisee. Tant que vente directe Dominique vers prospect cible, pas besoin. Le jour ou lead inbound depuis BE/NL/DE, la couche commerciale determine la vitesse."
+    },
+    "country_pack_template": {
+      "_note": "Gabarit a dupliquer pour chaque pays. Voir le markdown complet dans /home/claude/export-playbook/02-country-pack-template.md - sections: identite, langue, fiscalite, juridique, domaine, paiement, logistique, connectivite, support, hubspot, gtm, etat avancement, premier client",
+      "sections_required": [
+        "identite",
+        "langue",
+        "fiscalite",
+        "juridique",
+        "domaine_site",
+        "paiement",
+        "logistique_kits",
+        "connectivite_simbase",
+        "support",
+        "hubspot_config",
+        "go_to_market",
+        "etat_avancement",
+        "premier_client"
+      ]
+    },
+    "country_packs": {
+      "belgique": {
+        "_note": "Pack v1 retroactif - documente l'existant supervision techno only. Source: state actuel + fichiers HTML + indices changelog v1.51. Champs flagges 'a confirmer Dominique' = pas d'invention",
+        "status": "actif_supervision_only",
+        "mode": "techno_only_zero_surface_commerciale",
+        "iso": "BE",
+        "currency": "EUR",
+        "vat_standard": 21,
+        "vat_format": "BE + 10 chiffres (BE 0XXX.XXX.XXX)",
+        "vies_validation_required": true,
+        "autoliquidation_b2b": true,
+        "mention_facture": "Autoliquidation par le preneur - art. 196 directive 2006/112/CE",
+        "langue_default": "fr-BE",
+        "langue_fallback": "en",
+        "site_subdomain": null,
+        "support_email": "hello@ozecar.fr",
+        "support_phone_local": null,
+        "stripe_account": "OZECAR FR",
+        "payment_methods": [
+          "card",
+          "sepa_direct_debit"
+        ],
+        "bancontact_active": false,
+        "transporteur": "a_confirmer_dominique",
+        "delai_expedition": "a_confirmer_dominique",
+        "douane": "non_ue",
+        "adresse_retour_sav": "OZECAR SAS, 38 Rue Alexandre Fleming, 13100 Aix-en-Provence, FR",
+        "simbase_networks_be": [
+          "Proximus",
+          "Orange Belgium",
+          "Base/Telenet"
+        ],
+        "pandadoc_template": "FR unique (sandbox 9twwWCrbRe7ECUgAyzSpom) - acceptable B2B intracom UE",
+        "mandat_supervision": "art.1984 CC FR - applicable a client BE en B2B intracom, a valider juriste pour formalisation",
+        "label_irve_equivalent": "Pas d'equivalent officiel BE. Reperes: EV Belgium, Synergrid (raccordements)",
+        "primes_regionales": {
+          "wallonie": "Prime regionale bornes accessibles publiquement (a verifier 2026)",
+          "flandre": "Programme clean power for transport"
+        },
+        "hubspot_property_country": "a_verifier_existence_avec_valeur_BE",
+        "first_client_be": "a_documenter_dominique",
+        "first_kit_delivered_date": "a_documenter_dominique",
+        "first_invoice_date": "a_documenter_dominique",
+        "trous_a_combler": [
+          "Documenter clients BE actifs (nom, MRR, date) dans active_clients",
+          "Confirmer transporteur + delai expedition kit BE",
+          "Verifier HubSpot property country existe avec valeur BE",
+          "Ajouter BE au workflow Make routing par country",
+          "Valider juriste que mandat OZECAR FR couvre client BE legalement"
+        ],
+        "active_clients": [],
+        "decisions_pour_activer_commercial_be": [
+          "Creer be.ozecar.app contenu NL prioritaire (Flandre = gros marche EV)",
+          "Activer Bancontact sur Stripe",
+          "Cloner template PandaDoc en NL + adapter droit belge",
+          "Documenter primes Wallonie/Flandre sur page tarifs BE",
+          "Identifier 2-3 distributeurs IRVE BE pour programme partenaires",
+          "Acquerir 1 reference client BE communicable"
+        ],
+        "effort_estime_activation_commerciale": "3-4 semaines (BE proche FR culturel/juridique)"
+      }
+    },
+    "next_steps_dominique": [
+      "Valider recommandation architecture sous-domaines (option B)",
+      "Documenter clients BE actifs dans country_packs.belgique.active_clients",
+      "Confirmer transporteur + delai expedition kit BE",
+      "Designer le prochain pays cible (declenche creation country_pack vide a remplir)"
+    ]
   }
 }
