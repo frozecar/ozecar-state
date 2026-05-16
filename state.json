@@ -1,12 +1,28 @@
 {
   "_meta": {
-    "version": "1.60",
+    "version": "1.61",
     "updated": "2026-05-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-16",
+        "version_from": "1.60",
+        "version_to": "1.61",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Restructuration priorités business_expansion suite décision Dominique 2026-05-16",
+          "NOUVEAU axe #1: services revendus par installateurs (modèle Stripe/Shopify - OZECAR powers, installateurs encaissent, com partagée)",
+          "Catalogue 6 prestations: maintenance préventive, SLA 24-48h, SLA 4h premium, garantie pièces étendue, refacturation utilisateurs, reporting trimestriel",
+          "Scope choisi: TOUT le catalogue d'un coup, roadmap 12 semaines (S1 mai → S12 GA septembre 2026)",
+          "KPIs 12 mois post-GA: 8 installateurs actifs, 24 sites services, +36k€ ARR, +11% uplift ARPU, +8pts churn",
+          "Axe énergie downgraded de #1 à #2 (préservé intégralement dans axes_2_to_5_parked pour réactivation post-GA)",
+          "Architecture technique: assemblage Stripe Connect + PandaDoc + HubSpot + OZECAR ONE, quasi-zéro build from scratch",
+          "Nouvelle slide deck pitch: 'OZECAR powers the installer economy' — angle plateforme = valorisation VC plus élevée"
+        ]
+      },
       {
         "date": "2026-05-16",
         "version_from": "1.59",
@@ -3463,162 +3479,157 @@
         "Process activation 48h vs 2-4 semaines concurrents"
       ],
       "axes_identifies": {
-        "axe_1_energie": "Revente élec verte white-label spécialisée IRVE — PRIORITÉ 2026",
-        "axe_2_v2g_vpp": "Agrégation flexibilité réseau (RTE/Enedis) via mandat supervision — horizon 2027-2028",
-        "axe_3_pro_plus_garantie": "Maintenance prédictive IA + SLA premium + intervention réseau installateurs",
+        "axe_1_services_revendus_installateurs": "Catalogue services revendus par installateurs (maintenance, SLA, refacturation, garantie, reporting) — PRIORITÉ 2026, 12 semaines",
+        "axe_2_energie": "Revente élec verte white-label spécialisée IRVE — priorité 2 (downgraded)",
+        "axe_3_v2g_vpp": "Agrégation flexibilité réseau (RTE/Enedis) via mandat supervision — horizon 2027-2028",
         "axe_4_marketplace_roaming": "Fédération inter-clients OZECAR (effet réseau), masse critique requise >2000 PDC",
         "axe_5_hardware_oem": "Borne OEM marque OZECAR (Star Charge/Autel) pré-flashée — risque dilution SaaS"
       }
     },
-    "axe_1_energie_whitelabel": {
-      "status": "strategie_validee_dominique",
-      "decision_date": "2026-05-16",
-      "horizon": "Q3_2026_GA",
-      "owner": "Dominique + Claude PM (claude.ai)",
-      "pitch_one_liner": "OZECAR devient revendeur d'élec verte spécialisée IRVE en marque blanche, vendue avec la supervision. Le client signe une seule facture pour la borne, la supervision, et l'élec optimisée HC/HP — avec économies garanties sur la conso recharge.",
-      "why_defensible": [
-        "OZECAR a la data conso par PDC que les fournisseurs n'ont pas",
-        "Mandat 1984 CC déjà signé sur supervision, extension simple via clause additionnelle",
-        "Réseau installateurs vend l'élec au moment du devis borne, pas plus tard",
-        "Segment B2B parking privé/semi-privé (supermarchés, hôtels, flottes, copros) inoccupé — Octopus×Powerdot couvre B2C public uniquement"
-      ],
-      "market_validation": {
-        "octopus_powerdot_partnership_2026": "Octopus Energy × Powerdot signé jusqu'au 31 décembre 2027 sur tarification dynamique B2C — valide l'angle, n'occupe pas le segment B2B parking privé",
-        "engie_edf_offres_ve": "Offres VE uniquement particuliers résidentiel, pas de bundle CPO/supervision B2B",
-        "anyos_chargeguru_waat": "Concurrents IRVE intègrent installation + supervision + maintenance, AUCUN ne revend l'élec"
-      },
-      "business_model": {
-        "revenue_layers": [
+    "axes_2_to_5_parked": {
+      "_note": "Axes identifiés mais non-prioritaires en 2026 après décision 2026-05-16. À réévaluer fin Q4 2026 selon traction axe 1 (services revendus installateurs).",
+      "axe_2_energie_whitelabel": {
+        "status": "parked_priority_2_after_services_installateurs",
+        "decision_date": "2026-05-16",
+        "horizon": "Q3_2026_GA",
+        "owner": "Dominique + Claude PM (claude.ai)",
+        "pitch_one_liner": "OZECAR devient revendeur d'élec verte spécialisée IRVE en marque blanche, vendue avec la supervision. Le client signe une seule facture pour la borne, la supervision, et l'élec optimisée HC/HP — avec économies garanties sur la conso recharge.",
+        "why_defensible": [
+          "OZECAR a la data conso par PDC que les fournisseurs n'ont pas",
+          "Mandat 1984 CC déjà signé sur supervision, extension simple via clause additionnelle",
+          "Réseau installateurs vend l'élec au moment du devis borne, pas plus tard",
+          "Segment B2B parking privé/semi-privé (supermarchés, hôtels, flottes, copros) inoccupé — Octopus×Powerdot couvre B2C public uniquement"
+        ],
+        "market_validation": {
+          "octopus_powerdot_partnership_2026": "Octopus Energy × Powerdot signé jusqu'au 31 décembre 2027 sur tarification dynamique B2C — valide l'angle, n'occupe pas le segment B2B parking privé",
+          "engie_edf_offres_ve": "Offres VE uniquement particuliers résidentiel, pas de bundle CPO/supervision B2B",
+          "anyos_chargeguru_waat": "Concurrents IRVE intègrent installation + supervision + maintenance, AUCUN ne revend l'élec"
+        },
+        "business_model": {
+          "revenue_layers": [
+            {
+              "layer": "Commission apport",
+              "mechanic": "Fournisseur partenaire reverse 0.3 à 0.8 c€/kWh sur la conso supervisée OZECAR",
+              "revenue_per_site_year_eur": "300-800 (hypothèse 100 MWh/site/an)",
+              "phase": "1_Q3_2026"
+            },
+            {
+              "layer": "Marge pilotage HC/HP",
+              "mechanic": "OZECAR pilote le décalage de conso vers HC via CPMS smart charging, capture 30% de la valeur générée",
+              "revenue_per_site_year_eur": "200-400",
+              "phase": "1_Q3_2026"
+            },
+            {
+              "layer": "Effacement / flexibilité réseau",
+              "mechanic": "Vente flexibilité à RTE/agrégateur ou directement au fournisseur, split 50/50 client",
+              "revenue_per_site_year_eur": "100-300",
+              "phase": "2_2027"
+            }
+          ],
+          "total_revenue_per_site_year_eur": "600-1500",
+          "arr_targets": {
+            "2026_q4": "15-40 k€ ARR additionnel sur 530 PDC actuels (~50 sites) à 50% conversion",
+            "2027_q4": "100-200 k€ ARR additionnel à 2000 PDC visée",
+            "capex_required": 0,
+            "_note_capex": "Zéro nouveau hardware. Build = intégration API + widget OZECAR ONE."
+          }
+        },
+        "target_partners_ranked": [
           {
-            "layer": "Commission apport",
-            "mechanic": "Fournisseur partenaire reverse 0.3 à 0.8 c€/kWh sur la conso supervisée OZECAR",
-            "revenue_per_site_year_eur": "300-800 (hypothèse 100 MWh/site/an)",
-            "phase": "1_Q3_2026"
+            "rank": 1,
+            "name": "Octopus Energy France",
+            "why": "Plateforme Kraken IA déjà intégrée tarification dynamique, partenariat Powerdot prouve l'appétit B2B IRVE, label VertVolt 100% renouvelable, 600k+ clients FR, backed par OE UK",
+            "risk": "Concurrent direct potentiel s'ils lancent leur propre CPMS — verrou contractuel exclusivité 24 mois requis",
+            "contact_strategy": "Email direction B2B + LinkedIn intro via réseau Fauché/Serpollet si possible"
           },
           {
-            "layer": "Marge pilotage HC/HP",
-            "mechanic": "OZECAR pilote le décalage de conso vers HC via CPMS smart charging, capture 30% de la valeur générée",
-            "revenue_per_site_year_eur": "200-400",
-            "phase": "1_Q3_2026"
+            "rank": 2,
+            "name": "ekWateur",
+            "why": "Tarif variable indexé marché de gros (rentabilité dynamique), label vert, déjà offres VE",
+            "risk": "API CPMS limitée, intégration smart charging à valider",
+            "contact_strategy": "Fallback si Octopus refuse exclusivité"
           },
           {
-            "layer": "Effacement / flexibilité réseau",
-            "mechanic": "Vente flexibilité à RTE/agrégateur ou directement au fournisseur, split 50/50 client",
-            "revenue_per_site_year_eur": "100-300",
-            "phase": "2_2027"
+            "rank": 3,
+            "name": "Plüm Énergie / Mint Énergie",
+            "why": "Acteurs plus petits, plus ouverts au white-label, label vert",
+            "risk": "Moins de muscle tech, scaling limité",
+            "contact_strategy": "Plan B si Octopus + ekWateur refusent"
           }
         ],
-        "total_revenue_per_site_year_eur": "600-1500",
-        "arr_targets": {
-          "2026_q4": "15-40 k€ ARR additionnel sur 530 PDC actuels (~50 sites) à 50% conversion",
-          "2027_q4": "100-200 k€ ARR additionnel à 2000 PDC visée",
-          "capex_required": 0,
-          "_note_capex": "Zéro nouveau hardware. Build = intégration API + widget OZECAR ONE."
-        }
+        "technical_architecture": {
+          "1_oauth_api_fournisseur": "Push plages HC/HP au CPMS via OCPP smart charging (déjà supporté)",
+          "2_souscription_flow": "Formulaire OZECAR -> API fournisseur -> contrat élec établi au nom du client final (PAS OZECAR). OZECAR reste apporteur d'affaires.",
+          "3_facturation": "Double facture (élec par fournisseur, supervision+commission par OZECAR), OU monofacture si fournisseur accepte mandat de facturation",
+          "4_reporting_client": "Nouveau widget OZECAR ONE 'Économies réalisées ce mois' — effet wow + argument rétention",
+          "_note_licence": "OZECAR n'a PAS besoin de licence ALD/responsable d'équilibre puisque le contrat élec est entre client final et fournisseur partenaire. Zéro licence réglementaire à obtenir."
+        },
+        "risks_and_mitigations": [
+          {
+            "risk": "Licence fournisseur (ALD/responsable d'équilibre)",
+            "mitigation": "OZECAR reste apporteur d'affaires, fournisseur facture en direct. Zéro licence à obtenir."
+          },
+          {
+            "risk": "Conflit avec contrat élec existant du client",
+            "mitigation": "Vente uniquement aux nouveaux sites ou sur résiliation programmée (préavis 30j en B2B)."
+          },
+          {
+            "risk": "Octopus lance son propre CPMS",
+            "mitigation": "Verrou contractuel exclusivité 24 mois sur signature, fallback ekWateur préparé en parallèle."
+          },
+          {
+            "risk": "Cannibalisation supervision",
+            "mitigation": "Au contraire — supervision devient plus sticky, résilier coupe aussi l'optimisation élec. +5pts churn estimés."
+          }
+        ],
+        "roadmap": [
+          {
+            "sprint": "1",
+            "period": "mai-juin 2026",
+            "deliverable": "Term sheet partenaire Octopus (intro + pitch + démo data 530 PDC)",
+            "owner": "Dominique (intro/closing) + Claude PM (deck/data)"
+          },
+          {
+            "sprint": "2",
+            "period": "juin 2026",
+            "deliverable": "Contrat marque blanche signé + API spec définie",
+            "owner": "Dominique (legal) + Claude PM (intégration)"
+          },
+          {
+            "sprint": "3",
+            "period": "juillet 2026",
+            "deliverable": "Intégration OCPP smart charging + widget 'Économies' sur OZECAR ONE",
+            "owner": "Claude PM (brief) + Claude Code (front) + Make scenarios"
+          },
+          {
+            "sprint": "4",
+            "period": "août 2026",
+            "deliverable": "Pilote 5 sites volontaires (Fauché ou hôtellerie)",
+            "owner": "Dominique (recrutement) + Claude PM (onboarding)"
+          },
+          {
+            "sprint": "5",
+            "period": "septembre 2026",
+            "deliverable": "GA — pricing public + landing page + intégration formulaires HubSpot",
+            "owner": "Tous"
+          }
+        ],
+        "kpis_12_months": {
+          "sites_pilotes_signes_q4_2026": 15,
+          "arr_additionnel_2026_eur": 20000,
+          "churn_supervision_improvement_pts": 5,
+          "partenaire_exclusif_2026": 1
+        },
+        "pitch_deck_impact": {
+          "new_slide_to_insert": "OZECAR n'est pas un CPMS, c'est un opérateur intégré IRVE — supervision + élec + maintenance, une seule facture, un seul interlocuteur",
+          "rationale": "Renforce l'angle iceberg/moat du deck v2 — ajoute une couche défensive supplémentaire sous la ligne d'eau"
+        },
+        "_note_downgrade": "Downgraded de #1 à #2 le 2026-05-16. Décision: axe 'services revendus par installateurs' prend la place #1 car (a) zéro partenaire externe à négocier, (b) time-to-revenue 4-6 sem vs 4-6 mois, (c) capitalise sur le réseau installateurs déjà acquis (moat #1 du deck v2), (d) verrou contractuel naturel + data juteuse."
       },
-      "target_partners_ranked": [
-        {
-          "rank": 1,
-          "name": "Octopus Energy France",
-          "why": "Plateforme Kraken IA déjà intégrée tarification dynamique, partenariat Powerdot prouve l'appétit B2B IRVE, label VertVolt 100% renouvelable, 600k+ clients FR, backed par OE UK",
-          "risk": "Concurrent direct potentiel s'ils lancent leur propre CPMS — verrou contractuel exclusivité 24 mois requis",
-          "contact_strategy": "Email direction B2B + LinkedIn intro via réseau Fauché/Serpollet si possible"
-        },
-        {
-          "rank": 2,
-          "name": "ekWateur",
-          "why": "Tarif variable indexé marché de gros (rentabilité dynamique), label vert, déjà offres VE",
-          "risk": "API CPMS limitée, intégration smart charging à valider",
-          "contact_strategy": "Fallback si Octopus refuse exclusivité"
-        },
-        {
-          "rank": 3,
-          "name": "Plüm Énergie / Mint Énergie",
-          "why": "Acteurs plus petits, plus ouverts au white-label, label vert",
-          "risk": "Moins de muscle tech, scaling limité",
-          "contact_strategy": "Plan B si Octopus + ekWateur refusent"
-        }
-      ],
-      "technical_architecture": {
-        "1_oauth_api_fournisseur": "Push plages HC/HP au CPMS via OCPP smart charging (déjà supporté)",
-        "2_souscription_flow": "Formulaire OZECAR -> API fournisseur -> contrat élec établi au nom du client final (PAS OZECAR). OZECAR reste apporteur d'affaires.",
-        "3_facturation": "Double facture (élec par fournisseur, supervision+commission par OZECAR), OU monofacture si fournisseur accepte mandat de facturation",
-        "4_reporting_client": "Nouveau widget OZECAR ONE 'Économies réalisées ce mois' — effet wow + argument rétention",
-        "_note_licence": "OZECAR n'a PAS besoin de licence ALD/responsable d'équilibre puisque le contrat élec est entre client final et fournisseur partenaire. Zéro licence réglementaire à obtenir."
-      },
-      "risks_and_mitigations": [
-        {
-          "risk": "Licence fournisseur (ALD/responsable d'équilibre)",
-          "mitigation": "OZECAR reste apporteur d'affaires, fournisseur facture en direct. Zéro licence à obtenir."
-        },
-        {
-          "risk": "Conflit avec contrat élec existant du client",
-          "mitigation": "Vente uniquement aux nouveaux sites ou sur résiliation programmée (préavis 30j en B2B)."
-        },
-        {
-          "risk": "Octopus lance son propre CPMS",
-          "mitigation": "Verrou contractuel exclusivité 24 mois sur signature, fallback ekWateur préparé en parallèle."
-        },
-        {
-          "risk": "Cannibalisation supervision",
-          "mitigation": "Au contraire — supervision devient plus sticky, résilier coupe aussi l'optimisation élec. +5pts churn estimés."
-        }
-      ],
-      "roadmap": [
-        {
-          "sprint": "1",
-          "period": "mai-juin 2026",
-          "deliverable": "Term sheet partenaire Octopus (intro + pitch + démo data 530 PDC)",
-          "owner": "Dominique (intro/closing) + Claude PM (deck/data)"
-        },
-        {
-          "sprint": "2",
-          "period": "juin 2026",
-          "deliverable": "Contrat marque blanche signé + API spec définie",
-          "owner": "Dominique (legal) + Claude PM (intégration)"
-        },
-        {
-          "sprint": "3",
-          "period": "juillet 2026",
-          "deliverable": "Intégration OCPP smart charging + widget 'Économies' sur OZECAR ONE",
-          "owner": "Claude PM (brief) + Claude Code (front) + Make scenarios"
-        },
-        {
-          "sprint": "4",
-          "period": "août 2026",
-          "deliverable": "Pilote 5 sites volontaires (Fauché ou hôtellerie)",
-          "owner": "Dominique (recrutement) + Claude PM (onboarding)"
-        },
-        {
-          "sprint": "5",
-          "period": "septembre 2026",
-          "deliverable": "GA — pricing public + landing page + intégration formulaires HubSpot",
-          "owner": "Tous"
-        }
-      ],
-      "kpis_12_months": {
-        "sites_pilotes_signes_q4_2026": 15,
-        "arr_additionnel_2026_eur": 20000,
-        "churn_supervision_improvement_pts": 5,
-        "partenaire_exclusif_2026": 1
-      },
-      "pitch_deck_impact": {
-        "new_slide_to_insert": "OZECAR n'est pas un CPMS, c'est un opérateur intégré IRVE — supervision + élec + maintenance, une seule facture, un seul interlocuteur",
-        "rationale": "Renforce l'angle iceberg/moat du deck v2 — ajoute une couche défensive supplémentaire sous la ligne d'eau"
-      }
-    },
-    "axes_2_to_5_parked": {
-      "_note": "Axes identifiés mais non-prioritaires en 2026. À réévaluer fin Q4 2026 selon traction axe 1.",
-      "axe_2_v2g_vpp": {
+      "axe_3_v2g_vpp": {
         "horizon": "2027-2028",
-        "prerequisite": "Axe 1 énergie en place + 1000+ PDC supervisés + OCPP 2.0.1 / ISO 15118 déployés",
+        "prerequisite": "Axe 1 services + axe 2 énergie en place + 1000+ PDC supervisés + OCPP 2.0.1 / ISO 15118 déployés",
         "revenue_potential": "50-200 €/borne/an de revenus flexibilité reversés en partie au client"
-      },
-      "axe_3_pro_plus_garantie": {
-        "horizon": "Q1 2027",
-        "prerequisite": "Réseau installateurs structuré + SLA contractualisés avec Fauché/Serpollet",
-        "pricing_hypothesis": "29-39 €/borne/mois",
-        "_note": "Pourrait être accéléré si Axe 1 prend du retard"
       },
       "axe_4_marketplace_roaming": {
         "horizon": "2028",
@@ -3629,6 +3640,184 @@
         "horizon": "Vision 2028+",
         "risk": "Dilution positionnement SaaS pur",
         "_note": "À réévaluer seulement après raise Série A"
+      }
+    },
+    "axe_1_services_revendus_installateurs": {
+      "status": "strategie_validee_dominique",
+      "decision_date": "2026-05-16",
+      "horizon": "Q3_2026_GA",
+      "scope_chosen": "full_catalog_12_weeks",
+      "owner": "Dominique + Claude PM (claude.ai)",
+      "pitch_one_liner": "OZECAR fournit aux installateurs une infrastructure clé-en-main pour vendre des contrats récurrents à LEURS clients finaux (maintenance, SLA, refacturation utilisateurs, garantie pièces, reporting). Modèle Stripe pour les paiements / Shopify pour le e-commerce — les installateurs vendent, OZECAR powers, com partagée.",
+      "why_defensible": [
+        "Capitalise sur le moat #1 du deck v2 (réseau installateurs Fauché/Serpollet) au lieu d'en construire un nouveau",
+        "CAC ≈ 0 (l'installateur a déjà la relation client final, pas de force de vente OZECAR à monter)",
+        "Alignement total — l'installateur gagne plus sur chaque chantier en passant par OZECAR",
+        "Verrou contractuel naturel: installateur qui facture via OZECAR ne migre pas chez concurrent (switching cost élevé)",
+        "Data juteuse: OZECAR devient le système économique de référence des installateurs IRVE → optionalité (financement matériel, leasing, compta)"
+      ],
+      "vs_axe_2_energie": {
+        "no_external_partner_required": "Pas de négociation Octopus/ekWateur, OZECAR contrôle 100% de la chaîne",
+        "time_to_revenue": "4-6 semaines vs 4-6 mois pour énergie",
+        "leverages_existing_moat": "Réseau installateurs déjà l'avantage compétitif #1 (deck v2 slide moat)",
+        "lower_legal_risk": "Pas de licence ALD à approcher, pas de contrats tripartites élec à structurer"
+      },
+      "catalog_prestations": [
+        {
+          "name": "Contrat maintenance préventive",
+          "scope": "1 visite/an, contrôle visuel + test fonctionnel + nettoyage",
+          "pricing_client_final_eur_borne_an": "120-180",
+          "marge_installateur_eur": "60-90",
+          "com_ozecar_eur": "20-30",
+          "vat_excluded": true
+        },
+        {
+          "name": "SLA intervention 24-48h",
+          "scope": "Intervention sur incident bloquant sous 24-48h ouvrées",
+          "pricing_client_final_eur_borne_an": "240-360",
+          "marge_installateur_eur": "120-180",
+          "com_ozecar_eur": "40-60",
+          "vat_excluded": true
+        },
+        {
+          "name": "SLA intervention 4h ouvrées (premium)",
+          "scope": "Flottes critiques, transport public, hôtellerie haut de gamme",
+          "pricing_client_final_eur_borne_an": "600-900",
+          "marge_installateur_eur": "300-450",
+          "com_ozecar_eur": "100-150",
+          "vat_excluded": true
+        },
+        {
+          "name": "Garantie pièces étendue 5 ans",
+          "scope": "Couverture pièces au-delà garantie constructeur 2 ans",
+          "pricing_client_final_eur_borne_an": "60-100",
+          "marge_installateur_eur": "30-50",
+          "com_ozecar_eur": "10-20",
+          "vat_excluded": true
+        },
+        {
+          "name": "Refacturation collaborateurs/locataires",
+          "scope": "Module facturation utilisateurs finaux pour flottes/copros — quote-part conso + abonnement utilisateur",
+          "pricing_client_final_eur_user_mois": "5-10",
+          "marge_installateur_eur_user_mois": "2-5",
+          "com_ozecar_eur_user_mois": "1-2",
+          "vat_excluded": true
+        },
+        {
+          "name": "Reporting trimestriel personnalisé",
+          "scope": "Rapport PDF mensuel/trimestriel B2B PME (conso, économies CO2, taux disponibilité, top users)",
+          "pricing_client_final_eur_site_an": "200-400",
+          "marge_installateur_eur": "100-200",
+          "com_ozecar_eur": "50-100",
+          "vat_excluded": true
+        }
+      ],
+      "business_model": {
+        "split_model": "Stripe Connect direct charges with application fee — installateur encaisse, OZECAR prélève sa com automatiquement",
+        "example_site_100_bornes_flotte_sla4h": {
+          "ca_recurrent_client_final_eur_an": 12000,
+          "marge_installateur_eur_an": 6000,
+          "com_ozecar_eur_an": 2000,
+          "supervision_existante_eur_an": 17880,
+          "arr_ozecar_total_par_site_eur_an": 19880,
+          "uplift_vs_supervision_seule_pct": 11.2
+        },
+        "scale_projection_12_months": {
+          "hypothese_installateurs_actifs": 8,
+          "hypothese_sites_moyens_par_installateur": 5,
+          "hypothese_sites_total_activated": 40,
+          "hypothese_taux_attach_services": 0.6,
+          "sites_avec_services_an1": 24,
+          "com_ozecar_moyenne_par_site_eur_an": 1500,
+          "arr_additionnel_eur_an_1": 36000,
+          "_note": "Hypothèses prudentes pour 12 mois après GA septembre 2026"
+        }
+      },
+      "technical_architecture": {
+        "1_module_contrats_ozecar_one": "Nouveau module 'Contrats' dans le portail installateur — listing actif/échéances/statuts, création contrat depuis devis borne",
+        "2_stripe_connect": "Stripe Connect Express, comptes installateurs, direct charges avec application fee (com OZECAR auto-prélevée)",
+        "3_templates_pandadoc": "1 template par type de prestation (6 templates), signature électronique client final, propagation vers HubSpot Deal + Stripe Subscription",
+        "4_workflow_ticket_hubspot": "Pipeline 'Tickets SLA' avec assignation installateur via mandat partenaire, SLA timer monitoring",
+        "5_reporting_engine": "Module reporting auto trimestriel (PDF généré depuis data supervision déjà collectée)",
+        "_note_build_load": "Quasi-zéro build from scratch — assemblage de briques existantes (Stripe, PandaDoc, HubSpot, OZECAR ONE)"
+      },
+      "risks_and_mitigations": [
+        {
+          "risk": "Responsabilité juridique si SLA non tenu par installateur",
+          "mitigation": "Contrats tripartites: OZECAR fournit la plateforme, installateur garantit le service. OZECAR n'est PAS garant des interventions. Clause expresse dans CGV."
+        },
+        {
+          "risk": "Installateurs ont déjà des contrats maintenance perso (Excel/papier)",
+          "mitigation": "Migration progressive — OZECAR remplace leur outil interne, ils gardent leurs clients. Pas de prise de relation."
+        },
+        {
+          "risk": "Charge support OZECAR explose si bornes en panne",
+          "mitigation": "L'installateur intervient, pas OZECAR. OZECAR = plateforme, jamais SAV. Documentation contractuelle."
+        },
+        {
+          "risk": "Concurrents (Driveco, Zeplug) font tout en interne et ne vendent pas leur stack",
+          "mitigation": "Différenciation Apple vs Android — eux verticaux fermés, OZECAR plateforme ouverte aux installateurs. C'est le pitch deck v2 (réseau installateurs vs full-stack centralisé)."
+        },
+        {
+          "risk": "Installateurs craignent désintermédiation par OZECAR",
+          "mitigation": "Clause anti-désintermédiation contractuelle: OZECAR s'interdit de vendre directement aux clients finaux sourcés par installateur partenaire (cf partner_program existant)."
+        }
+      ],
+      "roadmap_12_weeks": [
+        {
+          "sprint": "1-2",
+          "period": "S1-S2 (mai-juin 2026)",
+          "deliverable": "Templates contrats PandaDoc (6 types) + CGV partenaire installateur révisées + structure tarification finale",
+          "owner": "Claude PM (drafts) + Dominique (validation legal)"
+        },
+        {
+          "sprint": "3-4",
+          "period": "S3-S4 (juin 2026)",
+          "deliverable": "Stripe Connect comptes installateurs activés + workflow Make 'create-subscription' opérationnel",
+          "owner": "Claude PM (config Stripe + Make) + Dominique (compte Stripe)"
+        },
+        {
+          "sprint": "5-7",
+          "period": "S5-S7 (juin-juillet 2026)",
+          "deliverable": "Module 'Contrats' dans OZECAR ONE (UI + backend) — listing, création, échéances",
+          "owner": "Claude PM (brief) + Claude Code (front Shopify/WP staging)"
+        },
+        {
+          "sprint": "8-9",
+          "period": "S8-S9 (juillet-août 2026)",
+          "deliverable": "Pipeline HubSpot 'Tickets SLA' + assignation installateurs + timers monitoring",
+          "owner": "Claude PM (config HubSpot via MCP)"
+        },
+        {
+          "sprint": "10",
+          "period": "S10 (août 2026)",
+          "deliverable": "Module reporting auto trimestriel (template PDF + génération depuis supervision data)",
+          "owner": "Claude PM (brief) + Claude Code (template HTML→PDF)"
+        },
+        {
+          "sprint": "11",
+          "period": "S11 (août-sept 2026)",
+          "deliverable": "Pilote avec Fauché + Serpollet — 5 sites, 1 contrat chacun, test bout en bout",
+          "owner": "Dominique (recrutement) + Claude PM (onboarding)"
+        },
+        {
+          "sprint": "12",
+          "period": "S12 (septembre 2026)",
+          "deliverable": "GA — landing page programme, formation installateurs partenaires existants, lancement officiel",
+          "owner": "Tous"
+        }
+      ],
+      "kpis_12_months_post_ga": {
+        "installateurs_actifs_q4_2027": 8,
+        "sites_avec_services_q4_2027": 24,
+        "arr_additionnel_eur": 36000,
+        "uplift_arpu_par_site_pct": 11,
+        "churn_supervision_improvement_pts": 8,
+        "_note_churn": "Plus fort que axe énergie (+5pts) car switching cost installateur >>"
+      },
+      "pitch_deck_impact": {
+        "new_slide_to_insert": "OZECAR powers the installer economy — la plateforme qui permet aux installateurs IRVE de capturer le revenu récurrent qu'ils laissent sur la table aujourd'hui",
+        "rationale": "Démultiplie l'angle iceberg/moat: au lieu d'ajouter une couche au-dessus de la supervision, OZECAR devient l'OS économique du réseau installateurs. Vision plateforme = valorisation plus élevée pour VCs."
       }
     }
   }
