@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.61",
-    "updated": "2026-05-16",
+    "version": "1.62",
+    "updated": "2026-05-14",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-14",
+        "version_from": "1.61",
+        "version_to": "1.62",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Vue Gantt préparée sur board orchestration 18411921057 : colonne Timeline 'timerange_mm3dwq7f' créée + 49 items Todo/En cours/Bloqué/Backlog dotés de dates start/end sur fenêtre 2026-05-15 → 2026-07-31.",
+          "Calibration grossière selon priorité (Urgent=mai, Important=fin mai, Normal=juin, Backlog=juin-juillet) + dépendances + volume estimé dans long_text. WIP limit ~4-5 simultané respecté.",
+          "API monday n'expose PAS la création de vue Gantt via GraphQL (ViewKind enum limité à DASHBOARD/TABLE/FORM/APP). À créer par Dominique en 2 clics dans monday UI : Board > '+ Add view' > Gantt.",
+          "Section state.json ajoutée : monday_boards.orchestration_18411921057_gantt."
+        ]
+      },
       {
         "date": "2026-05-16",
         "version_from": "1.60",
@@ -1392,6 +1404,15 @@
       "id": 18411921057,
       "name": "OZECAR — Orchestration Agents",
       "_note_v110": "Board orchestration centralisé toutes les tâches. 5 items partenaires ajoutés v1.10 avec préfixe PART-XX dans la colonne text_mm33w81s."
+    },
+    "orchestration_18411921057_gantt": {
+      "_note": "Vue Gantt secondaire sur le board orchestration 18411921057. Colonne Timeline 'timerange_mm3dwq7f' ajoutée 2026-05-14 par PM Claude. 49 items Todo/Backlog/Review/InProgress/Blocked dotés de dates start/end estimées grossièrement sur fenêtre 2026-05-15 → 2026-07-31 (11 semaines).",
+      "timeline_column_id": "timerange_mm3dwq7f",
+      "dependency_column_id": "dependency_mm33knfv",
+      "items_count": 49,
+      "fenetre_planning": "2026-05-15 -> 2026-07-31",
+      "creation_vue_gantt_par_dominique": "API monday n'expose pas la création de vue Gantt via GraphQL (ViewKind enum n'a que DASHBOARD/TABLE/FORM/APP). À créer en 2 clics dans monday UI : Board 18411921057 > '+ Add view' > Gantt > sélectionner Timeline column = 'timerange_mm3dwq7f', Dependency column = 'dependency_mm33knfv'. Cela créera la vue sans toucher à la vue principale (vue secondaire).",
+      "calibration_rationale": "URGENT démarre 2026-05-15. IMPORTANT décalé selon dépendances. NORMAL backlog 2026-06+. Items bloqués (WP01/WP02) positionnés sur fenêtre déblocage estimée. Capacity grossière : PM + Dominique en parallèle, WIP limit 4-5 simultané. Estimations basées sur priorité + long_text de chaque item. À recalibrer dès que Dominique a des deadlines hard."
     }
   },
   "gaps": {
