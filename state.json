@@ -1,12 +1,27 @@
 {
   "_meta": {
-    "version": "1.64",
-    "updated": "2026-05-16",
+    "version": "1.65",
+    "updated": "2026-05-17",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-17",
+        "version_from": "1.64",
+        "version_to": "1.65",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Production autonome 4 batches Services Revendus suite demande Dominique 2026-05-17 (temps limité)",
+          "Batch 01 livré: comparatif stack tech portail (WP vs Next.js vs Retool) — reco Retool MVP",
+          "Batch 02 livré: maquette HTML navigable portail pro.ozecar.fr avec 8 modules (preview sur staging)",
+          "Batch 03 livré: avenant Services Revendus + 6 templates devis client final (relecture juridique requise)",
+          "Batch 04 livré: emails intro Fauché/Serpollet (court + long) + config HubSpot complète (propriétés + pipeline + automatisations + Make 07)",
+          "Index unifié des 4 batches déployé sur staging.ozecar.fr/wp-content/uploads/ozecar/index-batches.html",
+          "Section briefs_ready_to_consume.services_revendus_batches_2026_05_17 documentée pour traçabilité"
+        ]
+      },
       {
         "date": "2026-05-16",
         "version_from": "1.63",
@@ -2712,6 +2727,86 @@
       "created_at": "2026-05-13",
       "created_by": "Claude PM (claude.ai)",
       "alternative_unblock": "Si Dominique régénère PAT HubSpot avec scope crm.schemas.deals.write et le colle dans /api/hubspot.php ligne $token, le PM peut créer les 12 props en 30s via API"
+    },
+    "services_revendus_batches_2026_05_17": {
+      "_note": "4 batches livrés en mode autonome sur le programme Services Revendus + portail pro.ozecar.fr. Dominique a demandé le 2026-05-17 de produire tout sans lui, validation async par batch.",
+      "produced_date": "2026-05-17",
+      "production_mode": "autonomous_no_dominique_input",
+      "index_url": "https://staging.ozecar.fr/wp-content/uploads/ozecar/index-batches.html",
+      "batches": [
+        {
+          "id": "batch_01",
+          "title": "Comparatif stack tech portail pro.ozecar.fr",
+          "url": "https://staging.ozecar.fr/wp-content/uploads/ozecar/batch-01-comparatif-stack.html",
+          "source_file": "/home/claude/batches/01-comparatif-stack-portail.md",
+          "decision_requested": "Valider option C (Retool MVP) vs option A (WP multisite) vs option B (Next.js direct)",
+          "claude_recommendation": "Retool MVP en Q3 2026, migration Next.js en 2027 si >30 installateurs actifs",
+          "status": "awaiting_dominique_validation"
+        },
+        {
+          "id": "batch_02",
+          "title": "Maquette portail pro.ozecar.fr — 8 modules navigables",
+          "url": "https://staging.ozecar.fr/wp-content/uploads/ozecar/preview-portail-pro.html",
+          "modules_designed": [
+            "Tableau de bord installateur",
+            "Mes clients supervisés",
+            "Mon tier & ma bounty",
+            "Catalogue services revendus",
+            "Mes contrats actifs",
+            "Tickets SLA",
+            "Commandes de kits",
+            "Ressources & formation"
+          ],
+          "design_system": "Cohérent avec charte ozecar.fr (DM Sans + Space Mono + Instrument Serif, palette ink/cream/yellow/violet)",
+          "status": "awaiting_dominique_validation"
+        },
+        {
+          "id": "batch_03",
+          "title": "Contrats Services Revendus — avenant + 6 templates devis",
+          "url": "https://staging.ozecar.fr/wp-content/uploads/ozecar/batch-03-contrats.html",
+          "source_file": "/home/claude/batches/03-contrats-services-revendus.md",
+          "documents": [
+            "Avenant Services Revendus au contrat Installateur Certifié OZECAR (référence C1-installateur-certifie-avenant-services.md)",
+            "Devis SVC-MNT Maintenance préventive",
+            "Devis SVC-SLA48 SLA 24-48h",
+            "Devis SVC-SLA4 SLA 4h Premium",
+            "Devis SVC-GAR Garantie pièces étendue 5 ans",
+            "Devis SVC-REF Refacturation utilisateurs",
+            "Devis SVC-REP Reporting trimestriel"
+          ],
+          "validation_required": "Relecture juridique avocat — points de vigilance: art 2.4 limitation responsabilité OZECAR, art 5 SLA, art 6 anti-désintermédiation",
+          "status": "awaiting_legal_review"
+        },
+        {
+          "id": "batch_04",
+          "title": "Intro Fauché/Serpollet + config HubSpot",
+          "url": "https://staging.ozecar.fr/wp-content/uploads/ozecar/batch-04-fauche-serpollet.html",
+          "source_file": "/home/claude/batches/04-fauche-serpollet-hubspot.md",
+          "deliverables": [
+            "Email d'intro court (première approche) pour Fauché et Serpollet",
+            "Email d'intro long (second tour si réponse positive) avec détails programme",
+            "Liste de 8 propriétés HubSpot Company à créer",
+            "Liste de 5 propriétés HubSpot Deal à créer",
+            "Liste de 6 propriétés HubSpot Ticket à créer",
+            "Nouveau pipeline 'Tickets SLA Services Revendus' avec 9 stages",
+            "5 automatisations HubSpot A1-A5 à créer",
+            "Spec Make 07 'Calcul commission mensuelle Services Revendus'"
+          ],
+          "dominique_blocking_actions": [
+            "Confirmer prénoms/villes/entreprises Fauché et Serpollet pour personnalisation",
+            "Valider le pricing conditions préférentielles pilote (5% pendant 24 mois proposé)",
+            "Envoi effectif des emails depuis compte ozecar.fr"
+          ],
+          "claude_async_actions_possible": [
+            "Créer propriétés HubSpot (via MCP HubSpot)",
+            "Créer pipeline Tickets SLA",
+            "Drafter workflows A1-A5",
+            "Drafter Make 07 scenario"
+          ],
+          "status": "awaiting_dominique_validation_then_async_execution"
+        }
+      ],
+      "next_steps_after_validation": "Quand Dominique valide chaque batch, l'exécution se fait soit côté Dominique (signatures, envois, comptes Stripe) soit côté Claude PM (HubSpot config via MCP, Make scenarios, déploiement landing page sur staging)."
     }
   },
   "partnerships_constructeurs": {
