@@ -1,12 +1,28 @@
 {
   "_meta": {
-    "version": "1.62",
-    "updated": "2026-05-14",
+    "version": "1.63",
+    "updated": "2026-05-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-16",
+        "version_from": "1.62",
+        "version_to": "1.63",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Intégration Services Revendus DANS partner_program.installer_certified.services_module (extension du programme existant, pas un programme parallèle)",
+          "Accès catalogue Services Revendus UNIFORMISÉ pour tous tiers (Démarrage/Bronze/Argent/Or) — décision 2026-05-16",
+          "Com OZECAR DIFFÉRENCIÉE: 15% sur SLA 4h premium (valeur dans ticketing temps réel), 10% standard sur les 5 autres prestations",
+          "Architecture portail corrigée — OZECAR ONE = app B2C utilisateurs finaux, pas le portail installateur",
+          "Nouveau sous-domaine pro.ozecar.fr décidé (vs alternatives installer., partenaires., installer.co) — universel pour tous segments pros futurs (installateurs + revendeurs + distributeurs + intégrateurs flotte + partenaires constructeurs)",
+          "Nouvelle section portail_pro_ozecar_fr v1.0 — scope 8 modules pour installateurs cert., stack tech à trancher avant sprint 5 (Retool MVP probable), auth magic link",
+          "Roadmap 12 sem mise à jour: ajout sprint 4-5 (DNS pro.ozecar.fr + stack), sprint 5-8 (build portail v1), retrait OZECAR ONE module",
+          "Avenant 'Services Revendus' au contrat Installateur Certifié — une seule signature, pas de contrat séparé"
+        ]
+      },
       {
         "date": "2026-05-14",
         "version_from": "1.61",
@@ -788,7 +804,67 @@
         "transit": 130,
         "_note": "Spiff one-shot versé à l'activation du client (anti-churn 90j). Validé v1.42 après correction de la grille bounty_pct erronée."
       },
-      "_correction_note_v1_42": "bounty_pct supprimé des tiers (était 0/30/50/60%, transformait la bounty en % du forfait annuel — modèle insoutenable). Remplacé par bounty fixe par client signé, indépendante du tier. Le tier ne pilote plus que la remise kits (kit_discount_pct)."
+      "_correction_note_v1_42": "bounty_pct supprimé des tiers (était 0/30/50/60%, transformait la bounty en % du forfait annuel — modèle insoutenable). Remplacé par bounty fixe par client signé, indépendante du tier. Le tier ne pilote plus que la remise kits (kit_discount_pct).",
+      "services_module": {
+        "_note": "Module 'Services Revendus' permettant à l'installateur de vendre des prestations récurrentes à ses propres clients finaux (le client paie l'installateur, OZECAR prélève une com sur le flux Stripe Connect). Activé pour TOUS les tiers (Démarrage, Bronze, Argent, Or) — uniformisation décidée 2026-05-16.",
+        "decision_date": "2026-05-16",
+        "access_policy": "all_tiers_uniform",
+        "_note_access": "Pas de gating par tier. La complexité opérationnelle d'une gradation ne justifie pas le gain commercial. Tout installateur certifié OZECAR peut vendre toutes les prestations dès activation du contrat.",
+        "ozecar_commission_grid": {
+          "model": "stripe_connect_application_fee",
+          "structure": "differentiated_by_prestation_type",
+          "rates": {
+            "maintenance_preventive": 10,
+            "sla_24_48h": 10,
+            "sla_4h_premium": 15,
+            "garantie_pieces_etendue": 10,
+            "refacturation_utilisateurs": 10,
+            "reporting_trimestriel": 10
+          },
+          "rationale_15_pct_sla_premium": "SLA 4h ouvrées nécessite le système de ticketing + monitoring + escalade automatique le plus exigeant côté OZECAR. La valeur OZECAR sur cette presta est dans le ticketing temps réel, qui justifie la com plus élevée.",
+          "rationale_10_pct_standard": "Sur les autres prestations, OZECAR fournit la plateforme contractuelle (PandaDoc + Stripe Connect + reporting) mais l'installateur porte 100% du service opérationnel. 10% reflète le coût d'infrastructure + marge raisonnable."
+        },
+        "catalog_prestations_short": [
+          {
+            "name": "Contrat maintenance préventive",
+            "com_ozecar_pct": 10
+          },
+          {
+            "name": "SLA intervention 24-48h",
+            "com_ozecar_pct": 10
+          },
+          {
+            "name": "SLA intervention 4h ouvrées (premium)",
+            "com_ozecar_pct": 15
+          },
+          {
+            "name": "Garantie pièces étendue 5 ans",
+            "com_ozecar_pct": 10
+          },
+          {
+            "name": "Refacturation collaborateurs/locataires",
+            "com_ozecar_pct": 10
+          },
+          {
+            "name": "Reporting trimestriel personnalisé",
+            "com_ozecar_pct": 10
+          }
+        ],
+        "_full_catalog_ref": "business_expansion.axe_1_services_revendus_installateurs.catalog_prestations",
+        "billing_flow": "Client final paie installateur via Stripe Connect direct charges. OZECAR prélève application_fee automatique (10% ou 15% selon presta). Pas de facturation OZECAR → client final. Anti-désintermédiation préservée.",
+        "contractual_setup": {
+          "tripartite_clause": "OZECAR fournit la plateforme contractuelle + facturation + ticketing. L'installateur garantit le service et porte la responsabilité opérationnelle. Le client final contracte avec l'installateur, pas avec OZECAR.",
+          "amendment_to_installer_contract": "Avenant 'Services Revendus' au contrat Installateur Certifié OZECAR existant. Une seule signature, pas de contrat séparé.",
+          "amendment_template_ref": "C1-installateur-certifie-avenant-services.md (à créer)"
+        },
+        "deliverable_status": {
+          "stripe_connect_setup": "pending",
+          "pandadoc_avenant_template": "pending",
+          "ozecar_one_module_contrats_replaced_by": "pro.ozecar.fr/contrats",
+          "make_07_calc_commission_mensuelle": "pending",
+          "hubspot_pipeline_tickets_sla": "pending"
+        }
+      }
     },
     "affiliate": {
       "label": "Apporteur d'affaires OZECAR",
@@ -3752,15 +3828,30 @@
           "com_ozecar_moyenne_par_site_eur_an": 1500,
           "arr_additionnel_eur_an_1": 36000,
           "_note": "Hypothèses prudentes pour 12 mois après GA septembre 2026"
+        },
+        "ozecar_commission_grid_finalized": {
+          "decision_date": "2026-05-16",
+          "structure": "differentiated_by_prestation",
+          "rates": {
+            "maintenance_preventive_pct": 10,
+            "sla_24_48h_pct": 10,
+            "sla_4h_premium_pct": 15,
+            "garantie_pieces_etendue_pct": 10,
+            "refacturation_utilisateurs_pct": 10,
+            "reporting_trimestriel_pct": 10
+          },
+          "rationale": "15% sur SLA 4h premium car la valeur OZECAR est dans le ticketing temps réel + escalade. 10% standard sur le reste car OZECAR fournit l'infrastructure mais l'installateur porte le service opérationnel."
         }
       },
       "technical_architecture": {
-        "1_module_contrats_ozecar_one": "Nouveau module 'Contrats' dans le portail installateur — listing actif/échéances/statuts, création contrat depuis devis borne",
-        "2_stripe_connect": "Stripe Connect Express, comptes installateurs, direct charges avec application fee (com OZECAR auto-prélevée)",
-        "3_templates_pandadoc": "1 template par type de prestation (6 templates), signature électronique client final, propagation vers HubSpot Deal + Stripe Subscription",
-        "4_workflow_ticket_hubspot": "Pipeline 'Tickets SLA' avec assignation installateur via mandat partenaire, SLA timer monitoring",
-        "5_reporting_engine": "Module reporting auto trimestriel (PDF généré depuis data supervision déjà collectée)",
-        "_note_build_load": "Quasi-zéro build from scratch — assemblage de briques existantes (Stripe, PandaDoc, HubSpot, OZECAR ONE)"
+        "1_portail_pro_ozecar_fr": "Nouveau sous-domaine pro.ozecar.fr — module 'Catalogue Services + Mes contrats' (cf portail_pro_ozecar_fr section pour scope complet)",
+        "2_stripe_connect": "Stripe Connect Express, comptes installateurs, direct charges avec application_fee différenciée (10% standard / 15% SLA premium)",
+        "3_templates_pandadoc": "1 template avenant 'Services Revendus' au contrat Installateur Certifié existant + 6 templates de devis client final (1 par presta), signature électronique, propagation vers HubSpot Deal + Stripe Subscription",
+        "4_workflow_ticket_hubspot": "Nouveau pipeline 'Tickets SLA' avec assignation installateur via partner_referrer property, SLA timer monitoring",
+        "5_reporting_engine": "Module reporting auto trimestriel (PDF généré depuis data supervision déjà collectée), accessible depuis portail pro",
+        "6_make_07_commission_mensuelle": "Scénario Make calcul com mensuelle sur les flux Stripe Connect (différencié 10%/15%), génération auto-facture OZECAR vers installateur (Article 289-I-2 CGI)",
+        "_note_build_load": "Build principal: portail pro.ozecar.fr + Stripe Connect + PandaDoc avenant + Make 07. Reste = assemblage de briques existantes.",
+        "_correction_2026_05_16": "Architecture initialement basée sur OZECAR ONE corrigée — OZECAR ONE est l'app B2C utilisateurs finaux, pas le portail installateur. Le portail vit sur pro.ozecar.fr."
       },
       "risks_and_mitigations": [
         {
@@ -3788,20 +3879,26 @@
         {
           "sprint": "1-2",
           "period": "S1-S2 (mai-juin 2026)",
-          "deliverable": "Templates contrats PandaDoc (6 types) + CGV partenaire installateur révisées + structure tarification finale",
+          "deliverable": "Avenant 'Services Revendus' au contrat Installateur Certifié + 6 templates devis PandaDoc client final + CGV mises à jour",
           "owner": "Claude PM (drafts) + Dominique (validation legal)"
         },
         {
           "sprint": "3-4",
           "period": "S3-S4 (juin 2026)",
-          "deliverable": "Stripe Connect comptes installateurs activés + workflow Make 'create-subscription' opérationnel",
+          "deliverable": "Stripe Connect comptes installateurs activés + application_fee différenciée 10%/15% + workflow Make 'create-subscription'",
           "owner": "Claude PM (config Stripe + Make) + Dominique (compte Stripe)"
         },
         {
-          "sprint": "5-7",
-          "period": "S5-S7 (juin-juillet 2026)",
-          "deliverable": "Module 'Contrats' dans OZECAR ONE (UI + backend) — listing, création, échéances",
-          "owner": "Claude PM (brief) + Claude Code (front Shopify/WP staging)"
+          "sprint": "4-5",
+          "period": "S4-S5 (juin-juillet 2026)",
+          "deliverable": "DNS pro.ozecar.fr + choix stack tech (Retool MVP probable) + maquettes UX 8 modules",
+          "owner": "Dominique (DNS) + Claude PM (brief stack + maquettes)"
+        },
+        {
+          "sprint": "5-8",
+          "period": "S5-S8 (juin-juillet 2026)",
+          "deliverable": "Build pro.ozecar.fr v1 (dashboard + clients supervisés + tier/bounty + catalogue services + contrats + tickets SLA + commandes kits + ressources)",
+          "owner": "Claude PM (brief) + Claude Code ou Retool builder"
         },
         {
           "sprint": "8-9",
@@ -3818,13 +3915,13 @@
         {
           "sprint": "11",
           "period": "S11 (août-sept 2026)",
-          "deliverable": "Pilote avec Fauché + Serpollet — 5 sites, 1 contrat chacun, test bout en bout",
+          "deliverable": "Pilote avec Fauché + Serpollet — 5 sites, 1 contrat chacun, test bout en bout sur pro.ozecar.fr",
           "owner": "Dominique (recrutement) + Claude PM (onboarding)"
         },
         {
           "sprint": "12",
           "period": "S12 (septembre 2026)",
-          "deliverable": "GA — landing page programme, formation installateurs partenaires existants, lancement officiel",
+          "deliverable": "GA — landing page programme services sur ozecar.fr, formation installateurs partenaires existants, lancement officiel + ouverture pro.ozecar.fr",
           "owner": "Tous"
         }
       ],
@@ -3839,7 +3936,91 @@
       "pitch_deck_impact": {
         "new_slide_to_insert": "OZECAR powers the installer economy — la plateforme qui permet aux installateurs IRVE de capturer le revenu récurrent qu'ils laissent sur la table aujourd'hui",
         "rationale": "Démultiplie l'angle iceberg/moat: au lieu d'ajouter une couche au-dessus de la supervision, OZECAR devient l'OS économique du réseau installateurs. Vision plateforme = valorisation plus élevée pour VCs."
+      },
+      "portail_implementation": {
+        "url": "https://pro.ozecar.fr",
+        "note": "Le portail pro.ozecar.fr est la surface frontale du programme. Détails complets dans section portail_pro_ozecar_fr.",
+        "integration_with_existing_partner_program": "Le module 'Services Revendus' est ajouté comme nouvelle ligne de revenu au programme Installateur Certifié OZECAR existant (cf partner_program.installer_certified.services_module). Pas de programme parallèle — extension du programme actuel."
       }
     }
+  },
+  "portail_pro_ozecar_fr": {
+    "_note": "Portail unifié pour tous les partenaires pros (installateurs cert., revendeurs, distributeurs B2B, intégrateurs flotte, partenaires constructeurs). URL choisie pour scaler à 5+ ans, indépendamment du segment partenaire. Décidé 2026-05-16.",
+    "version": "1.0",
+    "decision_date": "2026-05-16",
+    "url_production": "https://pro.ozecar.fr",
+    "url_staging_planned": "https://pro-staging.ozecar.fr",
+    "rationale": [
+      "Universel sur 5 ans: un seul portail pour installateurs cert. + revendeurs + distributeurs B2B + intégrateurs flotte + partenaires constructeurs (cf partnerships_constructeurs section)",
+      "Court et mémorisable (pro = 3 lettres + ozecar.fr)",
+      "Sépare proprement les 3 surfaces: ozecar.fr (marketing/lead-gen WP) / ozecar.one (B2C app utilisateurs finaux) / pro.ozecar.fr (espace pro tous segments)",
+      "Cohérent avec convention SaaS B2B FR (Qonto, Shine, Stripe utilisent dashboard./pro.)",
+      "Email partenaires@ozecar.fr préservé en parallèle (URL + email co-existent)",
+      "DNS simple: sous-domaine CNAME, indépendant de WP staging"
+    ],
+    "alternatives_considered": {
+      "installer_ozecar_fr": "Rejeté — bloque l'élargissement à revendeurs/distributeurs/intégrateurs, créerait 4+ sous-domaines en 18 mois",
+      "installer_ozecar_co": "Rejeté — domaine séparé fragmente le SEO, frais renouvellement, confusion utilisateur",
+      "partenaires_ozecar_fr": "Considéré (100% FR, plus institutionnel cf EDF/ENGIE), mais 12 caractères vs 3 pour 'pro', plus long en bookmark/copier-coller"
+    },
+    "scope_v1_segments_to_host": [
+      "Installateurs Certifiés OZECAR (priorité 1, Q3 2026)",
+      "Apporteurs d'affaires (futur)",
+      "Revendeurs B2B (futur, post Q4 2026)",
+      "Distributeurs B2B (futur, 2027)",
+      "Partenaires constructeurs Sungrow et autres (futur, à coordonner avec partnerships_constructeurs section)"
+    ],
+    "scope_v1_modules_for_installer_certified": [
+      {
+        "module": "Tableau de bord installateur",
+        "purpose": "Vue d'ensemble: clients supervisés, tier actuel, bounty YTD, contrats services actifs",
+        "data_source": "HubSpot Companies + Deals + propriétés partenaires"
+      },
+      {
+        "module": "Mes clients supervisés",
+        "purpose": "Liste des clients OZECAR référencés par l'installateur (lecture des Deals HubSpot où partner_referrer = company_id installateur)",
+        "data_source": "HubSpot Deals filtered by partner_referrer"
+      },
+      {
+        "module": "Mon tier et ma bounty",
+        "purpose": "Affichage tier actuel (Démarrage/Bronze/Argent/Or), seuils, bounty YTD calculée, prévisionnel N+1",
+        "data_source": "HubSpot Company partner_tier + partner_bounty_ytd + Make 06"
+      },
+      {
+        "module": "Catalogue Services Revendus + créateur de contrat",
+        "purpose": "Liste des 6 prestations + création contrat client final (génère devis PandaDoc, déclenche Stripe Subscription après signature)",
+        "data_source": "PandaDoc templates + Stripe Connect"
+      },
+      {
+        "module": "Mes contrats services actifs",
+        "purpose": "Liste des contrats services revendus en cours, statuts paiement Stripe, échéances renouvellement",
+        "data_source": "Stripe Connect API + HubSpot Tickets pipeline SLA"
+      },
+      {
+        "module": "Tickets SLA",
+        "purpose": "Tickets HubSpot assignés à l'installateur pour intervention SLA, timer monitoring, statuts",
+        "data_source": "HubSpot Tickets pipeline 'Tickets SLA' (à créer)"
+      },
+      {
+        "module": "Commandes de Kits OZECAR",
+        "purpose": "Historique commandes kits OZKM/OZKU avec remise tier appliquée, statut livraison",
+        "data_source": "Shopify orders (via Claude Code Shopify)"
+      },
+      {
+        "module": "Ressources & formation",
+        "purpose": "Guides OCPP par modèle de borne, certifications, kits de communication marque blanche",
+        "data_source": "WP staging /partenaires/ressources/ ou contenu statique"
+      }
+    ],
+    "tech_stack_options_to_decide": {
+      "_note": "À trancher avant sprint 5 (juin 2026). Pas urgent v1.62.",
+      "option_a_wp_subdomain": "Multisite WordPress sur staging.ozecar.fr + plugin auth dédié (Memberpress / Restrict Content Pro). Simple mais limité côté UX dynamique.",
+      "option_b_nextjs_dedicated": "App Next.js dédiée hébergée Vercel, auth NextAuth + HubSpot SSO. Plus de build mais UX dashboard SaaS pro.",
+      "option_c_retool_or_softr": "No-code (Retool ou Softr) connecté à HubSpot + Stripe + Shopify. Time-to-market le plus court mais limite de personnalisation.",
+      "recommendation_pending": "À trancher selon ROI vs time-to-market. Vraisemblablement option_c (Retool) pour MVP puis option_b en V2."
+    },
+    "auth_strategy": "Magic link email (sans password) — installateurs B2B reçoivent un lien d'accès, session 30j. Pas de complexité SSO Google/MS pour MVP. Comptes provisionnés depuis HubSpot Company partenaire.",
+    "linked_to_business_expansion": "axe_1_services_revendus_installateurs - le portail est le frontal du programme services revendus",
+    "linked_to_partner_program": "installer_certified.services_module - implémentation concrète du module catalogue + contrats"
   }
 }
