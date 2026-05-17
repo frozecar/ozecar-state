@@ -1,12 +1,26 @@
 {
   "_meta": {
-    "version": "1.63",
+    "version": "1.64",
     "updated": "2026-05-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-16",
+        "version_from": "1.63",
+        "version_to": "1.64",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Création section architecture_domaines_ozecar v1.0 — clarification précise des 5 domaines OZECAR",
+          "Clarification staging.ozecar.fr = environnement de dev de ozecar.fr (refonte), PAS un produit séparé",
+          "Architecture 4 surfaces distinctes documentée: ozecar.fr (WP marketing) / ozecar.one (B2C app) / pro.ozecar.fr (B2B pros portail) / shop.ozecar.fr (e-commerce Shopify)",
+          "ozecar.store marqué à retirer (HTML statique temporaire)",
+          "Responsabilités chat clarifiées par domaine (qui exécute quoi)",
+          "Précision portail_pro_ozecar_fr: stack indépendante de WP staging, pro-staging.ozecar.fr planifié"
+        ]
+      },
       {
         "date": "2026-05-16",
         "version_from": "1.62",
@@ -4021,6 +4035,63 @@
     },
     "auth_strategy": "Magic link email (sans password) — installateurs B2B reçoivent un lien d'accès, session 30j. Pas de complexité SSO Google/MS pour MVP. Comptes provisionnés depuis HubSpot Company partenaire.",
     "linked_to_business_expansion": "axe_1_services_revendus_installateurs - le portail est le frontal du programme services revendus",
-    "linked_to_partner_program": "installer_certified.services_module - implémentation concrète du module catalogue + contrats"
+    "linked_to_partner_program": "installer_certified.services_module - implémentation concrète du module catalogue + contrats",
+    "_note_correction_2026_05_16": "Précision Dominique: staging.ozecar.fr est l'environnement de dev de ozecar.fr (pas un produit séparé). Le portail pro vit donc sur une stack TOTALEMENT indépendante, avec son propre pro-staging.ozecar.fr. Aucun risque de confusion d'environnement."
+  },
+  "architecture_domaines_ozecar": {
+    "_note": "Clarification critique de l'architecture des domaines OZECAR pour éviter toute confusion entre instances Claude/chats. Documenté 2026-05-16 suite précision Dominique.",
+    "version": "1.0",
+    "documented_date": "2026-05-16",
+    "domaines": {
+      "ozecar_fr": {
+        "url_prod": "https://ozecar.fr",
+        "url_staging_dev": "https://staging.ozecar.fr",
+        "_clarification_staging": "staging.ozecar.fr est l'environnement de dev/preview de la refonte qui remplacera ozecar.fr en prod. Une fois la refonte validée, le contenu staging passe sur ozecar.fr et staging redevient un environnement de test continu. PAS un produit séparé.",
+        "stack": "WordPress (theme ozecar-child + plugin ozecar)",
+        "surface": "Marketing, lead-gen, contenu (blog, guides, cas clients, FAQ, ressources)",
+        "audience": "Visiteurs B2B prospects + clients existants + presse/investisseurs",
+        "owned_by": "Claude PM (claude.ai) via wp-deploy.php"
+      },
+      "ozecar_one": {
+        "url_prod": "https://ozecar.one",
+        "url_app_android": "fr.ozecar.monta.ozecarone (bundle ID, marque blanche Monta côté backend)",
+        "stack": "App mobile (iOS + Android) + landing téléchargement",
+        "surface": "Application B2C pour utilisateurs finaux des bornes — recherche borne, lancement charge, paiement, historique conso",
+        "audience": "Conducteurs VE / utilisateurs finaux",
+        "_marque_blanche_critical": "Monta NE DOIT JAMAIS apparaître publiquement. Bundle ID privatif OK car backend uniquement."
+      },
+      "pro_ozecar_fr": {
+        "url_prod_planned": "https://pro.ozecar.fr",
+        "url_staging_planned": "https://pro-staging.ozecar.fr",
+        "status": "à construire — décidé 2026-05-16",
+        "stack": "À trancher avant sprint 5 (juin 2026): Retool MVP probable, Next.js V2 long terme",
+        "surface": "Portail pros tous segments — installateurs cert., revendeurs B2B, distributeurs B2B, intégrateurs flotte, partenaires constructeurs",
+        "audience": "Partenaires OZECAR pros (B2B2B)",
+        "scope_v1": "8 modules pour Installateurs Certifiés en priorité (cf portail_pro_ozecar_fr.scope_v1_modules_for_installer_certified)",
+        "independence": "Stack séparée de WP staging — pro-staging.ozecar.fr indépendant de staging.ozecar.fr"
+      },
+      "ozecar_store_a_retirer": {
+        "url": "https://ozecar.store",
+        "status": "temporaire à retirer",
+        "_note": "HTML statique temporaire. Sera remplacé par shop.ozecar.fr (Shopify) géré par Claude Code Shopify."
+      },
+      "shop_ozecar_fr_futur": {
+        "url_prod_planned": "https://shop.ozecar.fr",
+        "url_dev_actuel": "https://ozecar-store.myshopify.com",
+        "stack": "Shopify",
+        "surface": "Boutique e-commerce — kits OZKM/OZKU, bornes Zaptec, colonnes, badges RFID",
+        "audience": "B2B (installateurs, gestionnaires de site) et B2C (particuliers)",
+        "owned_by": "Claude Code Shopify (Shopify AI Toolkit) — Claude PM prépare briefs"
+      }
+    },
+    "architecture_visuelle": "ozecar.fr (marketing WP) <-> ozecar.one (B2C app users) <-> pro.ozecar.fr (B2B pros portail) <-> shop.ozecar.fr (e-commerce Shopify)",
+    "principe_separation": "Chaque domaine a une stack, un environnement de dev, et une audience distincts. Pas de cross-contamination de codebase entre domaines.",
+    "responsabilites_chat": {
+      "ozecar_fr_et_staging": "Claude PM (claude.ai) via wp-deploy.php",
+      "ozecar_one": "Backend Monta marque blanche — coordination Dominique uniquement",
+      "pro_ozecar_fr": "Claude PM (claude.ai) — brief + assemblage (Retool ou délégation Claude Code selon stack)",
+      "shop_ozecar_fr_et_myshopify": "Claude Code Shopify (Shopify AI Toolkit) — Claude PM prépare briefs",
+      "ozecar_store": "À retirer — pas de dev en cours"
+    }
   }
 }
