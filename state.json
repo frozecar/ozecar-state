@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.66",
+    "version": "1.67",
     "updated": "2026-05-17",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-17",
+        "version_from": "1.66",
+        "version_to": "1.67",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "pricing.activation._decision_2026_05_17.audit_findings_2026_05_17 — Résultats audit cross-surfaces",
+          "HubSpot: aucun product 79€ existant (rien à archiver)",
+          "HubSpot: ⚠️ découverte fuite Monta dans description product 'QR Code par PDC' (à corriger séparément)",
+          "HubSpot: catalogue produits 7 items obsolètes (Pack Basic, QR-PDC, SIM-PDC) à refactorer vers OZKM/OZKU",
+          "HTML local: aucune mention tarifaire 79€ dans les fichiers du projet — pas de modif WP staging nécessaire pour cette décision"
+        ]
+      },
       {
         "date": "2026-05-17",
         "version_from": "1.65",
@@ -813,7 +826,26 @@
           "HubSpot — products / line items associés aux deals",
           "Stripe — products & prices",
           "Communications email / pitch deck commercial"
-        ]
+        ],
+        "audit_findings_2026_05_17": {
+          "stripe": "Non vérifié côté ozecar — action déléguée à Dominique. Si product 'Activation 79€' existe, l'archiver.",
+          "hubspot_products": {
+            "activation_79_product_exists": false,
+            "_note": "Audit HubSpot catalogue produits 2026-05-17: aucun product 'Activation à distance' ou prix 79€ trouvé. Rien à archiver côté HubSpot products.",
+            "catalogue_actuel_7_items": [
+              "Pack de 10 cartes RFID OZECARD (RFID-PACK-10)",
+              "Colonne Zaptec (ZAPTEC-COLONNE)",
+              "Zaptec Pro (ZAPTEC-PRO)",
+              "Zaptec Go (ZAPTEC-GO)",
+              "Carte SIM Ozecar par PDC (SIM-PDC)",
+              "QR Code par point de charge (QR-PDC) — ⚠️ description mentionne 'deeplink Monta' = fuite marque blanche",
+              "Pack Basic par point de charge (PACK-BASIC-PDC) — nomenclature obsolète vs OZKM/OZKU"
+            ],
+            "_recommandation": "Catalogue HubSpot doit être actualisé séparément: créer OZKM (Kit Site 49€) et OZKU (Kit Borne 29€) en products, archiver/réécrire les anciens (Pack Basic, QR-PDC, SIM-PDC). Action distincte de la suppression 79€. Voir item monday dédié."
+          },
+          "html_files_local": "Aucun fichier HTML du projet ne contient une mention tarifaire 79€ ou 'Activation à distance'. Les mentions 'mise en service' sont descriptives, pas tarifaires. Pas de modification HTML nécessaire.",
+          "pandadoc": "Templates non accessibles depuis Claude — action déléguée à Dominique. Le 79€ vit principalement là."
+        }
       }
     }
   },
