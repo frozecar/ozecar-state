@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.65",
+    "version": "1.66",
     "updated": "2026-05-17",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-17",
+        "version_from": "1.65",
+        "version_to": "1.66",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "pricing.activation._decision_2026_05_17 — Décision commerciale formelle: suppression définitive du 79€/PDC activation à distance sur tous supports",
+          "pricing.activation._removed_remote — Ajout flag commercially_enforced_at (l'item état déjà 'removed' dans state depuis v1.10 mais restait facturé en pratique)",
+          "Doctrine de pitch client documentée pour usage cross-chats et templates",
+          "Liste des surfaces à aligner: PandaDoc, page tarifs staging, briefs partenaires, HubSpot, Stripe, comms"
+        ]
+      },
       {
         "date": "2026-05-17",
         "version_from": "1.64",
@@ -766,9 +778,43 @@
             "1h on-boarding visio"
           ],
           "_note": "Statut en pleine évolution v1.10 : process automatisé d'activation via ozecar.fr/activation pourrait rendre cette prestation gratuite/incluse"
-        }
+        },
+        "commercially_enforced_at": "2026-05-17",
+        "commercially_enforced_decision": "Validation Dominique 2026-05-17 — voir _decision_2026_05_17"
       },
-      "_default_activation": "Activation autonome via ozecar.fr/activation (gratuite, par l'installateur)"
+      "_default_activation": "Activation autonome via ozecar.fr/activation (gratuite, par l'installateur)",
+      "_decision_2026_05_17": {
+        "decision": "Suppression définitive du frais 'Activation à distance 79€/PDC' sur TOUS les supports commerciaux",
+        "context": "Décision validée par Dominique. Process automatisé via ozecar.fr/activation rend la prestation inutile. Conserver le 79€ alors qu'on a automatisé la prestation crée un effet 'on facture plus alors qu'on en fait moins' contre-intuitif pour le client.",
+        "remplacement": "Grille simplifiée: Kit Site 49€ HT (1/site) + Kit Borne 29€ HT (1/PDC) + supervision mensuelle. Plus aucun frais one-shot 'activation' sur devis hors Mise en service sur site 390€ (si déplacement réel).",
+        "alignement_marche": "Benchmark CPO France (Freshmile, ChargeGuru, Bornetik) et international (ChargePoint, Tap Electric, Monta): aucun n'affiche de frais d'activation logiciel séparés en B2B installateur. Tap Electric: zero onboarding fee. Monta: zero activation fee. ChargePoint: site setup bundlé dans CPaaS.",
+        "impact_client_chiffre": {
+          "1_pdc_avant": 157,
+          "1_pdc_apres": 49,
+          "1_pdc_reduction_pct": 69,
+          "4_pdc_avant": 481,
+          "4_pdc_apres": 136,
+          "4_pdc_reduction_pct": 72,
+          "10_pdc_avant": 1129,
+          "10_pdc_apres": 310,
+          "10_pdc_reduction_pct": 73
+        },
+        "impact_ozecar": "Perte one-shot 79€×N compensée par: (1) accélération closing — frein psychologique levé, (2) ARR récupéré sur Pro 12 mois = 178,80€/PDC, (3) marge matériel inchangée (Kit Site marge 34€, Kit Borne marge 24€).",
+        "exceptions_a_garder": [
+          "Mise en service sur site 390€/site — déplacement technicien réel (1 site jusqu'à 10 PDC)",
+          "Configuration connectivité sur site 250€/site — phase pilote zones blanches",
+          "Routeur OZECAR OZRT 249€ — CapEx unique optionnel"
+        ],
+        "doctrine_pitch_client": "Avant on facturait 79€/PDC parce qu'un technicien activait la borne manuellement. Aujourd'hui vous l'activez vous-même en scannant un QR. Donc on a supprimé ce frais. Vous payez le matériel (Kit Site 49€, Kit Borne 29€) et votre abonnement supervision. C'est tout.",
+        "surfaces_a_aligner": [
+          "PandaDoc — tous les templates de devis (Essential, Pro, Serpollet, etc.)",
+          "Page tarifs staging.ozecar.fr (et future prod)",
+          "Briefs programme partenaires (revendeurs L2, distributeurs L3)",
+          "HubSpot — products / line items associés aux deals",
+          "Stripe — products & prices",
+          "Communications email / pitch deck commercial"
+        ]
+      }
     }
   },
   "partner_program": {
