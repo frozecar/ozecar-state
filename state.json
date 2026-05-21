@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.67",
-    "updated": "2026-05-17",
+    "version": "1.68",
+    "updated": "2026-05-21",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-21",
+        "version_from": "1.67",
+        "version_to": "1.68",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Ajout section investor_report_2026_05 (reporting semestriel investisseurs, deadline 22 mai)",
+          "Données Monta réelles consolidées: 514 PDC uniques / 181 sites / 1.76 GWh / 90635 sessions / GMV ~615K€",
+          "IMPORTANT: corrigé bug pagination proxy monta.php (utiliser ?page=N&perPage=100 dans le path, pas params{}). Évite doublons.",
+          "Cadrage pivot SaaS documenté (négoce -71%, services +178% selon liasse à valider)"
+        ]
+      },
       {
         "date": "2026-05-17",
         "version_from": "1.66",
@@ -4266,5 +4278,55 @@
       "shop_ozecar_fr_et_myshopify": "Claude Code Shopify (Shopify AI Toolkit) — Claude PM prépare briefs",
       "ozecar_store": "À retirer — pas de dev en cours"
     }
+  },
+  "investor_report_2026_05": {
+    "_note": "Données consolidées pour reporting semestriel investisseurs historiques (deadline 22 mai 2026). Demande: comptes 2024 def + 2025 projet, CA à date, % budget, cadrage pivot SaaS.",
+    "created": "2026-05-21",
+    "monta_real_data": {
+      "_source": "API Monta via proxy ozecar.fr/api/monta.php — pagination corrigée (query string ?page=N&perPage=100, le proxy ignore params{})",
+      "pdc_uniques": 514,
+      "sites_uniques": 181,
+      "mix_ac_dc": {
+        "ac": 469,
+        "dc": 45
+      },
+      "activation_par_annee": {
+        "2024": 261,
+        "2025": 160,
+        "2026_a_date": 79
+      },
+      "energie_cumulee_compteurs_gwh": 1.76,
+      "energie_cumulee_sessions_gwh": 1.52,
+      "sessions_cumulees": 90635,
+      "gmv_cumulee_estimee_eur": "491700-737551 (mid 614625) — GMV = price utilisateur, PAS revenu OZECAR",
+      "panier_moyen_eur": 6.78,
+      "pct_sessions_payantes": 51,
+      "marques_distinctes": "20+ (Keba 199, Zaptec 75, Circontrol 34, Alfen 28...)",
+      "caveat_data": "Échantillon charges ne couvre que fév+mai 2026 (pagination date limitée). GMV non ventilable par année. Compteur capte léger historique pré-supervision."
+    },
+    "liasse_fiscale": {
+      "_source": "À CONFIRMER PAR DOMINIQUE — chiffres utilisés sous réserve validation liasse officielle",
+      "ca_2024_produits_expl_keur": 543,
+      "resultat_2024_keur": 29,
+      "ca_2025_produits_expl_keur": 516,
+      "resultat_2025_keur": -138,
+      "ventes_marchandises_2024_keur": 117,
+      "ventes_marchandises_2025_keur": 34,
+      "production_services_2024_keur": 62,
+      "production_services_2025_keur": 173,
+      "signature_pivot": "Négoce -71%, Services +178% — bascule one-shot vers récurrent"
+    },
+    "pivot_framing": "Baisse CA = conséquence assumée du pivot SaaS. Sacrifice du négoce one-shot pour bâtir du récurrent. Prouvé par +178% services dans liasse.",
+    "decisions_dominique": {
+      "volume_bornes": "GMV séparée du revenu OZECAR (le plus honnête)",
+      "format": "Chiffres d'abord, format choisi après",
+      "mrr_reel": "EN ATTENTE",
+      "budget_2026": "EN ATTENTE"
+    },
+    "open_questions": [
+      "MRR consolidé réel?",
+      "Budget 2026 + CA à date?",
+      "Validation chiffres liasse?"
+    ]
   }
 }
