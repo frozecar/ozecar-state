@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.70",
+    "version": "1.71",
     "updated": "2026-05-21",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-21",
+        "version_from": "1.70",
+        "version_to": "1.71",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Rapport investisseurs v2: maintenance 31k, ARR ~80k sécurisé, sessions 2026 à date ~20k, Belgique/Ajaccio/Balagne, 59% marché Corse."
+        ]
+      },
       {
         "date": "2026-05-21",
         "version_from": "1.69",
@@ -4394,7 +4403,17 @@
         "Confirmer avec l'EC le traitement comptable du marketplace Monta (brut/net) pour 2026",
         "Joindre les 2 liasses (2024 déf + 2025 projet) à l'envoi investisseurs",
         "Vérifier ventilation exacte des 94k€ charges externes si les investisseurs creusent"
-      ]
+      ],
+      "corrections_v2": {
+        "maintenance_annuelle": "31k€ signés (14k facturés 31/05)",
+        "arr": "~50k€ dans services 2025 + ~30k€ ARR sécurisé (200 PDC sept) = ~80k€ base récurrente",
+        "sessions_2026_a_date": "~20k sessions en mai (40% du total 2025) AVANT haute saison",
+        "belgique": "8 PDC publics, ~3k€/mois - preuve export",
+        "ajaccio": "20 PDC marché public supervision pure, déployés janv 2026",
+        "balagne": "30 PDC en discussion",
+        "part_marche_corse": "59% bornes publiques (en nombre)",
+        "note": "Belgique+Ajaccio déjà dans les 514 PDC, présentés comme preuve réplicabilité"
+      }
     }
   }
 }
