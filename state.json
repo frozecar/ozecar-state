@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.68",
+    "version": "1.69",
     "updated": "2026-05-21",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-21",
+        "version_from": "1.68",
+        "version_to": "1.69",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Liasse fiscale 2025 (+N-1 2024) lue depuis PDF officiel. Chiffres exacts intégrés.",
+          "CA 2024=543069 / 2025=516250. Résultat 2024=+28991 / 2025=-138089.",
+          "Constat clé: perte 2025 vient des CHARGES (+27%) pas du CA (-5%). Biens=249k reste 1er poste.",
+          "Marketplace Monta NON identifiable distinctement dans liasse 2025 - à vérifier EC.",
+          "CA marketplace Monta net 2026 jan-avr = 26646€ (factures, hors règlements solde + inter-co)"
+        ]
+      },
       {
         "date": "2026-05-21",
         "version_from": "1.67",
@@ -4305,16 +4318,37 @@
       "caveat_data": "Échantillon charges ne couvre que fév+mai 2026 (pagination date limitée). GMV non ventilable par année. Compteur capte léger historique pré-supervision."
     },
     "liasse_fiscale": {
-      "_source": "À CONFIRMER PAR DOMINIQUE — chiffres utilisés sous réserve validation liasse officielle",
-      "ca_2024_produits_expl_keur": 543,
-      "resultat_2024_keur": 29,
-      "ca_2025_produits_expl_keur": 516,
-      "resultat_2025_keur": -138,
-      "ventes_marchandises_2024_keur": 117,
-      "ventes_marchandises_2025_keur": 34,
-      "production_services_2024_keur": 62,
-      "production_services_2025_keur": 173,
-      "signature_pivot": "Négoce -71%, Services +178% — bascule one-shot vers récurrent"
+      "_source": "Liasse 2033-B-SD 2025 (N) + N-1 2024, SIREN 902757202, lue depuis PDF officiel uploadé 2026-05-21",
+      "exercice_2024": {
+        "ventes_marchandises": 116689,
+        "production_vendue_biens": 348635,
+        "production_vendue_services": 62255,
+        "subventions": 0,
+        "autres_produits": 15490,
+        "total_produits_exploitation": 543069,
+        "total_charges_exploitation": 513604,
+        "resultat_exploitation": 29465,
+        "resultat_net": 28991
+      },
+      "exercice_2025": {
+        "ventes_marchandises": 33694,
+        "production_vendue_biens": 249347,
+        "production_vendue_services": 173489,
+        "subventions": 36128,
+        "autres_produits": 23591,
+        "total_produits_exploitation": 516250,
+        "total_charges_exploitation": 653855,
+        "resultat_exploitation": -137605,
+        "resultat_net": -138089,
+        "deficit_reportable": 138078
+      },
+      "lecture_cle": {
+        "pivot_services": "Production vendue services +179% (62k->173k) = signature pivot SaaS réelle",
+        "biens_reste_dominant": "Production vendue biens 249k = 1er poste 2025 (installation/intégration), -28% vs 2024. OZECAR encore majoritairement installateur, pas pure SaaS",
+        "perte_2025_origine": "Perte -138k due à HAUSSE CHARGES (+27%: achats MP 3k->167k, charges externes 177k->271k), PAS à chute CA (-5% seulement)",
+        "marketplace_monta": "PAS de ligne CA recharge identifiable dans liasse 2025. Au mieux noyé dans 173k services. Affirmation 'marketplace déjà dans liasse' À VÉRIFIER avec EC",
+        "capital": "Dominique Manfredi 82.16%, 1 personne morale associée"
+      }
     },
     "pivot_framing": "Baisse CA = conséquence assumée du pivot SaaS. Sacrifice du négoce one-shot pour bâtir du récurrent. Prouvé par +178% services dans liasse.",
     "decisions_dominique": {
