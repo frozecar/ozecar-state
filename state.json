@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.69",
+    "version": "1.70",
     "updated": "2026-05-21",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-21",
+        "version_from": "1.69",
+        "version_to": "1.70",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Rapport investisseurs LIVRÉ (docx+pdf). CA 2026 réel à date 124,7k€ + carnet 99k€.",
+          "Budget 2026 en 3 scénarios: 465/550/600k€ (saisonnalité 70% été + effet année pleine 200 PDC).",
+          "Perte 2025 cadrée: coûts Monta = investissement pivot."
+        ]
+      },
       {
         "date": "2026-05-21",
         "version_from": "1.68",
@@ -4361,6 +4372,29 @@
       "MRR consolidé réel?",
       "Budget 2026 + CA à date?",
       "Validation chiffres liasse?"
-    ]
+    ],
+    "livrable": {
+      "status": "LIVRÉ 2026-05-21",
+      "fichiers": [
+        "Rapport_OZECAR_Investisseurs_Mai2026.docx",
+        ".pdf"
+      ],
+      "ca_2026_a_date_reel": 124764,
+      "carnet_commandes_securise": 99000,
+      "budget_2026_scenarios": {
+        "prudent": 465000,
+        "cible": 550000,
+        "objectif_etendu": 600000
+      },
+      "marketplace_net_jan_avr": 26646,
+      "saisonnalite": "70% du CA recharge sur juin-sept",
+      "perte_2025_explication": "Coûts plateforme supervision (Monta) = investissement pivot. Charges +27% sur CA -5%.",
+      "points_ouverts_pour_dominique": [
+        "Faire régulariser par l'EC les 21k€ de CA acquis non facturé (livré 2026)",
+        "Confirmer avec l'EC le traitement comptable du marketplace Monta (brut/net) pour 2026",
+        "Joindre les 2 liasses (2024 déf + 2025 projet) à l'envoi investisseurs",
+        "Vérifier ventilation exacte des 94k€ charges externes si les investisseurs creusent"
+      ]
+    }
   }
 }
