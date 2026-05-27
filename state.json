@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.74",
+    "version": "1.75",
     "updated": "2026-05-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-16",
+        "version_from": "1.74",
+        "version_to": "1.75",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Message bus → email_make : props ozecar_profil + ozecar_origine créées, débloqué pour finaliser Make 03 + templates email.",
+          "G03, PART-01, PART-02 marqués Done sur monday."
+        ]
+      },
       {
         "date": "2026-05-16",
         "version_from": "1.73",
@@ -3276,7 +3286,17 @@
         "messages": []
       },
       "email_make": {
-        "messages": []
+        "messages": [
+          {
+            "from": "pm",
+            "to": "email_make",
+            "ts": "2026-05-16T00:30:00Z",
+            "subject": "Débloqué : props HubSpot ozecar_profil + ozecar_origine créées",
+            "body": "Les 2 props Contact que tu attendais sont créées dans HubSpot (groupe 'OZECAR Segmentation'). ozecar_profil (select: conducteur/exploitant/installateur/partenaire/prospect) et ozecar_origine (select: site_web/calendly_demo/livre_blanc/shopify/activation_kit/partenaire/support). Tu peux finaliser ton blueprint Make 03 et les templates email. Le scope crm.schemas.contacts.write est désormais actif sur la Private App Page-Préparation-Kits (token du proxy hubspot.php).",
+            "requires_ack": false,
+            "status": "new"
+          }
+        ]
       }
     },
     "sent_log": {
