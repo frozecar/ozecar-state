@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.77",
+    "version": "1.78",
     "updated": "2026-05-27",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-27",
+        "version_from": "1.77",
+        "version_to": "1.78",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "PLOMBERIE ÉTAPE 3 : HubSpot Meetings popup widget déployé sur 4 pages staging (supervision-3, contact-5, kit-3, installateurs). Lien : meetings-eu1.hubspot.com/ozecar-demo/1.",
+          "DÉCISION : Calendly écarté au profit de HubSpot Meetings (inclus Starter, natif, moins d'outils tiers). À réévaluer si équipe sales croît.",
+          "supervision-3 : les 3 CTAs href=#demo existants ont été branchés sans changer le design (interception JS).",
+          "contact-5 / kit-3 / installateurs : nouvelle section CTA 'Réserver 30 min avec un expert' ajoutée en bas de page.",
+          "Tracking GTM : event meeting_widget_open poussé sur dataLayer à chaque ouverture."
+        ]
+      },
       {
         "date": "2026-05-27",
         "version_from": "1.76",
@@ -1620,6 +1633,30 @@
         "smart-charging-equilibrage",
         "conformite-afir-2027"
       ]
+    },
+    "supervision_3_22463_meetings": {
+      "page_id": 22463,
+      "status": "meetings widget déployé",
+      "date": "2026-05-27",
+      "meeting_url": "https://meetings-eu1.hubspot.com/ozecar-demo/1"
+    },
+    "contact_5_22466_meetings": {
+      "page_id": 22466,
+      "status": "meetings widget déployé",
+      "date": "2026-05-27",
+      "meeting_url": "https://meetings-eu1.hubspot.com/ozecar-demo/1"
+    },
+    "kit_3_22464_meetings": {
+      "page_id": 22464,
+      "status": "meetings widget déployé",
+      "date": "2026-05-27",
+      "meeting_url": "https://meetings-eu1.hubspot.com/ozecar-demo/1"
+    },
+    "installateurs_14622_meetings": {
+      "page_id": 14622,
+      "status": "meetings widget déployé",
+      "date": "2026-05-27",
+      "meeting_url": "https://meetings-eu1.hubspot.com/ozecar-demo/1"
     }
   },
   "proxies_php": {
@@ -4825,6 +4862,62 @@
         "vierge_22avr": "b68de1c0-ec3d-4015-a5a2-97960d691515",
         "_note": "À enrichir aussi avec champ caché origine_ozecar quand on traitera contact/installateurs/etc."
       }
+    },
+    "meetings_2026_05_27": {
+      "date": "2026-05-27",
+      "summary": "HubSpot Meetings (natif Starter) déployé en popup widget sur 4 pages staging. Calendly écarté au profit de HubSpot Meetings : inclus dans Starter, intégration native, pas de pont à maintenir.",
+      "meeting_link": {
+        "url": "https://meetings-eu1.hubspot.com/ozecar-demo/1",
+        "duration": "30 min (par défaut HubSpot)",
+        "type": "One-on-one",
+        "created_by": "Dominique"
+      },
+      "deployment": {
+        "supervision_3": {
+          "page_id": 22463,
+          "action": "3 CTAs href=\"#demo\" existants brancés sur popup widget (zéro changement visuel)"
+        },
+        "contact_5": {
+          "page_id": 22466,
+          "action": "Bouton 'Réserver une démo' ajouté en section bas de page"
+        },
+        "kit_3": {
+          "page_id": 22464,
+          "action": "Bouton 'Réserver une démo' ajouté en section bas de page"
+        },
+        "installateurs": {
+          "page_id": 14622,
+          "action": "Bouton 'Réserver une démo' ajouté en section bas de page"
+        }
+      },
+      "technique": {
+        "mode": "Popup widget custom (overlay fixed + iframe HubSpot Meetings avec ?embed=true)",
+        "interception": "Tous les éléments avec data-oz-meeting OU href=\"#demo\" sont automatiquement hookés sur clic → ouvre la lightbox",
+        "fermeture": "Bouton ×, clic en dehors, ou touche Esc",
+        "tracking": "dataLayer.push event meeting_widget_open au clic"
+      },
+      "limitations_starter": {
+        "deal_auto": "HubSpot Starter ne permet pas la création auto de deal sur scheduling (workflows = Pro+). Pour l'instant : contact créé auto, deal à créer manuellement, OU Make 05 webhook à plus tard.",
+        "lifecycle_stage_auto": "Possible : configurer côté Meeting type 'Move contact to lifecycle stage X on schedule'"
+      },
+      "next_steps_dominique": [
+        "Tester le popup widget en cliquant sur n'importe quel bouton démo sur staging",
+        "Vérifier qu'une démo de test crée bien un contact dans HubSpot",
+        "Configurer dans HubSpot Meetings : champs custom à demander au prospect lors du booking (profil_ozecar dropdown obligatoire, company texte obligatoire, ozecar_nb_bornes optionnel)",
+        "Configurer dans HubSpot Meetings : 'Move contact to lifecycle stage Lead' sur réservation"
+      ]
+    },
+    "decision_calendly_vs_meetings": {
+      "date": "2026-05-27",
+      "decision": "HubSpot Meetings retenu, Calendly écarté",
+      "raisons": [
+        "HubSpot Meetings inclus dans Starter (déjà payé), Calendly coût additionnel 12-15$/u/mo",
+        "Création contact native HubSpot (pas de pont à maintenir)",
+        "Moins d'outils tiers visibles côté client (cohérent règle marque blanche)",
+        "Équipe petite (Dominique + 1), routing intelligent Calendly inutile à ce stade",
+        "Cohérence avec stack actuelle (HubSpot, Make, PandaDoc) - 1 outil de moins à gérer"
+      ],
+      "revisit_trigger": "Si équipe sales croît à 3+ commerciaux avec routing complexe, ou si features SMS/rappels avancés deviennent critiques"
     }
   }
 }
