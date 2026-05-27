@@ -1,12 +1,27 @@
 {
   "_meta": {
-    "version": "1.75",
-    "updated": "2026-05-16",
+    "version": "1.76",
+    "updated": "2026-05-27",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-27",
+        "version_from": "1.75",
+        "version_to": "1.76",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "MIGRATION HUBSPOT MAJEURE : 18 leads vivants 2026 importés depuis PandaDoc (extraction via Claude in Chrome, périmètre Action requise / TO SIGN+EXPIRE+EXPIRED 2026 uniquement). 11 anciens deals test supprimés. HubSpot maintenant à 18 deals propres avec deal_type + deal_origin renseignés.",
+          "deal_type final = 5 valeurs : kit, installation, vente_b2b (NEW: matériel vendu à installateur sans pose), maintenance, accessoires.",
+          "deal_origin = 2 valeurs : nouveau_prospect / client_existant_extension (pas de démo/onboarding nécessaire).",
+          "Pipeline utilisé : Leads et Qualification (3747862733), stage Devis envoyé (5215721690) pour tous les imports.",
+          "Tous les contacts manquants ont été créés et associés au deal correspondant.",
+          "Chantier distinct identifié : refonte nomenclature documents PandaDoc (préfixes CS/DV/CM se sont mélangés).",
+          "Chantier distinct identifié : demander la clé API production PandaDoc pour Make 02 + webhook deal sync automatique."
+        ]
+      },
       {
         "date": "2026-05-16",
         "version_from": "1.74",
@@ -4476,6 +4491,184 @@
         "note": "Belgique+Ajaccio déjà dans les 514 PDC, présentés comme preuve réplicabilité"
       },
       "annexes": "v3: Note méthodo + Annexe A (charges 2025), B (marketplace mois/mois 2026), C (engagements anonymisés). 6 pages."
+    }
+  },
+  "hubspot_state": {
+    "deals_import_2026_05_27": {
+      "date": "2026-05-27",
+      "summary": "Import 18 leads vivants 2026 depuis PandaDoc + suppression 11 deals test. HubSpot maintenant à 18 deals propres.",
+      "deal_type_final_values": [
+        "kit",
+        "installation",
+        "accessoires",
+        "maintenance",
+        "vente_b2b"
+      ],
+      "deal_origin_values": [
+        "nouveau_prospect",
+        "client_existant_extension"
+      ],
+      "classification_business": {
+        "kit": "Proposition supervision pure (le kit physique active la supervision)",
+        "installation": "Client final : matériel + pose + supervision packagés. Inclut remplacements matériel sur supervision existante.",
+        "vente_b2b": "Matériel vendu à un installateur sans pose. Supervision sera commandée par le client final plus tard (deal séparé).",
+        "maintenance": "Contrat ou intervention de maintenance/réparation bornes",
+        "accessoires": "Réappro stickers/RFID/SIM"
+      },
+      "imported_deals": [
+        {
+          "n": 1,
+          "id": "504496148713",
+          "name": "Benjamin Piazza d'Olmo",
+          "amount": 70.8,
+          "deal_type": "kit"
+        },
+        {
+          "n": 2,
+          "id": "504577796341",
+          "name": "Rossi Diffusion Prunete",
+          "amount": 62435.64,
+          "deal_type": "installation"
+        },
+        {
+          "n": 3,
+          "id": "504569713884",
+          "name": "Camping Arinella Bianca remplacement borne",
+          "amount": 1837.0,
+          "deal_type": "installation",
+          "origin": "client_existant_extension"
+        },
+        {
+          "n": 4,
+          "id": "504567523562",
+          "name": "EIB 05/26",
+          "amount": 2631.2,
+          "deal_type": "vente_b2b"
+        },
+        {
+          "n": 5,
+          "id": "504572157163",
+          "name": "EIB AO 05/2026 Supervision",
+          "amount": 8088.0,
+          "deal_type": "kit"
+        },
+        {
+          "n": 6,
+          "id": "504577796344",
+          "name": "EIB Zaptec AO 05/2026",
+          "amount": 43689.6,
+          "deal_type": "vente_b2b"
+        },
+        {
+          "n": 7,
+          "id": "504577697986",
+          "name": "EIG Zaptec",
+          "amount": 1906.8,
+          "deal_type": "vente_b2b"
+        },
+        {
+          "n": 8,
+          "id": "504570966220",
+          "name": "Marion Strazzabosco",
+          "amount": 400.76,
+          "deal_type": "kit"
+        },
+        {
+          "n": 9,
+          "id": "504571845877",
+          "name": "Entreprise Natali",
+          "amount": 951.6,
+          "deal_type": "kit"
+        },
+        {
+          "n": 10,
+          "id": "504478209253",
+          "name": "Serpollet Agence St Alban",
+          "amount": 10720.5,
+          "deal_type": "vente_b2b"
+        },
+        {
+          "n": 11,
+          "id": "504572124406",
+          "name": "NOVA Zaptec",
+          "amount": 3166.8,
+          "deal_type": "vente_b2b"
+        },
+        {
+          "n": 12,
+          "id": "504570370294",
+          "name": "Client NOVA Zaptec",
+          "amount": 515.6,
+          "deal_type": "kit"
+        },
+        {
+          "n": 13,
+          "id": "504571004116",
+          "name": "Agriel/Lelycenter",
+          "amount": 6892.4,
+          "deal_type": "installation"
+        },
+        {
+          "n": 14,
+          "id": "504572664045",
+          "name": "Camping Sole e Vista",
+          "amount": 760.64,
+          "deal_type": "kit"
+        },
+        {
+          "n": 15,
+          "id": "504577626306",
+          "name": "Serpollet Aromazone",
+          "amount": 8269.0,
+          "deal_type": "vente_b2b"
+        },
+        {
+          "n": 16,
+          "id": "504572125370",
+          "name": "Les Terrasses d'Arsella reparation",
+          "amount": 277.6,
+          "deal_type": "maintenance",
+          "origin": "client_existant_extension"
+        },
+        {
+          "n": 17,
+          "id": "504572371161",
+          "name": "Comepa",
+          "amount": 1648.0,
+          "deal_type": "kit"
+        },
+        {
+          "n": 18,
+          "id": "504497500371",
+          "name": "Establishments Castelli reprise",
+          "amount": 1188.0,
+          "deal_type": "installation"
+        }
+      ],
+      "deals_deleted": [
+        "496068734158 Grimaldi TPI",
+        "498557492420 OZK-#1021",
+        "498542164185 (sans nom)",
+        "498792788200 OZK-#1048",
+        "498786341077 OZK-#1049",
+        "498789000411 OZK-#1050",
+        "498801722567 OZK-#1051",
+        "498801400027 OZK-#1052",
+        "498806490350 OZK-#1053",
+        "500309661882 __TEST_STAGE_CREATION__",
+        "501340259570 OZK-#1054"
+      ],
+      "scope_choices": {
+        "perimetre": "Envoyés + Consultés + Expirés relançables, année 2026 uniquement",
+        "exclus": "PV de réception (RT), contrats maintenance signés (CM signés), contrats supervision déjà signés (clients gagnés historiques), drafts",
+        "panda_status_mapping": "TO SIGN + EXPIRE + EXPIRED → stage 5215721690 (Devis envoyé) du pipeline L&Q",
+        "particulier_dacruz": "non importé (était en 2025, hors périmètre)",
+        "pipeline_used": "Leads et Qualification (3747862733)"
+      },
+      "pending_chantiers_distincts": [
+        "Refonte nomenclature documents PandaDoc : CS/DV/CM se sont mélangés (CS contient parfois du matériel, DV parfois supervision, etc.). Dominique veut une nouvelle séquence de documents propre.",
+        "Demander la clé API production PandaDoc à PandaDoc (bouton 'Demander une démonstration' sur le centre de développement). Nécessaire pour Make 02 et webhook automatique deal sync."
+      ]
     }
   }
 }
