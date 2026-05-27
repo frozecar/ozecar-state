@@ -1,12 +1,26 @@
 {
   "_meta": {
-    "version": "1.76",
+    "version": "1.77",
     "updated": "2026-05-27",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-27",
+        "version_from": "1.76",
+        "version_to": "1.77",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "PLOMBERIE HUBSPOT étapes 1 et 2 : pages /newsletter/ et /livres-blancs/ staging maintenant opérationnelles E2E (contact HubSpot créé avec origine_ozecar et lead_magnet remplis).",
+          "Adoption convention naming '<nom>_ozecar' (suffixe) : origine_ozecar et profil_ozecar (préexistante). Suppression des doublons ozecar_origine et ozecar_profil.",
+          "wp-deploy.php étendu avec actions read_page et update_page (allowlist 18 pages, garde anti-prod isStagingHost, backup auto, KSES bypass pour préserver <input>/<script>).",
+          "Reste à faire (étapes 3-5) : Calendly + intégration HubSpot, contact form + pipeline tickets SAV, vérif intégration native PandaDoc↔HubSpot.",
+          "Templates PandaDoc (PANDA-01 refonte nomenclature) : à attaquer APRÈS étapes 3-5 pour avoir tous les flux site→HubSpot prêts.",
+          "Décision Dominique : deal_type='kit' renommé en 'supervision' (kit=pack physique, supervision=produit vendu). 7 deals migrés. deal_type final = supervision, installation, vente_b2b, maintenance, accessoires."
+        ]
+      },
       {
         "date": "2026-05-27",
         "version_from": "1.75",
@@ -1584,6 +1598,28 @@
       "status": "delivered_pending_deploy",
       "_note": "Page tarifs v2 livrée dans pack programme partenaires v2. Toggle 4 modes paiement, section partenaires 2 cartes (installateur+apporteur), forfaits supervision dynamiques.",
       "deliverable_location": "/mnt/user-data/outputs/programme-partenaires-v2/03-page-tarifs/ozecar-tarifs.html"
+    },
+    "newsletter_22424": {
+      "url": "https://staging.ozecar.fr/newsletter/",
+      "status": "opérationnel",
+      "hubspot_form_id": "0028bc7f-fdfd-4560-af3a-8776af8f5df7",
+      "soumission": "design custom préservé, fetch vers api.hsforms.com avec hidden origine_ozecar=formulaire_newsletter",
+      "test_e2e": "2026-05-27 : contact créé avec origine_ozecar='formulaire_newsletter' ✅"
+    },
+    "livres_blancs_22423": {
+      "url": "https://staging.ozecar.fr/livres-blancs/",
+      "status": "opérationnel",
+      "hubspot_form_id": "475bf5db-0201-47e5-ad52-e1c540c9d6d5",
+      "soumission": "modal existante + script avec FormData + objectTypes mapping pour name (Company 0-2)",
+      "test_e2e": "2026-05-27 : contact créé avec origine_ozecar='formulaire_livre_blanc' + lead_magnet='etude-marche-irve-2026' ✅",
+      "lead_magnets_disponibles": [
+        "etude-marche-irve-2026",
+        "loi-lom-2027-flotte",
+        "roi-borne-supermarche",
+        "ocpp-2-vs-1-6",
+        "smart-charging-equilibrage",
+        "conformite-afir-2027"
+      ]
     }
   },
   "proxies_php": {
@@ -1656,6 +1692,43 @@
       "storage_path": "/uploads/photos/{site_id}/{YYYYMMDD-HHMMSS-rand6}.{ext}",
       "monday_target_column": "Stock Kits board 18409310538, column 'Photo station' link_mm332ec8",
       "tests": "7/7 OK : auth, validation, MIME, path traversal, taille min/max, upload reel"
+    },
+    "wp_deploy": {},
+    "wp_deploy_2026_05_27_extension": {
+      "date": "2026-05-27",
+      "actions_added": [
+        "read_page",
+        "update_page"
+      ],
+      "page_allowlist": [
+        22424,
+        22423,
+        22466,
+        22464,
+        22463,
+        22465,
+        22462,
+        14622,
+        22417,
+        22419,
+        22411,
+        22412,
+        22413,
+        22414,
+        22418,
+        22421,
+        22509,
+        22506
+      ],
+      "garde_anti_prod": "isStagingHost() vérifie HTTP_HOST commence par 'staging.' — refuse update_page/read_page sur ozecar.fr",
+      "backup_auto": "Avant chaque update_page : sauvegarde dans wp-content/uploads/ozecar/page-backups/page-{id}-{timestamp}.html",
+      "KSES_bypass": "kses_remove_filters() avant wp_update_post() + kses_init_filters() après. Sinon WP strippe les <input>, <script> car aucun user authentifié n'a unfiltered_html.",
+      "opcache_note": "Reset opcache obligatoire après chaque modif du proxy lui-même. Pattern: créer api/_reset.php avec opcache_reset(), call, delete.",
+      "test_validations": {
+        "allowlist_403": "page_id=22000 (non listé) → 403 ✅",
+        "anti_prod_403": "call sur ozecar.fr → 403 ✅",
+        "staging_OK": "read_page + update_page → OK ✅"
+      }
     }
   },
   "monday_boards": {
@@ -4669,6 +4742,89 @@
         "Refonte nomenclature documents PandaDoc : CS/DV/CM se sont mélangés (CS contient parfois du matériel, DV parfois supervision, etc.). Dominique veut une nouvelle séquence de documents propre.",
         "Demander la clé API production PandaDoc à PandaDoc (bouton 'Demander une démonstration' sur le centre de développement). Nécessaire pour Make 02 et webhook automatique deal sync."
       ]
+    },
+    "forms_2026_05_27": {
+      "date": "2026-05-27",
+      "summary": "Plomberie site→HubSpot étape 1 et 2 (newsletter + livres blancs). Deux pages staging maintenant opérationnelles E2E.",
+      "props_decisions": {
+        "supprimées": [
+          "ozecar_origine (mon naming)",
+          "ozecar_profil (mon naming, doublon de profil_ozecar pré-existante)"
+        ],
+        "adoptées_comme_standard": [
+          "origine_ozecar (Dominique)",
+          "profil_ozecar (préexistante)",
+          "lead_magnet (créée par PM, exposée formField=True)"
+        ],
+        "convention_naming": "OZECAR adopte le pattern '<nom>_ozecar' (suffixe) plutôt que 'ozecar_<nom>' (préfixe). Cohérent avec profil_ozecar préexistant."
+      },
+      "props_values": {
+        "origine_ozecar": [
+          "formulaire_contact",
+          "formulaire_newsletter",
+          "formulaire_livre_blanc",
+          "activation_kit",
+          "boutique",
+          "demo",
+          "distribution"
+        ],
+        "profil_ozecar": [
+          "Installateur IRVE",
+          "Gestionnaire de site",
+          "Opérateur CPO",
+          "Distributeur",
+          "Conducteur VE",
+          "Prospect froid"
+        ],
+        "lead_magnet": "texte libre (slug du PDF téléchargé, ex: etude-marche-irve-2026)"
+      },
+      "forms_actifs": {
+        "newsletter": {
+          "form_id": "0028bc7f-fdfd-4560-af3a-8776af8f5df7",
+          "champs_visibles": [
+            "firstname",
+            "lastname",
+            "email",
+            "profil_ozecar"
+          ],
+          "champs_cachés": [
+            "origine_ozecar"
+          ],
+          "page_staging": "22424 /newsletter/",
+          "soumission_via": "api.hsforms.com/submissions/v3/integration/submit/ (design custom conservé)",
+          "test_e2e_validé": true
+        },
+        "livres_blancs": {
+          "form_id": "475bf5db-0201-47e5-ad52-e1c540c9d6d5",
+          "champs_visibles": [
+            "firstname",
+            "lastname",
+            "email",
+            "name (company)",
+            "profil_ozecar",
+            "ozecar_type_site",
+            "ozecar_nb_bornes"
+          ],
+          "champs_cachés": [
+            "origine_ozecar",
+            "lead_magnet"
+          ],
+          "page_staging": "22423 /livres-blancs/",
+          "soumission_via": "api.hsforms.com (script existant + patch objectTypes mapping)",
+          "test_e2e_validé": true,
+          "remarque": "Le JS de page utilise FormData + mapping objectTypes pour gérer name (Company 0-2) vs Contact (0-1)"
+        }
+      },
+      "forms_existants_pas_touches": {
+        "demande_contact": "04f412bf-ee4d-4342-98f6-e8ee728b9989",
+        "maison_individuelle": "2e84d668-b602-4d12-a286-c0b66e53ea3c",
+        "maison_copro": "8ac1c8e7-d3b3-4083-998f-a47930d037ee",
+        "professionnel": "96053606-7742-4691-95bc-df7983179953",
+        "installateurs_irve": "521913ea-9f91-4233-98dd-c2a68793fac7",
+        "supervision_b2b": "f4b47a3c-2200-4ab8-b10c-e04cd349b9c4",
+        "vierge_22avr": "b68de1c0-ec3d-4015-a5a2-97960d691515",
+        "_note": "À enrichir aussi avec champ caché origine_ozecar quand on traitera contact/installateurs/etc."
+      }
     }
   }
 }
