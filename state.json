@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.80",
+    "version": "1.81",
     "updated": "2026-05-27",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-27",
+        "version_from": "1.80",
+        "version_to": "1.81",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "PRIX KITS validés : Kit Master 49€ HT, Kit Unit 29€ HT (one-shot). Confirmé par Dominique.",
+          "Supervision : Starter 19€/borne/mois, Business 14€/borne/mois, Enterprise sur devis.",
+          "DETTE TECHNIQUE détectée : ozecar-kit.html et /kit-3/ staging affichent encore les anciens prix (19€/9€) au lieu de (49€/29€) - à corriger avant rollout prod.",
+          "Préparation template PANDA-01 Supervision avec les bons tarifs en cours."
+        ]
+      },
       {
         "date": "2026-05-27",
         "version_from": "1.79",
@@ -5042,6 +5054,52 @@
         "5_pandadoc_hubspot": "✅ Intégration native + automatisations Workato OK, mapping deal stages à finaliser côté Dominique"
       },
       "next": "5 templates PandaDoc (PANDA-01) propres avec variables HubSpot — chantier final avant rollout sur ozecar.fr prod"
+    }
+  },
+  "dettes_techniques": {
+    "prix_kits_obsoletes_2026_05_27": {
+      "date_detection": "2026-05-27",
+      "description": "Le site staging affiche les ANCIENS prix kits (Kit Master 19€ / Kit Unit 9€) qui ne sont plus valides. Les vrais prix sont Kit Master 49€ / Kit Unit 29€.",
+      "fichiers_concernes": [
+        "ozecar-kit.html (page produit kit)",
+        "Pages staging /kit-3/ (22464) — déjà déployée avec anciens prix",
+        "Métadescriptions, FAQ, calculateur dynamique 'calcDetail'"
+      ],
+      "priorité": "Important - à corriger avant rollout sur ozecar.fr prod",
+      "action": "Search & replace global sur ozecar-kit.html et pages staging : 19€ → 49€ (Kit Master), 9€ → 29€ (Kit Unit). Attention à ne pas toucher au prix supervision Starter (19€/borne/mois) qui reste valide.",
+      "status": "TODO"
+    }
+  },
+  "catalogue_prix": {
+    "kits_supervision_v2026_05": {
+      "date_validation": "2026-05-27",
+      "validé_par": "Dominique",
+      "kits": {
+        "kit_master_ozkm": {
+          "prix_ht": 49,
+          "type": "one-shot",
+          "quantité": "1 par station"
+        },
+        "kit_unit_ozku": {
+          "prix_ht": 29,
+          "type": "one-shot",
+          "quantité": "1 par point de charge"
+        }
+      },
+      "supervision": {
+        "starter": {
+          "prix_ht_par_borne_par_mois": 19,
+          "cible": "Jusqu'à 5 bornes"
+        },
+        "business": {
+          "prix_ht_par_borne_par_mois": 14,
+          "cible": "Volume / pros"
+        },
+        "enterprise": {
+          "prix_ht_par_borne_par_mois": "sur devis",
+          "cible": "Sur mesure"
+        }
+      }
     }
   }
 }
