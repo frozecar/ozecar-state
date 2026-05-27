@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.73",
+    "version": "1.74",
     "updated": "2026-05-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-16",
+        "version_from": "1.73",
+        "version_to": "1.74",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "DÉBLOCAGE MAJEUR HubSpot : Dominique a ajouté les scopes crm.schemas.*.write sur la Private App 'Page-Préparation-Kits' (pat-eu1-4be9 = token du proxy). PM a créé 23 propriétés via API en une passe : 12 Deal (G03+PART-02), 9 Company (PART-01), 2 Contact (email_make ozecar_profil+ozecar_origine).",
+          "G03, PART-01, PART-02 = DONE. email_make débloqué (props contact créées).",
+          "Reste : 6 props Ticket SUP-06 bloquées par scope 'tickets' manquant sur l'app. Dominique doit ajouter le scope 'tickets' (+ éventuellement crm.objects.tickets.write) pour débloquer."
+        ]
+      },
       {
         "date": "2026-05-16",
         "version_from": "1.72",
@@ -2804,33 +2815,40 @@
     }
   },
   "hubspot_props_creation_blocked": {
-    "date": "2026-05-12",
-    "blocker": "Le token PAT du proxy hubspot.php (api/hubspot.php sur ozecar.fr) n'a pas le scope crm.schemas.deals.write. Lecture OK (213 props deals listees), creation refusee HTTP 403.",
-    "props_pending_creation": {
-      "G03_deals": [
+    "status": "RESOLU_2026-05-16",
+    "resolution": "Dominique a ajouté les scopes crm.schemas.deals.write + companies.write + contacts.write sur la Private App 'Page-Préparation-Kits' (token pat-eu1-4be9, celui du proxy hubspot.php). PM a créé 23 props via API : 12 Deal (G03 7 + PART-02 5), 9 Company (PART-01), 2 Contact (ozecar_profil + ozecar_origine pour email_make).",
+    "reste_bloque": "6 props Ticket (SUP-06) : nécessitent le scope 'tickets' sur l'app Page-Préparation-Kits (actuellement absent). 403 'requires tickets scope'.",
+    "props_creees": {
+      "deals": [
         "tracking_number",
         "onsite_config_requested",
         "monta_team_id",
         "monta_site_id",
         "zaptec_installation_id",
         "zaptec_circuit_id",
-        "zaptec_charger_id"
-      ],
-      "PART02_deals": [
+        "zaptec_charger_id",
         "deal_for_partner",
-        "partner_referrer_id",
-        "partner_referral_source",
-        "partner_bounty_amount",
-        "partner_bounty_paid_at"
+        "deal_partner_canal",
+        "deal_partner_attribution_method",
+        "deal_partner_anti_churn_passed",
+        "deal_partner_bounty_amount_eur"
       ],
-      "PART01_companies": "9 props non testees (probablement meme blocage scope crm.schemas.companies.write)"
-    },
-    "deblockage_options": [
-      "1. Dominique cree les props manuellement dans HubSpot UI > Settings > Properties (specs detaillees dans monday items G03 11936687693, PART-01 11938632076, PART-02 11938632447)",
-      "2. Dominique regenere un PAT HubSpot avec scopes crm.schemas.deals.write + crm.schemas.companies.write + crm.schemas.deals.read + crm.schemas.companies.read, le colle dans /api/hubspot.php ligne $token, et le PM relance le script de creation",
-      "3. Creer une Private App HubSpot dediee avec ces scopes et la stocker dans un nouveau proxy hubspot-admin.php"
-    ],
-    "specs_props": "Specs JSON completes pretes dans le PM Claude — peuvent etre injectees des que le scope est ajoute"
+      "companies": [
+        "partner_status",
+        "partner_canal",
+        "partner_uuid",
+        "partner_tier_current",
+        "partner_volume_ytd",
+        "partner_bounty_ytd",
+        "partner_contract_signed_date",
+        "partner_iban",
+        "partner_irve_qualification_expiry"
+      ],
+      "contacts": [
+        "ozecar_profil",
+        "ozecar_origine"
+      ]
+    }
   },
   "g22_4_deeplinks_diagnosis": {
     "date": "2026-05-13",
