@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.78",
+    "version": "1.79",
     "updated": "2026-05-27",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-27",
+        "version_from": "1.78",
+        "version_to": "1.79",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "PLOMBERIE ÉTAPE 4A : form /contact-5/ branché sur HubSpot avec notif email automatique vers Dominique (notifyRecipients=62960018).",
+          "Form Demande de contact (id 04f412bf) enrichi avec hidden origine_ozecar=formulaire_contact. Test E2E validé.",
+          "Champ 'Nom de l'entreprise' rendu required côté JS (HubSpot exige Company.name).",
+          "Pipeline tickets SAV reporté à Phase 4B (dépendance SUP-NUMERO-UNIQUE non levée + 15 snippets/15 FAQs à valider).",
+          "BILAN PLOMBERIE : 3 forms HubSpot opérationnels sur staging (newsletter, livres-blancs, contact). Reste étape 5 (vérif PandaDoc-HubSpot)."
+        ]
+      },
       {
         "date": "2026-05-27",
         "version_from": "1.77",
@@ -1657,6 +1670,13 @@
       "status": "meetings widget déployé",
       "date": "2026-05-27",
       "meeting_url": "https://meetings-eu1.hubspot.com/ozecar-demo/1"
+    },
+    "contact_5_22466_form": {
+      "page_id": 22466,
+      "status": "opérationnel - contact form branché",
+      "hubspot_form_id": "04f412bf-ee4d-4342-98f6-e8ee728b9989",
+      "test_e2e": "2026-05-27 : contact créé avec origine_ozecar='formulaire_contact' ✅",
+      "note": "Nom de l'entreprise rendu required (le form HubSpot l'exige - 0-2 Company.name)"
     }
   },
   "proxies_php": {
@@ -3979,6 +3999,23 @@
           "Claude PM : preparer les briefs Make detailles pour scenarios 07, 08, 09, 10, 11"
         ]
       }
+    },
+    "phase_4b_pending": {
+      "date_decision_phase4a": "2026-05-27",
+      "summary": "Phase 4A faite : contact form branché avec notif email. Phase 4B à faire quand SUP-NUMERO-UNIQUE choisi.",
+      "blockers": [
+        "SUP-NUMERO-UNIQUE encore à choisir par Dominique (item monday 12026454494)",
+        "Snippets v1 (15 templates) à valider par Dominique",
+        "FAQ v1 (15 articles) à valider par Dominique",
+        "Scope HubSpot 'tickets' à ajouter à la Private App"
+      ],
+      "actions_pending": [
+        "Créer pipeline tickets SAV (Nouveau/Triage/En attente client/En cours/Résolu/Clos)",
+        "Créer les 6 props oze_ticket (segment, urgence P1-P4, thematique, borne, auto_resolved_attempt, sla_target)",
+        "Configurer HubSpot Conversations pour support@ozecar.fr",
+        "Modifier form contact pour qu'il crée Contact + Ticket (pas seulement Contact)",
+        "Créer Make 07 (triage IA Haiku 4.5) et Make 08 (brouillon Sonnet 4.6)"
+      ]
     }
   },
   "business_expansion": {
@@ -4850,6 +4887,26 @@
           "soumission_via": "api.hsforms.com (script existant + patch objectTypes mapping)",
           "test_e2e_validé": true,
           "remarque": "Le JS de page utilise FormData + mapping objectTypes pour gérer name (Company 0-2) vs Contact (0-1)"
+        },
+        "demande_contact": {
+          "form_id": "04f412bf-ee4d-4342-98f6-e8ee728b9989",
+          "champs_visibles": [
+            "firstname",
+            "lastname",
+            "email",
+            "phone",
+            "name (Company)",
+            "profil_ozecar",
+            "message"
+          ],
+          "champs_cachés": [
+            "origine_ozecar"
+          ],
+          "page_staging": "22466 /contact-5/",
+          "soumission_via": "design custom préservé + fetch api.hsforms.com (handleSubmit JS remplacé)",
+          "notifications": "notifyRecipients=[62960018] (Dominique) - email reçu à chaque soumission",
+          "test_e2e_validé": true,
+          "ticket_auto": "NON - pipeline tickets SAV pas encore créé (Phase 4B à plus tard)"
         }
       },
       "forms_existants_pas_touches": {
