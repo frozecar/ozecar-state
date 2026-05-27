@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.79",
+    "version": "1.80",
     "updated": "2026-05-27",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-27",
+        "version_from": "1.79",
+        "version_to": "1.80",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "PLOMBERIE ÉTAPE 5 : automatisations PandaDoc↔HubSpot activées (clic OAuth Workato fait par Dominique). 3 modules PandaDoc visibles sur fiches deal HubSpot : Create Document, Create Room, tracking activités auto.",
+          "BILAN PLOMBERIE COMPLÈTE en 1 session : étapes 1+2+3+4A+5 toutes vertes. Reste Phase 4B (pipeline tickets SAV) qui dépend de SUP-NUMERO-UNIQUE.",
+          "Conséquence : PANDA-01 (refonte nomenclature templates PandaDoc) devient CRITIQUE - maintenant que l'intégration sync les variables HubSpot, les 5 templates propres (un par deal_type) sont la prochaine priorité.",
+          "Scopes OAuth Workato accordés : crm.objects.deals/contacts/companies (read+write), schemas (read), files, e-commerce. Via Workato comme moteur d'intégration."
+        ]
+      },
       {
         "date": "2026-05-27",
         "version_from": "1.78",
@@ -4975,6 +4987,61 @@
         "Cohérence avec stack actuelle (HubSpot, Make, PandaDoc) - 1 outil de moins à gérer"
       ],
       "revisit_trigger": "Si équipe sales croît à 3+ commerciaux avec routing complexe, ou si features SMS/rappels avancés deviennent critiques"
+    },
+    "pandadoc_integration_2026_05_27": {
+      "date": "2026-05-27",
+      "summary": "Intégration native PandaDoc↔HubSpot pleinement activée (brique 1 + brique 2 automatisations). Le clic 'Connecter les automatisations' a déclenché OAuth Workato qui pousse les statuts PandaDoc vers les deals HubSpot.",
+      "verification": {
+        "panda_side": "PandaDoc → Settings → Intégrations → HubSpot : ✅ connecté à hub 143920450",
+        "hubspot_side": "Fiche deal Piazza d'Olmo : 3 modules PandaDoc visibles (PandaDoc + PandaDoc Rooms + tracking activités)",
+        "automatisations": "Bouton passé de 'Connecter les automatisations' (vert) à 'Déconnecter les automatisations' (rouge) = OAuth Workato validé"
+      },
+      "infra_technique": {
+        "via": "Workato (passerelle d'automatisation utilisée par PandaDoc)",
+        "client_id_workato_panda": "a1953a95-cca5-4034-8cb0-ce937cfdcfe4",
+        "redirect_uri": "https://www.workato.com/oauth/callback",
+        "scopes_accordes": [
+          "crm.objects.deals.read",
+          "crm.objects.deals.write",
+          "crm.objects.contacts.read",
+          "crm.objects.contacts.write",
+          "crm.objects.companies.read",
+          "crm.objects.companies.write",
+          "crm.schemas.deals.read",
+          "crm.schemas.contacts.read",
+          "crm.schemas.companies.read",
+          "files",
+          "e-commerce"
+        ]
+      },
+      "capacites_actives": [
+        "Créer et envoyer des documents PandaDoc depuis HubSpot (bouton Create Document sur fiche deal)",
+        "Fusionner les champs HubSpot (contacts/deals/companies) dans les variables PandaDoc templates",
+        "Tracker automatiquement les changements de statut PandaDoc côté HubSpot (Sent / Viewed / Completed / Signed)",
+        "PandaDoc Rooms (espace partagé client multi-docs) accessibles depuis HubSpot"
+      ],
+      "next_steps_dominique": [
+        "Configurer dans PandaDoc le mapping 'Document Status → HubSpot Deal Stage' pour que les transitions soient automatiques (ex: Sent → Devis envoyé, Completed → Contrat signé)",
+        "Tester en pratique en cliquant 'Create Document' sur un deal pour voir le flux variables HubSpot → template PandaDoc",
+        "Les props HubSpot 'pandadoc_*' apparaîtront automatiquement au premier événement réel (premier doc envoyé via HubSpot)"
+      ],
+      "consequences_PANDA-01": [
+        "Refonte nomenclature documents PandaDoc maintenant CRITIQUE car l'intégration crée des opportunités d'erreurs si les templates restent dans le chaos actuel CS/DV/CM",
+        "Idéal : 5 templates propres (1 par deal_type : supervision / installation / vente_b2b / maintenance / accessoires) avec variables HubSpot proprement mappées"
+      ]
+    },
+    "plomberie_complete_2026_05_27": {
+      "date": "2026-05-27",
+      "summary": "Plomberie site↔HubSpot complète à 95% en une session. Reste : pipeline tickets SAV (Phase 4B, dépend de SUP-NUMERO-UNIQUE) + mapping deal stages PandaDoc (config Dominique 5 min).",
+      "etapes_completees": {
+        "1_newsletter": "✅ Form HubSpot 0028bc7f branché sur /newsletter/ staging, E2E validé",
+        "2_livres_blancs": "✅ Form HubSpot 475bf5db branché sur /livres-blancs/ staging avec lead_magnet, E2E validé",
+        "3_calendly_meetings": "✅ HubSpot Meetings popup widget déployé sur 4 pages staging (Calendly écarté)",
+        "4a_contact": "✅ Form HubSpot 04f412bf branché sur /contact-5/ staging avec notif email Dominique, E2E validé",
+        "4b_pipeline_tickets": "⏳ Reporté (dépend SUP-NUMERO-UNIQUE + validation snippets/FAQ Dominique)",
+        "5_pandadoc_hubspot": "✅ Intégration native + automatisations Workato OK, mapping deal stages à finaliser côté Dominique"
+      },
+      "next": "5 templates PandaDoc (PANDA-01) propres avec variables HubSpot — chantier final avant rollout sur ozecar.fr prod"
     }
   }
 }
