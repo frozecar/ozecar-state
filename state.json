@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.81",
+    "version": "1.82",
     "updated": "2026-05-27",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-27",
+        "version_from": "1.81",
+        "version_to": "1.82",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "PANDA-01 1er template livré : 'OZECAR · Devis Supervision' en docx + PDF preview, 6 pages, branding complet OZECAR.",
+          "Infos juridiques OZECAR validées (sources INSEE + mentions légales site) : capital 76 679€, SIRET 90275720200012, RCS Bastia, TVA FR93 902 757 202, siège 395 Chemin des Horizons Verts 20240 Ghisonaccia.",
+          "Conditions commerciales rédigées : engagement mensuel sans engagement, préavis 30j, paiement L441-10, SLA 99,5%, RGPD UE 2016/679, juridiction Bastia.",
+          "Pricing intégrés : OZKM 49€, OZKU 29€, supervision Starter 19€/borne/mois.",
+          "Reste à faire Dominique (~30 min) : import docx dans PandaDoc, conversion placeholders → vraies variables PandaDoc, conversion tableaux statiques → Pricing Table dynamique, champs signature PandaDoc, test E2E sur 1 deal."
+        ]
+      },
       {
         "date": "2026-05-27",
         "version_from": "1.80",
@@ -5100,6 +5113,86 @@
           "cible": "Sur mesure"
         }
       }
+    }
+  },
+  "legal_company_info": {
+    "raison_sociale": "OZECAR",
+    "forme_juridique": "SAS (Société par Actions Simplifiée)",
+    "capital_social": "76 679 €",
+    "siret_siege": "90275720200012",
+    "siren": "902 757 202",
+    "rcs": "Bastia",
+    "tva_intracom": "FR93 902 757 202",
+    "code_ape_naf": "47.78C",
+    "date_creation": "19 août 2021",
+    "siege_social": {
+      "adresse": "395 Chemin des Horizons Verts",
+      "code_postal": "20240",
+      "ville": "Ghisonaccia",
+      "pays": "France"
+    },
+    "adresse_correspondance_aix": {
+      "adresse": "38 Rue Alexandre Fleming",
+      "code_postal": "13100",
+      "ville": "Aix-en-Provence",
+      "pays": "France",
+      "note": "Adresse de correspondance / représentation commerciale - différente du siège social INSEE"
+    },
+    "contact": {
+      "email": "contact@ozecar.fr",
+      "phone": "+33 6 95 91 38 27"
+    },
+    "president": "Dominique Manfredi",
+    "sources": [
+      "ozecar.fr/mentions-legales/",
+      "INSEE recherche-entreprises.api.gouv.fr"
+    ],
+    "validation_date": "2026-05-27"
+  },
+  "panda_templates": {
+    "supervision_v1": {
+      "date_livraison": "2026-05-27",
+      "fichier_docx": "/mnt/user-data/outputs/PANDA-01-Template-Supervision-OZECAR.docx",
+      "fichier_pdf": "/mnt/user-data/outputs/PANDA-01-Template-Supervision-OZECAR.pdf",
+      "structure": "5-6 pages : Cover · Votre projet · Notre proposition (kit + abonnement) · Synthèse + signatures · Conditions commerciales",
+      "deal_type_mappe": "supervision",
+      "variables_placeholder": [
+        "{{Company.Name}}",
+        "{{Contact.FirstName}} {{Contact.LastName}}",
+        "{{Contact.Email}} / {{Contact.Phone}}",
+        "{{Document.Number}} / {{Document.CreatedDate}}",
+        "{{Deal.nombre_pdc}} / {{Deal.nombre_stations}}",
+        "{{Deal.forfait_supervision}} / {{Deal.prix_borne_mois}}",
+        "{{Deal.marques_bornes}}",
+        "{{Pricing.OZKM.Total}} / {{Pricing.OZKU.Total}} / {{Pricing.Kit.Subtotal}}",
+        "{{Pricing.Supervision.Monthly}} / {{Pricing.TVA}} / {{Pricing.Total.Month1}}"
+      ],
+      "prix_inclus": {
+        "OZKM": "49 € HT (1 par station)",
+        "OZKU": "29 € HT (1 par point de charge)",
+        "supervision_starter": "19€/borne/mois",
+        "supervision_business": "14€/borne/mois",
+        "supervision_enterprise": "Sur devis"
+      },
+      "branding": {
+        "police_titres": "DM Sans bold",
+        "police_corps": "DM Sans regular",
+        "police_accents_italiques": "Instrument Serif",
+        "police_labels": "Space Mono uppercase",
+        "couleurs": "yellow #FAC828 / violet #5F2DFF / ink #0F141E / cream #F5F0EB / line #E5DDD2",
+        "elements_brand": "Bande jaune en haut de page (header), labels en mono uppercase, dividers jaune, total final en bandeau jaune"
+      },
+      "next_steps_dominique": [
+        "Ouvrir PandaDoc → Modèles → Modèle (bouton vert haut droite) → 'Charger un fichier' → uploader le docx",
+        "Renommer le template : 'OZECAR · Devis Supervision'",
+        "Le placer dans le dossier 01-Devis (et archiver les 4 DV XXX existants)",
+        "Remplacer les placeholders {{...}} par les vraies variables PandaDoc HubSpot (via menu 'Variables' / token picker)",
+        "Convertir les zones placeholder '[ZONE SIGNATURE]' en vrais champs Signature PandaDoc",
+        "Convertir les tableaux pricing statiques en Pricing Table dynamique PandaDoc (pour calcul auto)",
+        "Configurer les rôles : Client (signataire 1) + Dominique Manfredi pour OZECAR (signataire 2)",
+        "Tester en créant un PandaDoc depuis HubSpot fiche deal Piazza d'Olmo - vérifier que les variables se fusionnent",
+        "Quand validé : créer les 4 autres templates (installation, vente_b2b, maintenance, accessoires) sur la même base"
+      ]
     }
   }
 }
