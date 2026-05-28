@@ -1,12 +1,27 @@
 {
   "_meta": {
-    "version": "1.87",
+    "version": "1.88",
     "updated": "2026-05-14",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-14",
+        "version_from": "1.87",
+        "version_to": "1.88",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "HERO HOMEPAGE FINAL : 'Vos bornes en pilotage automatique.' (proposition A validee par Dominique apres benchmark europeen)",
+          "Accroche validee : 'Connectivite, supervision, depannage a distance : OZECAR gere, vous encaissez.'",
+          "Benchmark europeen confirme : aucun CPO (Spirii, Driveco, Electra, Allego, Mer, Plugsurfing) n'utilise 'pilotage automatique' / 'autopilot' - terrain libre, OZECAR pose le drapeau",
+          "Reserve 'OZECAR Autopilot' comme nom de FUTURE feature dediee a la notification client post-reconnexion automatisee (deploiement post-v2)",
+          "Interdiction explicite : ne pas communiquer 'Autopilot' tant que la chaine notification Make n'est pas en production (eviter de surpromettre)",
+          "Section positioning_hero_2026_05_14 enrichie : hero_decide_v1 (decision finale, rationale benchmark, anti-patterns) + ozecar_autopilot_reserve (naming feature, prerequis, interdiction avant v2)",
+          "Bus : message envoye a 'make' pour integrer le naming 'OZECAR Autopilot' dans la spec du scenario notif client post-reconnexion"
+        ]
+      },
       {
         "date": "2026-05-14",
         "version_from": "1.86",
@@ -3551,6 +3566,15 @@
             "body": "Hello make,\n\nLe positionnement hero de la homepage vient d'evoluer (state.json v1.86, section positioning_hero_2026_05_14). Pour pouvoir UPGRADER la promesse de 'la connexion se relance automatiquement' vers 'on vous previent quand c'est fait', il faut un scenario Make qui automatise la notification client post-reconnexion. Detail :\n\nTRIGGER : webhook Monta (ou OZRT directement si possible) a la reconnexion d'une borne apres coupure reseau.\n\nLOGIQUE :\n1. Capturer l'evenement de reconnexion + duree de la coupure\n2. Si coupure > seuil (a definir, suggestion : 5 min) -> proceed, sinon ignore\n3. Identifier le compte client proprietaire de la borne (via HubSpot deal lie ou Monta charge_point)\n4. Composer email (et/ou SMS) : 'Bonjour, votre borne X a connu une coupure reseau de Y min, la connexion a ete automatiquement retablie a HH:MM. Vous n'avez rien a faire.'\n5. Envoyer\n6. Logger dans HubSpot deal note 'Incident reseau resolu automatiquement'\n\nPRIORITE : MOYENNE - ce n'est pas bloquant pour le hero v1 (qui reste tenable sans notif), mais c'est le verrou qui debloque la promesse v2 'on vous previent'.\n\nQUESTION : peux-tu specifier ce scenario et confirmer la faisabilite cote Monta (webhook reconnexion disponible ?) ou OZRT (event push sur reconnexion) ? Si Monta n'expose pas ce webhook, il faudra peut-etre poller la supervision a intervalle regulier.\n\nReply quand tu as eu le temps - aucune urgence operationnelle, c'est une trajectoire produit.",
             "requires_ack": true,
             "status": "new"
+          },
+          {
+            "from": "pm",
+            "to": "make",
+            "ts": "2026-05-28T20:21:16Z",
+            "subject": "Naming feature : OZECAR Autopilot (pour notif client post-reconnexion)",
+            "body": "Hello make,\n\nDecision Dominique 2026-05-14 : la feature de notification client post-reconnexion que tu specifies (cf message precedent dans cette inbox) sera commercialisee sous le nom 'OZECAR Autopilot'.\n\nC'est le nom decide en strategie de positionnement (state.json > positioning_hero_2026_05_14.ozecar_autopilot_reserve).\n\nCONCRETEMENT pour ton scenario Make :\n1. Le contenu email/SMS de la notification devra mentionner 'OZECAR Autopilot' au moins une fois pour ancrer le nom de feature dans la perception client. Ex sujet : 'OZECAR Autopilot — incident reseau resolu sur votre borne'.\n2. Le log HubSpot (deal note) doit egalement mentionner 'OZECAR Autopilot' pour traceabilite.\n3. Si tu identifies un webhook Monta dispo : confirme-moi (et marque-le en done dans ma inbox PM). Si pas dispo : propose une alternative (polling supervision, ou webhook OZRT direct).\n4. Ne te lance PAS dans l'implementation tant que Dominique n'a pas valide la spec. C'est une trajectoire produit, pas une urgence operationnelle.\n\nHierarchie : la mise en production de ce scenario est le PREREQUIS pour communiquer publiquement sur OZECAR Autopilot. Tant que la chaine n'est pas en place, le terme 'Autopilot' reste hors des surfaces publiques OZECAR (decision strategique pour ne pas surpromettre).\n\nReply quand tu as eu le temps. Merci.",
+            "requires_ack": true,
+            "status": "new"
           }
         ]
       },
@@ -5506,6 +5530,39 @@
       "[Dominique] Lire OZECAR-HERO-POSITIONNEMENT.md, valider proposition A ou choisir une autre",
       "[PM ou chat make] Specifier puis implementer le scenario Make notif client post-reconnexion auto (prerequis upgrade hero v2.0)",
       "[Bus inter-chat] Annoncer le nouveau hero au chat wp_refonte quand il s'inscrira"
-    ]
+    ],
+    "hero_decide_v1": {
+      "_note": "Decision finale Dominique 2026-05-14 apres benchmark europeen (Spirii, Driveco, Electra, Allego, Mer, Plugsurfing). Aucun concurrent n'utilise 'pilotage automatique' / 'autopilot' - terrain libre. Approche : francais net en facade B2B + reserve 'Autopilot' comme nom de feature pour v2.",
+      "titre": "Vos bornes en pilotage automatique.",
+      "accroche": "Connectivite, supervision, depannage a distance : OZECAR gere, vous encaissez.",
+      "cta_primary": "Demarrer un projet",
+      "cta_secondary": "Voir comment ca marche",
+      "rationale": [
+        "Aucun CPO francais/europeen n'a pose ce drapeau (benchmark 2026-05-14 : Spirii 'powerful connections', Driveco 'expert depuis 2010', Electra 'ultra-fast infrastructure', tous froids et interchangeables)",
+        "Reconcilie les deux cibles : installateur entend 'ca pilote tout seul apres ma pose', client final entend 'je ne touche a rien'",
+        "Antithese mnemotechnique 'OZECAR pilote, vous encaissez' = slogan implicite",
+        "Francais net pour cible B2B francaise (foncieres, supermarches, hoteliers, flottes) majoritairement non-anglophone marketing",
+        "Tenable techniquement : OZRT gere deja la relance auto (continuite reseau), pas de surpromesse de notification"
+      ],
+      "anti_patterns_evites": [
+        "Pas de chiffre precis (10 minutes faux pour la config)",
+        "Pas de hotline (3 personnes equipe, non tenable)",
+        "Pas de SaaS-speak generique (plateforme 360, tableau de bord)",
+        "Pas d'anglicisme en hero (reserve pour feature dediee post-v2)",
+        "Jamais Monta (marque blanche)"
+      ]
+    },
+    "ozecar_autopilot_reserve": {
+      "_note": "Decision Dominique 2026-05-14 : 'OZECAR Autopilot' devient le nom de la future feature de notification client automatisee post-reconnexion. A deployer apres mise en place du scenario Make v2 (cf positioning_hero_2026_05_14.trajectoire_v2_apres_notif_make).",
+      "nom_feature": "OZECAR Autopilot",
+      "ou_apparait": "Page dediee /autopilot ou section dans la page produit supervision, accessible une fois v2 notif Make en place",
+      "prerequis_avant_communication_publique": [
+        "Scenario Make 'notification client post-reconnexion auto' en production",
+        "Webhook Monta (ou OZRT) verifie comme stable",
+        "Premier groupe de clients test pour valider que les notifications sont effectivement bien recues et bien percues"
+      ],
+      "promise_v2_quand_autopilot_active": "OZECAR Autopilot : votre supervision repare avant que vous appeliez. En cas de coupure reseau, la connexion est relancee automatiquement et vous recevez un recap par email. Vous n'avez rien a gerer.",
+      "interdiction_avant_v2": "Ne JAMAIS utiliser le mot 'Autopilot' sur les surfaces publiques OZECAR tant que la chaine notification client n'est pas automatisee. Communiquer 'Autopilot' sans le tenir transformerait la promesse en mensonge."
+    }
   }
 }
