@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.88",
+    "version": "1.89",
     "updated": "2026-05-14",
-    "updated_by": "Claude PM (claude.ai)",
+    "updated_by": "Claude PM + wp_refonte (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-14",
+        "version_from": "1.88",
+        "version_to": "1.89",
+        "author": "Claude PM + wp_refonte (claude.ai)",
+        "changes": [
+          "Inscription bus : agent 'wp_refonte' enregistre (meme chat que le PM, decision Dominique pour eviter multiplication des conversations)",
+          "Focus immediat wp_refonte : appliquer hero homepage valide 'Vos bornes en pilotage automatique' (positioning_hero_2026_05_14.hero_decide_v1) sur staging.ozecar.fr",
+          "Le PM continue de tenir state.json + monday + briefs + dispatch. wp_refonte = chapeau operationnel pour les actions WP directes (via wp-deploy.php)"
+        ]
+      },
       {
         "date": "2026-05-14",
         "version_from": "1.87",
@@ -3506,6 +3517,14 @@
         "current_focus": "6 templates email HTML produits (charte OZECAR — DM Sans/Space Mono, structure sandwich ink/cream, pills 100px). Blueprint Make 03 (Calendly→HS L&Q) rédigé. Propriétés ozecar_profil + ozecar_origine bloquées (scope PAT insuffisant — action Dominique requise dans HS Settings).",
         "last_active": "2026-05-14",
         "status": "active"
+      },
+      "wp_refonte": {
+        "slug": "wp_refonte",
+        "session_type": "claude.ai web",
+        "role": "Chat dédié refonte staging.ozecar.fr (theme ozecar-child, blocs Gutenberg, pages WP) — co-géré par le même chat que le PM Dominique",
+        "current_focus": "Appliquer le hero homepage validé 'Vos bornes en pilotage automatique' (cf state.json > positioning_hero_2026_05_14.hero_decide_v1) sur staging.ozecar.fr",
+        "last_active": "2026-05-14",
+        "note_dominique": "Dominique a clarifié 2026-05-14 que ce chat (PM) prend aussi le rôle wp_refonte. Pas un chat séparé."
       }
     },
     "inbox": {
@@ -3550,6 +3569,16 @@
             "requires_ack": true,
             "status": "done",
             "processed_at": "2026-05-16T00:00:00Z"
+          },
+          {
+            "from": "wp_refonte",
+            "to": "pm",
+            "ts": "2026-05-28T20:27:53Z",
+            "subject": "Inscription au bus",
+            "body": "Inscription du chat wp_refonte au bus. Note : c'est le meme chat que le PM, decision Dominique 2026-05-14 (efficacite operationnelle, eviter de multiplier les conversations claude.ai). Focus initial : appliquer le hero homepage valide en v1.86/1.88 sur staging.ozecar.fr.",
+            "requires_ack": false,
+            "status": "done",
+            "processed_at": "2026-05-28T20:27:53Z"
           }
         ]
       },
@@ -3590,6 +3619,9 @@
             "status": "new"
           }
         ]
+      },
+      "wp_refonte": {
+        "messages": []
       }
     },
     "sent_log": {
