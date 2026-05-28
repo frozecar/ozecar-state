@@ -1,12 +1,27 @@
 {
   "_meta": {
-    "version": "1.85",
-    "updated": "2026-05-27",
+    "version": "1.86",
+    "updated": "2026-05-14",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-14",
+        "version_from": "1.85",
+        "version_to": "1.86",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "POSITIONNEMENT MAJEUR : abandon 'supervisees en 10 minutes' en hero homepage. Trop ambigu, parle uniquement a l'installateur et engage des configurations non tenues.",
+          "Nouveau hero v1 propose : 'OZECAR garde vos bornes en marche' - promesse de continuite reseau via OZRT, version prudente (pas de promesse de notification client encore non automatisee).",
+          "Bandeau installateur dedie sous hero : 'activez chaque borne en quelques minutes' (vrai pour l'activation, pas pour la config complete).",
+          "Trajectoire v2.0 documentee : quand Make scenario notif client post-reconnexion sera en place, upgrade hero vers 'on vous previent quand c'est fait'.",
+          "Section positioning_hero_2026_05_14 ajoutee avec socle + 3 propositions + ma reco + 3 blocs proof + anti-patterns.",
+          "Livrable : OZECAR-HERO-POSITIONNEMENT.md (188 lignes) genere pour Dominique - sert aussi de reference quand wp_refonte s'inscrira au bus.",
+          "Anti-patterns documentes : pas de chiffre precis, pas de hotline, pas de SaaS-speak generique, jamais Monta, pas de promesse SLA non contractualisee."
+        ]
+      },
       {
         "date": "2026-05-27",
         "version_from": "1.84",
@@ -5416,5 +5431,59 @@
       "frais": "Frais de transaction 2% (Monta) inclus dans les frais d'opérateur. Frais opérateur/itinérance variables selon forfait."
     },
     "suggestion_pricing": "Envisager une remise -8 à -10% sur la formule annuelle (actuellement seul le biannuel a -15%) pour pousser l'engagement annuel. À décider par Dominique."
+  },
+  "positioning_hero_2026_05_14": {
+    "_note": "Decision Dominique 2026-05-14 : abandon de 'supervisees en 10 minutes' en hero homepage. Repositionnement vers 'OZECAR garde vos bornes en marche' (promesse de continuite reseau via OZRT). Version prudente : pas de promesse de notification client tant que le scenario Make notif n'est pas en place.",
+    "decision_par": "Dominique Manfredi",
+    "decision_date": "2026-05-14",
+    "context_brief": "Feedback : 'supervisees en 10 minutes' parle uniquement a l'installateur (et meme pour lui, la configuration peut prendre 1 jour pour 10 bornes). Client final exploitant ne vit jamais la pose, il veut de l'operationnel quotidien. Contrainte : equipe de 3 personnes, telephone deja sature, ne peut pas promettre de hotline humaine temps reel.",
+    "positionnement_socle": {
+      "categorie_revendiquee": "Operateur IRVE complet (pas editeur de logiciel)",
+      "differenciateurs_durables": [
+        "Routeur OZRT actif (detection + relance auto) - peu de concurrents font ca",
+        "Modele integre borne+kit+routeur+supervision en un seul guichet, une seule facture",
+        "Marque blanche : client n'a affaire qu'a OZECAR"
+      ],
+      "ce_qu_on_promet": [
+        "Continuite de la connectivite reseau (relance auto OZRT)",
+        "Bornes pre-configurees livrees",
+        "Activation installateur en quelques minutes (pas 'mise en service' complete)"
+      ],
+      "ce_qu_on_ne_promet_PAS_encore": [
+        "Notification client post-reconnexion (pas automatisee a ce jour)",
+        "Hotline qui decroche (non tenable a 3 personnes)",
+        "Zero panne / disponibilite garantie chiffree (pas de SLA contractualise)"
+      ]
+    },
+    "hero_recommande_v1": {
+      "titre": "OZECAR garde vos bornes en marche.",
+      "accroche": "Vos points de charge restent connectes, meme en cas de coupure reseau. La supervision relance ce qui doit l'etre, automatiquement. Vous ne touchez a rien.",
+      "cta_primary": "Demarrer un projet",
+      "cta_secondary": "Voir comment ca marche"
+    },
+    "bandeau_installateur": {
+      "titre": "Installateurs : activez chaque borne en quelques minutes.",
+      "accroche": "Recevez la borne pre-configuree OZECAR. Scannez, saisissez, testez la charge pour votre PV de reception. Pas de parametrage cloud a faire de votre cote.",
+      "cta": "Devenir installateur certifie"
+    },
+    "trajectoire_v2_apres_notif_make": {
+      "_prerequis": "Make scenario notification client post-reconnexion en place",
+      "hero_upgrade": "OZECAR garde vos bornes en marche. Et vous previent quand c'est fait.",
+      "accroche": "En cas de coupure reseau, la supervision relance la connexion automatiquement. Vous recevez un recap, vous n'avez rien a gerer."
+    },
+    "livrable_complet": "OZECAR-HERO-POSITIONNEMENT.md (livre 2026-05-14, 188 lignes, 8 sections)",
+    "anti_patterns": [
+      "Ne pas promettre temps precis sans contexte (10 minutes, etc)",
+      "Ne pas mettre 'hotline' / 'support 24/7'",
+      "Ne pas faire du SaaS-speak generique (plateforme tout-en-un, tableau de bord 360)",
+      "Ne pas mentionner Monta",
+      "Ne pas promettre 'zero panne' sans SLA contractualise"
+    ],
+    "application_wp": "Hors perimetre PM direct - releve du chat wp_refonte quand il s'inscrira au bus. Le document sert de reference pour validation freelance/agence en attendant.",
+    "next_actions": [
+      "[Dominique] Lire OZECAR-HERO-POSITIONNEMENT.md, valider proposition A ou choisir une autre",
+      "[PM ou chat make] Specifier puis implementer le scenario Make notif client post-reconnexion auto (prerequis upgrade hero v2.0)",
+      "[Bus inter-chat] Annoncer le nouveau hero au chat wp_refonte quand il s'inscrira"
+    ]
   }
 }
