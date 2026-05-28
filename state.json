@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.83",
+    "version": "1.84",
     "updated": "2026-05-27",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-27",
+        "version_from": "1.83",
+        "version_to": "1.84",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "ARCHITECTURE PAIEMENT décidée: Flux A (abonnement supervision) = Pennylane moteur complet (facturation récurrente + SEPA), agnostique Monta. Stripe réservé CB ponctuel + Connect installateurs.",
+          "Méthodes: mensuel = SEPA Pennylane, annuel/biannuel = virement IBAN OZECAR ou CB Stripe.",
+          "Flux B (monétique recharge) = Monta ApS PSP, NON agnostique (frais 2%, reversements, factures Monta visibles côté client).",
+          "MARQUE BLANCHE clarifiée en 2 couches: couche supervision/plateforme = Monta invisible (règle maintenue). Couche monétique/paiement = Monta visible et assumé (exception nécessaire, le client le voit de toute façon). Le contrat CS_2026092 nommant Monta ApS est CORRECT.",
+          "Suggestion: remise -8/-10% sur formule annuelle (à décider Dominique)."
+        ]
+      },
       {
         "date": "2026-05-27",
         "version_from": "1.82",
@@ -2745,6 +2758,18 @@
       "verification_live": "/bornes-compatibles/ : 0 direct monta.imgix dans <img src>, 19 via proxy. /recherche/ : 0 direct, 59 via proxy. Sample image testée HTTP 200 PNG 30316 bytes via proxy.",
       "filtre_dans_functions_php": "À retirer le jour où ozecar-theme + plugins Monta seront refactorisés pour n'utiliser que des URLs OZECAR-native.",
       "monday_item": "WP-MARQUE-BLANCHE (id 11965641976) → Done"
+    },
+    "clarification_deux_couches_2026_05_27": {
+      "couche_supervision_plateforme": {
+        "regle": "Monta INVISIBLE - règle maintenue à 100%",
+        "surfaces": "app de supervision, SaaS, branding, marketing, ozecar.fr, staging, shop, emails transactionnels supervision, screenshots, logos, URLs monta.imgix.net/montaapi.com"
+      },
+      "couche_monetique_paiement": {
+        "regle": "Monta VISIBLE et ASSUMÉ - exception nécessaire",
+        "raison": "Sur le flux de paiement des recharges, Monta ApS est le PSP agréé. Le client voit: ligne frais Monta (2%), reversements depuis compte Monta, factures émises par Monta. Le masquer est impossible (relevés bancaires) et incohérent.",
+        "surfaces_ok": "Contrat de supervision (art. reversement/frais), factures de monétique aux usagers, relevés de reversement",
+        "note": "Le contrat CS_2026092 nomme déjà Monta ApS (art 2.1.1, 2.2.8) - c'est CORRECT, pas une fuite."
+      }
     }
   },
   "naming_migration_2026_05_10": {
@@ -5306,5 +5331,30 @@
       ],
       "declinaison_5_deal_types": "Une fois supervision validé: installation, vente_b2b, maintenance, accessoires (voir guide pour le détail des Catalog Items et sections juridiques par type)"
     }
+  },
+  "payment_architecture": {
+    "date_decision": "2026-05-27",
+    "validé_par": "Dominique",
+    "principe": "Deux flux d'argent distincts, traités séparément.",
+    "flux_A_abonnement_supervision": {
+      "description": "Ce que le CLIENT paie à OZECAR pour la supervision (récurrent)",
+      "moteur": "Pennylane (facturation récurrente + encaissement SEPA via GoCardless ou Compte Pro Pennylane)",
+      "agnostique_monta": true,
+      "methodes_par_periodicite": {
+        "mensuelle": "Prélèvement SEPA récurrent via Pennylane (mandat signé à la souscription). Engagement 12 mois.",
+        "annuelle": "Virement sur IBAN OZECAR ou CB via lien Stripe, facture unique Pennylane. Engagement 12 mois.",
+        "biannuelle": "Virement/CB, facture unique, -15% remise. Engagement 24 mois."
+      },
+      "stripe_role": "Réservé au CB ponctuel (vente OZECARD, e-commerce Shopify) et au Stripe Connect des installateurs (axe services revendus). PAS moteur de l'abonnement supervision.",
+      "capacites_pennylane_confirmees": "Facturation récurrente (plan Essentiel+), abonnements avec cycle de vie, prélèvement SEPA SDD Core via mandat digital, rapprochement/lettrage auto. Client voit 'GOCARDLESS' sur relevé."
+    },
+    "flux_B_monetique_recharge": {
+      "description": "Ce que les USAGERS paient pour recharger, qui transite puis est reversé au client après déduction des frais",
+      "psp": "Monta ApS (établissement de paiement agréé)",
+      "agnostique_monta": false,
+      "raison": "Monta visible de façon irréductible côté client: ligne 'frais Monta' (2% transaction), reversements depuis compte Monta, factures émises par Monta. Impossible et incohérent de masquer.",
+      "frais": "Frais de transaction 2% (Monta) inclus dans les frais d'opérateur. Frais opérateur/itinérance variables selon forfait."
+    },
+    "suggestion_pricing": "Envisager une remise -8 à -10% sur la formule annuelle (actuellement seul le biannuel a -15%) pour pousser l'engagement annuel. À décider par Dominique."
   }
 }
