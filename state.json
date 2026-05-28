@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.82",
+    "version": "1.83",
     "updated": "2026-05-27",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-27",
+        "version_from": "1.82",
+        "version_to": "1.83",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CATALOGUE SUPERVISION COMPLET acté depuis PDF CS_2026092 (source de vérité): 4 forfaits (Essential 4,90/Pro 14,90/Pro Plus 24,90/Transit 54,90), 6 options CPQ, mise en service complète, 3 modalités paiement, engagement 12/24/36 mois.",
+          "NOMENCLATURE KIT FINALE: Kit OZECAR (49€, 1 borne incluse) + Kit Borne (29€, par borne supp). Termes obsolètes interdits: Kit Master/Unit/OZKM/OZKU/Kit Site/Kit de Supervision.",
+          "Frais d'activation 79€ → OFFERT commercialement (remise 100%, total 0€).",
+          "Infos juridiques corrigées: capital 76 679,82€, adresse OPÉRATIONNELLE 1330 Av G de la Lauzière Europarc Pichaury Bât B5 13290 Aix (pour docs commerciaux), hello@/legal@ozecar.fr, IBAN/BIC, tribunal Bastia, partenaire paiement Monta ApS.",
+          "PANDA-01 docx v1 ABANDONNÉ (infos fausses). Stratégie v2: cloner le template CS_2026092 existant et modifier 3 points seulement. Guide d'adaptation chirurgical livré."
+        ]
+      },
       {
         "date": "2026-05-27",
         "version_from": "1.81",
@@ -5113,12 +5126,113 @@
           "cible": "Sur mesure"
         }
       }
+    },
+    "supervision_complet_v2026_05_27": {
+      "source": "PDF CS_2026092 uploadé par Dominique - SOURCE DE VÉRITÉ",
+      "date": "2026-05-27",
+      "forfaits_supervision": {
+        "essential": {
+          "prix_pdc_mois": 4.9,
+          "cible": "Parkings privés non-public",
+          "frais_operateur": "12,5% (option Wallet)",
+          "frais_itinerance": null
+        },
+        "pro": {
+          "prix_pdc_mois": 14.9,
+          "cible": "Public avec transaction",
+          "frais_operateur": "10%",
+          "frais_itinerance": "20%"
+        },
+        "pro_plus": {
+          "prix_pdc_mois": 24.9,
+          "cible": "Public + DC >2000 kWh/mois",
+          "frais_operateur": "8%",
+          "frais_itinerance": "16%"
+        },
+        "transit": {
+          "prix_pdc_mois": 54.9,
+          "cible": "Public + DC >4000 kWh/mois",
+          "frais_operateur": "6%",
+          "frais_itinerance": "12%"
+        }
+      },
+      "options_cpq": {
+        "wallet": {
+          "prix_mois": 5.0,
+          "sur_forfait": "Essential",
+          "desc": "Monétisation sans ouvrir au public, 12,5% frais opérateur"
+        },
+        "assistance_247": {
+          "sur_forfait": "Essential",
+          "desc": "Assistance téléphone/chat/email 24h/7j"
+        },
+        "data_sim": {
+          "prix_mois": 2.0,
+          "desc": "Carte SIM multi-opérateur 4G/5G"
+        },
+        "ia_maintenance_predictive": {
+          "desc": "Auto-réparation prédictive"
+        },
+        "responsable_client_dedie": {
+          "prix_mois": 49.0,
+          "desc": "Customer Success Manager - option globale"
+        },
+        "recharge_collaborateur_domicile": {
+          "prix_pdc_mois": 5.9,
+          "desc": "Remboursement collaborateur"
+        }
+      },
+      "kits": {
+        "kit_ozecar": {
+          "prix_ht": 49.0,
+          "desc": "Kit complet 1 borne incluse (doc + autocollants + QR paiement + 1 carte RFID)",
+          "quantite": "1 par station"
+        },
+        "kit_borne": {
+          "prix_ht": 29.0,
+          "desc": "Chaque borne supplémentaire (autocollants + QR + 1 carte RFID)",
+          "quantite": "nb PdC total - 1"
+        },
+        "note": "NOMENCLATURE FINALE: Kit OZECAR + Kit Borne. Termes obsolètes INTERDITS: Kit Master, Kit Unit, OZKM, OZKU, Kit Site, Kit de Supervision."
+      },
+      "mise_en_service": {
+        "carte_sim_ozecar": {
+          "prix": 6.5,
+          "desc": "Pour option Data"
+        },
+        "carte_rfid_ozecard_incluse": {
+          "prix": 0.0
+        },
+        "pack_10_rfid_ozecard": {
+          "prix": 59.0
+        },
+        "frais_activation": {
+          "prix_affiche": 79.0,
+          "prix_commercial": 0.0,
+          "desc": "Config OCPP + tarifs + RFID + onboarding 1h visio. OFFERT commercialement (remise 100%)"
+        },
+        "mise_en_service_site": {
+          "prix": 450.0,
+          "desc": "Déplacement technicien jusqu'à 10 PdC"
+        },
+        "config_connectivite_site": {
+          "prix": 250.0,
+          "desc": "Paramétrage réseau jusqu'à 10 PdC"
+        }
+      },
+      "modalites_paiement": {
+        "mensuelle": "Engagement 12 mois, prélèvement auto",
+        "annuelle": "Engagement 12 mois, paiement unique virement/CB",
+        "biannuelle": "Engagement 24 mois, -15% remise, virement/CB"
+      },
+      "engagement": "12 / 24 / 36 mois au choix. Préavis 3 mois. Pas de tacite reconduction. ADVENIR = 36 mois obligatoire.",
+      "cadre_juridique": "Mandat de gestion art. 1984 Code civil. Révision prix indice Syntec 320.3. Confidentialité + référence client 2 ans post-contrat. Intérêts retard taux légal +10pts."
     }
   },
   "legal_company_info": {
     "raison_sociale": "OZECAR",
     "forme_juridique": "SAS (Société par Actions Simplifiée)",
-    "capital_social": "76 679 €",
+    "capital_social": "76 679,82 €",
     "siret_siege": "90275720200012",
     "siren": "902 757 202",
     "rcs": "Bastia",
@@ -5147,52 +5261,50 @@
       "ozecar.fr/mentions-legales/",
       "INSEE recherche-entreprises.api.gouv.fr"
     ],
-    "validation_date": "2026-05-27"
+    "validation_date": "2026-05-27",
+    "adresse_operationnelle": {
+      "adresse": "1330 Av. G. de la Lauzière, Europarc de Pichaury - Bât. B5",
+      "code_postal": "13290",
+      "ville": "Aix-en-Provence",
+      "pays": "France",
+      "note": "Adresse opérationnelle utilisée sur les documents commerciaux/contrats (devis, propositions). Différente du siège INSEE Ghisonaccia."
+    },
+    "emails": {
+      "general": "hello@ozecar.fr",
+      "rgpd": "legal@ozecar.fr",
+      "contact": "contact@ozecar.fr",
+      "partenaires": "partenaires@ozecar.fr",
+      "support": "support@ozecar.fr"
+    },
+    "iban": "FR76 1131 5000 0108 0270 2109 176",
+    "bic": "CEPAFRPP131",
+    "tribunal_competent": "Tribunal administratif de Bastia (2B)",
+    "partenaire_paiement": "Monta ApS (intégration, fonds de roulement 100€ max)"
   },
   "panda_templates": {
     "supervision_v1": {
-      "date_livraison": "2026-05-27",
-      "fichier_docx": "/mnt/user-data/outputs/PANDA-01-Template-Supervision-OZECAR.docx",
-      "fichier_pdf": "/mnt/user-data/outputs/PANDA-01-Template-Supervision-OZECAR.pdf",
-      "structure": "5-6 pages : Cover · Votre projet · Notre proposition (kit + abonnement) · Synthèse + signatures · Conditions commerciales",
-      "deal_type_mappe": "supervision",
-      "variables_placeholder": [
-        "{{Company.Name}}",
-        "{{Contact.FirstName}} {{Contact.LastName}}",
-        "{{Contact.Email}} / {{Contact.Phone}}",
-        "{{Document.Number}} / {{Document.CreatedDate}}",
-        "{{Deal.nombre_pdc}} / {{Deal.nombre_stations}}",
-        "{{Deal.forfait_supervision}} / {{Deal.prix_borne_mois}}",
-        "{{Deal.marques_bornes}}",
-        "{{Pricing.OZKM.Total}} / {{Pricing.OZKU.Total}} / {{Pricing.Kit.Subtotal}}",
-        "{{Pricing.Supervision.Monthly}} / {{Pricing.TVA}} / {{Pricing.Total.Month1}}"
+      "statut": "ABANDONNÉ - basé sur infos incorrectes (3 forfaits au lieu de 4, prix kit faux, pas de CPQ, adresse Ghisonaccia)",
+      "remplacé_par": "supervision_v2_adaptation"
+    },
+    "supervision_v2_adaptation": {
+      "date": "2026-05-27",
+      "statut": "Guide d'adaptation livré",
+      "fichier_guide": "/mnt/user-data/outputs/PANDA-01-Guide-Adaptation-Template-Supervision.md",
+      "strategie": "NE PAS refaire from scratch. Le template PandaDoc CS_2026092 existe déjà et est excellent (CPQ natif, 4 forfaits, options, modalités, 17 articles juridiques). On le CLONE et on modifie 3 points seulement.",
+      "modifications_requises": [
+        "Section 2 Mise en service: remplacer 'Kit de Supervision OZECAR 39€' par DEUX Catalog Items: Kit OZECAR 49€ (1/station, 1 borne incluse) + Kit Borne 29€ (qté = nb PdC - 1)",
+        "Frais d'activation 79€ → passer en Remise 100% (Total 0€) - garder prix affiché pour montrer la valeur offerte",
+        "Nomenclature: 'Kit de Supervision' → 'Kit OZECAR' / 'Kit Borne'. Vérifier aucun 'Kit Master/Unit/OZKM/OZKU' résiduel"
       ],
-      "prix_inclus": {
-        "OZKM": "49 € HT (1 par station)",
-        "OZKU": "29 € HT (1 par point de charge)",
-        "supervision_starter": "19€/borne/mois",
-        "supervision_business": "14€/borne/mois",
-        "supervision_enterprise": "Sur devis"
-      },
-      "branding": {
-        "police_titres": "DM Sans bold",
-        "police_corps": "DM Sans regular",
-        "police_accents_italiques": "Instrument Serif",
-        "police_labels": "Space Mono uppercase",
-        "couleurs": "yellow #FAC828 / violet #5F2DFF / ink #0F141E / cream #F5F0EB / line #E5DDD2",
-        "elements_brand": "Bande jaune en haut de page (header), labels en mono uppercase, dividers jaune, total final en bandeau jaune"
-      },
+      "inchangé": "4 forfaits CPQ (Essential/Pro/Pro Plus/Transit), toutes les options, 3 formules paiement, 17 articles juridiques, coordonnées société",
       "next_steps_dominique": [
-        "Ouvrir PandaDoc → Modèles → Modèle (bouton vert haut droite) → 'Charger un fichier' → uploader le docx",
-        "Renommer le template : 'OZECAR · Devis Supervision'",
-        "Le placer dans le dossier 01-Devis (et archiver les 4 DV XXX existants)",
-        "Remplacer les placeholders {{...}} par les vraies variables PandaDoc HubSpot (via menu 'Variables' / token picker)",
-        "Convertir les zones placeholder '[ZONE SIGNATURE]' en vrais champs Signature PandaDoc",
-        "Convertir les tableaux pricing statiques en Pricing Table dynamique PandaDoc (pour calcul auto)",
-        "Configurer les rôles : Client (signataire 1) + Dominique Manfredi pour OZECAR (signataire 2)",
-        "Tester en créant un PandaDoc depuis HubSpot fiche deal Piazza d'Olmo - vérifier que les variables se fusionnent",
-        "Quand validé : créer les 4 autres templates (installation, vente_b2b, maintenance, accessoires) sur la même base"
-      ]
+        "Dans PandaDoc: dupliquer le template CS_2026092 (dossier 01-Devis)",
+        "Renommer 'OZECAR · Devis Supervision 2026'",
+        "Appliquer les 3 modifications du guide",
+        "Mettre à jour le Catalogue PandaDoc avec les 2 produits Kit OZECAR 49€ + Kit Borne 29€",
+        "Test E2E depuis HubSpot fiche deal"
+      ],
+      "declinaison_5_deal_types": "Une fois supervision validé: installation, vente_b2b, maintenance, accessoires (voir guide pour le détail des Catalog Items et sections juridiques par type)"
     }
   }
 }
