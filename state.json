@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.86",
+    "version": "1.87",
     "updated": "2026-05-14",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-14",
+        "version_from": "1.86",
+        "version_to": "1.87",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Bus inter-chat : message envoye a 'make' inbox - spec du scenario notification client post-reconnexion auto",
+          "Objectif : prerequis pour upgrade hero homepage v1 -> v2 ('on vous previent quand c'est fait')",
+          "Trigger propose : webhook Monta a la reconnexion borne, seuil duree coupure > 5 min, notif email/SMS au client + log HubSpot",
+          "Priorite MOYENNE - non bloquant pour hero v1 tenable sans notif"
+        ]
+      },
       {
         "date": "2026-05-14",
         "version_from": "1.85",
@@ -3530,7 +3542,17 @@
         "messages": []
       },
       "make": {
-        "messages": []
+        "messages": [
+          {
+            "from": "pm",
+            "to": "make",
+            "ts": "2026-05-28T19:10:21Z",
+            "subject": "Spec : scenario notification client post-reconnexion auto (prerequis upgrade hero homepage)",
+            "body": "Hello make,\n\nLe positionnement hero de la homepage vient d'evoluer (state.json v1.86, section positioning_hero_2026_05_14). Pour pouvoir UPGRADER la promesse de 'la connexion se relance automatiquement' vers 'on vous previent quand c'est fait', il faut un scenario Make qui automatise la notification client post-reconnexion. Detail :\n\nTRIGGER : webhook Monta (ou OZRT directement si possible) a la reconnexion d'une borne apres coupure reseau.\n\nLOGIQUE :\n1. Capturer l'evenement de reconnexion + duree de la coupure\n2. Si coupure > seuil (a definir, suggestion : 5 min) -> proceed, sinon ignore\n3. Identifier le compte client proprietaire de la borne (via HubSpot deal lie ou Monta charge_point)\n4. Composer email (et/ou SMS) : 'Bonjour, votre borne X a connu une coupure reseau de Y min, la connexion a ete automatiquement retablie a HH:MM. Vous n'avez rien a faire.'\n5. Envoyer\n6. Logger dans HubSpot deal note 'Incident reseau resolu automatiquement'\n\nPRIORITE : MOYENNE - ce n'est pas bloquant pour le hero v1 (qui reste tenable sans notif), mais c'est le verrou qui debloque la promesse v2 'on vous previent'.\n\nQUESTION : peux-tu specifier ce scenario et confirmer la faisabilite cote Monta (webhook reconnexion disponible ?) ou OZRT (event push sur reconnexion) ? Si Monta n'expose pas ce webhook, il faudra peut-etre poller la supervision a intervalle regulier.\n\nReply quand tu as eu le temps - aucune urgence operationnelle, c'est une trajectoire produit.",
+            "requires_ack": true,
+            "status": "new"
+          }
+        ]
       },
       "email_make": {
         "messages": [
