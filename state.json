@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.84",
+    "version": "1.85",
     "updated": "2026-05-27",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-27",
+        "version_from": "1.84",
+        "version_to": "1.85",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "PANDA-01 Guide Content Library v1.0 LIVRÉ - approche modulaire validée par Dominique. Architecture 3 catégories de briques (PRODUITS / CONTRATS / COMMUNES) + 5 templates assemblés par cas + matrice complète.",
+          "Brique B-LEGAL-01 Contrat supervision rédigée avec art. 3.5 réécrit pour intégrer Pennylane SEPA. Articles 2.1.1 et 2.2.8 (Monta ApS sur monétique) maintenus conformément à la décision marque blanche 2 couches.",
+          "5 dépendances Dominique identifiées pour compléter le système : 3 contrats à uploader (maintenance/installation/vente_b2b), catalogue matériel, modèles commerciaux maintenance/installation, décision remise annuelle.",
+          "Plan d'action sans dépendances disponible côté Dominique : créer structure dossiers Bibliothèque, créer 15 produits Catalogue, monter B-PROD-01/02/03 + B-CORE-01/02/03/04/05 + B-LEGAL-01, assembler T1 Supervision + test E2E."
+        ]
+      },
       {
         "date": "2026-05-27",
         "version_from": "1.83",
@@ -5312,24 +5324,72 @@
       "remplacé_par": "supervision_v2_adaptation"
     },
     "supervision_v2_adaptation": {
+      "statut": "REMPLACÉ par content_library_v3",
+      "raison": "Guide trop court (3 modifs sur CS_2026092). Remplacé par approche modulaire Content Library validée par Dominique."
+    },
+    "content_library_v3": {
       "date": "2026-05-27",
-      "statut": "Guide d'adaptation livré",
-      "fichier_guide": "/mnt/user-data/outputs/PANDA-01-Guide-Adaptation-Template-Supervision.md",
-      "strategie": "NE PAS refaire from scratch. Le template PandaDoc CS_2026092 existe déjà et est excellent (CPQ natif, 4 forfaits, options, modalités, 17 articles juridiques). On le CLONE et on modifie 3 points seulement.",
-      "modifications_requises": [
-        "Section 2 Mise en service: remplacer 'Kit de Supervision OZECAR 39€' par DEUX Catalog Items: Kit OZECAR 49€ (1/station, 1 borne incluse) + Kit Borne 29€ (qté = nb PdC - 1)",
-        "Frais d'activation 79€ → passer en Remise 100% (Total 0€) - garder prix affiché pour montrer la valeur offerte",
-        "Nomenclature: 'Kit de Supervision' → 'Kit OZECAR' / 'Kit Borne'. Vérifier aucun 'Kit Master/Unit/OZKM/OZKU' résiduel"
+      "version": "1.0",
+      "fichier_guide": "/mnt/user-data/outputs/PANDA-01-Guide-Content-Library-OZECAR.md",
+      "approche": "Content Library PandaDoc modulaire — briques produits + contrats + communes, assemblage en 5 templates par cas",
+      "architecture": {
+        "briques_produits": [
+          "B-PROD-01 Forfaits supervision",
+          "B-PROD-02 Kit OZECAR + Kit Borne",
+          "B-PROD-03 Mise en service",
+          "B-PROD-04 Matériel bornes (TODO)",
+          "B-PROD-05 Maintenance (TODO)",
+          "B-PROD-06 Installation pose (TODO)",
+          "B-PROD-07 Accessoires (TODO)"
+        ],
+        "briques_contrats": [
+          "B-LEGAL-01 Contrat supervision RÉDIGÉ",
+          "B-LEGAL-02 Maintenance (attente upload)",
+          "B-LEGAL-03 Installation (attente upload)",
+          "B-LEGAL-04 CGV vente matériel B2B (attente upload)"
+        ],
+        "briques_communes": [
+          "B-CORE-01 En-tête",
+          "B-CORE-02 Pied",
+          "B-CORE-03 Données station",
+          "B-CORE-04 Modalités paiement (Pennylane)",
+          "B-CORE-05 Signature"
+        ],
+        "templates_cibles": [
+          "T1 Supervision",
+          "T2 Matériel + Supervision",
+          "T3 Mat + Sup + Maintenance",
+          "T4 Installation complète",
+          "T5 Installateur vente matériel"
+        ]
+      },
+      "modifications_juridiques_majeures": [
+        "Art. 3.5 du contrat supervision réécrit pour intégrer Pennylane (SEPA mandat à la souscription pour mensuel, virement/CB pour annuel/biannuel). Wording neutre: 'prestataire de facturation et d'encaissement' au lieu de 'application de gestion' qui renvoyait à Monta.",
+        "Articles 2.1.1 et 2.2.8 (Monta ApS nommé sur la couche monétique) MAINTENUS - conforme à la décision marque blanche 2 couches du 27.05."
       ],
-      "inchangé": "4 forfaits CPQ (Essential/Pro/Pro Plus/Transit), toutes les options, 3 formules paiement, 17 articles juridiques, coordonnées société",
-      "next_steps_dominique": [
-        "Dans PandaDoc: dupliquer le template CS_2026092 (dossier 01-Devis)",
-        "Renommer 'OZECAR · Devis Supervision 2026'",
-        "Appliquer les 3 modifications du guide",
-        "Mettre à jour le Catalogue PandaDoc avec les 2 produits Kit OZECAR 49€ + Kit Borne 29€",
-        "Test E2E depuis HubSpot fiche deal"
+      "dependances_dominique": [
+        "Upload modèles existants : contrat maintenance, contrat installation, CGV vente matériel B2B (pour rédiger B-LEGAL-02/03/04)",
+        "Catalogue matériel : références Zaptec & autres marques avec prix HT (pour B-PROD-04)",
+        "Modèle commercial maintenance : forfait annuel par PdC ? SLA ? interventions incluses ? (pour B-PROD-05)",
+        "Modèle commercial installation : tarification au forfait / au temps homme / au m² ? (pour B-PROD-06)",
+        "Décision remise formule annuelle : ajouter -8 à -10% pour pousser l'engagement annuel ?"
       ],
-      "declinaison_5_deal_types": "Une fois supervision validé: installation, vente_b2b, maintenance, accessoires (voir guide pour le détail des Catalog Items et sections juridiques par type)"
+      "prochaines_etapes_sans_dependance": [
+        "Créer dans Bibliothèque de contenus 3 dossiers OZECAR (PRODUITS / CONTRATS / COMMUNES)",
+        "Créer les 15 produits dans Catalogue PandaDoc (49€/29€ kits, 4 forfaits, options, mise en service)",
+        "Monter B-PROD-01, B-PROD-02, B-PROD-03 (briques produits ready)",
+        "Monter B-CORE-01 à B-CORE-05 (briques communes)",
+        "Monter B-LEGAL-01 (contrat supervision avec art. 3.5 réécrit Pennylane)",
+        "Assembler T1 Supervision et tester E2E sur deal HubSpot"
+      ],
+      "deal_type_hubspot_mapping": {
+        "note": "Le deal_type HubSpot reste la classification CRM (pipeline/reporting), il ne pilote pas 1:1 le template. Mapping par défaut suggéré dans le guide.",
+        "supervision": "T1 ou T2 selon présence matériel",
+        "vente_b2b": "T5 Installateur",
+        "installation": "T4 Installation complète",
+        "maintenance": "T3 (Mat + Sup + Maint) ou contrat maintenance autonome",
+        "accessoires": "Bon de commande simple hors scope CPQ lourd"
+      }
     }
   },
   "payment_architecture": {
