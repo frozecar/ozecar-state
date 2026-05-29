@@ -1,12 +1,30 @@
 {
   "_meta": {
-    "version": "1.89",
-    "updated": "2026-05-14",
+    "version": "1.90",
+    "updated": "2026-05-29",
     "updated_by": "Claude PM + wp_refonte (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-29",
+        "version_from": "1.89",
+        "version_to": "1.90",
+        "author": "Claude PM + wp_refonte (claude.ai)",
+        "changes": [
+          "APPLICATION HERO HOMEPAGE : 5 modifications poussees sur staging.ozecar.fr page 22462 via wp-deploy update_page",
+          "Hero H1 : 'Vos bornes supervisees en 10 minutes' -> 'Vos bornes en pilotage automatique'",
+          "Hero P : nouveau sous-titre 'Connectivite, supervision, depannage a distance : OZECAR gere, vous encaissez'",
+          "Live counter '1 284 bornes supervisees en France ce mois' : SUPPRIME entierement",
+          "Section Kit Installateur : reformulation avec 'PV de reception' + 'pas de parametrage cloud'",
+          "Bloc temoignage Weldom remplace par Renault Retail : H2 + citation generique + 4 KPIs (38 PDC / 3 sem / 1 portail PLACEHOLDER / 5 concessions) + signataire generique",
+          "ATTENTION : KPI 3 en PLACEHOLDER ('1 portail / supervision centralisee') - Dominique doit confirmer un % d'impact pour remplacer",
+          "Meta description Yoast auto-regeneree avec le nouveau contenu (pas d'action manuelle requise)",
+          "Backup serveur : wp-content/uploads/ozecar/page-backups/page-22462-20260529-210702.html",
+          "Tous les checks post-deploiement OK : 0 occurrence de '10 minutes' / 'supervisees en' / 'Jean-Marc' / '1 284 bornes' dans le bloc supprime"
+        ]
+      },
       {
         "date": "2026-05-14",
         "version_from": "1.88",
@@ -5595,6 +5613,46 @@
       ],
       "promise_v2_quand_autopilot_active": "OZECAR Autopilot : votre supervision repare avant que vous appeliez. En cas de coupure reseau, la connexion est relancee automatiquement et vous recevez un recap par email. Vous n'avez rien a gerer.",
       "interdiction_avant_v2": "Ne JAMAIS utiliser le mot 'Autopilot' sur les surfaces publiques OZECAR tant que la chaine notification client n'est pas automatisee. Communiquer 'Autopilot' sans le tenir transformerait la promesse en mensonge."
+    },
+    "application_staging_2026_05_29": {
+      "_note": "Application des 5 modifications du hero homepage validees, executee par chat wp_refonte (PM + WP combine).",
+      "executed_at": "2026-05-29T21:07Z",
+      "page_modifiee": "staging.ozecar.fr/ (page WP id 22462, slug homepage-2)",
+      "method": "wp-deploy.php update_page action",
+      "backup_serveur": "wp-content/uploads/ozecar/page-backups/page-22462-20260529-210702.html",
+      "backup_local": "api/backups/page22462-home-2026-05-29-2104.html (sur Hostinger)",
+      "commit_sha_avant": "d98c193ebc0be0a5c7c2e00f37c1d6fe2ec37c4d7d413d058d7f632016ed2b92",
+      "commit_sha_apres": "c4648c1c864f5804ff4bb5da331c112107a8dd790c33327b2e9d82e7078ab954",
+      "modifications_appliquees": [
+        "Zone 1 - Hero H1 : 'Vos bornes supervisees en 10 minutes. Sans technicien.' -> 'Vos bornes en pilotage automatique.'",
+        "Zone 1 - Hero P : 'Portail temps reel...' -> 'Connectivite, supervision, depannage a distance : OZECAR gere, vous encaissez.'",
+        "Zone 2 - Live counter '1 284 bornes supervisees en France ce mois' : SUPPRIME entierement",
+        "Zone 3 - Section Kit Installateur P : reformulee avec 'Activez chaque borne en quelques minutes... PV de reception... pas de parametrage cloud'",
+        "Zone 4 - Bloc temoignage Weldom remplace par Renault Retail : H2 '5 concessions, 38 points de charge, un seul portail.' + citation generique sans signature + 4 KPIs (38 PDC / 3 sem / 1 portail PLACEHOLDER / 5 concessions) + signataire 'Renault Retail / Automobile · Multi-sites' (initiales RR au lieu de JM)",
+        "Zone 5 - Meta description : Yoast a auto-regenere l'og:description avec le nouveau contenu, aucune action manuelle requise"
+      ],
+      "kpi_3_placeholder": {
+        "_warning": "Le KPI 3 (slot jaune) a ete mis en placeholder neutre '1 portail / supervision centralisee' car Dominique a demande de remplacer le -80% par un pourcentage d'impact qu'il devait confirmer mais ne l'a pas encore fourni. A METTRE A JOUR quand le % d'impact est confirme.",
+        "valeur_placeholder_actuelle": "1 portail / supervision centralisee",
+        "action_user_attendue": "Dominique doit confirmer un % d'impact (gain temps reporting, baisse couts support, hausse usage, etc) pour remplacer ce placeholder"
+      },
+      "verifications_post_deploiement": {
+        "pilotage_automatique_present": true,
+        "10_minutes_residuel": 0,
+        "supervisees_en_residuel": 0,
+        "1_284_bornes_residuel_dans_live_counter": 0,
+        "jean_marc_residuel": 0,
+        "renault_retail_present": true,
+        "5_concessions_present": true,
+        "38_pdc_present": true,
+        "pv_reception_present": true,
+        "url_verifiee": "https://staging.ozecar.fr/"
+      },
+      "residus_hors_scope_observes_garde_intentionnellement": [
+        "2x 'Weldom' dans le carousel logos clients (Weldom est toujours un client OZECAR, son logo reste dans le ticker)",
+        "2x 'Weldom Marseille' / 'Weldom Centre' dans des mockups de portail (decoration captures d'ecran, hors scope hero)",
+        "1x '1 284' dans un autre module trust en bas de page (different du live counter supprime, a evaluer separement plus tard)"
+      ]
     }
   }
 }
