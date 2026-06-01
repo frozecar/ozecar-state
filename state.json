@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.90",
+    "version": "1.91",
     "updated": "2026-05-29",
     "updated_by": "Claude PM + wp_refonte (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-05-29",
+        "version_from": "1.90",
+        "version_to": "1.91",
+        "author": "Claude PM + wp_refonte (claude.ai)",
+        "changes": [
+          "DIAGNOSTIC : flow 'Demander une demo' casse sur staging - root cause identifiee (widget HubSpot Meetings Modal embed uniquement dans page supervision 22463, JS ne s'auto-declenche pas au chargement d'URL #demo)",
+          "5 liens de la home pointent vers /supervision/#demo ou /supervision-3/#demo et atterrissent en haut de page (ancre #demo inexistante)",
+          "DECISION Dominique 2026-05-29 : methode Option A retenue - bloc Gutenberg 'ozecar/meetings-modal' dans theme child (pas de hardcode functions.php, pas de mu-plugin)",
+          "Plan : N1 = creer bloc Gutenberg server-rendered, N2 = corriger les 5 liens de la home 22462 (/supervision/#demo -> #demo)",
+          "Section demo_flow_2026_05_29 ajoutee a state.json avec diagnostic complet + audit par page"
+        ]
+      },
       {
         "date": "2026-05-29",
         "version_from": "1.89",
@@ -5654,5 +5667,37 @@
         "1x '1 284' dans un autre module trust en bas de page (different du live counter supprime, a evaluer separement plus tard)"
       ]
     }
+  },
+  "demo_flow_2026_05_29": {
+    "_note": "Diagnostic et plan correction du flow 'Demander une demo' sur staging.ozecar.fr, signale par Dominique 2026-05-29.",
+    "diagnostic_date": "2026-05-29",
+    "probleme_observe": "Le bouton 'Demander une demo' du hero arrive sur une page avec un tarif au lieu d'un form. Les boutons demo des pages bornes ne redirigent pas correctement.",
+    "root_cause": {
+      "description": "Le widget HubSpot Meetings Modal est embed UNIQUEMENT dans le content de la page Supervision (22463). Le JS hook les liens 'a[href=\"#demo\"]' et ouvre la modal au clic - mais ce JS n'existe pas sur les autres pages. Les liens '/supervision/#demo' depuis la home (5 occurrences) menent vers la page supervision mais l'ancre #demo n'existe pas (le script ne se declenche pas au chargement d'URL, seulement au clic), donc le scroll reste en haut.",
+      "modal_url_meetings": "https://meetings-eu1.hubspot.com/ozecar-demo/1",
+      "modal_html_id": "oz-meetings-overlay",
+      "selecteurs_hookes_par_le_js": "[data-oz-meeting], a[href=\"#demo\"], a[href^=\"#demo-\"]"
+    },
+    "audit_par_page": {
+      "home_22462": "5 liens '/supervision/#demo' ou '/supervision-3/#demo' (CTA hero + sticky + autres) - tous cassés",
+      "supervision_22463": "3 liens '#demo' qui marchent (modal embed dans la page)",
+      "supervision_3_22463": "3 liens '#demo' qui marchent",
+      "bornes_compatibles_22465": "Non audite (erreur SSL temporaire)",
+      "kit_22464": "Aucun lien demo - pas de CTA demo sur la page Kit (manquant)"
+    },
+    "decision_dominique_2026_05_29": {
+      "methode_retenue": "Option A : creer un bloc Gutenberg 'ozecar/meetings-modal' dans le theme child (dossier blocks/)",
+      "actions": [
+        "Niveau 1 : creer le bloc Gutenberg server-rendered qui injecte le widget complet (HTML overlay + CSS + JS) - 1 fois pour toutes les pages",
+        "Niveau 2 : corriger les 5 liens de la home 22462 en remplacant '/supervision/#demo' et '/supervision-3/#demo' par '#demo'",
+        "Phase 3 (plus tard) : ajouter le bloc dans la page Home 22462 via update_page, retirer le bloc duplique de la page Supervision 22463, ajouter le bloc sur kit/bornes/secteurs"
+      ],
+      "ce_qu_on_ne_fait_pas": [
+        "Pas d'injection hardcode via wp_footer hook dans functions.php (Dominique a explicitement refuse 'tu le hardcode pas, tu le mets sur wordpress')",
+        "Pas de Bloc Synced (option B) - approche plus simple et plus modifiable retenue",
+        "Pas de mu-plugin (option C)"
+      ]
+    },
+    "implementation_status": "EN COURS - chat wp_refonte (= meme chat PM) en train d'implementer le bloc Gutenberg"
   }
 }
