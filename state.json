@@ -1,12 +1,28 @@
 {
   "_meta": {
-    "version": "1.91",
-    "updated": "2026-05-29",
+    "version": "1.92",
+    "updated": "2026-06-01",
     "updated_by": "Claude PM + wp_refonte (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-01",
+        "version_from": "1.91",
+        "version_to": "1.92",
+        "author": "Claude PM + wp_refonte (claude.ai)",
+        "changes": [
+          "FLOW DEMO CORRIGE sur staging : creation du bloc Gutenberg 'ozecar/meetings-modal' (4 fichiers dans theme child) + inscription dans inc/gutenberg-blocks.php (position 19/19)",
+          "Bloc est server-rendered (render.php) avec attributs meetingUrl + ariaLabel - modifiable dans l'editeur via les variantes block.json",
+          "Editor JS affiche un placeholder neutre (modal invisible au chargement, ne s'affiche qu'au clic)",
+          "Page home 22462 : 5 liens '/supervision/#demo' et '/supervision-3/#demo' corriges en 'href=\"#demo\"'",
+          "Page home 22462 : ajout du bloc <!-- wp:ozecar/meetings-modal /--> en fin de content",
+          "Verifications post-deploy OK : modal chargee, JS hook actif, 3 liens demo actifs, 0 lien casse, bloc rendu",
+          "Phase 3 a planifier : ajouter le bloc aux autres pages WP allowlist (kit, bornes, supervision-clean, secteurs)",
+          "Approche conforme a la decision Dominique : pas de hardcode functions.php, methode 100% WP-native via dossier blocks/"
+        ]
+      },
       {
         "date": "2026-05-29",
         "version_from": "1.90",
@@ -5698,6 +5714,37 @@
         "Pas de mu-plugin (option C)"
       ]
     },
-    "implementation_status": "EN COURS - chat wp_refonte (= meme chat PM) en train d'implementer le bloc Gutenberg"
+    "implementation_status": "EN COURS - chat wp_refonte (= meme chat PM) en train d'implementer le bloc Gutenberg",
+    "implementation_2026_06_01": {
+      "executed_at": "2026-06-01T11:50:04Z",
+      "method": "Bloc Gutenberg ozecar/meetings-modal cree dans le theme child + inscrit dans Gutenberg + ajoute sur la home",
+      "fichiers_crees": [
+        "wp-content/themes/ozecar-child/blocks/meetings-modal/block.json (998 bytes)",
+        "wp-content/themes/ozecar-child/blocks/meetings-modal/render.php (3638 bytes)",
+        "wp-content/themes/ozecar-child/blocks/meetings-modal/style.css (1384 bytes)",
+        "wp-content/themes/ozecar-child/blocks/meetings-modal/editor.js (1340 bytes)"
+      ],
+      "fichier_modifie": "wp-content/themes/ozecar-child/inc/gutenberg-blocks.php (ajout 'meetings-modal' dans la liste \\$ozecar_blocks, position 19)",
+      "backup_auto_serveur": "wp-content/themes/ozecar-child/inc/gutenberg-blocks.php.bak-20260601-114752",
+      "modifications_page_home_22462": [
+        "5 liens '/supervision/#demo' et '/supervision-3/#demo' remplaces par 'href=\"#demo\"'",
+        "Ajout du bloc Gutenberg <!-- wp:ozecar/meetings-modal /--> en fin de content",
+        "Backup auto : wp-content/uploads/ozecar/page-backups/page-22462-20260601-114856.html"
+      ],
+      "verifications_post_deploiement": {
+        "modal_hubspot_meetings_chargee_dans_home": true,
+        "url_hubspot_meeting_correcte": "meetings-eu1.hubspot.com/ozecar-demo/1",
+        "js_hook_actif": true,
+        "liens_demo_actifs_dans_home": 3,
+        "occurrences_liens_casses_supervision_demo": 0,
+        "wp_block_ozecar_meetings_modal_rendu_au_frontend": true
+      },
+      "comportement_attendu": "Au clic sur tout lien 'a[href=\"#demo\"]' ou tout element '[data-oz-meeting]' dans la home, la modal HubSpot Meetings s'ouvre avec l'iframe de RDV ozecar-demo/1. La modal contient un Mutation Observer pour hooker les liens ajoutes dynamiquement.",
+      "phase_3_a_planifier_plus_tard": [
+        "Retirer le bloc duplique hardcode dans la page Supervision 22463 (maintenant que le bloc Gutenberg existe, le HTML inline est redondant)",
+        "Ajouter le bloc meetings-modal aux autres pages (kit 22464, bornes-compatibles 22465, supervision 22463, secteurs 22411-22414, installateurs 14622, revendeurs 22417)",
+        "Verifier que les autres pages contiennent bien des CTA 'Demander une demo' avec href=#demo (page Kit n'en a aucun, a corriger)"
+      ]
+    }
   }
 }
