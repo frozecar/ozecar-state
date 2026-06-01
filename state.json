@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.92",
+    "version": "1.93",
     "updated": "2026-06-01",
     "updated_by": "Claude PM + wp_refonte (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-01",
+        "version_from": "1.92",
+        "version_to": "1.93",
+        "author": "Claude PM + wp_refonte (claude.ai)",
+        "changes": [
+          "ROLLBACK page home 22462 : bloc meetings-modal supprime du content (wpautop cassait le rendu)",
+          "Etat stable retabli : hero 'pilotage automatique' OK, liens demo cassent toujours mais page intacte",
+          "NOUVELLE DECISION Dominique : Option 2 - creer une vraie page WP dediee /demo avec form HubSpot embed",
+          "Le bloc Gutenberg meetings-modal reste cree dans le theme (4 fichiers + inscrit) mais n'est plus utilise dans aucune page",
+          "Next actions : creer page WP demo + ajouter a PAGE_ALLOWLIST + corriger 5 liens home vers /demo/"
+        ]
+      },
       {
         "date": "2026-06-01",
         "version_from": "1.91",
@@ -5744,6 +5757,31 @@
         "Retirer le bloc duplique hardcode dans la page Supervision 22463 (maintenant que le bloc Gutenberg existe, le HTML inline est redondant)",
         "Ajouter le bloc meetings-modal aux autres pages (kit 22464, bornes-compatibles 22465, supervision 22463, secteurs 22411-22414, installateurs 14622, revendeurs 22417)",
         "Verifier que les autres pages contiennent bien des CTA 'Demander une demo' avec href=#demo (page Kit n'en a aucun, a corriger)"
+      ]
+    },
+    "rollback_2026_06_01": {
+      "raison": "Le bloc Gutenberg meetings-modal cause un rendu casse de la home (wpautop entoure le HTML du bloc avec des <p> parasites). Restauration de l'etat d'avant modif.",
+      "restored_backup": "wp-content/uploads/ozecar/page-backups/page-22462-20260601-114856.html",
+      "etat_post_rollback": "Home stable, hero 'pilotage automatique' present, liens demo cassent toujours (etat d'avant cette session demo)",
+      "rollback_backup_auto": "wp-content/uploads/ozecar/page-backups/page-22462-20260601-115359.html",
+      "css_du_bloc_reste_charge_globalement": "Inoffensif (display:none par defaut), pourra etre nettoye plus tard",
+      "bloc_gutenberg_meetings_modal_status": "Les 4 fichiers du bloc restent en place dans le theme mais le bloc N'EST PLUS UTILISE. Il est inscrit dans gutenberg-blocks.php (position 19). Soit on le retire plus tard, soit on le garde pour usage futur."
+    },
+    "option_2_2026_06_01": {
+      "decision": "Creation d'une page WP dediee /demo avec form HubSpot embed",
+      "raisons": [
+        "Simple : un vrai endpoint, pas de modal",
+        "Robuste : pas de dependance theme, pas de bloc custom",
+        "Mesurable : URL trackable analytics + UTM, page indexable",
+        "Maintenable : le form HubSpot peut etre modifie dans HubSpot sans toucher au site"
+      ],
+      "form_hubspot_pressenti": "04f412bf-ee4d-4342-98f6-e8ee728b9989 (a verifier)",
+      "url_cible": "staging.ozecar.fr/demo/",
+      "implementation_prevue": [
+        "Creer une nouvelle page WP 'Demo' avec le form HubSpot embed JS",
+        "Ajouter cette page (id new) a la PAGE_ALLOWLIST de wp-deploy.php pour pouvoir l'editer ulterieurement",
+        "Corriger les 5 liens de la home /supervision/#demo et /supervision-3/#demo -> /demo/",
+        "Tester le flow complet (clic home -> page /demo/ -> submit -> deal HubSpot)"
       ]
     }
   }
