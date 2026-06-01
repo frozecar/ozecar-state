@@ -1,12 +1,28 @@
 {
   "_meta": {
-    "version": "1.93",
+    "version": "1.94",
     "updated": "2026-06-01",
     "updated_by": "Claude PM + wp_refonte (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-01",
+        "version_from": "1.93",
+        "version_to": "1.94",
+        "author": "Claude PM + wp_refonte (claude.ai)",
+        "changes": [
+          "FLOW DEMO CORRIGE (Option 2 - page WP dediee) : creation page /demo/ id=22641 avec form HubSpot embed (04f412bf, portal 143920450, region eu1)",
+          "Infrastructure : nouvelle action 'create_page' ajoutee a wp-deploy.php (slug + title + content + KSES disabled + collision check). Fix sanitize_title qui ne pouvait pas etre appele avant wp-load",
+          "Page /demo/ structure : H1 'Voyez OZECAR en action' + lead + 3 bullets reassurance (Sans engagement / Reponse 24h / Demo personnalisee) + 10 logos clients + form HubSpot embed",
+          "PAGE_ALLOWLIST mise a jour : ajout 22641 (pour update_page ulterieur)",
+          "Page home 22462 : 5 liens /supervision/#demo et /supervision-3/#demo corriges en /demo/",
+          "Redirection 301 /demo/ -> meetings-eu1.hubspot.com desactivee par Dominique dans plugin Redirection",
+          "Verifications finales OK : HTTP 200, form HubSpot charge, logos visibles, bullets visibles, 5 liens home pointent vers /demo/, aucun lien casse residuel",
+          "Cleanup eventuel pending : page de test demo-test (22640) a trasher dans admin + bloc Gutenberg ozecar/meetings-modal inutilise peut etre retire"
+        ]
+      },
       {
         "date": "2026-06-01",
         "version_from": "1.92",
@@ -5782,6 +5798,55 @@
         "Ajouter cette page (id new) a la PAGE_ALLOWLIST de wp-deploy.php pour pouvoir l'editer ulterieurement",
         "Corriger les 5 liens de la home /supervision/#demo et /supervision-3/#demo -> /demo/",
         "Tester le flow complet (clic home -> page /demo/ -> submit -> deal HubSpot)"
+      ]
+    },
+    "implementation_2026_06_01_v2": {
+      "executed_at": "2026-06-01T12:31:11Z",
+      "approche_finale": "Option 2 validee par Dominique - page WP /demo/ dediee avec form HubSpot embed",
+      "redirection_301_desactivee": "Faite par Dominique dans plugin Redirection (admin WP)",
+      "infrastructure_ajout": {
+        "action_create_page_ajoutee": "wp-deploy.php : nouvelle action 'create_page' ajoutee (slug + title + content, kses disabled, get_page_by_path collision check, sanitize_title)",
+        "fix_applique": "sanitize_title ne pouvait pas etre appele avant wp-load - sanitize maintenant en PHP pur en pre-WP puis re-applique apres wp-load",
+        "backups_wp_deploy": [
+          "api/wp-deploy.php.bak-20260601-121408 (1ere version - sanitize_title bug)",
+          "api/wp-deploy.php.bak-20260601-122821 (apres fix sanitize)",
+          "api/wp-deploy.php.bak-20260601-122925 (apres ajout 22641 a PAGE_ALLOWLIST)"
+        ]
+      },
+      "page_demo_creee": {
+        "page_id": 22641,
+        "slug": "demo",
+        "title": "Demander une demo",
+        "url": "https://staging.ozecar.fr/demo/",
+        "bytes_content": 6145,
+        "structure": "H1 + paragraphe lead + 3 bullets reassurance (Sans engagement / Reponse 24h ouvrees / Demo personnalisee) + 10 logos clients (Renault Retail, E.Leclerc, Carrefour Market, SPAR, Utile, Weldom, Pierre & Vacances, Homair, Europcar, Eurotyre) + form HubSpot embed (04f412bf, portal 143920450, region eu1)",
+        "hubspot_form_id": "04f412bf-ee4d-4342-98f6-e8ee728b9989",
+        "hubspot_portal_id": "143920450"
+      },
+      "page_test_demo_test_a_nettoyer": {
+        "page_id": 22640,
+        "slug": "demo-test",
+        "note": "Page de test creee lors du debug de create_page. A trasher dans WP admin > Pages > Corbeille"
+      },
+      "page_allowlist_mise_a_jour": "Ajout de 22641 dans $PAGE_ALLOWLIST (wp-deploy.php) pour pouvoir editer la page /demo/ via update_page ulterieurement",
+      "home_22462_corrections": {
+        "liens_supervision_demo_corriges": 5,
+        "remplacement": "/supervision/#demo et /supervision-3/#demo -> /demo/",
+        "backup_auto": "wp-content/uploads/ozecar/page-backups/page-22462-20260601-122935.html"
+      },
+      "verifications_finales": {
+        "page_demo_servie_correctement": true,
+        "page_demo_http_200": true,
+        "form_hubspot_embed_charge_dans_html": true,
+        "logos_clients_visibles": true,
+        "bullets_reassurance_visibles": true,
+        "5_liens_home_pointent_vers_demo": true,
+        "aucun_lien_casse_residuel": true
+      },
+      "cleanup_a_faire_eventuel": [
+        "Trasher la page de test demo-test (page_id 22640) via WP admin",
+        "Bloc Gutenberg ozecar/meetings-modal cree precedemment dans le theme child est INUTILISE - peut etre retire si on est sur de ne plus en avoir besoin (4 fichiers dans blocks/meetings-modal + 1 ligne dans inc/gutenberg-blocks.php)",
+        "Le widget hardcode inline dans la page Supervision 22463 (oz-meetings-overlay) reste, mais n'est plus utilise par la home - peut etre retire plus tard"
       ]
     }
   }
