@@ -1,12 +1,26 @@
 {
   "_meta": {
-    "version": "1.95",
+    "version": "1.96",
     "updated": "2026-06-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-05",
+        "version_from": "1.95",
+        "version_to": "1.96",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "NÉGO MONTA pivot stratégique: approche 'growth-aligned' (CEO propose partenariat, pas client se plaint).",
+          "Projection growth OZECAR v2 sur 24-36 mois actée: scénario réaliste 1200/1800/2500 PdC, GMV 1.9M / 2.9M / 4.0M€.",
+          "7 leviers growth identifiés: refonte, partenaires, revendeurs, Renault Retail, automation, expansion francophone.",
+          "Deal proposé à Monta: commit volume 36 mois ferme + exclusivité contre suppression fixe, paliers dégressifs PdC, frais 2%→1.5%/4%→2.5%, marque blanche OCPP gratuite.",
+          "Simulation 36 mois Monta: 550k€ ferme growth-aligned vs 975k€ avec risque churn élevé → win-win.",
+          "Mémo growth-aligned livré pour réunion d'aujourd'hui avec Chloé Ferrarotti."
+        ]
+      },
       {
         "date": "2026-06-05",
         "version_from": "1.94",
@@ -5881,6 +5895,83 @@
         "Bloc Gutenberg ozecar/meetings-modal cree precedemment dans le theme child est INUTILISE - peut etre retire si on est sur de ne plus en avoir besoin (4 fichiers dans blocks/meetings-modal + 1 ligne dans inc/gutenberg-blocks.php)",
         "Le widget hardcode inline dans la page Supervision 22463 (oz-meetings-overlay) reste, mais n'est plus utilise par la home - peut etre retire plus tard"
       ]
+    }
+  },
+  "monta_negotiation": {
+    "growth_aligned_approach_2026_06_05": {
+      "date": "2026-06-05",
+      "approche": "Pivot de 'client qui se plaint sur tarif' vers 'CEO qui propose partenariat growth-aligned'",
+      "pitch_central": "Monta gagne 160k€/an avec OZECAR aujourd'hui. Avec un deal aligné, peut faire 500-700k€/an d'ici 36 mois. Avec la grille actuelle, c'est mécaniquement impossible (marge Essential négative, fixe étrangle, 19% GMV capté = pas de cash pour marketing).",
+      "scenarios_growth_24_36_mois": {
+        "baseline_actuel": {
+          "pdc": 515,
+          "gmv_annual": 835000
+        },
+        "conservateur_x2": {
+          "m12_pdc": 800,
+          "m24_pdc": 1100,
+          "m36_pdc": 1400
+        },
+        "realiste_x3": {
+          "m12_pdc": 1200,
+          "m24_pdc": 1800,
+          "m36_pdc": 2500,
+          "m12_gmv": 1900000,
+          "m24_gmv": 2900000,
+          "m36_gmv": 4000000,
+          "note": "C'est ce scénario qu'on présente à Monta - crédible et documentable"
+        },
+        "ambitieux_x5": {
+          "m12_pdc": 1800,
+          "m24_pdc": 3000,
+          "m36_pdc": 4500
+        }
+      },
+      "leviers_growth_ozecar_v2": [
+        "Refonte site/branding → conversion x2",
+        "Programme partenaires installateurs (20+ certifiés × 5 PdC/mois)",
+        "Réseau revendeurs (Carplug, Krannich Solar)",
+        "Renault Retail expansion (38 PdC déjà signés, potentiel 200-500)",
+        "Process activation automatisé (Kit OZECAR + PandaDoc + Pennylane SEPA)",
+        "HubSpot + Make automation (capacité commerciale x5 sans recruter)",
+        "Expansion francophone (Belgique 1-2 semaines, Suisse, Luxembourg)"
+      ],
+      "deal_propose_a_monta": {
+        "engagement_ozecar": [
+          "1 200 PdC à M+12 (vs 515 aujourd'hui)",
+          "1 800 PdC à M+24 (×3.5)",
+          "2 500 PdC à M+36 (×5)",
+          "Contrat ferme 36 mois",
+          "Exclusivité superviseur sur nouveaux PdC",
+          "Acceptation case studies Renault/URSSAF/CPAM"
+        ],
+        "contrepartie_monta": [
+          "Suppression fixe forfait 5000€/mois",
+          "Suppression frais plateforme 500€/mois",
+          "Paliers dégressifs PdC: 5€ (0-500) / 3.5€ (500-1500) / 2.5€ (1500-3000) / 2€ (3000+)",
+          "Frais transaction 2% → 1.5%",
+          "Frais itinérance 4% → 2.5%",
+          "Marque blanche OCPP wss://ocpp.ozecar.app gratuite",
+          "Features Enterprise PandaDoc/Quote Builder équivalent incluses"
+        ],
+        "mecanique_protection_mutuelle": [
+          "Si OZECAR >130% des commits → Monta réduit encore le tarif/PdC (gain partagé)",
+          "Si OZECAR <80% à M+18 → renégociation sans pénalité absolue"
+        ]
+      },
+      "simulation_financiere_36_mois": {
+        "contrat_actuel_cumule": "~975 k€ pour Monta (mais risque churn élevé)",
+        "contrat_renegocie_cumule": "~550 k€ pour Monta (ferme 36 mois, base 5× plus grosse)",
+        "pct_gmv_actuel": "10-19% (insoutenable)",
+        "pct_gmv_renegocie": "6% constant (norme PSP B2B)"
+      },
+      "minimum_acceptable_sortie_reunion": [
+        "Suppression OU réduction forte du fixe forfait + plateforme",
+        "Paliers dégressifs sur le /PdC à partir de 500 PdC",
+        "Modèle pay-per-active OU seuil abaissé à 500 (vs 1000)",
+        "Marque blanche OCPP : engagement écrit Monta sur provisioning"
+      ],
+      "fichier_memo_growth_aligned": "/mnt/user-data/outputs/Memo-Negociation-Monta-Growth-2026-06-05.md"
     }
   }
 }
