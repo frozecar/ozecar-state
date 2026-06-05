@@ -1,12 +1,28 @@
 {
   "_meta": {
-    "version": "1.99",
+    "version": "1.100",
     "updated": "2026-06-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-05",
+        "version_from": "1.99",
+        "version_to": "1.100",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "DEBRIEF CALL MONTA (Chloé): renégo fenêtre actuelle impossible (renouvellement auto 20 juin, préavis écoulé). Chloé propose un CONTRAT LONG TERME 3-4 ans avec staircase réaliste du minimum PdC.",
+          "CONDITION BLOQUANTE: Dominique doit envoyer plan de projections RÉALISTE (Chloé suggère 1400-1500 PdC fin 2026 vs BP 1800). C'est le livrable qui débloque tout → le modèle financier n'est plus optionnel.",
+          "Tarif 1€/privé NON contractuel (juste un email Margot 2024). Sur le papier = 5€ → Essential déficitaire. À sécuriser par écrit. Mon analyse 'Essential rentable' invalidée tant que non acté.",
+          "Support AI: 2,60€/socket actuel → offre 1,03€ (moitié prix, 12 mois).",
+          "Marque blanche: 3 problèmes non résolus (emails marketing Monta aux clients, équipes installateurs non rattachées avec branding Monta, redirection support AI KO → ticket Zendesk).",
+          "Itinérance sortante: 0 revenu aujourd'hui, partenariat Monta à venir permettrait à OZECAR de contrôler les prix et générer des revenus.",
+          "WebSocket OCPP: réponse Dmitri attendue début semaine prochaine, BLOQUE le go-live du nouveau site.",
+          "Opportunité: un CPO français ferme son B2B fin d'année, Chloé peut mettre OZECAR en contact pour reprise de clients (croissance externe)."
+        ]
+      },
       {
         "date": "2026-06-05",
         "version_from": "1.98",
@@ -6089,6 +6105,69 @@
         "D_ocpp": "Marque blanche OCPP incluse contre engagement 3 ans"
       },
       "fichier_memo_definitif": "/mnt/user-data/outputs/Memo-Negociation-Monta-2026-06-05.md"
+    },
+    "debrief_call_chloe_2026_06_05": {
+      "date": "2026-06-05",
+      "interlocuteurs": "Chloé Ferrarotti (CSM), refs: Dmitri (technique), Justin (interne Monta), Margot (ex-contact 2024)",
+      "renouvellement_contrat": {
+        "date_renouvellement_auto": "2026-06-20",
+        "preavis_90j": "déjà écoulé - renégo dans la fenêtre actuelle IMPOSSIBLE",
+        "historique": "Signé fin juillet 2024 (avec Margot), go-live marque blanche octobre 2024. Upgrade plan Pro signé décembre 2025.",
+        "addendum_a_verifier": "Chloé vérifie si un addendum lie la date de renouvellement au go-live (oct 2024) plutôt qu'à la signature → pourrait rouvrir une fenêtre",
+        "contrat_actuel": "1000 PdC minimum, ~500 actifs (minimum non atteint)"
+      },
+      "proposition_contrat_long_terme": {
+        "porteur": "Chloé prête à pitcher en interne (à Justin)",
+        "duree": "3-4 ans (plus c'est long, plus c'est faisable en interne, idéal 4-5 ans)",
+        "mecanisme": "Staircase réaliste du minimum PdC pour éviter le stress du minimum non atteint",
+        "exemple_staircase_chloe": "600 fin 2026 → 1000 fin 2026/2027 → 2000 en 2028 → 2500 en 2029",
+        "condition_bloquante": "Dominique DOIT envoyer un plan de projections RÉALISTE (pas optimiste). Chloé suggère viser 1400-1500 PdC fin 2026 (conservateur) vs BP interne 1800.",
+        "objectif": "Éviter de rouvrir le contrat à chaque fois + sécuriser la croissance"
+      },
+      "support_ai_humain": {
+        "prix_actuel": "2,60 €/socket",
+        "offre_chloe": "1,03 €/socket (moitié prix, engagement 12 mois, cas d'usage saisonnier)",
+        "statut": "Potentiellement inclus dans le nouveau contrat - à évaluer"
+      },
+      "tarif_prive_1euro_FLOU": {
+        "probleme": "Le 1€/PdC privé (sans transaction) mentionné par Margot par email n'est NI dans le contrat NI dans l'addendum",
+        "impact": "Sur le papier, OZECAR paie 5€ même sur les bornes privées Essential (facturées 4,90€ au client) → DÉFICITAIRE sur ce segment",
+        "action": "Chloé vérifie les factures. À SÉCURISER PAR ÉCRIT dans le nouveau contrat.",
+        "correction_analyse": "Mon analyse 'Essential rentable marge 80%' ne tient QUE si le 1€ est acté contractuellement. Aujourd'hui non confirmé."
+      },
+      "marque_blanche_problemes_non_resolus": {
+        "emails_marketing_monta": "Monta envoie encore des emails marketing aux clients OZECAR. Chloé peut arrêter immédiatement → Dominique doit préciser quels users garder (équipe interne uniquement)",
+        "equipes_installateurs_non_rattachees": "Les équipes créées par installateurs ne sont pas rattachées à OZECAR. Invitations reçues portent la marque MONTA, pas OZECAR. Chloé veut voir le flow exact pour corriger (tout devrait être marque blanche par défaut)",
+        "redirection_support_ai_ko": "La redirection vers le support AI ne fonctionne pas. Chloé demande un ticket Zendesk avec description précise + enregistrement"
+      },
+      "itinerance_sortante_opportunite": {
+        "actuel": "OZECAR ne perçoit AUCUN revenu sur l'itinérance sortante aujourd'hui",
+        "a_venir": "Nouveau partenariat Monta: accords bilatéraux directs possibles, baisse ~0,10€ en moyenne → permettrait à OZECAR de contrôler les prix et générer des revenus sur l'itinérance"
+      },
+      "websocket_ocpp": {
+        "statut": "Question transmise à Dmitri, Chloé le relance en MP",
+        "reponse_attendue": "début semaine prochaine",
+        "blocage": "Go-live du nouveau site CONDITIONNÉ à la réponse OCPP (oui/non suffit)"
+      },
+      "opportunite_acquisition_cpo": {
+        "contexte": "Un CPO français ferme son activité B2B fin d'année, cherche repreneurs pour ses clients",
+        "action_chloe": "Va partager le cas d'usage OZECAR avec ce CPO parmi d'autres opérateurs FR. Si intérêt → mise en contact pour reprise/migration clients",
+        "potentiel": "Levier de croissance externe (acquisition de PdC clés-en-main)"
+      },
+      "next_steps": {
+        "dominique": [
+          "URGENT: Envoyer à Chloé un plan de projections RÉALISTE (minimum, staircase, horizon 3-4 ans) - CONDITION pour le contrat long terme",
+          "Préciser à Chloé la liste des users à exclure des emails marketing Monta (garder équipe interne uniquement)",
+          "Ouvrir un ticket Zendesk pour la redirection support AI KO (avec enregistrement)"
+        ],
+        "chloe": [
+          "Vérifier contrat + factures pour le tarif home/privé 1€ (Margot)",
+          "Vérifier addendum date renouvellement (go-live vs signature)",
+          "Relancer Dmitri sur websocket OCPP (réponse avant lundi)",
+          "Pitcher contrat long terme en interne à Justin une fois le plan reçu",
+          "Voir si Justin dispo mardi 16h à Paris pour un café"
+        ]
+      }
     }
   },
   "todos_a_rappeler": {
