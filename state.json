@@ -1,12 +1,27 @@
 {
   "_meta": {
-    "version": "1.97",
+    "version": "1.98",
     "updated": "2026-06-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-05",
+        "version_from": "1.97",
+        "version_to": "1.98",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CORRECTION MAJEURE: GMV réel trailing 12 mois = 552k€ (pas 835k€ estimé avant qui extrapolait un mois haute-saison × 12).",
+          "Données réelles API Monta 12 mois: 552k€ GMV, 63484 charges, 1,11M kWh, coût Monta 146k€/an (126k fixe + 20k variable).",
+          "% GMV capté par Monta = 27% (dont 23% pour le fixe seul). Coût fixe = 20,4€/PdC actif/mois vs Essential 4,90€.",
+          "Saisonnalité ×5 (été 92k€/mois vs hiver 18k€/mois) → argument fixe pénalisant en basse saison.",
+          "Point support acté: IA Monta N1 + N2 interne, pourparler pour support N2 Monta → à négocier dans le package.",
+          "Projection growth recalibrée sur ratio réel 1071€/PdC actif/an: GMV 1,3M (M12) / 2,0M (M24) / 2,8M (M36).",
+          "Mémo de négo corrigé avec données réelles."
+        ]
+      },
       {
         "date": "2026-06-05",
         "version_from": "1.96",
@@ -5983,6 +5998,58 @@
         "Marque blanche OCPP : engagement écrit Monta sur provisioning"
       ],
       "fichier_memo_growth_aligned": "/mnt/user-data/outputs/Memo-Negociation-Monta-Growth-2026-06-05.md"
+    },
+    "donnees_reelles_api_2026_06_05": {
+      "date_extraction": "2026-06-05",
+      "source": "API Monta via proxy monta.php - données réelles 12 mois glissants",
+      "correction_importante": "GMV de 835k€ (estimation précédente du 30j × 12) ÉTAIT FAUX. Réel trailing 12 mois = 552k€. L'extrapolation surestimait car le mois récent était en haute saison.",
+      "pdc_actifs": 515,
+      "pdc_payes": 1000,
+      "pdc_fantomes": 485,
+      "surfacturation_pdc_annuelle": 29100,
+      "sites": 200,
+      "gmv_trailing_12m": 551721,
+      "gmv_runrate_dernier_mois_annualise": 663000,
+      "charges_completees_12m": 63484,
+      "kwh_12m": 1112704,
+      "prix_moyen_kwh": 0.496,
+      "cout_monta_total_annuel": 146414,
+      "cout_monta_fixe_annuel": 126000,
+      "cout_monta_variable_annuel_estim": 20414,
+      "pct_gmv_capte_total": 27,
+      "pct_gmv_capte_fixe_seul": 23,
+      "cout_fixe_par_pdc_actif_mois": 20.4,
+      "cout_total_par_pdc_actif_mois": 23.7,
+      "argument_choc": "Coût fixe Monta = 20,40€/PdC actif/mois vs forfait Essential vendu 4,90€ → perte ~15€/PdC/mois sur l'entrée de gamme",
+      "saisonnalite": {
+        "pic_ete_juin_sept_2025": "~92k€/mois",
+        "creux_hiver": "~18k€/mois",
+        "ratio_pic_creux": "×5",
+        "argument": "Le fixe pénalise doublement en basse saison: 10,5k€/mois payés même quand GMV mensuel tombe à 18k€"
+      },
+      "mix_charges": "84,8% itinérance (external, 4% Monta) / 15,2% operator. Paiement: 42,6% CB, 38,6% team-has-fund, 18,8% free",
+      "support_monta": {
+        "actuel": "IA Monta pour N1 téléphone, N2 humain géré en interne par équipe OZECAR (3 personnes)",
+        "en_pourparler": "Prendre le support humain N2 de Monta",
+        "strategie_nego": "Bon pour scaler à 2500 PdC sans recruter MAIS négocier dans le package (à 27% GMV capté, le support N2 devrait être inclus ou fortement remisé). Ne pas accepter surcoût support isolé sans contrepartie tarif PdC."
+      },
+      "projection_growth_recalibree": {
+        "ratio_gmv_par_pdc_actif_an": 1071,
+        "m12": {
+          "pdc": 1200,
+          "gmv": 1300000
+        },
+        "m24": {
+          "pdc": 1800,
+          "gmv": 2000000
+        },
+        "m36": {
+          "pdc": 2500,
+          "gmv": 2800000
+        },
+        "note": "GMV projeté recalibré sur ratio réel ~1071€/PdC actif/an (pas l'ancien 1620€ basé sur GMV surestimé)"
+      },
+      "fichier_memo": "/mnt/user-data/outputs/Memo-Negociation-Monta-2026-06-05.md"
     }
   },
   "todos_a_rappeler": {
