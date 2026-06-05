@@ -1,12 +1,26 @@
 {
   "_meta": {
-    "version": "1.94",
-    "updated": "2026-06-01",
-    "updated_by": "Claude PM + wp_refonte (claude.ai)",
+    "version": "1.95",
+    "updated": "2026-06-05",
+    "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-05",
+        "version_from": "1.94",
+        "version_to": "1.95",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Dominique a demandé à Monta (Chloé Ferrarotti CSM) la marque blanche OCPP WebSocket: wss://ocpp.ozecar.app au lieu de wss://ocpp.monta.app",
+          "Monta a répondu en pointant PUT /api/v1/webhooks/config - À CÔTÉ DE LA PLAQUE (confusion webhook HTTP events vs WebSocket OCPP)",
+          "Claude a vérifié l'index complet de la doc Monta Partner API: AUCUN endpoint pour configurer une URL OCPP CSMS custom par opérateur",
+          "Conclusion: la marque blanche OCPP WebSocket relève d'une config infra Monta DNS/TLS/CSMS, à négocier avec compte manager + DevOps Monta, pas via API self-service",
+          "3 options identifiées: Option A (Monta provisionne sous-domaine custom), Option B (reverse proxy WebSocket OZECAR), Option C (CNAME DNS avec accord TLS)",
+          "Brouillon de réponse à Chloé préparé pour clarifier la demande"
+        ]
+      },
       {
         "date": "2026-06-01",
         "version_from": "1.93",
@@ -2911,6 +2925,25 @@
         "surfaces_ok": "Contrat de supervision (art. reversement/frais), factures de monétique aux usagers, relevés de reversement",
         "note": "Le contrat CS_2026092 nomme déjà Monta ApS (art 2.1.1, 2.2.8) - c'est CORRECT, pas une fuite."
       }
+    },
+    "ocpp_websocket_white_label_demand": {
+      "date_demande_initiale": "2026-06-04 (à confirmer)",
+      "demande_dominique": "Utiliser wss://ocpp.ozecar.app au lieu de wss://ocpp.monta.app comme URL CSMS configurée dans les bornes",
+      "reponse_monta_2026_06_04": {
+        "auteur_principal": "Dmitri Maliсев (support technique Monta)",
+        "relai_csm": "Chloé Ferrarotti",
+        "endpoint_pointe": "PUT /api/v1/webhooks/config (https://docs.partner-api.monta.com/reference/update-webhook-config-1)",
+        "evaluation_claude": "À CÔTÉ DE LA PLAQUE - confusion webhook HTTP events vs WebSocket OCPP. Le endpoint configure les notifications HTTP push, pas la connexion permanente OCPP CSMS"
+      },
+      "verification_claude": "Index complet docs.partner-api.monta.com/llms.txt parcouru. Aucun endpoint API pour configurer une URL OCPP/CSMS custom par opérateur. Seuls endpoints liés à OCPP: get/create-ocpp-config (paires clé-valeur des params OCPP standards type HeartbeatInterval, pas l'URL CSMS).",
+      "conclusion": "La marque blanche OCPP WebSocket relève d'une config infrastructure côté Monta (DNS + TLS + routage CSMS), pas d'une feature self-service API. À négocier directement avec compte manager + équipe DevOps Monta.",
+      "alternatives_si_monta_refuse": [
+        "Option A (propre): Monta provisionne un sous-domaine custom wss://ocpp.ozecar.app sur leur infra - probablement payant ou réservé à certains tiers de partenariat",
+        "Option B (autonome): Reverse proxy WebSocket côté OZECAR (nginx wss + module, ou Cloudflare). Tes bornes pointent vers wss://ocpp.ozecar.app que tu héberges, forward transparent vers wss://ocpp.monta.app. Ajoute une couche d'infra et un point de défaillance.",
+        "Option C (intermédiaire): CNAME DNS ocpp.ozecar.app CNAME ocpp.monta.app, nécessite Monta serve le certif TLS pour ton domaine ou config SNI. Accord Monta nécessaire."
+      ],
+      "next_step": "Dominique renvoie un message Slack à Chloé Ferrarotti / Dmitri Maliсев avec brouillon préparé par Claude pour clarifier la demande (webhook ≠ WebSocket OCPP) et demander l'option A à Monta DevOps",
+      "lien_marque_blanche_2_couches": "Rappel: la couche monétique a Monta visible et assumé (factures, frais, reversements). Mais l'OCPP WebSocket en bornes installateur est sur la couche INFRA-Plateforme (supervision), donc devrait être en marque blanche selon notre décision du 27.05.2026"
     }
   },
   "naming_migration_2026_05_10": {
