@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.98",
+    "version": "1.99",
     "updated": "2026-06-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-05",
+        "version_from": "1.98",
+        "version_to": "1.99",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "STRUCTURE COUT MONTA DÉFINITIVE confirmée par Dominique: forfait 5000€ + plateforme 500€ + 5€/PdC avec MINIMUM 1000 PdC facturé. Au-delà 1000: 5€ (transaction) / 1€ (privé).",
+          "Annule la lecture erronée précédente (palier inclus/coût marginal nul). Coût fixe = 126k€/an, total ~146k€, soit 26% du GMV réel (552k€).",
+          "Surfacturation = 485 PdC payés au minimum mais inexploités = 29 100€/an.",
+          "Insight: 1€/PdC privé au-delà de 1000 → marge Essential ~80%, levier volume. Mais d'abord remplir les 1000 payés.",
+          "Mémo de négo v3 définitif livré avec 2 leviers (minimum 1000 + paliers au-delà)."
+        ]
+      },
       {
         "date": "2026-06-05",
         "version_from": "1.97",
@@ -6050,6 +6063,32 @@
         "note": "GMV projeté recalibré sur ratio réel ~1071€/PdC actif/an (pas l'ancien 1620€ basé sur GMV surestimé)"
       },
       "fichier_memo": "/mnt/user-data/outputs/Memo-Negociation-Monta-2026-06-05.md"
+    },
+    "structure_cout_definitive_2026_06_05": {
+      "date": "2026-06-05",
+      "source": "Confirmé explicitement par Dominique",
+      "correction": "Annule et remplace la lecture erronée précédente (palier 1000 inclus / coût marginal nul). La VRAIE structure:",
+      "forfait_marque_blanche": "5 000 €/mois",
+      "frais_plateforme": "500 €/mois",
+      "pdc": "5 €/PdC/mois avec MINIMUM facturé de 1 000 PdC (payé quoi qu'il arrive)",
+      "au_dela_1000_pdc": "5 €/PdC/mois (avec transaction) OU 1 €/PdC/mois (privé sans transaction)",
+      "variable": "2% transactions + 4% itinérance sur GMV",
+      "cout_fixe_annuel": 126000,
+      "cout_variable_annuel_estim": 20000,
+      "cout_total_annuel": 146000,
+      "gmv_reel_trailing_12m": 552000,
+      "pct_gmv_capte": 26,
+      "pdc_actifs": 515,
+      "pdc_minimum_paye": 1000,
+      "surfacturation_minimum": "485 PdC × 5€ × 12 = 29 100 €/an payés pour capacité vide",
+      "insight_strategique": "Le 1€/PdC privé au-delà de 1000 est excellent pour la stratégie volume Essential (marge ~80%: 4,90€ - 1€). Double action: (1) remplir les 1000 PdC payés, (2) négocier l'abaissement du minimum pendant le ramp-up.",
+      "leviers_nego": {
+        "A_minimum_1000": "Sujet n°1: abaisser le minimum à 500-600 PdC ou pay-per-active → 29k€/an récupérables",
+        "B_paliers_au_dela_1000": "Paliers dégressifs sur PdC avec transaction (5€→4€→3€)",
+        "C_variable": "2%→1,5% / 4%→2,5-3%",
+        "D_ocpp": "Marque blanche OCPP incluse contre engagement 3 ans"
+      },
+      "fichier_memo_definitif": "/mnt/user-data/outputs/Memo-Negociation-Monta-2026-06-05.md"
     }
   },
   "todos_a_rappeler": {
