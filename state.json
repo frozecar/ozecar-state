@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.96",
+    "version": "1.97",
     "updated": "2026-06-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-05",
+        "version_from": "1.96",
+        "version_to": "1.97",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "TODO ajouté: modèle financier BP de levée à construire prochaine session (aligné growth Monta).",
+          "Rappel clé pour la prochaine fois: bilans 2024+2025 déjà dispo dans autre chat + mémoire activée → chercher avant de redemander.",
+          "Point critique noté: nettoyer la distinction GMV/CA/ARR avant la levée (incohérence ARPU dans deck v1.9)."
+        ]
+      },
       {
         "date": "2026-06-05",
         "version_from": "1.95",
@@ -5972,6 +5983,22 @@
         "Marque blanche OCPP : engagement écrit Monta sur provisioning"
       ],
       "fichier_memo_growth_aligned": "/mnt/user-data/outputs/Memo-Negociation-Monta-Growth-2026-06-05.md"
+    }
+  },
+  "todos_a_rappeler": {
+    "business_plan_modele_financier": {
+      "date_ajout": "2026-06-05",
+      "statut": "TODO - à rappeler à Dominique prochaine session",
+      "objet": "Construire le modèle financier BP de levée (2.75M€ Seed) aligné sur la croissance projetée (négo Monta) avec scénarios réels atteignables",
+      "rappel_important": "Bilans 2024 ET 2025 déjà disponibles dans un autre chat + mémoire activée → récupérer les vrais chiffres via conversation_search/recent_chats avant de demander à Dominique",
+      "point_critique_a_traiter": "Distinguer GMV recharge (~835k€, PAS du revenu OZECAR) vs CA OZECAR (521k€ 2024) vs ARR récurrent. Le deck v1.9 annonce ARR 540k→4.5M mais avec 515 PdC ça implique ARPU 87€/PdC/mois - incohérence à nettoyer avant la levée (probable mélange one-shot/récurrent).",
+      "inputs_a_recuperer": [
+        "Décomposition CA 2024 ET 2025: part récurrent (supervision+maintenance) vs one-shot (matériel+install+kits)",
+        "ARPU supervision réel ou mix forfaits (% Essential/Pro/Pro Plus/Transit)",
+        "Marge monétique: OZECAR garde-t-il la différence frais facturés client - frais reversés Monta, ou reverse 100% au client?"
+      ],
+      "livrable_cible": "Modèle financier xlsx manipulable: hypothèses ajustables, P&L 3 ans, trajectoire ARR, unit economics CAC/LTV, 3 scénarios, impact négo Monta sur marge brute",
+      "lien_growth": "Projection PdC déjà actée: réaliste 1200/1800/2500 PdC sur 12/24/36 mois (cf monta_negotiation.growth_aligned_approach_2026_06_05)"
     }
   }
 }
