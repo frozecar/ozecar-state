@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.100",
+    "version": "1.101",
     "updated": "2026-06-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-05",
+        "version_from": "1.100",
+        "version_to": "1.101",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Decision materiel impression notices kit: HP Color LaserJet Pro M454dw (Back Market reconditionne ~360 EUR)",
+          "Toners: jeu 415X compatibles haute capacite ~150 EUR (tambour integre, MAJ firmware a couper)",
+          "Papier couche laser silk recommande pour rendu imprimeur",
+          "Lexmark CS725de et MFP M479 ecartees (cout toner / scanner inutile)",
+          "Nouvelle section kit_printing_hardware"
+        ]
+      },
       {
         "date": "2026-06-05",
         "version_from": "1.99",
@@ -6185,5 +6198,24 @@
       "livrable_cible": "Modèle financier xlsx manipulable: hypothèses ajustables, P&L 3 ans, trajectoire ARR, unit economics CAC/LTV, 3 scénarios, impact négo Monta sur marge brute",
       "lien_growth": "Projection PdC déjà actée: réaliste 1200/1800/2500 PdC sur 12/24/36 mois (cf monta_negotiation.growth_aligned_approach_2026_06_05)"
     }
+  },
+  "kit_printing_hardware": {
+    "decided": "2026-06-05",
+    "scope": "Impression interne du contenu PAPIER du kit (notice d'installation A5). Les etiquettes/QR adhesifs restent sur les thermiques MUNBYN, hors scope.",
+    "machine": {
+      "model": "HP Color LaserJet Pro M454dw",
+      "type": "Laser couleur A4 mono-fonction, WiFi+Ethernet, recto-verso auto",
+      "source": "Back Market reconditionne, garantie 12 mois, ~360 EUR",
+      "rationale": "Meilleure qualite atteignable <500 EUR pour aplats brandes A plat (notices). MFP M479 ecartee (meme moteur, +160 EUR pour un scanner inutile ici). Lexmark CS725de ecartee malgre 1200 dpi: toner 5-8x plus cher + verrouillage firmware."
+    },
+    "consumables": {
+      "toner_refs": "HP 415A (W2030A/31A/32A/33A) std, HP 415X (W2030X/31X/32X/33X) haute capacite. Tambour integre dans la cartouche (pas de drum separe).",
+      "choix": "Jeu de 4 x 415X compatibles haute capacite ~130-215 EUR (trueimagetech / tinkco / vos-consommables).",
+      "note": "Couper les MAJ firmware auto de l'imprimante pour securiser les compatibles (HP dynamic security)."
+    },
+    "papier": "Papier couche laser satine (type Color Copy Coated/silk) 150-200g — fait 50% du rendu 'imprimeur'. Travailler en CMJN, calibration couleur.",
+    "budget_total": "Imprimante ~360 + toners ~150 = sous 550 EUR tout compris.",
+    "action_dominique": "Commander l'imprimante (Back Market) + jeu 415X compatible + papier couche silk. Verifier 'toner inclus' sur la fiche Back Market (souvent livre sans).",
+    "status": "Decide — achat a passer par Dominique"
   }
 }
