@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.101",
+    "version": "1.102",
     "updated": "2026-06-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-05",
+        "version_from": "1.101",
+        "version_to": "1.102",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Imprimante HP M454dw + toners 415X marques ACHETES",
+          "Reste papier couche silk A4 170g (notice A5 imprimee 2-up + coupe)"
+        ]
+      },
       {
         "date": "2026-06-05",
         "version_from": "1.100",
@@ -6213,9 +6223,9 @@
       "choix": "Jeu de 4 x 415X compatibles haute capacite ~130-215 EUR (trueimagetech / tinkco / vos-consommables).",
       "note": "Couper les MAJ firmware auto de l'imprimante pour securiser les compatibles (HP dynamic security)."
     },
-    "papier": "Papier couche laser satine (type Color Copy Coated/silk) 150-200g — fait 50% du rendu 'imprimeur'. Travailler en CMJN, calibration couleur.",
+    "papier": "Color Copy Coated/silk, A4, ~170g (150-170g pour passer au bac standard). Notice A5 -> impression 2-up par feuille A4 + coupe au massicot. CMJN + calibration couleur.",
     "budget_total": "Imprimante ~360 + toners ~150 = sous 550 EUR tout compris.",
-    "action_dominique": "Commander l'imprimante (Back Market) + jeu 415X compatible + papier couche silk. Verifier 'toner inclus' sur la fiche Back Market (souvent livre sans).",
-    "status": "Decide — achat a passer par Dominique"
+    "action_dominique": "Commander le papier couche silk A4 170g (Color Copy Coated). Imprimante+toner faits.",
+    "status": "Imprimante + toner ACHETES (2026-06-05). Reste: papier couche silk A4 170g."
   }
 }
