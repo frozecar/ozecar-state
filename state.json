@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.102",
+    "version": "1.103",
     "updated": "2026-06-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-05",
+        "version_from": "1.102",
+        "version_to": "1.103",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Papier final: Clairefontaine DCP A5 blanc 160g (plastifieuses.fr) - A5 pre-coupe, pas de decoupe",
+          "Correction: 160g (pas 170) pour rester sous limite bac 2 M454dw (163g); A5 supporte par la machine"
+        ]
+      },
       {
         "date": "2026-06-05",
         "version_from": "1.101",
@@ -6223,9 +6233,10 @@
       "choix": "Jeu de 4 x 415X compatibles haute capacite ~130-215 EUR (trueimagetech / tinkco / vos-consommables).",
       "note": "Couper les MAJ firmware auto de l'imprimante pour securiser les compatibles (HP dynamic security)."
     },
-    "papier": "Color Copy Coated/silk, A4, ~170g (150-170g pour passer au bac standard). Notice A5 -> impression 2-up par feuille A4 + coupe au massicot. CMJN + calibration couleur.",
+    "papier": "Clairefontaine DCP A5 blanc 160 g/m2 (ramette 250 f, deja coupe A5) - plastifieuses.fr. A5 direct = 1 notice/feuille, AUCUNE decoupe. 160g sous la limite bac 2 (163g). Alternative zero-risque: DCP A5 120g. Blancheur 170 CIE satine ColorLok.",
     "budget_total": "Imprimante ~360 + toners ~150 = sous 550 EUR tout compris.",
-    "action_dominique": "Commander le papier couche silk A4 170g (Color Copy Coated). Imprimante+toner faits.",
-    "status": "Imprimante + toner ACHETES (2026-06-05). Reste: papier couche silk A4 170g."
+    "action_dominique": "Commander DCP A5 blanc 160g sur plastifieuses.fr. Imprimante + toner deja faits.",
+    "status": "Imprimante + toner ACHETES. Papier identifie (DCP A5 160g) - commande a passer par Dominique.",
+    "note_format": "M454dw supporte A5 dans bac 1 ET bac 2. Bac 2 max 163 g/m2, bac 1 max 176 g/m2. NE PAS depasser -> bourrages. DCP 200g ecarte (trop lourd)."
   }
 }
