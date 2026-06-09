@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.103",
+    "version": "1.104",
     "updated": "2026-06-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-05",
+        "version_from": "1.103",
+        "version_to": "1.104",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Staircase PdC proposé pour Chloé (2 scénarios): réaliste (engagement, minimum sous projection avec coussin) + ambitieux (vision, réconcilie le 1800 BP juin 2027).",
+          "Minimum facturé: 600 fin 2026 / 900 juin 2027 / 1100 fin 2027 / 1700 fin 2028 / 2200 fin 2029.",
+          "Verdict: 1000 PdC en 3 mois irréaliste (base réelle 350→530→515, +180/an max). Effet leviers OZECAR v2 à partir de sept-oct.",
+          "Document + mail prêts à envoyer aujourd'hui."
+        ]
+      },
       {
         "date": "2026-06-05",
         "version_from": "1.102",
@@ -6201,6 +6213,55 @@
           "Voir si Justin dispo mardi 16h à Paris pour un café"
         ]
       }
+    },
+    "staircase_propose_2026_06_05": {
+      "date": "2026-06-05",
+      "contexte": "Réponse au mail de Chloé (demande staircase dans la journée). Base: chiffres réels 350→530→515 PdC, croissance historique +180/an.",
+      "principe": "Minimum facturé calé SOUS la projection (coussin 15-20%) pour éviter défaut. 2 scénarios présentés.",
+      "scenario_realiste_engagement": {
+        "sept_2026": {
+          "projection": 600,
+          "minimum": 500
+        },
+        "fin_2026": {
+          "projection": 750,
+          "minimum": 600
+        },
+        "juin_2027": {
+          "projection": 1100,
+          "minimum": 900
+        },
+        "fin_2027": {
+          "projection": 1400,
+          "minimum": 1100
+        },
+        "fin_2028": {
+          "projection": 2000,
+          "minimum": 1700
+        },
+        "fin_2029": {
+          "projection": 2500,
+          "minimum": 2200
+        }
+      },
+      "scenario_ambitieux_vision": {
+        "fin_2026": 950,
+        "juin_2027": "1500-1800 (cohérent BP)",
+        "fin_2027": 1900,
+        "fin_2028": 2800,
+        "fin_2029": 3500
+      },
+      "contreparties_demandees": [
+        "Marque blanche OCPP incluse",
+        "Tarif 1€/privé sécurisé par écrit",
+        "Engagement 3-4 ans + exclusivité superviseur nouveau parc"
+      ],
+      "verdict_3_mois": "1000 PdC en 3 mois IRRÉALISTE. Même agressif: ~680 PdC fin sept. Effet des leviers (refonte, LinkedIn, média) surtout à partir de septembre-octobre.",
+      "fichiers": [
+        "/mnt/user-data/outputs/Staircase-Monta-OZECAR-2026.md",
+        "mail rédigé via message_compose"
+      ],
+      "next_dominique": "Envoyer le mail à Chloé aujourd'hui"
     }
   },
   "todos_a_rappeler": {
