@@ -1,12 +1,26 @@
 {
   "_meta": {
-    "version": "1.104",
+    "version": "1.105",
     "updated": "2026-06-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-05",
+        "version_from": "1.104",
+        "version_to": "1.105",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "PIVOT STRATÉGIQUE majeur: thèse du CONSOLIDATEUR de parcs IRVE. Reprise de parcs orphelins = produit principal (pas installation neuve).",
+          "Marché vérifié (Avere): 195k PdC publics FR, +17-20%/an, 9% HS>7j (crise qualité), Freshmile 35k PdC. Signaux reprise: ChargePoint/Sonepar, Wallbox/Electromaps, Freshmile.",
+          "3 scénarios PdC: Conservateur 4000 / Réaliste 9000 / Ambitieux 20000 (fin 2029). Le 1800 juin 2027 = Réaliste.",
+          "ARR 2029: 1,0 / 2,25 / 5,0 M€. Valo exit 11-40M€. Lien levée: finance la capacité d'absorption (équipe), pas la demande.",
+          "Staircase Monta révisé: minimum 600/900/1200/2000/3000 (basé Conservateur+coussin), cible Réaliste. Argument: Monta x3-6 son compte OZECAR.",
+          "Plan de croissance complet livré (document 3 scénarios)."
+        ]
+      },
       {
         "date": "2026-06-05",
         "version_from": "1.103",
@@ -6299,5 +6313,82 @@
     "action_dominique": "Commander DCP A5 blanc 160g sur plastifieuses.fr. Imprimante + toner deja faits.",
     "status": "Imprimante + toner ACHETES. Papier identifie (DCP A5 160g) - commande a passer par Dominique.",
     "note_format": "M454dw supporte A5 dans bac 1 ET bac 2. Bac 2 max 163 g/m2, bac 1 max 176 g/m2. NE PAS depasser -> bourrages. DCP 200g ecarte (trop lourd)."
+  },
+  "growth_strategy": {
+    "these_consolidateur_2026_06_05": {
+      "date": "2026-06-05",
+      "pivot_strategique": "OZECAR n'est pas un installateur qui ajoute des bornes 1 par 1. C'est le CONSOLIDATEUR qui reprend les parcs orphelins de CPO défaillants. Reprise = produit principal, installation neuve = bruit de fond.",
+      "marche_reel_verifie": {
+        "pdc_publics_france": "194 996 (fin avril 2026, Avere)",
+        "croissance": "+17 à 20%/an",
+        "crise_qualite": "9% des bornes HS >7j consécutifs (record), dispo en baisse à 90%",
+        "freshmile_parc": "~35 000 PdC FR (20% du public)",
+        "segment_entreprise": "seulement 4% du public recensé → réserve privée immense hors baromètre"
+      },
+      "signaux_reprise": "Freshmile sous tension (~27€/PdC/mois selon Dominique), ChargePoint se désengage de Sonepar, Wallbox/Electromaps en difficulté. À sourcer formellement.",
+      "deux_moteurs": {
+        "A_organique_secondaire": "Installation neuve + inbound (refonte, LinkedIn, média) + partenaires installateurs. +50-150 PdC/mois en régime. CAC ~200€/client.",
+        "B_reprise_principal": "Reprise parcs orphelins. 1 deal = 200-800 PdC. CAC/PdC très bas. Marge ~80% (Essential privé 4,90€ - 1€ Monta). PREREQUIS: marque blanche OCPP pour migration fluide."
+      },
+      "3_scenarios_pdc": {
+        "conservateur": {
+          "fin_2026": 750,
+          "juin_2027": 1100,
+          "fin_2027": 1500,
+          "fin_2028": 2600,
+          "fin_2029": 4000
+        },
+        "realiste": {
+          "fin_2026": 1100,
+          "juin_2027": 1800,
+          "fin_2027": 2800,
+          "fin_2028": 5500,
+          "fin_2029": 9000
+        },
+        "ambitieux": {
+          "fin_2026": 1500,
+          "juin_2027": 3000,
+          "fin_2027": 5000,
+          "fin_2028": 11000,
+          "fin_2029": 20000
+        }
+      },
+      "arr_2029": {
+        "conservateur": "1,0M€",
+        "realiste": "2,25M€",
+        "ambitieux": "5,0M€",
+        "arpu_blended_hyp": "250€/PdC/an (prudent vs réel 2025 ~327-393€)"
+      },
+      "valo_exit": {
+        "realiste": "11-18M€ (×5-8 ARR)",
+        "ambitieux": "25-40M€"
+      },
+      "lien_levee": "Facteur limitant = capacité d'absorption (équipe de 3), PAS la demande. Levée finance: équipe commerciale (chasse reprises), ops/onboarding (migrer 500+ PdC), support N2, cash de roulement.",
+      "staircase_monta_revise": {
+        "principe": "S'engager sur Conservateur (avec coussin), viser Réaliste, montrer Ambitieux en upside",
+        "fin_2026": {
+          "cible": 1100,
+          "minimum": 600
+        },
+        "juin_2027": {
+          "cible": 1800,
+          "minimum": 900
+        },
+        "fin_2027": {
+          "cible": 2800,
+          "minimum": 1200
+        },
+        "fin_2028": {
+          "cible": 5500,
+          "minimum": 2000
+        },
+        "fin_2029": {
+          "cible": 9000,
+          "minimum": 3000
+        },
+        "argument_monta": "Chaque PdC repris = GMV + frais pour Monta. En facilitant (OCPP marque blanche + 1€ privé écrit), Monta passe de 146k€/an à 480-900k€/an. On leur propose de multiplier leur compte OZECAR par 3-6, pas une faveur."
+      },
+      "fichier": "/mnt/user-data/outputs/OZECAR-Plan-Croissance-3-Scenarios-2026.md"
+    }
   }
 }
