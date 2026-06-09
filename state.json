@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.105",
-    "updated": "2026-06-05",
+    "version": "1.106",
+    "updated": "2026-06-09",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-09",
+        "version_from": "1.105",
+        "version_to": "1.106",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Plan de bataille 90 jours créé (5 piliers: reprise parcs, lead gen, automation 80%, todo Marie-Estelle, plan comm). Objectif 515→750+ PdC + 1 reprise signée. Deadline ~5 sept (preuve pour lever, sinon arrêt).",
+          "Email Chloé version consolidateur rédigé (2 variantes) avec staircase + argument 'x3-6 votre compte Monta' + 2 conditions (OCPP, 1€ privé écrit).",
+          "Analyse pipeline HubSpot: 18 deals ouverts ~163k€, QUASI 100% CORSE. Confirme la nécessité vitale de sortir de Corse via comm nationale + reprise. Deal 'Castelli offre de reprise' déjà présent.",
+          "Enseignement clé: micro-deals supervision (70-760€) ne scalent pas. Seule la reprise de parcs change l'échelle."
+        ]
+      },
       {
         "date": "2026-06-05",
         "version_from": "1.104",
@@ -6389,6 +6401,46 @@
         "argument_monta": "Chaque PdC repris = GMV + frais pour Monta. En facilitant (OCPP marque blanche + 1€ privé écrit), Monta passe de 146k€/an à 480-900k€/an. On leur propose de multiplier leur compte OZECAR par 3-6, pas une faveur."
       },
       "fichier": "/mnt/user-data/outputs/OZECAR-Plan-Croissance-3-Scenarios-2026.md"
+    },
+    "plan_bataille_90j_2026_06_09": {
+      "date": "2026-06-09",
+      "deadline_preuve": "~5 septembre 2026 (3 mois pour prouver la directive consolidateur et lever, sinon arrêt)",
+      "objectif_unique": "515 → 750+ PdC en 90j, dont AU MOINS 1 reprise de parc signée (preuve de la thèse), machine lead gen + ops automatisée 80%",
+      "kpi_succes_j90": [
+        "1-2 reprises signées/closing (≥150 PdC)",
+        "Pipeline ≥40 leads qualifiés entrants",
+        "Machine LinkedIn (3 posts/sem)",
+        "80% parcours automatisé",
+        "Refonte live + funnel capture OK"
+      ],
+      "5_piliers": {
+        "1_reprise_parcs": "Cœur. Activer contact CPO sortant (Chloé), lister CPO en difficulté, kit de reprise, débloquer OCPP marque blanche",
+        "2_lead_gen": "LinkedIn (profil CEO + 12 posts), budget média 2-3k€ (LinkedIn Ads 1,5k + Google Ads 1k), capture HubSpot + nurturing Make",
+        "3_automation_80pct": "Lead→CRM, Calendly→HubSpot, démo→devis→Slack (Make 05), devis→signature→activation (PandaDoc+Pennylane), reporting auto",
+        "4_todo_marie_estelle": "Planif LinkedIn, qualif leads, relance devis, board monday, liste clients cross-sell, users exclure Monta, contacts CPO cibles",
+        "5_plan_comm": "LinkedIn 3 posts/sem (problème/preuve/pédagogie), email nurturing + clients existants, notifications clients"
+      },
+      "analyse_pipeline_hubspot": {
+        "deals_ouverts": 18,
+        "valeur_totale": "~163k€",
+        "pipeline": "100% L&Q (3747862733), tous au même stage",
+        "constat_critique": "Pipeline quasi 100% CORSE (Rossi, Castelli, Arinella, Sole e Vista, Piazza d'Olmo, Natali, Strazzabosco, Arsella). Exceptions: Serpollet St Alban, EIB, Agriel/Lelycenter.",
+        "signal_positif": "Deal 'Castelli - offre de reprise' déjà présent → la reprise est dans l'ADN, à industrialiser et sortir de Corse",
+        "enseignement": "Beaucoup de micro-deals supervision (70-760€). Deal par deal n'atteint jamais 9000 PdC. SEULE la reprise de parcs change l'échelle.",
+        "gros_deals": "Rossi Prunete 62k (install), EIB Zaptec 43k (matériel), Serpollet St Alban 10k"
+      },
+      "blocages_dominique_chemin_critique": [
+        "Email Chloé (aujourd'hui)",
+        "Contact CPO sortant + OCPP Monta (S1)",
+        "HubSpot Conversations + PandaDoc template (S1-2)",
+        "Lancement budget média (S2)",
+        "Poster LinkedIn (continu)"
+      ],
+      "fichiers": [
+        "/mnt/user-data/outputs/OZECAR-Plan-Bataille-90-Jours.md",
+        "/mnt/user-data/outputs/OZECAR-Plan-Croissance-3-Scenarios-2026.md",
+        "email Chloé via message_compose"
+      ]
     }
   }
 }
