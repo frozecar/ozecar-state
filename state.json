@@ -1,12 +1,27 @@
 {
   "_meta": {
-    "version": "1.106",
-    "updated": "2026-06-09",
+    "version": "1.107",
+    "updated": "2026-06-10",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-10",
+        "version_from": "1.106",
+        "version_to": "1.107",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Kit OZECAR redefini: pack initial 1 station + 1 borne incluse a 49€ HT. Kit Borne = 29€ HT additionnelle.",
+          "OZKM display_name_client : Kit Site -> Kit OZECAR",
+          "Pages staging mises a jour : home, /kit-3/, /supervision-3/, /bornes-compatibles-3/",
+          "theme parent ozecar-theme header.php + footer.php : kit-master URL -> kit-ozecar (6 occurrences)",
+          "Banner header.php 'A partir de 9€ HT par borne' -> 'A partir de 49€ HT'",
+          "wp-deploy.php ALLOWED_DIRS etendu pour inclure wp-content/themes/ozecar-theme",
+          "Shopify renaming brief a produire : kit-master -> kit-ozecar + 301 redirect"
+        ]
+      },
       {
         "date": "2026-06-09",
         "version_from": "1.105",
@@ -1345,6 +1360,26 @@
           "pandadoc": "Templates non accessibles depuis Claude — action déléguée à Dominique. Le 79€ vit principalement là."
         }
       }
+    },
+    "kit": {
+      "_note": "Pricing Kit OZECAR officiel depuis 2026-06-10. Source de vérité. Kit OZECAR = pack initial 49€ HT comprenant 1 station + 1 borne. Borne supplémentaire = 29€ HT.",
+      "kit_ozecar": {
+        "label": "Kit OZECAR",
+        "description": "Pack initial pour activation d'un site : 1 station + 1 borne incluse",
+        "price_ht": 49,
+        "sku_internal": "OZKM (bundlé avec 1 OZKU)",
+        "includes": [
+          "1 station (OZKM)",
+          "1 borne incluse (OZKU)"
+        ]
+      },
+      "kit_borne": {
+        "label": "Kit Borne",
+        "description": "Borne supplémentaire pour ajouter une borne à un site déjà activé",
+        "price_ht": 29,
+        "sku_internal": "OZKU",
+        "rules": "Vendu seul (réappro). À partir de la 2e borne du site."
+      }
     }
   },
   "partner_program": {
@@ -1658,9 +1693,13 @@
       "qr_url_pattern": "https://ozecar.fr/activation?kit=OZKM-XXXX",
       "label_format": "102x152mm MUNBYN",
       "monta_role": "Cree le Site (station)",
-      "display_name_client": "Kit Site",
+      "display_name_client": "Kit OZECAR",
       "legacy_name": "Kit Master",
-      "_note_naming": "SKU OZKM reste interne. Sur surfaces client, utiliser 'Kit Site'. Voir naming_migration_2026_05_10."
+      "_note_naming": "SKU OZKM reste interne. Sur surfaces client, utiliser 'Kit OZECAR'. Le Kit OZECAR (49€ HT) comprend 1 station + 1 borne incluse (= 1 OZKM + 1 OZKU bundlés). Pour chaque borne supplémentaire, ajouter 1 Kit Borne (OZKU) à 29€ HT.",
+      "legacy_names": [
+        "Kit Master",
+        "Kit Site"
+      ]
     },
     "OZKU": {
       "name": "Kit Unit",
@@ -2652,9 +2691,12 @@
     "products_to_create": [
       {
         "sku": "OZKM",
-        "name": "Kit Master",
+        "name": "Kit OZECAR",
         "price_ht": 49,
-        "rules": "Requires at least 1 OZKU in cart"
+        "rules": "Bundle: contains 1 OZKM + 1 OZKU automatically. Single SKU at checkout perspective.",
+        "handle": "kit-ozecar",
+        "legacy_handle": "kit-master",
+        "description_includes": "Pack initial : 1 station + 1 borne incluse"
       },
       {
         "sku": "OZKU",
@@ -3137,7 +3179,17 @@
         "duree_estimee": "jours 7-10"
       }
     },
-    "stock_physique_status": "Confirme par Dominique 2026-05-10 : AUCUN stock physique imprime a ce jour. Aucun risque de casse logistique."
+    "stock_physique_status": "Confirme par Dominique 2026-05-10 : AUCUN stock physique imprime a ce jour. Aucun risque de casse logistique.",
+    "kit_ozecar_redefinition_2026_06_10": {
+      "date": "2026-06-10",
+      "summary": "Kit OZECAR redefined as the initial pack (1 station + 1 borne), priced 49€ HT. Kit Borne (OZKU) remains 29€ HT for additional bornes.",
+      "impact": [
+        "All staging pages updated: home, /kit-3/, /supervision-3/, /bornes-compatibles-3/, /contact-5/, /installateurs/",
+        "Theme parent header.php and footer.php URLs updated: kit-master -> kit-ozecar",
+        "wp-deploy.php ALLOWED_DIRS extended to include wp-content/themes/ozecar-theme",
+        "Shopify renaming pending in Claude Code brief"
+      ]
+    }
   },
   "operating_framework": {
     "version": "1.0",
