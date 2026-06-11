@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.107",
-    "updated": "2026-06-10",
+    "version": "1.108",
+    "updated": "2026-06-11",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-11",
+        "version_from": "1.107",
+        "version_to": "1.108",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Page /livres-blancs/ : 2 cards articles retirées (Loi LOM + OCPP) - page mono-thématique PDF gates uniquement (4 cards)",
+          "Bug 1 corrigé : garde anti-placeholder JS bloquait toujours la soumission (compare au VRAI form_id 475bf5db-...) - retirée",
+          "Bug 2 corrigé : input HTML name='company' renommé en name='name' pour matcher le mapping objectTypes={'name':'0-2'} → Company.name (champ requis HubSpot)",
+          "Mention 'Pro Plus + Transit' → 'Pro Plus' (Transit obsolète depuis v1.5)",
+          "Test E2E HubSpot Forms v3 : HTTP 200 confirmé avec faux contact test"
+        ]
+      },
       {
         "date": "2026-06-10",
         "version_from": "1.106",
@@ -2037,12 +2050,22 @@
       "test_e2e": "2026-05-27 : contact créé avec origine_ozecar='formulaire_livre_blanc' + lead_magnet='etude-marche-irve-2026' ✅",
       "lead_magnets_disponibles": [
         "etude-marche-irve-2026",
-        "loi-lom-2027-flotte",
         "roi-borne-supermarche",
-        "ocpp-2-vs-1-6",
         "smart-charging-equilibrage",
         "conformite-afir-2027"
-      ]
+      ],
+      "cards_count": 4,
+      "cards_retirees_2026_06_11": [
+        "loi-lom-2027-flotte (article ouvert /loi-lom-flottes-2027/, déplacé hors page livres blancs)",
+        "ocpp-2-vs-1-6 (guide ouvert /guides/ocpp-general/, déplacé hors page livres blancs)"
+      ],
+      "bugs_corriges_2026_06_11": [
+        "Garde anti-placeholder retirée: if (HS_FORM_ID === \"475bf5db-...\" ) bloquait la soumission systématiquement depuis la création du form le 27 mai",
+        "Bug mapping form: input HTML name=\"company\" → name=\"name\" pour matcher objectTypes={\"name\":\"0-2\"} en JS, permettant le routage vers Company.name (champ requis HubSpot)",
+        "Mention 'Pro Plus + Transit' retirée (Transit n'existe plus depuis state.json v1.5)"
+      ],
+      "test_e2e_2026_06_11": "POST HubSpot Forms v3 API : HTTP 200 'inlineMessage:\"\"' - soumission réussie avec firstname/email/name(Company)/lead_magnet/lead_source/origine_ozecar",
+      "todo": "Supprimer faux contact test 'test-claude-pm-2@ozecar.fr' créé pour validation endpoint"
     },
     "supervision_3_22463_meetings": {
       "page_id": 22463,
