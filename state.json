@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.110",
+    "version": "1.111",
     "updated": "2026-06-11",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-11",
+        "version_from": "1.110",
+        "version_to": "1.111",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "connectivity: ajout diagnostic_decrochages_integres_2026_06_11 (cause racine modem intégré + non-steered Simbase, comparaison Soracom, politique APN simbase.eu vs fixedip.eu, demande steering Simbase, mitigations backend, méthode mesure via API Monta logs)",
+          "connectivity: incident_calvi (station serial 26793057 OFFLINE sur GsmApn=fixedip.eu) + teltonika_calvi_blocage_remote (ICCID ...215, blocage série/MAC/RMS)",
+          "connectivity: process_inventaire_rms_2026_06_11 (relevé série/MAC/IMEI + enrôlement RMS à la prépa kit, politique APN, priorité connectivité site)",
+          "products.OZRT: config_standard_rutos_2026_06_11 (APN, Manual-Auto opérateur, MTU 1200, Ping Reboot, Low signal reconnect, periodic reboot, RMS) + validation_anti_decrochage_2026_06_11"
+        ]
+      },
       {
         "date": "2026-06-11",
         "version_from": "1.108",
@@ -1843,7 +1855,19 @@
         "what_we_do_instead_phase_1": "L'installateur configure la borne via les outils du fabricant (app mobile, web UI, ACE Service Installer) comme aujourd'hui. Le routeur OZRT assure ensuite connectivité + auto-recovery + accès maintenance distant (RMS Connect) pour toute la vie de la borne.",
         "partnerships_phase_decision": "REFUSÉ pour l'instant (validé Dominique 2026-05-13) : pas de discussions partenariats constructeurs (Alfen, ABB, Schneider) en parallèle. OZECAR reste sur ce qu'on peut faire seuls et enrichit au fil des découvertes terrain.",
         "future_revisit": "Re-évaluation post-pilote (mois 4-6) : si demande commerciale forte sur pre-config zéro intervention, ouvrir piste partenariats ou reverse-engineering au cas par cas."
-      }
+      },
+      "config_standard_rutos_2026_06_11": {
+        "_note": "Réglages RutOS standard à pousser (template RMS) sur chaque OZRT, validés par diagnostic décrochages 2026-06-11. Ce que le modem intégré KEBA ne sait PAS faire et qui justifie OZRT au-delà de la revente.",
+        "apn": "simbase.eu (breakout EU) ; fixedip.eu uniquement si IP fixe",
+        "auto_apn": "OFF",
+        "mtu": 1200,
+        "network_operators": "Connection mode Manual-Auto avec opérateur local préféré (repli auto autorisé). Évite le thrashing non-steered sans risque d'offline.",
+        "ping_reboot": "Services → Auto Reboot → Ping Reboot host 8.8.8.8, reboot après 3-5 échecs (watchdog reco Simbase)",
+        "low_signal_reconnect": "Activé : reset connexion sous seuil de signal",
+        "periodic_reboot": "1×/jour (ré-auth réseau quotidienne reco Simbase)",
+        "rms": "Enrôlement RMS + relevé série/MAC/IMEI à la prépa (cf. connectivity.process_inventaire_rms_2026_06_11)"
+      },
+      "validation_anti_decrochage_2026_06_11": "Le diagnostic décrochages 2026-06-11 valide OZRT comme LA solution structurelle au problème de déconnexions des bornes à modem intégré (KEBA & co) sur SIM Simbase non-steered : watchdog ping-reboot, lock/préférence opérateur (Manual-Auto), MTU 1200, gestion distante RMS sans IP publique. Argument chiffré pour retrofit OZRT sur sites à modem intégré instables, au-delà du produit neuf."
     },
     "SUNGROW-IDC30E": {
       "sku_internal": "SUNGROW-IDC30E",
@@ -3499,6 +3523,73 @@
       "4_backend_auto": "Lookup ICCID → Simbase API activate eSIM → Teltonika RMS API push config OZECAR-NET (SSID, firewall, VPN/Connect, NTP, syslog, admin LAN désactivé) + ordre download profil eSIM → routeur OTA → bascule sur SIM Simbase active. PAS de pré-config OCPP de la borne : reste à la charge de l'installateur via outils fabricant.",
       "5_installateur_borne": "Installateur configure la borne via app fabricant (Schneider eSetup, MyEve Alfen, myWallbox, etc.) comme aujourd'hui — le routeur a juste assuré que le réseau est dispo. Une fois la borne configurée vers Monta CSMS, elle apparaît online dans Monta et l'activation site est validée par la page /activation.",
       "6_verification": "Page /activation polle RMS API jusqu'à online + Monta API jusqu'à borne online. Activation site complétée."
+    },
+    "diagnostic_decrochages_integres_2026_06_11": {
+      "date": "2026-06-11",
+      "auteur": "Claude PM (claude.ai)",
+      "resume": "Déconnexions 4G fréquentes sur bornes à modem cellulaire INTÉGRÉ (KEBA P30 et assimilés) équipées de SIM Simbase. Diagnostic + mitigations + politique APN + incidents.",
+      "cause_racine": {
+        "mecanisme": "Le modem intégré KEBA ne se ré-enregistre pas au réseau après une coupure (confirmé support Simbase : la SIM clôture sa session puis l'appareil ne retente jamais → offline jusqu'à action). Aggravé par le non-steered multi-IMSI Simbase qui sollicite la logique de sélection réseau, mal gérée par le modem intégré (re-sélections, bascules 2G/3G).",
+        "config_keba_insuffisante": "L'interface GSM KEBA n'expose que GSM_APN/username/password/PIN. Aucun réglage opérateur, force 4G, ou watchdog. Donc PAS de fix côté config KEBA.",
+        "comparaison_soracom": "Avec le précédent fournisseur Soracom, même matériel = nettement moins de décrochages → le modèle non-steered Simbase est un contributeur réel pour bornes FIXES à modem faible (non-steered conçu pour mobiles, déstabilisant pour un asset fixe)."
+      },
+      "politique_apn_simbase": {
+        "regle": "fixedip.eu UNIQUEMENT si IP fixe attribuée (produit Public IP migré). Sinon simbase.eu (breakout Europe) ou simbase (breakout US défaut).",
+        "defaut_recommande": "simbase.eu pour la majorité du parc. RMS suffit pour gérer derrière NAT, pas besoin d'IP fixe.",
+        "erreur_a_eviter": "Ne JAMAIS mettre fixedip.eu en aveugle sur une SIM sans IP fixe → casse la session data (cf. incident Calvi)."
+      },
+      "demande_steering_simbase": {
+        "objet": "Demander à Simbase de pinner/steerer les SIM de bornes fixes sur un opérateur FR unique via push OTA IMSI ou steering réseau. Simbase est multi-IMSI avec OTA IMSI push → mécanisme existe même si non-steered par défaut. Assets fixes = perte de redondance acceptable.",
+        "leviers_complementaires": [
+          "Breakout Europe (simbase.eu)",
+          "Coverage set Europe",
+          "Meilleur opérateur local via logs d'attachement Simbase"
+        ],
+        "statut": "Mail support rédigé 2026-06-11, à envoyer par Dominique. Si Simbase ne peut steerer, retour à une SIM steered (Soracom-style) devient légitime."
+      },
+      "mitigations_backend_sans_materiel": {
+        "_note": "Réduisent la fréquence, ne guérissent pas (borne totalement tombée = power cycle requis). Sans changer matériel ni SIM.",
+        "websocket_ping_interval": "~20-30s (PortalWebSocketPingInterval côté Monta/OCPP) pour garder le pinhole NAT ouvert",
+        "reconnect_interval": "HostConnectorReconnectInterval 10s",
+        "reset_ocpp_quotidien": "Scénario Make → API Monta Reset OCPP/jour/borne = ré-auth réseau quotidienne (reco Simbase, implémentée backend). Marche seulement si borne joignable.",
+        "coverage_set_europe": "Restreindre le coverage set Simbase à Europe"
+      },
+      "methode_mesure_decrochages_api_monta": {
+        "proxy": "POST https://ozecar.fr/api/monta.php avec {\"path\":\"...\"} (auth serveur)",
+        "endpoint_logs": "/charge-points/{id}/logs — logs OCPP horodatés. Événements connexion explicites : 'closed a connection (Abnormal Closure, code 1006)' = déconnexion réseau ; code 1001 = fermeture propre (reboot/config) ; 'ChargePoint connected identity=...' = reconnexion. perPage plafonné à 100, offset pagination.",
+        "datation_intervention": "Les ChangeConfiguration (ping interval, GsmApn...) apparaissent horodatés dans les logs → datent une intervention.",
+        "usage": "Compter closes code 1006/jour/borne pour mesurer la stabilité avant/après. Base d'un futur rapport récurrent."
+      },
+      "incident_calvi": {
+        "site": "Camping La Pinède Calvi (Corse)",
+        "team_monta": "881718",
+        "station_serial": "26793057",
+        "charge_points_monta": "8 points A01-A08, ids 3765464/3765471/3765472/3765473/3765475/3765479/3765480/3765481, KEBA P30 fw 1.17.1, uplink partagé",
+        "etat": "OFFLINE depuis 2026-06-11 12:14 (les 8 points)",
+        "changements_dominique_2026_06_09": [
+          "PortalWebSocketPingInterval=20 (15:43)",
+          "HostConnectorReconnectInterval=10 (15:44)",
+          "GsmApn=fixedip.eu (16:03)"
+        ],
+        "cause_suspectee_offline": "GsmApn=fixedip.eu sur SIM probablement SANS IP fixe → session data instable puis offline.",
+        "analyse_decrochages": "Avant ~1,2 close 1006/jour, après ~1/jour → pas d'amélioration nette, fenêtre trop courte + confondue par le changement d'APN. Effet ping interval non isolable.",
+        "action_corrective": "Repasser GsmApn en simbase.eu pour remettre en ligne, puis re-mesurer après stabilisation."
+      },
+      "teltonika_calvi_blocage_remote": {
+        "iccid": "8910300000027210215",
+        "contexte": "Teltonika derrière cet ICCID, actuellement sur SFR. Objectif : pinner SFR (Manual-Auto) pour stabiliser.",
+        "blocage": "Pas d'accès site, RMS non configuré, pas de série ni MAC LAN. Lock opérateur en aveugle par SMS EXCLU (aucun filet si échec). Série+MAC non extractibles par SMS de façon fiable.",
+        "voie_deblocage": "Récupérer l'IMEI via Simbase (pour cet ICCID), puis ticket support Teltonika (IMEI + preuve d'achat) → série+MAC ou rattachement direct company RMS. Levier immédiat sûr : SMS '<mdp_admin> reboot'.",
+        "note_rms": "RMS activé par défaut sur RutOS 7.0+ → une fois série+MAC obtenus, revendiquer le device dans RMS débloque la gestion distante complète (Manual-Auto SFR + Ping Reboot + Low signal reconnect)."
+      }
+    },
+    "process_inventaire_rms_2026_06_11": {
+      "date": "2026-06-11",
+      "regle": "À la prépa kit / avant envoi site, RELEVER pour chaque device de connectivité (routeur OZRT, modem) : numéro de série + MAC LAN + IMEI + ICCID associé → consigner dans state.json + monday Stock. ENRÔLER tout Teltonika dans RMS avant expédition.",
+      "raison": "Incident Calvi : impossible de gérer un Teltonika à distance (pas de série/MAC/RMS) sans accès site = dead-end. Inventaire + enrôlement RMS au déploiement = chaque incident futur devient une intervention bureau 10 min.",
+      "politique_apn_kit": "APN simbase.eu (sauf SIM IP-fixe → fixedip.eu). Jamais fixedip.eu en aveugle.",
+      "priorite_connectivite_site": "1) Filaire si site a internet, 2) OZRT (Teltonika) en standard pour sites cellulaires, 3) modem intégré + SIM roaming brute = à éviter comme défaut.",
+      "statut": "À intégrer au process prépa kit + checklist installateur. Item monday à créer."
     }
   },
   "hubspot_props_creation_blocked": {
