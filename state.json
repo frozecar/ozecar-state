@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.109",
+    "version": "1.110",
     "updated": "2026-06-11",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -1038,7 +1038,9 @@
         "monday_mcp": "OK - tests CRUD reussis",
         "shopify_storefront_password": "OK - 401 sur /products.json comme attendu (storefront protege)"
       }
-    }
+    },
+    "last_updated": "2026-06-11T17:25:00Z",
+    "last_action": "Logo OZECAR officiel SVG intégré (lb sources + WP pages + PDFs régénérés)"
   },
   "project": {
     "name": "OZECAR",
@@ -6582,6 +6584,36 @@
         "/mnt/user-data/outputs/OZECAR-Plan-Croissance-3-Scenarios-2026.md",
         "email Chloé via message_compose"
       ]
+    }
+  },
+  "livres_blancs": {
+    "logo_svg": {
+      "url": "https://staging.ozecar.fr/wp-content/uploads/ozecar/logo-ozecar.svg",
+      "size_bytes": 11764,
+      "viewbox": "0 0 164 36",
+      "description": "Logo OZECAR officiel : mascotte (cercle dark + visage blanc) + texte OZECAR + éclair. Couleurs : cream #F5F0EB pour cercle externe + texte, dark #0F141E pour cercle dark. Conçu pour fond sombre. Sur fond clair (cream), seule la mascotte est visible (le texte cream est invisible sur cream).",
+      "source": "Extrait de /mnt/project/ozecar-bornes-compatibles.html (SVG inline, paths complets)",
+      "integrated_at": "2026-06-11T17:25:00Z"
+    },
+    "pdfs": {
+      "lb-cpo.pdf": {
+        "url": "https://staging.ozecar.fr/wp-content/uploads/ozecar/lb-pdfs/lb-cpo.pdf",
+        "size_kb": 120.6,
+        "pages": 16
+      },
+      "lb-flotte.pdf": {
+        "url": "https://staging.ozecar.fr/wp-content/uploads/ozecar/lb-pdfs/lb-flotte.pdf",
+        "size_kb": 174.9,
+        "pages": 24
+      },
+      "lb-installateur.pdf": {
+        "url": "https://staging.ozecar.fr/wp-content/uploads/ozecar/lb-pdfs/lb-installateur.pdf",
+        "size_kb": 151.3,
+        "pages": 20
+      },
+      "regenerated_at": "2026-06-11T17:25:00Z",
+      "logo_used": "logo-ozecar.svg (officiel)",
+      "phone_removed": true
     }
   }
 }
