@@ -1,12 +1,30 @@
 {
   "_meta": {
-    "version": "1.108",
+    "version": "1.109",
     "updated": "2026-06-11",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-11",
+        "version_from": "1.108",
+        "version_to": "1.109",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Refonte complète /livres-blancs/ en architecture 100% éditable WP",
+          "3 nouvelles pages WP créées : 22654 (cpo-2026), 22655 (electrifier-flotte-2026), 22656 (devenir-cpo-2026)",
+          "Template Landing Standalone créé dans ozecar-child (page-templates/landing-standalone.php)",
+          "3 PDFs générés via WeasyPrint (16/24/20 pages) et hébergés à /wp-content/uploads/ozecar/lb-pdfs/",
+          "Sources HTML déplacées en interne à /wp-content/uploads/ozecar/lb-sources/",
+          "Pages WP landing redirect post-submit vers PDF",
+          "Dossier /lb/ physique SUPPRIMÉ (toutes ressources migrées vers WP ou wp-content/uploads)",
+          "Hub 22423 cards pointent vers les 3 pages WP enfants",
+          "Allowlist wp-deploy staging élargie : 'livres-blancs' + 'lb' (lb retiré ensuite)",
+          "Pending: marketing automation (HubSpot custom props + emails + sequence + Make scenario)"
+        ]
+      },
       {
         "date": "2026-06-11",
         "version_from": "1.107",
@@ -2065,7 +2083,55 @@
         "Mention 'Pro Plus + Transit' retirée (Transit n'existe plus depuis state.json v1.5)"
       ],
       "test_e2e_2026_06_11": "POST HubSpot Forms v3 API : HTTP 200 'inlineMessage:\"\"' - soumission réussie avec firstname/email/name(Company)/lead_magnet/lead_source/origine_ozecar",
-      "todo": "Supprimer faux contact test 'test-claude-pm-2@ozecar.fr' créé pour validation endpoint"
+      "todo": "Supprimer faux contact test 'test-claude-pm-2@ozecar.fr' créé pour validation endpoint",
+      "architecture_2026_06_11": {
+        "hub_page": {
+          "id": 22423,
+          "url": "/livres-blancs/",
+          "editable": "WP Admin"
+        },
+        "landing_pages_wp": [
+          {
+            "id": 22654,
+            "slug": "cpo-2026",
+            "url": "/livres-blancs/cpo-2026/",
+            "pdf_redirect": "/wp-content/uploads/ozecar/lb-pdfs/lb-cpo.pdf"
+          },
+          {
+            "id": 22655,
+            "slug": "electrifier-flotte-2026",
+            "url": "/livres-blancs/electrifier-flotte-2026/",
+            "pdf_redirect": "/wp-content/uploads/ozecar/lb-pdfs/lb-flotte.pdf"
+          },
+          {
+            "id": 22656,
+            "slug": "devenir-cpo-2026",
+            "url": "/livres-blancs/devenir-cpo-2026/",
+            "pdf_redirect": "/wp-content/uploads/ozecar/lb-pdfs/lb-installateur.pdf"
+          }
+        ],
+        "page_template": "page-templates/landing-standalone.php (in ozecar-child)",
+        "pdfs_pdf_pages": {
+          "lb-cpo.pdf": "16 pages",
+          "lb-flotte.pdf": "24 pages",
+          "lb-installateur.pdf": "20 pages"
+        },
+        "pdf_url_base": "https://staging.ozecar.fr/wp-content/uploads/ozecar/lb-pdfs/",
+        "sources_html_path": "wp-content/uploads/ozecar/lb-sources/lb-*.html",
+        "lb_physical_dir": "DELETED",
+        "form_hubspot_id": "475bf5db-0201-47e5-ad52-e1c540c9d6d5",
+        "hidden_field_per_page": {
+          "cpo-2026": "guide-cpo-2026",
+          "electrifier-flotte-2026": "guide-flotte-2026",
+          "devenir-cpo-2026": "guide-installateur-2026"
+        },
+        "marketing_automation_pending": [
+          "Custom properties HubSpot (profile_target, contact_type, lead_magnet_downloaded, nurture_sequence)",
+          "3 templates email post-download (CPO/Flotte/Installateur)",
+          "Sequence nurturing J+0/+3/+7/+14/+30",
+          "Make scenario orchestration (HubSpot Starter has no Workflows)"
+        ]
+      }
     },
     "supervision_3_22463_meetings": {
       "page_id": 22463,
