@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.111",
-    "updated": "2026-06-11",
+    "version": "1.112",
+    "updated": "2026-06-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-15",
+        "version_from": "1.111",
+        "version_to": "1.112",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Flyer A5 recto-verso Leroy Merlin créé (PDF print-ready, charte OZECAR). Recto installateur (programme partenaire) / verso client final (démo). Offre: 1er mois offert sur les 2 faces.",
+          "2 QR traçables distincts (lm-pro / lm-client) pour distinguer les leads dans HubSpot.",
+          "Prérequis Dominique: créer les 2 redirections qr.ozecar.app + landings avec form HubSpot taggé source=flyer LM AVANT impression.",
+          "Marque blanche respectée (100% OZECAR, zéro backend exposé)."
+        ]
+      },
       {
         "date": "2026-06-11",
         "version_from": "1.110",
@@ -6705,6 +6717,24 @@
       "regenerated_at": "2026-06-11T17:25:00Z",
       "logo_used": "logo-ozecar.svg (officiel)",
       "phone_removed": true
+    }
+  },
+  "leroy_merlin": {
+    "flyer_colis_2026": {
+      "date": "2026-06-15",
+      "objectif": "Flyer A5 recto-verso glissé dans chaque colis matériel vendu sur Leroy Merlin marketplace → générer leads supervision + recruter installateurs, à coût quasi nul",
+      "format": "A5 recto-verso (148×210mm), PDF print-ready, charte OZECAR (DM Sans, Space Mono, Instrument Serif italic; ink/crème/jaune/violet)",
+      "recto": "Cible INSTALLATEUR — 'Vous posez des bornes ? Gagnez sur chacune' — programme partenaire, revenu récurrent, activation 10 min, 400+ modèles, marque OZECAR. Offre: 1er mois offert. QR → qr.ozecar.app/lm-pro",
+      "verso": "Cible CLIENT FINAL — 'Votre borne est installée ? Pilotez-la' — facturer, suivre à distance, gérer accès, maintenance proactive, dès 4,90€/mois. Offre: 1er mois offert. QR → qr.ozecar.app/lm-client",
+      "tracking": "2 QR distincts (lm-pro / lm-client) pour distinguer leads installateur vs client final dans HubSpot (source=flyer LM)",
+      "marque_blanche": "100% OZECAR, zéro mention backend. Conforme règle absolue.",
+      "fichier": "/mnt/user-data/outputs/OZECAR-Flyer-LeroyMerlin-A5.pdf",
+      "prerequis_dominique": [
+        "Créer les redirections qr.ozecar.app/lm-pro et qr.ozecar.app/lm-client (système QR slug + .htaccess Hostinger) AVANT impression",
+        "Créer 2 landing pages dédiées (ou 1 avec 2 entrées) avec form HubSpot taggé source=flyer LM",
+        "Vérifier que rien dans le parcours d'activation n'expose le backend (marque blanche)"
+      ],
+      "todo_diff": "Décision impression: en interne (HP Color LaserJet M454dw + Clairefontaine DCP A5 160g) ou imprimeur pro. A5 recto-verso, papier épais recommandé."
     }
   }
 }
