@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.118",
+    "version": "1.119",
     "updated": "2026-06-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-15",
+        "version_from": "1.118",
+        "version_to": "1.119",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "2 landing pages LM créées (mobile-first, charte OZECAR, cohérentes flyer) et déployées sur staging.",
+          "PRO (installateur, crème/violet, axé avantages partenaire) + CLIENT (client final, ink/jaune, 1er mois offert).",
+          "Formulaires custom avec champ source (flyer_lm_pro/client) pour tracking. Backend webhook à brancher (__WEBHOOK_URL__ placeholder).",
+          "PENDING Dominique: brancher webhook Make→HubSpot, créer redirections qr.ozecar.app, valider mobile + prod."
+        ]
+      },
       {
         "date": "2026-06-15",
         "version_from": "1.117",
@@ -6879,6 +6891,25 @@
       "assets": "Photos Zaptec Pro depuis portail brand Zaptec (fournies par Dominique), logo LM officiel détouré sur cartouche blanc",
       "recto_titre": "Installateur ? Rejoignez le réseau OZECAR.",
       "recto_avantages": "01 Offrez la supervision à vos clients / 02 Activation 10 min 400+ modèles / 03 Accompagnement dédié / 04 Rémunération récurrente (discret)"
+    },
+    "landings_lm_2026": {
+      "date": "2026-06-15",
+      "objectif": "2 landing pages mobile-first réceptionnant les QR du flyer LM. Tracking source pour mesurer le ROI du canal.",
+      "deploiement": "Staging, déployées via wp-deploy (action write), images embarquées base64 (pages autonomes)",
+      "urls_staging": {
+        "pro_installateur": "https://staging.ozecar.fr/wp-content/uploads/ozecar/lp/lp-pro.html",
+        "client_final": "https://staging.ozecar.fr/wp-content/uploads/ozecar/lp/lp-client.html"
+      },
+      "design": "Mobile-first, charte OZECAR (DM Sans/Space Mono/Instrument Serif), cohérent avec le flyer. PRO: thème crème/violet, axé avantages partenaire (pas 'gagner de l'argent'). CLIENT: thème ink/jaune, 1er mois offert mis en avant.",
+      "structure": "header logo OZECAR + hero photo Zaptec + intro + 4 cartes avantages + section sombre 'comment ça marche' (3 étapes) + formulaire + cartouche Partenaire Leroy Merlin + footer",
+      "form_pro": "firstname, lastname, company, email, phone, zone, volume + source=flyer_lm_pro + audience=installateur",
+      "form_client": "firstname, lastname, email, phone, charger_model, nb_bornes + source=flyer_lm_client + audience=client_final",
+      "form_backend": "PENDING: form poste en JSON vers var WEBHOOK_URL='__WEBHOOK_URL__' (placeholder). Fallback: affiche succès + console.log si non configuré. À brancher sur HubSpot (webhook Make → contact pipeline L&Q 3747862733 avec source, OU form HubSpot natif).",
+      "pending_dominique": [
+        "Décider/brancher le backend form: créer webhook Make (Custom webhook → HubSpot Create/Update Contact, pipeline L&Q) + coller l'URL dans les 2 fichiers à la place de __WEBHOOK_URL__, OU valider la connexion HubSpot dans Make pour que Claude le crée",
+        "Créer les redirections qr.ozecar.app/lm-pro et /lm-client → pointant vers ces landings (system QR slug + .htaccess Hostinger)",
+        "Valider sur mobile réel + décider passage en prod (URL propre type ozecar.fr/borne ou pro.ozecar.fr)"
+      ]
     }
   },
   "infrastructure": {
