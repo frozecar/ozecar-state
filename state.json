@@ -1,12 +1,26 @@
 {
   "_meta": {
-    "version": "1.115",
+    "version": "1.116",
     "updated": "2026-06-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-15",
+        "version_from": "1.115",
+        "version_to": "1.116",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Page 22657: CTAs 'Demander une démo' (x3) routés vers /supervision-3/#demo (pattern thème)",
+          "Page 22657: suppression du lien mailto:hello@ozecar.fr (CTA final)",
+          "Page 22657: section pricing simplifiée en 1 seul block 'À partir de 5,90 € HT/mo/collab' (3 tiers retirés)",
+          "Menu nav 1603 'Main navigation V5': ajout item 'Recharge à domicile' (ID 22658) sous 'Nos solutions' (parent 22534, order 6)",
+          "Page 22463 /supervision-3/: insertion d'une section cross-promo 'Nouvelle offre — Recharge à domicile' juste après #tarifs (pos 80470 dans post_content, length 89705)",
+          "Backups DB: page-22657-before-iter-* + page-22463-before-add-remb-section-* dans /wp-content/uploads/ozecar/db-backups/"
+        ]
+      },
       {
         "date": "2026-06-15",
         "version_from": "1.114",
@@ -2838,7 +2852,7 @@
         "template": "page-templates/template-wide.php",
         "status": "publish",
         "created_at": "2026-06-15",
-        "content_length": 36380,
+        "content_length": 33935,
         "description": "Landing commerciale B2B : offre OZECAR pour entreprises avec véhicules de fonction électriques rechargés à domicile. Tarif d'appel 5,90 €/mois/collaborateur. Conformité URSSAF. 7 sections (hero, problème, comment ça marche, bénéfices, tarifs, FAQ, CTA). Logo SVG officiel intégré, charte OZECAR (cream/ink/yellow/violet). Header/footer du thème ozecar-child utilisés (template-wide.php).",
         "pricing_tiers": {
           "essential": "5,90 € HT/mo/collab",
@@ -2847,12 +2861,44 @@
         },
         "cta_targets": "mailto:hello@ozecar.fr (form HubSpot à brancher après validation)",
         "to_validate_with_dominique": [
-          "Prix Pro 14,90€ extrapolé du tier Pro supervision — à confirmer pour cette offre spécifique",
-          "Connecteurs paie listés (Silae, PayFit, Sage) — à confirmer si ces 3 sont effectivement prévus",
-          "CTA pointent vers mailto: hello@ozecar.fr — brancher form HubSpot après validation visuelle",
           "Où placer dans l'arborescence ? Actuellement standalone /remboursement-recharge-domicile/ — possible re-parent à /flottes/ ou /solutions/"
-        ]
+        ],
+        "iterations": [
+          {
+            "date": "2026-06-15",
+            "changes": [
+              "CTAs 'Demander une démo' → /supervision-3/#demo (modal démo du thème, anchor à créer)",
+              "Suppression du lien mailto:hello@ozecar.fr du CTA final",
+              "Section pricing simplifiée : 3 tiers (Essential 5,90€ / Pro 14,90€ / Pro+) → 1 seul block 'À partir de 5,90€ HT/mois/collaborateur'"
+            ]
+          }
+        ],
+        "pricing_display": "Single block (À partir de 5,90 € HT/mo/collab)"
       }
+    },
+    "navigation": {
+      "menu_id": 1603,
+      "menu_name": "Main navigation V5",
+      "recharge_domicile_item": {
+        "menu_item_id": 22658,
+        "title": "Recharge à domicile",
+        "url": "/remboursement-recharge-domicile/",
+        "parent_menu_item_id": 22534,
+        "parent_label": "Nos solutions",
+        "order": 6,
+        "note": "Item ajouté en fin de Nos solutions (après Boutique). Réordonner via WP admin Menus si besoin de le placer avant Boutique."
+      }
+    },
+    "supervision_cross_link": {
+      "host_page_id": 22463,
+      "host_page_slug": "supervision-3",
+      "host_page_title": "Supervision IRVE",
+      "added_at": "2026-06-15",
+      "position_in_post_content": 80470,
+      "inserted_after": "section id='tarifs' (pos 69043)",
+      "links_to": "/remboursement-recharge-domicile/",
+      "content_length_after": 89705,
+      "description": "Section cross-promo 'Vos collaborateurs rechargent à domicile ?' avec eyebrow violet 'Nouvelle offre', titre H2 (Instrument Serif italic sur 'domicile'), 3 bullets (URSSAF, Onboarding 10min, Récap mensuel), CTA jaune 'Découvrir l'offre' vers /remboursement-recharge-domicile/, label tarif '5,90€ HT/mo/collab'. Fond cream-warm, layout 2 colonnes responsive."
     }
   },
   "shopify": {
@@ -6804,6 +6850,21 @@
   "infrastructure": {
     "wp_deploy": {
       "page_allowlist_added_22657": "2026-06-15 — landing remboursement recharge domicile"
+    },
+    "demo_modal_pattern": {
+      "current_implementation": "Anchor link to /supervision-3/#demo (no JS modal)",
+      "theme_classes": [
+        "nav-cta-demo",
+        "mobile-btn-demo",
+        "cta-demo",
+        "btn-demo"
+      ],
+      "location_in_theme": "ozecar-theme/header.php",
+      "caveat": "L'anchor #demo n'existe pas encore sur la page supervision-3. À ajouter (form HubSpot embedded ou modal JS futur).",
+      "used_by_pages": [
+        22657,
+        "autres pages avec CTA Demander une démo"
+      ]
     }
   }
 }
