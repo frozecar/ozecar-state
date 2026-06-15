@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.116",
+    "version": "1.117",
     "updated": "2026-06-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-15",
+        "version_from": "1.116",
+        "version_to": "1.117",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Flyer LM v4: vrai logo OZECAR (logo_OZe_final détouré sur pastille crème lisible) remplace le faux logo typo blanc invisible.",
+          "Recto installateur recentré sur les AVANTAGES du partenariat (offrir la supervision, activation simple, accompagnement, rémunération en 4e position discrète) — plus 'gagnez de l'argent' qui pouvait paraître louche si reçu par un client final.",
+          "Kicker 'Programme partenaire' / 'Votre borne supervisée' déplacé dans le contenu (lisible) au lieu de blanc invisible sur photo."
+        ]
+      },
       {
         "date": "2026-06-15",
         "version_from": "1.115",
@@ -6840,11 +6851,13 @@
         "Vérifier que rien dans le parcours d'activation n'expose le backend (marque blanche)"
       ],
       "todo_diff": "Décision impression: en interne (HP Color LaserJet M454dw + Clairefontaine DCP A5 160g) ou imprimeur pro. A5 recto-verso, papier épais recommandé.",
-      "version_design": "v3 FINALE: structure claire (façon v1) + vraies photos Zaptec Pro en bandeau (install pour recto, lifestyle pour verso) + cartouche 'Partenaire Leroy Merlin' avec logo officiel détouré. Recto installateur / verso client.",
+      "version_design": "v4 FINALE: vrai logo OZECAR (logo_OZe_final détouré, dans pastille crème lisible) + photos Zaptec + cartouche Partenaire Leroy Merlin. Recto recentré sur AVANTAGES partenaire (offrir la supervision, activation simple, accompagnement, rémunération en 4e position discrète) au lieu de 'gagnez de l'argent' qui pouvait paraître louche.",
       "recto_accroche": "Posez la borne. Encaissez chaque mois.",
       "verso_accroche": "Pas qu'une prise. Pilotez tout.",
       "mention_partenaire": "« Partenaire » + logo Leroy Merlin officiel (Dominique a confirmé l'autorisation d'usage)",
-      "assets": "Photos Zaptec Pro depuis portail brand Zaptec (fournies par Dominique), logo LM officiel détouré sur cartouche blanc"
+      "assets": "Photos Zaptec Pro depuis portail brand Zaptec (fournies par Dominique), logo LM officiel détouré sur cartouche blanc",
+      "recto_titre": "Installateur ? Rejoignez le réseau OZECAR.",
+      "recto_avantages": "01 Offrez la supervision à vos clients / 02 Activation 10 min 400+ modèles / 03 Accompagnement dédié / 04 Rémunération récurrente (discret)"
     }
   },
   "infrastructure": {
