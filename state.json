@@ -1,12 +1,26 @@
 {
   "_meta": {
-    "version": "1.113",
+    "version": "1.114",
     "updated": "2026-06-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-15",
+        "version_from": "1.113",
+        "version_to": "1.114",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Création page WP staging /remboursement-recharge-domicile/ (page_id 22657)",
+          "Landing commerciale B2B : offre OZECAR remboursement recharge domicile collaborateurs (véhicules de fonction)",
+          "Template: page-templates/template-wide.php (header/footer du thème ozecar-child)",
+          "Tarif d'appel : 5,90€ HT/mo/collab (Essential) · 14,90€ HT/mo/collab (Pro) · sur devis (Pro+)",
+          "7 sections, 6 H2, logo SVG officiel, charte OZECAR, aucune mention Monta",
+          "Ajout page_id 22657 à PAGE_ALLOWLIST de wp-deploy.php pour édits futurs"
+        ]
+      },
       {
         "date": "2026-06-15",
         "version_from": "1.112",
@@ -2803,6 +2817,31 @@
         "gtm_container": "GTM-M593SGD (deja injecte via plugin insert-headers-and-footers, option ihaf_insert_header)",
         "ga4_property": "G-15HETB1C73 (a configurer dans GTM via une GA4 Config Tag, et a ajouter cross-domain sur shop.ozecar.fr)",
         "todo_user_gtm": "Creer dans admin GTM les variables Data Layer (page_type, product_handle, lead_magnet, etc.), les triggers Custom Event sur chaque event nom, les tags GA4 Event mappant vers events GA4 standards (select_content, generate_lead, search, view_item). Plus configurer le linker.domains : ozecar.fr,shop.ozecar.fr pour le cross-domain."
+      }
+    },
+    "b2b_landings": {
+      "remboursement_recharge_domicile": {
+        "page_id": 22657,
+        "slug": "remboursement-recharge-domicile",
+        "url": "https://staging.ozecar.fr/remboursement-recharge-domicile/",
+        "title": "Remboursement de la recharge à domicile",
+        "template": "page-templates/template-wide.php",
+        "status": "publish",
+        "created_at": "2026-06-15",
+        "content_length": 36380,
+        "description": "Landing commerciale B2B : offre OZECAR pour entreprises avec véhicules de fonction électriques rechargés à domicile. Tarif d'appel 5,90 €/mois/collaborateur. Conformité URSSAF. 7 sections (hero, problème, comment ça marche, bénéfices, tarifs, FAQ, CTA). Logo SVG officiel intégré, charte OZECAR (cream/ink/yellow/violet). Header/footer du thème ozecar-child utilisés (template-wide.php).",
+        "pricing_tiers": {
+          "essential": "5,90 € HT/mo/collab",
+          "pro": "14,90 € HT/mo/collab (featured)",
+          "pro_plus": "sur devis (>100 véhicules)"
+        },
+        "cta_targets": "mailto:hello@ozecar.fr (form HubSpot à brancher après validation)",
+        "to_validate_with_dominique": [
+          "Prix Pro 14,90€ extrapolé du tier Pro supervision — à confirmer pour cette offre spécifique",
+          "Connecteurs paie listés (Silae, PayFit, Sage) — à confirmer si ces 3 sont effectivement prévus",
+          "CTA pointent vers mailto: hello@ozecar.fr — brancher form HubSpot après validation visuelle",
+          "Où placer dans l'arborescence ? Actuellement standalone /remboursement-recharge-domicile/ — possible re-parent à /flottes/ ou /solutions/"
+        ]
       }
     }
   },
@@ -6748,6 +6787,11 @@
       "version_design": "v2 POSTER (refonte visuelle): typo géante d'accroche, illustrations SVG (borne+câble recto, dashboard smartphone verso), aplats violet/jaune/ink, texte minimal. Remplace la v1 jugée trop textuelle.",
       "recto_accroche": "Posez la borne. Encaissez chaque mois.",
       "verso_accroche": "Pas qu'une prise. Pilotez tout."
+    }
+  },
+  "infrastructure": {
+    "wp_deploy": {
+      "page_allowlist_added_22657": "2026-06-15 — landing remboursement recharge domicile"
     }
   }
 }
