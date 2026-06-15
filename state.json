@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.119",
+    "version": "1.120",
     "updated": "2026-06-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-15",
+        "version_from": "1.119",
+        "version_to": "1.120",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Tarification Supervision IRVE : tier Essential 4,90 € → 5,90 € HT/PDC/mois (mise à jour OFFICIELLE par Dominique)",
+          "Page 22657 /remboursement-recharge-domicile/ : restauration de 3 tiers de prix (Essential 5,90 / Pro 14,90 / Pro+ Sur devis)",
+          "Page 22462 /accueil/ (homepage-2) : Essential 4,90 → 5,90 (Pro 14,90 intact)",
+          "Page 22463 /supervision-3/ : Essential 4,49 → 5,90 (autres tiers 14,49 / 24,49 / 54,49 intacts — voir incohérence ci-dessous)",
+          "Memory edit ajouté : tier Essential 5,90 €, règle des 3 plans (Essential/Pro/Pro+ Sur devis) pour toutes les pages tarifs"
+        ]
+      },
       {
         "date": "2026-06-15",
         "version_from": "1.118",
@@ -268,7 +281,7 @@
         "changes": [
           "CORRECTION MAJEURE: GMV réel trailing 12 mois = 552k€ (pas 835k€ estimé avant qui extrapolait un mois haute-saison × 12).",
           "Données réelles API Monta 12 mois: 552k€ GMV, 63484 charges, 1,11M kWh, coût Monta 146k€/an (126k fixe + 20k variable).",
-          "% GMV capté par Monta = 27% (dont 23% pour le fixe seul). Coût fixe = 20,4€/PdC actif/mois vs Essential 4,90€.",
+          "% GMV capté par Monta = 27% (dont 23% pour le fixe seul). Coût fixe = 20,4€/PdC actif/mois vs Essential 5,90€.",
           "Saisonnalité ×5 (été 92k€/mois vs hiver 18k€/mois) → argument fixe pénalisant en basse saison.",
           "Point support acté: IA Monta N1 + N2 interne, pourparler pour support N2 Monta → à négocier dans le package.",
           "Projection growth recalibrée sur ratio réel 1071€/PdC actif/an: GMV 1,3M (M12) / 2,0M (M24) / 2,8M (M36).",
@@ -474,7 +487,7 @@
         "version_to": "1.83",
         "author": "Claude PM (claude.ai)",
         "changes": [
-          "CATALOGUE SUPERVISION COMPLET acté depuis PDF CS_2026092 (source de vérité): 4 forfaits (Essential 4,90/Pro 14,90/Pro Plus 24,90/Transit 54,90), 6 options CPQ, mise en service complète, 3 modalités paiement, engagement 12/24/36 mois.",
+          "CATALOGUE SUPERVISION COMPLET acté depuis PDF CS_2026092 (source de vérité): 4 forfaits (Essential 5,90/Pro 14,90/Pro Plus 24,90/Transit 54,90), 6 options CPQ, mise en service complète, 3 modalités paiement, engagement 12/24/36 mois.",
           "NOMENCLATURE KIT FINALE: Kit OZECAR (49€, 1 borne incluse) + Kit Borne (29€, par borne supp). Termes obsolètes interdits: Kit Master/Unit/OZKM/OZKU/Kit Site/Kit de Supervision.",
           "Frais d'activation 79€ → OFFERT commercialement (remise 100%, total 0€).",
           "Infos juridiques corrigées: capital 76 679,82€, adresse OPÉRATIONNELLE 1330 Av G de la Lauzière Europarc Pichaury Bât B5 13290 Aix (pour docs commerciaux), hello@/legal@ozecar.fr, IBAN/BIC, tribunal Bastia, partenaire paiement Monta ApS.",
@@ -1520,7 +1533,21 @@
         "sku_internal": "OZKU",
         "rules": "Vendu seul (réappro). À partir de la 2e borne du site."
       }
-    }
+    },
+    "supervision_tiers": {
+      "essential": {
+        "price": "5,90 € HT/PDC/mois",
+        "note": "Mis à jour 2026-06-15 (était 4,90 €)"
+      },
+      "pro": {
+        "price": "14,90 € HT/PDC/mois"
+      },
+      "pro_plus": {
+        "price": "Sur devis"
+      }
+    },
+    "display_rule": "Toutes les pages tarifs affichent 3 plans : Essential, Pro, Pro+ (dernier = Sur devis)",
+    "last_updated": "2026-06-15"
   },
   "partner_program": {
     "_note": "Programme partenaires OZECAR v1.0 conçu en mai 2026. 2 modèles : B (installateur certifié, revendeur) et A (apporteur d'affaires).",
@@ -2906,9 +2933,16 @@
               "Suppression du lien mailto:hello@ozecar.fr du CTA final",
               "Section pricing simplifiée : 3 tiers (Essential 5,90€ / Pro 14,90€ / Pro+) → 1 seul block 'À partir de 5,90€ HT/mois/collaborateur'"
             ]
+          },
+          {
+            "date": "2026-06-15",
+            "changes": [
+              "Restoration de 3 tiers de prix (suite mauvaise interprétation précédente où j'avais simplifié à 1 seul)",
+              "Essential: 5,90 € HT/mois/collab · Pro: 14,90 € HT/mois/collab (featured) · Pro+: Sur devis"
+            ]
           }
         ],
-        "pricing_display": "Single block (À partir de 5,90 € HT/mo/collab)"
+        "pricing_display": "3 tiers (Essential 5,90 € / Pro 14,90 € / Pro+ Sur devis)"
       }
     },
     "navigation": {
@@ -6930,6 +6964,19 @@
         22657,
         "autres pages avec CTA Demander une démo"
       ]
+    }
+  },
+  "flags": {
+    "supervision_3_pricing_inconsistency": {
+      "page_id": 22463,
+      "url": "https://staging.ozecar.fr/supervision-3/",
+      "noted_at": "2026-06-15",
+      "description": "La page supervision-3 affiche 4 tiers chiffrés (Essential 5,90 / Pro 14,49 / Pro+ 24,49 / Enterprise 54,49) au lieu des 3 tiers officiels (Essential 5,90 / Pro 14,90 / Pro+ Sur devis). À aligner avec la politique de pricing officielle.",
+      "to_do": [
+        "Aligner les tiers : passer de 4 tiers chiffrés à 3 tiers (Essential 5,90 / Pro 14,90 / Pro+ Sur devis)",
+        "Soit retirer le tier 'Enterprise 54,49' et passer Pro+ à 'Sur devis', soit valider une nouvelle structure 4 tiers"
+      ],
+      "blocked_on": "Validation Dominique avant restructuration"
     }
   }
 }
