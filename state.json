@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.117",
+    "version": "1.118",
     "updated": "2026-06-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-15",
+        "version_from": "1.117",
+        "version_to": "1.118",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Ajout icône menu nav pour 'Recharge à domicile' : maison + éclair (fond vert #E1F4EA / stroke #1A7A4C)",
+          "Patch wp-content/themes/ozecar-child/inc/nav-render.php : entrée 'remboursement-recharge-domicile' dans $i de ozecar_nav_icon_sm()",
+          "Description menu item 22658 settée : 'Véhicules de fonction · 5,90 €/mo' (apparaît en <span> à côté du label, comme les autres items)",
+          "Documenté le mapping icônes dans state.navigation (fichier + fonctions) pour les futurs ajouts d'items menu"
+        ]
+      },
       {
         "date": "2026-06-15",
         "version_from": "1.116",
@@ -2897,8 +2909,17 @@
         "parent_menu_item_id": 22534,
         "parent_label": "Nos solutions",
         "order": 6,
-        "note": "Item ajouté en fin de Nos solutions (après Boutique). Réordonner via WP admin Menus si besoin de le placer avant Boutique."
-      }
+        "note": "Item ajouté en fin de Nos solutions (après Boutique). Réordonner via WP admin Menus si besoin de le placer avant Boutique.",
+        "icon_added": true,
+        "icon": "Maison + éclair, fond #E1F4EA (vert clair), stroke #1A7A4C (vert foncé)",
+        "description": "Véhicules de fonction · 5,90 €/mo"
+      },
+      "icons_mapping_file": "wp-content/themes/ozecar-child/inc/nav-render.php",
+      "icons_mapping_functions": {
+        "ozecar_nav_icon_sm": "Icônes du dropdown compact (.nav-dropdown-sm) — Nos solutions, Secteurs. Match par slug d'URL.",
+        "ozecar_nav_icon_grid": "Icônes du dropdown grid (.dd-grid) — Ressources. Match par slug puis fallback sur titre (newsletter/livres/recherch/ocpp)."
+      },
+      "icons_mapping_note": "Pour ajouter une icône à un nouvel item du menu : éditer le tableau $i dans ozecar_nav_icon_sm() (slug => SVG HTML)."
     },
     "supervision_cross_link": {
       "host_page_id": 22463,
