@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.112",
+    "version": "1.113",
     "updated": "2026-06-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-15",
+        "version_from": "1.112",
+        "version_to": "1.113",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Flyer Leroy Merlin refondu en v2 POSTER (visuel): accroche typo géante, illustrations SVG borne+dashboard, aplats de couleur, texte minimal. La v1 était trop textuelle.",
+          "Recto installateur 'Posez la borne. Encaissez chaque mois.' / Verso client 'Pas qu'une prise. Pilotez tout.'"
+        ]
+      },
       {
         "date": "2026-06-15",
         "version_from": "1.111",
@@ -6734,7 +6744,10 @@
         "Créer 2 landing pages dédiées (ou 1 avec 2 entrées) avec form HubSpot taggé source=flyer LM",
         "Vérifier que rien dans le parcours d'activation n'expose le backend (marque blanche)"
       ],
-      "todo_diff": "Décision impression: en interne (HP Color LaserJet M454dw + Clairefontaine DCP A5 160g) ou imprimeur pro. A5 recto-verso, papier épais recommandé."
+      "todo_diff": "Décision impression: en interne (HP Color LaserJet M454dw + Clairefontaine DCP A5 160g) ou imprimeur pro. A5 recto-verso, papier épais recommandé.",
+      "version_design": "v2 POSTER (refonte visuelle): typo géante d'accroche, illustrations SVG (borne+câble recto, dashboard smartphone verso), aplats violet/jaune/ink, texte minimal. Remplace la v1 jugée trop textuelle.",
+      "recto_accroche": "Posez la borne. Encaissez chaque mois.",
+      "verso_accroche": "Pas qu'une prise. Pilotez tout."
     }
   }
 }
