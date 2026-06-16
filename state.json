@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.122",
+    "version": "1.123",
     "updated": "2026-06-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-16",
+        "version_from": "1.122",
+        "version_to": "1.123",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Diagnostic inbound: 9 forms tous thank_you, 0 nurturing, 0 séquence, newsletter non envoyée",
+          "Attribution aveugle (tout DIRECT_TRAFFIC) → création prop ozecar_origine (Origine du lead) sur Contact+Deal",
+          "Drift corrigé: ozecar_origine/ozecar_profil/partner_referral_source étaient absentes malgré claim contraire",
+          "Décision: nurturing via email marketing NATIF HubSpot (pas Brevo); emails en UI (API ne peut pas), Make=glue",
+          "Installateurs: confirmé via deal_for_partner; manque partner_referral_source/referrer_id"
+        ]
+      },
       {
         "date": "2026-06-16",
         "version_from": "1.121",
@@ -2215,6 +2228,33 @@
         ]
       },
       "devis_alignement": "Le devis/CPQ suit CS_2026092 (4 forfaits: Essential 4,90 privé / Pro 14,90 / Pro+ 24,90 / Transit 54,90 + options wallet 5€, SIM 2€, assistance 24/7), PAS les 3 plans du site public."
+    },
+    "inbound_leadgen_diagnosis_2026_06_16": {
+      "date": "2026-06-16",
+      "constat_capture": "9 formulaires HubSpot live (portal 143920450, eu1): Newsletter, Demande de contact, Livres blancs, Kit OZECAR Installateurs IRVE, Supervision B2B, 3x maison(individuelle/copro/professionnel), 1 vierge. TOUS postSubmitAction=thank_you, AUCUN email de suivi, AUCUNE séquence.",
+      "constat_nurturing": "Inexistant. Soumission form → contact créé (lifecycle=lead) → page merci → rien. Pas de welcome, pas de livraison PDF par mail, pas de relance. Aucun scénario Make ne traite les forms.",
+      "constat_newsletter": "Le form collecte des emails mais rien n'est envoyé (aucun envoi récurrent câblé).",
+      "constat_attribution": "Contacts récents tous en hs_analytics_source=DIRECT_TRAFFIC → pixel de tracking HubSpot probablement non/mal installé sur le site → attribution canal aveugle. Seul hs_object_source_label fiable (FORM vs MEETINGS). Pour appels/salons: aucune source auto.",
+      "drift_state_corrige": {
+        "_note": "hubspot_props_creation_blocked affirmait avoir créé ozecar_origine + ozecar_profil (Contact) et partner_referral_source (Deal). VERIFICATION LIVE 2026-06-16: ces 3 props étaient ABSENTES (404). Le changelog v<=1.x était inexact sur ce point.",
+        "ozecar_profil_contact": "TOUJOURS MANQUANTE",
+        "partner_referral_source_deal": "TOUJOURS MANQUANTE",
+        "partner_referrer_id_deal": "à vérifier/créer",
+        "deal_for_partner": "EXISTE (ok)"
+      },
+      "executé_2026_06_16": [
+        "Création prop 'ozecar_origine' (Origine du lead, enum select) sur CONTACT et DEAL. Options: formulaire_web, appel_entrant, recommandation, partenaire_installateur, linkedin, salon_evenement, reprise_sourcing_cpo, autre"
+      ],
+      "decision_nurturing": {
+        "moteur": "Email marketing NATIF HubSpot (confirmé disponible côté Dominique dans son offre Starter). PAS Brevo, PAS d'add-on externe.",
+        "limite_api": "L'API/MCP ne peut PAS créer les emails marketing ni les workflows (objet CAMPAIGN=REQUIRES_ACCOUNT_MODIFICATION, aucun outil d'envoi exposé). → emails rédigés dans l'UI HubSpot par Dominique (PM fournit copie+specs). Make = glue (tag origine, routage liste, création deal, Slack/PandaDoc).",
+        "plan": [
+          "Niveau 1 (rapide, natif): activer un email de suivi par formulaire — Livres blancs (livre le PDF), Newsletter (welcome/confirm), Contact (accusé). Réglage form settings.",
+          "Niveau 2 (natif si tier le permet): séquence nurturing courte par type de lead (à construire en UI HubSpot, specs PM).",
+          "Niveau 3 (Make): scénario soumission form → set ozecar_origine + lifecycle + (installateur) deal_for_partner + Slack notif. Routage vers la bonne liste/segment."
+        ]
+      },
+      "installateurs_pipeline": "Confirmé: pas de 3e pipeline (Starter cap 2). Installateurs gérés dans L&Q + Activation via deal_for_partner=true (existe). MANQUE: partner_referral_source + partner_referrer_id (attribution installateur référent + bounty) → non créées, à faire pour rendre le programme partenaire mesurable."
     }
   },
   "pages_html": {
