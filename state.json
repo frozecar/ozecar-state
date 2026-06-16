@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.124",
+    "version": "1.125",
     "updated": "2026-06-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-16",
+        "version_from": "1.124",
+        "version_to": "1.125",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Funnel routing validé: newsletter/livre blanc = contact+liste (pas de deal); forms intention = deal 'Formulaire reçu'; demo = deal 'Démo planifiée'; Lead qualifié = geste manuel"
+        ]
+      },
       {
         "date": "2026-06-16",
         "version_from": "1.123",
@@ -2283,6 +2292,20 @@
         "Customiser email Meetings (Dominique, texte fourni par PM)",
         "Confirmer/renommer channel"
       ]
+    },
+    "funnel_routing_validé_2026_06_16": {
+      "date": "2026-06-16",
+      "validé_par": "Dominique (oui)",
+      "regles": {
+        "newsletter": "Contact + liste UNIQUEMENT. PAS de deal (curieux, pas opportunité).",
+        "livre_blanc": "Contact + liste UNIQUEMENT. PAS de deal.",
+        "demande_contact": "Crée deal L&Q stage 'Formulaire reçu' (5215721685).",
+        "supervision_b2b_form": "Crée deal L&Q stage 'Formulaire reçu'.",
+        "installateur_form": "Crée deal L&Q stage 'Formulaire reçu' + deal_for_partner=true.",
+        "lead_qualifie": "Geste MANUEL: Dominique/ME examine un deal 'Formulaire reçu' → qualifie (5215721686) ou jette.",
+        "booking_demo": "Crée deal directement stage 'Démo planifiée' (5215721687). Peut sauter les 2 premières étapes (intention directe)."
+      },
+      "principe": "Un deal = une vraie opportunité commerciale. On ne pollue pas le pipeline avec les leads marketing (newsletter/livre blanc)."
     }
   },
   "pages_html": {
