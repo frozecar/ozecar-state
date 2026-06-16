@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.121",
-    "updated": "2026-06-15",
+    "version": "1.122",
+    "updated": "2026-06-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-16",
+        "version_from": "1.121",
+        "version_to": "1.122",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Audit workflow HubSpot 2 pipelines: L&Q 18 deals gelés au stage terminal, default vide, rupture handoff funnel↔activation",
+          "deal_type += 'reprise' + création prop reprise_pdc_count (via proxy)",
+          "Deal Castelli retagué reprise",
+          "Cible 2 pipelines validée (Acquisition A / Activation B) + handoff Make = prochain build"
+        ]
+      },
       {
         "date": "2026-06-15",
         "version_from": "1.120",
@@ -2165,7 +2177,45 @@
       "zaptec_circuit_id (texte)",
       "zaptec_charger_id (texte)"
     ],
-    "custom_properties_partner_todo_v110": "Cf partner_program.hubspot_properties_company_to_create et partner_program.hubspot_properties_deal_to_create"
+    "custom_properties_partner_todo_v110": "Cf partner_program.hubspot_properties_company_to_create et partner_program.hubspot_properties_deal_to_create",
+    "workflow_rearchitecture_2026_06_16": {
+      "date": "2026-06-16",
+      "validé_par": "Dominique (go)",
+      "diagnostic": {
+        "lq_pipeline_3747862733": "18 deals ~155k€ TOUS bloqués au stage terminal 'Kit envoyé' (5215721690) = import en masse jamais déplacé, funnel mort (0 visibilité conversion)",
+        "default_pipeline": "0 deal — pipeline activation/fulfillment câblé aux Make 01-04 mais jamais alimenté → Make 02/03/04 untested E2E car aucun deal n'y arrive",
+        "rupture": "Aucun handoff entre funnel commercial (L&Q) et chaîne activation (default). HubSpot Starter = 2 pipelines max + AUCUN Workflow natif → tout lien doit passer par Make.",
+        "quotes_natifs": "objet Quotes HubSpot mort (2 brouillons vides 2024). 100% devis via PandaDoc Content Library v3.",
+        "recurrents": "deal_origin=client_existant_extension n'est qu'un tag (2 deals), pas un process. Pas de liste cross-sell, pas de réutilisation monta_team_id pour extensions.",
+        "lq_stages_manquants": "L&Q n'a pas de closed-won ni closed-lost (se termine à 'Kit envoyé'). À compléter."
+      },
+      "cible_validée": {
+        "pipeline_A_acquisition": "L&Q remis en marche = funnel commercial unique (Nouveau lead → Qualifié → Démo planifiée → Démo réalisée → Devis envoyé → Signé → Perdu). Segmentation par deal_type. Vue sauvegardée 'Reprises' pour la thèse consolidateur sans cramer le 2e slot.",
+        "pipeline_B_activation": "default conservé tel quel (Kit commande → Kit expédié → Activation Monta/Zaptec → Contrat/abonnement → Supervision live). Make 02/03/04 visent déjà ces stages.",
+        "handoff": "Make: sur 'Signé' en A → bascule/clone du deal dans B au stage 'Kit commande'. SEUL moyen vu absence Workflows natifs. = fix à plus haut levier.",
+        "extensions": "deals client_existant_extension court-circuitent les stages démo (entrée directe Devis envoyé), réutilisent monta_team_id, entrent dans B au bon stade (pas de kit si pur ajout supervision)."
+      },
+      "executé_2026_06_16": [
+        "deal_type += option 'reprise' (PATCH via proxy hubspot.php, position 2 après supervision). Options finales: supervision, reprise, installation, accessoires, maintenance, vente_b2b",
+        "Création propriété deal 'reprise_pdc_count' (number, groupe dealinformation) — pilotage thèse consolidateur + staircase Monta",
+        "Deal Castelli (504497500371, 'offre de reprise') retagué installation → reprise"
+      ],
+      "reste_a_faire": {
+        "PM": [
+          "Spec + build Make handoff Signé(A)→Kit commande(B)",
+          "Spec + build Make 05 (démo→Claude→deal HubSpot→brouillon PandaDoc→validation Slack avant envoi)",
+          "Resync statut PandaDoc signé → stage 'Signé' dans A (Make)",
+          "Ajouter stages closed 'Signé' + 'Perdu' à L&Q (via proxy)",
+          "Repositionner les 18 deals au stage réel — DÉPEND du statut réel fourni par Dominique"
+        ],
+        "Dominique": [
+          "Donner le statut réel des 18 deals L&Q (quoted vs signé vs perdu vs kit réellement expédié) pour dégeler le funnel",
+          "Uploads PandaDoc B-LEGAL-02/03/04 + catalogue matériel Zaptec (débloque templates T2/T3/T4)",
+          "Renseigner reprise_pdc_count sur les deals reprise (ex: Castelli)"
+        ]
+      },
+      "devis_alignement": "Le devis/CPQ suit CS_2026092 (4 forfaits: Essential 4,90 privé / Pro 14,90 / Pro+ 24,90 / Transit 54,90 + options wallet 5€, SIM 2€, assistance 24/7), PAS les 3 plans du site public."
+    }
   },
   "pages_html": {
     "activation": {
