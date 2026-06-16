@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.120",
+    "version": "1.121",
     "updated": "2026-06-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-15",
+        "version_from": "1.120",
+        "version_to": "1.121",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Page 22657 /remboursement-recharge-domicile/ : revert à 1 seul plan (Essential 5,90 €) — la consigne 'la page des tarifs, 3 prix dont dernier Sur devis' visait la page tarifs supervision, pas la page remboursement (erreur d'interprétation reconnue)"
+        ]
+      },
       {
         "date": "2026-06-15",
         "version_from": "1.119",
@@ -2940,9 +2949,15 @@
               "Restoration de 3 tiers de prix (suite mauvaise interprétation précédente où j'avais simplifié à 1 seul)",
               "Essential: 5,90 € HT/mois/collab · Pro: 14,90 € HT/mois/collab (featured) · Pro+: Sur devis"
             ]
+          },
+          {
+            "date": "2026-06-15",
+            "changes": [
+              "REVERT : retour à 1 seul plan (Essential 5,90 €) suite à mon erreur d'interprétation de la consigne 'la page des tarifs, 3 prix dont dernier Sur devis' (qui visait la page tarifs supervision, pas remboursement)"
+            ]
           }
         ],
-        "pricing_display": "3 tiers (Essential 5,90 € / Pro 14,90 € / Pro+ Sur devis)"
+        "pricing_display": "Single block (À partir de 5,90 € HT/mo/collab) — comme demandé initialement par Dominique"
       }
     },
     "navigation": {
