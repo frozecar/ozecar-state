@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.123",
+    "version": "1.124",
     "updated": "2026-06-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-16",
+        "version_from": "1.123",
+        "version_to": "1.124",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Channel Slack #rdv-demo créé (C0BB057AP2S)",
+          "Spec automation booking démo: email brandé + deal L&Q Démo planifiée + notif Slack (via Make, Starter sans Workflow natif)"
+        ]
+      },
       {
         "date": "2026-06-16",
         "version_from": "1.122",
@@ -2255,6 +2265,24 @@
         ]
       },
       "installateurs_pipeline": "Confirmé: pas de 3e pipeline (Starter cap 2). Installateurs gérés dans L&Q + Activation via deal_for_partner=true (existe). MANQUE: partner_referral_source + partner_referrer_id (attribution installateur référent + bounty) → non créées, à faire pour rendre le programme partenaire mesurable."
+    },
+    "demo_booking_automation_2026_06_16": {
+      "date": "2026-06-16",
+      "statut": "EN CONSTRUCTION",
+      "objectif": "Rendre le booking démo PRO: email confirmation brandé OZECAR + deal créé dans L&Q 'Démo planifiée' + notif Slack #rdv-demo",
+      "contrainte": "HubSpot Starter = pas de Workflow natif → le deal+Slack passent par un scénario Make (polling meetings/contacts source=MEETINGS).",
+      "3_pieces": {
+        "email_confirmation": "Recommandé: customiser l'email de confirmation NATIF HubSpot Meetings (logo OZECAR, couleurs, texte) → instant, pas de double envoi. Tâche UI Dominique, PM fournit le texte. Alternative si besoin full HTML: Gmail via Make (mais désactiver le natif + délai polling).",
+        "deal_pipeline": "Make crée un deal dans L&Q (3747862733) stage 'Démo planifiée' (5215721687), associe le contact, set ozecar_origine + deal_for_partner si form installateur.",
+        "slack_notif": "Make poste dans #rdv-demo (C0BB057AP2S) à chaque booking: nom, société, date RDV, lien fiche HubSpot."
+      },
+      "trigger_make": "Watch Meetings (ou Watch Contacts filtré hs_object_source_label=MEETINGS) — polling ~15 min sur Make Core.",
+      "reste": [
+        "Construire scénario Make (PM)",
+        "Vérifier connexion Slack dans Make (PM)",
+        "Customiser email Meetings (Dominique, texte fourni par PM)",
+        "Confirmer/renommer channel"
+      ]
     }
   },
   "pages_html": {
@@ -7069,6 +7097,13 @@
         22657,
         "autres pages avec CTA Demander une démo"
       ]
+    },
+    "slack_channels": {
+      "rdv-demo": {
+        "id": "C0BB057AP2S",
+        "created": "2026-06-16",
+        "purpose": "Notif à chaque réservation de démo (booking HubSpot Meetings)"
+      }
     }
   },
   "flags": {
