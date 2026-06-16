@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.125",
+    "version": "1.126",
     "updated": "2026-06-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-16",
+        "version_from": "1.125",
+        "version_to": "1.126",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Email confirmation démo brandé OZECAR (sujet/titre/intro/avatar entreprise) sauvegardé sur ozecar-demo/1",
+          "DÉCOUVERTE: l'expéditeur est dominique@ozecar.fr (perso, pas générique). Native HubSpot lie le From à l'organisateur. Route générique = décision Dominique"
+        ]
+      },
       {
         "date": "2026-06-16",
         "version_from": "1.124",
@@ -2291,7 +2301,22 @@
         "Vérifier connexion Slack dans Make (PM)",
         "Customiser email Meetings (Dominique, texte fourni par PM)",
         "Confirmer/renommer channel"
-      ]
+      ],
+      "email_confirmation_branding": {
+        "date": "2026-06-16",
+        "fait_par": "PM via Claude in Chrome (UI HubSpot)",
+        "page": "Démo OZECAR (clone), slug ozecar-demo/1, link 22392219 (celle utilisée sur le site)",
+        "modifs_sauvegardees": [
+          "Sujet: 'Votre démo OZECAR est confirmée ✅'",
+          "Titre de confirmation: 'Votre démo OZECAR est confirmée'",
+          "Image: bascule Avatar organisateur → Avatar de l'entreprise (retire le visage de Dominique)",
+          "Corps: ajout intro 'Bonjour, merci d'avoir réservé une démo OZECAR...' au-dessus des détails (variables Date/Heure/Emplacement/Email intactes)"
+        ],
+        "limite_editeur": "Impossible d'insérer la signature/section prep en fin de corps (l'éditeur natif BÊTA ne pose pas le curseur après la dernière variable). Non bloquant.",
+        "PROBLEME_EXPEDITEUR": "L'aperçu révèle De: dominique@ozecar.fr — l'email de confirmation part de l'adresse PERSO de Dominique, PAS d'une adresse générique (contrairement à ce qu'il pensait). HubSpot lie l'expéditeur de la confirmation à l'ORGANISATEUR de la réunion (Dominique). Impossible de mettre une adresse générique ici sans (a) créer un user HubSpot générique comme organisateur (mais le RDV irait sur SON agenda, pas celui de Dominique), ou (b) désactiver la confirmation native et envoyer depuis une boîte générique via Make (nécessite la boîte ex: contact@ozecar.fr + accepte un léger délai).",
+        "logo": "Avatar entreprise sélectionné mais aucun logo ne s'affiche dans l'aperçu → logo société probablement non configuré dans Paramètres > Branding. À uploader si on veut le logo en en-tête.",
+        "decision_attendue_dominique": "Quelle route pour l'expéditeur générique (user HubSpot dédié vs Make+boîte générique) + dispose-t-il d'une boîte générique (contact@/hello@/demo@ozecar.fr) ?"
+      }
     },
     "funnel_routing_validé_2026_06_16": {
       "date": "2026-06-16",
