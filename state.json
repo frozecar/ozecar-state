@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.130",
+    "version": "1.131",
     "updated": "2026-06-17",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-17",
+        "version_from": "1.130",
+        "version_to": "1.131",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Scénario 05 corrigé (outputProperties array) → tourne sans erreur. Polling 60s. Confirmation native HubSpot DÉSACTIVÉE (Make 05 = seule confirmation). À valider sur 1 booking nouvelle adresse."
+        ]
+      },
       {
         "date": "2026-06-17",
         "version_from": "1.129",
@@ -2208,7 +2217,7 @@
     "05": {
       "id": 6219549,
       "name": "05 - Booking démo → Email hello@ + Deal L&Q",
-      "status": "INACTIF (créé, valide, pas encore activé)",
+      "status": "ACTIF (corrigé: outputProperties en array). Polling 60s.",
       "tested": false,
       "created": "2026-06-17",
       "team": 197685,
@@ -2228,7 +2237,10 @@
         "Associer le deal au contact (CreateAssociation) - à ajouter",
         "Gérer aussi bookings de contacts EXISTANTS (v1 = nouveaux contacts only)",
         "Une fois validé: désactiver confirmation native HubSpot (part de l'adresse perso)"
-      ]
+      ],
+      "fix_applique": "outputProperties doit être un array, pas une chaîne CSV. Corrigé v scénario 07:33.",
+      "confirmation_native": "DÉSACTIVÉE le 2026-06-17 (toggle E-mail de confirmation OFF sur page démo ozecar-demo/1). Make 05 = seule confirmation désormais.",
+      "a_valider": "1 booking avec NOUVELLE adresse → vérifier email depuis hello@ + deal créé. (run du 07:35 = pas de contact neuf, epoch après tester2)"
     }
   },
   "hubspot": {
