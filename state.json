@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.131",
+    "version": "1.132",
     "updated": "2026-06-17",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-17",
+        "version_from": "1.131",
+        "version_to": "1.132",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Proposé grille maintenance terrain 3 niveaux (N1 3€ / N2 8€ / N3 15€ PDC/mois) — PENDING validation Dominique",
+          "Rédigé brique B-PROD-05 Maintenance (Content Library v3)",
+          "Produit modèle devis visuel v2 (supervision+maintenance+options) et build kit PandaDoc",
+          "Noté: pas de connecteur PandaDoc MCP, montage manuel UI requis"
+        ]
+      },
       {
         "date": "2026-06-17",
         "version_from": "1.130",
@@ -6289,6 +6301,32 @@
       },
       "engagement": "12 / 24 / 36 mois au choix. Préavis 3 mois. Pas de tacite reconduction. ADVENIR = 36 mois obligatoire.",
       "cadre_juridique": "Mandat de gestion art. 1984 Code civil. Révision prix indice Syntec 320.3. Confidentialité + référence client 2 ans post-contrat. Intérêts retard taux légal +10pts."
+    },
+    "maintenance_terrain_proposal": {
+      "statut": "PROPOSÉ — à valider par Dominique (aucune grille maintenance validée auparavant)",
+      "date_proposition": "2026-06-17",
+      "auteur": "Claude PM (claude.ai)",
+      "modele_facturation": "récurrent par PDC/mois, même cadence que la supervision (Pennylane SEPA)",
+      "positionnement": "Couche service terrain en add-on. Supervision = logiciel + IA prédictive distante (déjà dans forfaits). Maintenance N1-N3 = intervention humaine/physique.",
+      "niveaux": {
+        "N1_monitoring": {
+          "prix_pdc_mois": 3.0,
+          "scope": "Surveillance matériel, alertes, diagnostic/redémarrage à distance, tickets, hotline exploitant <4h ouvrées. Aucune intervention site (sur devis si besoin)."
+        },
+        "N2_preventif": {
+          "prix_pdc_mois": 8.0,
+          "scope": "N1 + 1 visite préventive/an (contrôle, serrage, test sécurité, MAJ firmware, rapport photo) + curatif site tarif membre, SLA <5 j ouvrés."
+        },
+        "N3_curatif_sla": {
+          "prix_pdc_mois": 15.0,
+          "scope": "N2 + 2 visites préventives/an + curatif inclus (déplacement+MO ; pièces hors garantie au coûtant) + SLA <48h ouvrées + hotline prioritaire + interlocuteur dédié. Astreinte 24/7 <24h en option."
+        }
+      },
+      "sla_alignes_sur": "support_architecture (exploitant <4h ouvrées)",
+      "dependances": [
+        "Validation grille par Dominique",
+        "Upload contrat maintenance pour B-LEGAL-02"
+      ]
     }
   },
   "legal_company_info": {
@@ -6414,7 +6452,16 @@
         "installation": "T4 Installation complète",
         "maintenance": "T3 (Mat + Sup + Maint) ou contrat maintenance autonome",
         "accessoires": "Bon de commande simple hors scope CPQ lourd"
-      }
+      },
+      "briques_redigees": {
+        "B-PROD-05_maintenance": {
+          "statut": "RÉDIGÉE (texte 3 niveaux) — tarifs en attente validation",
+          "date": "2026-06-17"
+        }
+      },
+      "devis_modele_visuel": "OZECAR_Modele_Devis_Supervision_v2.html (rendu cible T3, assemblé)",
+      "build_kit_pandadoc": "OZECAR_PandaDoc_Build_Kit_Devis.md (catalogue produits + tokens + table de prix + briques)",
+      "note_montage": "Montage manuel UI PandaDoc requis (pas de connecteur PandaDoc MCP). Build kit fournit tout le contenu à coller."
     }
   },
   "payment_architecture": {
