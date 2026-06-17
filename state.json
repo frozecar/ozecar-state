@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.126",
+    "version": "1.127",
     "updated": "2026-06-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-16",
+        "version_from": "1.126",
+        "version_to": "1.127",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "RÈGLE: toujours logo officiel OZECAR, jamais généré. SVG officiel hébergé (logo-ozecar-officiel.svg). Email confirmation refait avec en-tête clair + vrai logo. Caveat PNG pour email."
+        ]
+      },
       {
         "date": "2026-06-16",
         "version_from": "1.125",
@@ -7165,6 +7174,16 @@
         "Soit retirer le tier 'Enterprise 54,49' et passer Pro+ à 'Sur devis', soit valider une nouvelle structure 4 tiers"
       ],
       "blocked_on": "Validation Dominique avant restructuration"
+    }
+  },
+  "design_system": {
+    "logo_officiel": {
+      "regle": "TOUJOURS le logo officiel OZECAR. JAMAIS générer/recréer/substituer par du texte ou wordmark.",
+      "fichier_source": "logo_OZe_final.svg (.png), fourni par Dominique 2026-06-16",
+      "svg_heberge": "https://ozecar.fr/wp-content/uploads/ozecar/logo-ozecar-officiel.svg",
+      "variante": "dark-on-light (mascotte #121A28 + visage blanc + texte) → fond clair/blanc obligatoire, invisible sur fond sombre",
+      "viewBox": "0 0 5001 1029 (ratio ~4.86:1)",
+      "email_caveat": "Les clients mail ne rendent pas le SVG de façon fiable (Gmail/Outlook). Pour l'email il faut une version PNG hébergée. wp-deploy bloque .png → héberger le PNG sur WP Media ou HubSpot Files."
     }
   }
 }
