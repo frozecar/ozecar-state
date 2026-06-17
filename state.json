@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.132",
+    "version": "1.133",
     "updated": "2026-06-17",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-17",
+        "version_from": "1.132",
+        "version_to": "1.133",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Pivot devis -> HubSpot natif (variables {{ }} + CPQ line items)",
+          "Audit Product Library: périmée (prix hors champ standard, nomenclature obsolète, prix faux)",
+          "DÉTECTÉ fuite marque blanche: produit QR Code décrit avec 'Monta' (id 413892985074) — fix en attente validation",
+          "Produit modèle devis HubSpot + build kit CPQ",
+          "Préparé plan d'écriture Product Library (créer/corriger) — en attente go Dominique"
+        ]
+      },
       {
         "date": "2026-06-17",
         "version_from": "1.131",
@@ -7296,5 +7309,54 @@
       "ne_pas_utiliser": "logo_hor_bw_tr.png (mauvais fichier, corrigé 2026-06-16)",
       "variante": "dark-on-light → fond clair/blanc obligatoire, invisible sur fond sombre"
     }
+  },
+  "hubspot_cpq": {
+    "date": "2026-06-17",
+    "auteur": "Claude PM (claude.ai)",
+    "decision": "Devis pivote sur HubSpot natif : variables {{ }} + CPQ (Product Library + line items). Remplace l'approche tokens PandaDoc pour le canal devis HubSpot.",
+    "dispo_mcp": {
+      "PRODUCT": "read/write",
+      "LINE_ITEM": "read/write",
+      "DEAL": "read/write",
+      "QUOTE": "read; write REQUIRES_REAUTHORIZATION",
+      "QUOTE_TEMPLATE": "read; write REQUIRES_REAUTHORIZATION"
+    },
+    "product_library_audit": {
+      "statut": "PÉRIMÉE — 7 produits, prix dans champ custom hs_price_eur (pas le champ standard price → CPQ ne calcule pas), nomenclature obsolète (Pack Basic/QR au lieu de Kit OZECAR/Kit Borne), prix faux (SIM 5 vs 6,50 ; RFID 45 vs 59)",
+      "produits_a_conserver": [
+        "Zaptec Go 849",
+        "Zaptec Pro 1349",
+        "Colonne Zaptec 300"
+      ],
+      "produits_a_corriger": [
+        "SIM-PDC (5->6,50, set price)",
+        "RFID-PACK-10 (45->59, set price)",
+        "QR-PDC (retirer Monta de desc puis archiver)"
+      ],
+      "produits_a_creer": [
+        "Kit OZECAR 49",
+        "Kit Borne 29",
+        "Activation 79 remise 100%",
+        "Sup Essential/Pro/Pro+/Transit",
+        "Maintenance N1/N2/N3 (prix à valider)",
+        "Options Data/Wallet/CSM",
+        "Routeur OZECAR 249",
+        "Mise en service site 450"
+      ]
+    },
+    "fuite_marque_blanche": {
+      "gravite": "Violation règle #2",
+      "objet": "Produit QR Code (id 413892985074) — description contient 'QR Code deeplink Monta recommandé'",
+      "fix": "Réécrire description sans Monta puis archiver le produit (QR bundlé dans les kits). EN ATTENTE validation Dominique."
+    },
+    "deliverables": [
+      "OZECAR_Modele_Devis_HubSpot_CPQ.html (modèle visuel, variables HubSpot + sortie line items)",
+      "OZECAR_HubSpot_CPQ_Build_Kit.md (catalogue cible, propriétés deal, tokens, étapes UI)"
+    ],
+    "manuel_dominique": [
+      "Créer template devis custom (UI, Sales Hub Pro+)",
+      "Créer propriétés deal: station_count, pdc_count, forfait_supervision, niveau_maintenance",
+      "Reconnecter connecteur HubSpot si création de devis par MCP souhaitée"
+    ]
   }
 }
