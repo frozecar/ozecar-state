@@ -1,12 +1,26 @@
 {
   "_meta": {
-    "version": "1.133",
+    "version": "1.134",
     "updated": "2026-06-17",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-17",
+        "version_from": "1.133",
+        "version_to": "1.134",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "GRILLE TARIFAIRE CANONIQUE figée (pricing_canonical_2026_06_17) — validée ligne par ligne par Dominique. Source de vérité unique.",
+          "Forfaits: Essential 4,90 (->5,90 annuel/6,90 mensuel au 15.07.2026), Pro 14,90/17,50, Pro+ 24,90/29,90, Transit 54,90/64,90 (Data incluse). Tarif annuel vs mensuel par forfait.",
+          "Maintenance restructurée en 5 niveaux N0-N4 (0/4/9/18/24 €/PDC/mois).",
+          "Options ajoutées: Module Flotte (pack 10=20€, pack 50=50€), Rapport mensuel automatisé 19€, Accès API & Webhooks 49€. Smart Charging = feature incluse non facturée.",
+          "Anciens blocs pricing / supervision_complet_v2026_05_27 / maintenance_terrain_proposal marqués SUPERSEDED.",
+          "_meta.canonical_pricing pointe vers le nouveau bloc."
+        ]
+      },
       {
         "date": "2026-06-17",
         "version_from": "1.132",
@@ -1293,7 +1307,8 @@
       }
     },
     "last_updated": "2026-06-11T17:25:00Z",
-    "last_action": "Logo OZECAR officiel SVG intégré (lb sources + WP pages + PDFs régénérés)"
+    "last_action": "Logo OZECAR officiel SVG intégré (lb sources + WP pages + PDFs régénérés)",
+    "canonical_pricing": "pricing_canonical_2026_06_17"
   },
   "project": {
     "name": "OZECAR",
@@ -1680,7 +1695,8 @@
       }
     },
     "display_rule": "Toutes les pages tarifs affichent 3 plans : Essential, Pro, Pro+ (dernier = Sur devis)",
-    "last_updated": "2026-06-15"
+    "last_updated": "2026-06-15",
+    "_SUPERSEDED_BY": "pricing_canonical_2026_06_17 (validation 2026-06-17). Ne plus utiliser ces prix."
   },
   "partner_program": {
     "_note": "Programme partenaires OZECAR v1.0 conçu en mai 2026. 2 modèles : B (installateur certifié, revendeur) et A (apporteur d'affaires).",
@@ -6313,7 +6329,8 @@
         "biannuelle": "Engagement 24 mois, -15% remise, virement/CB"
       },
       "engagement": "12 / 24 / 36 mois au choix. Préavis 3 mois. Pas de tacite reconduction. ADVENIR = 36 mois obligatoire.",
-      "cadre_juridique": "Mandat de gestion art. 1984 Code civil. Révision prix indice Syntec 320.3. Confidentialité + référence client 2 ans post-contrat. Intérêts retard taux légal +10pts."
+      "cadre_juridique": "Mandat de gestion art. 1984 Code civil. Révision prix indice Syntec 320.3. Confidentialité + référence client 2 ans post-contrat. Intérêts retard taux légal +10pts.",
+      "_SUPERSEDED_BY": "pricing_canonical_2026_06_17"
     },
     "maintenance_terrain_proposal": {
       "statut": "PROPOSÉ — à valider par Dominique (aucune grille maintenance validée auparavant)",
@@ -6339,7 +6356,8 @@
       "dependances": [
         "Validation grille par Dominique",
         "Upload contrat maintenance pour B-LEGAL-02"
-      ]
+      ],
+      "_SUPERSEDED_BY": "pricing_canonical_2026_06_17 (grille maintenance désormais N0-N4 validée)"
     }
   },
   "legal_company_info": {
@@ -7357,6 +7375,201 @@
       "Créer template devis custom (UI, Sales Hub Pro+)",
       "Créer propriétés deal: station_count, pdc_count, forfait_supervision, niveau_maintenance",
       "Reconnecter connecteur HubSpot si création de devis par MCP souhaitée"
-    ]
+    ],
+    "product_library_target_canonical": "Voir pricing_canonical_2026_06_17. Maintenance = 5 niveaux N0-N4 (0/4/9/18/24). Options nouvelles: module_flotte (packages 10=20€/50=50€), rapport_mensuel_automatise 19€, acces_api_webhooks 49€. Smart charging = feature incluse non facturée.",
+    "deal_properties_enums": {
+      "niveau_maintenance": [
+        "N0",
+        "N1",
+        "N2",
+        "N3",
+        "N4"
+      ]
+    }
+  },
+  "pricing_canonical_2026_06_17": {
+    "_note": "GRILLE TARIFAIRE CANONIQUE — validée ligne par ligne par Dominique le 2026-06-17. SOURCE DE VÉRITÉ unique. Prime sur pricing / catalogue_prix antérieurs (marqués superseded). Tous prix HT.",
+    "date_validation": "2026-06-17",
+    "validé_par": "Dominique",
+    "currency": "EUR",
+    "all_prices_excl_tax": true,
+    "vat_rate_fr": 0.2,
+    "forfaits_supervision": {
+      "_unit": "HT/PDC/mois",
+      "_engagement": "12 mois min",
+      "_modes_paiement": "Prix annuel = paiement à l'année ; prix mensuel = paiement mensuel. (Biannuel -15% antérieur NON recouvert par cette validation — à reconfirmer.)",
+      "essential": {
+        "label": "Essential (privé)",
+        "cible": "Bornes privées, parkings non ouverts au public",
+        "prix_jusquau_2026_07_14": 4.9,
+        "prix_des_2026_07_15": {
+          "annuel": 5.9,
+          "mensuel": 6.9
+        },
+        "frais_operateur_pct": 0,
+        "frais_operateur_pct_si_wallet": 12.5,
+        "frais_itinerance_pct": 0,
+        "options_dispo": [
+          "wallet",
+          "assistance_247",
+          "data"
+        ]
+      },
+      "pro": {
+        "label": "Pro (public)",
+        "cible": "Bornes publiques avec transaction",
+        "prix": {
+          "annuel": 14.9,
+          "mensuel": 17.5
+        },
+        "changement_15_07": false,
+        "frais_operateur_pct": 10,
+        "frais_itinerance_pct": 20,
+        "options_dispo": [
+          "data"
+        ]
+      },
+      "pro_plus": {
+        "label": "Pro+ (public)",
+        "cible": "Bornes publiques + DC >2000 kWh/mois/PDC",
+        "prix": {
+          "annuel": 24.9,
+          "mensuel": 29.9
+        },
+        "frais_operateur_pct": 8,
+        "frais_itinerance_pct": 16,
+        "options_dispo": [
+          "data"
+        ]
+      },
+      "transit": {
+        "label": "Transit (public)",
+        "cible": "Haute fréquentation + DC >4000 kWh/mois/PDC",
+        "prix": {
+          "annuel": 54.9,
+          "mensuel": 64.9
+        },
+        "frais_operateur_pct": 6,
+        "frais_itinerance_pct": 12,
+        "data_incluse": true
+      }
+    },
+    "kits": {
+      "_unit": "HT one-shot",
+      "kit_ozecar": {
+        "prix": 49.0,
+        "desc": "Kit station complet: doc, autocollants, QR paiement, 1 carte RFID, 1re borne incluse",
+        "quantite": "1 par station"
+      },
+      "kit_borne": {
+        "prix": 29.0,
+        "desc": "Par PDC supplémentaire: autocollants, QR, 1 carte RFID",
+        "quantite": "nb PDC - 1"
+      },
+      "_nomenclature": "Kit OZECAR + Kit Borne. Termes obsolètes INTERDITS: Kit Master/Unit, OZKM/OZKU public, Pack Basic, QR Code."
+    },
+    "mise_en_service": {
+      "_unit": "HT one-shot",
+      "frais_activation": {
+        "prix_affiche": 79.0,
+        "prix_commercial": 0.0,
+        "desc": "Config OCPP + tarifs + RFID + onboarding 1h visio. OFFERT (remise 100%)"
+      },
+      "carte_rfid_ozecard_incluse": {
+        "prix": 0.0
+      },
+      "pack_10_rfid_ozecard": {
+        "prix": 59.0
+      },
+      "carte_sim_ozecar": {
+        "prix": 6.5,
+        "desc": "Pour option Data"
+      },
+      "mise_en_service_site": {
+        "prix": 450.0,
+        "desc": "Déplacement technicien, jusqu'à 10 PDC"
+      },
+      "routeur_ozecar_4g": {
+        "prix": 249.0,
+        "desc": "Matériel, vente unique, préconfiguré plug&play (OZRT Teltonika RUT241 eSIM)"
+      }
+    },
+    "options_recurrentes": {
+      "data": {
+        "prix": 2.0,
+        "unit": "HT/PDC/mois",
+        "desc": "Connectivité Data 4G/5G. Option sur Essential/Pro/Pro+. Incluse sur Transit."
+      },
+      "wallet": {
+        "prix": 5.0,
+        "unit": "HT/PDC/mois",
+        "desc": "Accepter les transactions sur borne privée. Frais opérateur 12,5%. Sur Essential."
+      },
+      "assistance_247": {
+        "prix": 2.0,
+        "unit": "HT/PDC/mois",
+        "desc": "Assistance 24h/7j. Sur Essential (incluse sur forfaits public)."
+      },
+      "responsable_client_dedie": {
+        "prix": 49.0,
+        "unit": "HT/mois",
+        "desc": "CSM dédié. Option globale par compte."
+      },
+      "recharge_collaborateur_domicile": {
+        "prix": 5.9,
+        "unit": "HT/PDC/mois",
+        "desc": "Remboursement recharge domicile collaborateur."
+      },
+      "module_flotte": {
+        "unit": "HT/mois",
+        "desc": "Rattachement véhicule/session, reporting par véhicule/conducteur, accès par groupe. Facturé par package.",
+        "packages": {
+          "pack_10_vehicules": 20.0,
+          "pack_50_vehicules": 50.0
+        }
+      },
+      "rapport_mensuel_automatise": {
+        "prix": 19.0,
+        "unit": "HT/mois",
+        "desc": "Rapport PDF brandé OZECAR (conso, sessions, CA, marge) généré et envoyé auto au client chaque mois.",
+        "dependance": "Scénario Make mensuel + template PDF (WeasyPrint) à construire."
+      },
+      "acces_api_webhooks": {
+        "prix": 49.0,
+        "unit": "HT/mois",
+        "desc": "Accès API + webhooks pour intégration SI/télématique client. Sur devis pour grand compte."
+      }
+    },
+    "features_incluses_non_facturees": {
+      "smart_charging": "Pilotage énergétique (load balancing dynamique, recharge heures creuses / prix bas / CO2 faible). Mis en avant commercialement, NON facturé."
+    },
+    "maintenance": {
+      "_unit": "HT/PDC/mois",
+      "n0_sans_maintenance": {
+        "prix": 0.0,
+        "label": "Sans maintenance",
+        "scope": "Aucune surveillance. Diagnostic, déplacement, intervention SUR DEVIS."
+      },
+      "n1_monitoring": {
+        "prix": 4.0,
+        "label": "Monitoring",
+        "scope": "Surveillance à distance. Diagnostic, déplacement, intervention sur devis."
+      },
+      "n2_preventif": {
+        "prix": 9.0,
+        "label": "Préventif",
+        "scope": "Monitoring + 1 visite préventive/an. Diagnostic, déplacement, intervention curative sur devis."
+      },
+      "n3_curatif_sla48": {
+        "prix": 18.0,
+        "label": "Curatif & SLA 48h",
+        "scope": "1 visite/an + diagnostic & intervention INCLUS sous 48h. Remplacement pièces sur devis."
+      },
+      "n4_curatif_sla24": {
+        "prix": 24.0,
+        "label": "Curatif & SLA 24h",
+        "scope": "1 visite/an + diagnostic & intervention INCLUS sous 24h. Remplacement pièces sur devis."
+      }
+    }
   }
 }
