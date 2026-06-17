@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.134",
+    "version": "1.135",
     "updated": "2026-06-17",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-17",
+        "version_from": "1.134",
+        "version_to": "1.135",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Biannuel -15% CONSERVÉ (prix annuel -15%, engagement 24 mois) — ajouté au bloc canonique.",
+          "Product Library HubSpot CONSTRUITE: 22 produits créés + 3 corrigés (SIM 6,50, RFID 59, QR desc Monta retirée). 0 échec. IDs loggés.",
+          "2 produits obsolètes (Pack Basic, QR Code) à archiver manuellement (archivage non dispo MCP)."
+        ]
+      },
       {
         "date": "2026-06-17",
         "version_from": "1.133",
@@ -7385,6 +7396,43 @@
         "N3",
         "N4"
       ]
+    },
+    "product_library_built_2026_06_17": {
+      "statut": "CONSTRUITE par MCP — 22 produits créés, 3 corrigés, 0 échec. Prix sur hs_price_eur (portail multi-devises). Récurrents = recurringbillingfrequency monthly.",
+      "fuite_monta_corrigee": "Produit QR-PDC (413892985074): description Monta retirée.",
+      "ids": {
+        "OZ-KIT-OZECAR": 419966962931,
+        "OZ-KIT-BORNE": 419963358431,
+        "OZ-ACTIV": 419873555649,
+        "OZ-SUP-ESS": 419930363118,
+        "OZ-SUP-PRO": 419873555650,
+        "OZ-SUP-PROP": 419974160584,
+        "OZ-SUP-TRAN": 419873555651,
+        "OZ-MNT-N1": 419869959354,
+        "OZ-MNT-N2": 419899204817,
+        "OZ-MNT-N3": 419928561906,
+        "OZ-MNT-N4": 419875350776,
+        "OZ-OPT-DATA": 419930363121,
+        "OZ-OPT-WALLET": 419919566061,
+        "OZ-OPT-A247": 419895605494,
+        "OZ-OPT-CSM": 419899204818,
+        "OZ-OPT-DOM": 419977760963,
+        "OZ-FLT-10": 419930363122,
+        "OZ-FLT-50": 419928561907,
+        "OZ-RPT": 419983159523,
+        "OZ-API": 419963358433,
+        "OZ-RT": 419897408716,
+        "OZ-MES-SITE": 419986756852,
+        "SIM-PDC(corr)": 413813887204,
+        "RFID-PACK-10(corr)": 413887636699,
+        "QR-PDC(monta-fix)": 413892985074
+      },
+      "a_archiver_manuellement_dominique": [
+        "PACK-BASIC-PDC (413874404552) obsolète",
+        "QR-PDC (413892985074) obsolète, QR bundlé dans les kits — désormais sans fuite mais redondant"
+      ],
+      "limite_connecteur": "Archivage produit non dispo via MCP — Dominique archive les 2 obsolètes dans l'UI.",
+      "note_paiement_modes": "Produits supervision créés au prix ANNUEL de référence. Variante mensuelle (et Essential 15.07) à gérer via override de prix sur line item OU produits dédiés — décision structure CPQ à trancher."
     }
   },
   "pricing_canonical_2026_06_17": {
@@ -7397,7 +7445,7 @@
     "forfaits_supervision": {
       "_unit": "HT/PDC/mois",
       "_engagement": "12 mois min",
-      "_modes_paiement": "Prix annuel = paiement à l'année ; prix mensuel = paiement mensuel. (Biannuel -15% antérieur NON recouvert par cette validation — à reconfirmer.)",
+      "_modes_paiement": "Annuel (prix annuel), Mensuel (prix mensuel), Biannuel (prix annuel -15%, engagement 24 mois).",
       "essential": {
         "label": "Essential (privé)",
         "cible": "Bornes privées, parkings non ouverts au public",
@@ -7452,6 +7500,13 @@
         "frais_operateur_pct": 6,
         "frais_itinerance_pct": 12,
         "data_incluse": true
+      },
+      "_biannuel": {
+        "actif": true,
+        "remise_pct": 15,
+        "base": "prix annuel",
+        "engagement_mois": 24,
+        "note": "Paiement biannuel = prix annuel -15%, engagement 24 mois. Validé conservé 2026-06-17."
       }
     },
     "kits": {
