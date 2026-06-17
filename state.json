@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.135",
+    "version": "1.136",
     "updated": "2026-06-17",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-17",
+        "version_from": "1.135",
+        "version_to": "1.136",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Règle d'affichage prix figée: afficher le mensuel le moins cher (tarif annuel/mois), Annuel présélectionné, Mensuel = alternative plus chère. CPQ: mensuel via override line item. Modèle devis mis à jour (sélecteur)."
+        ]
+      },
       {
         "date": "2026-06-17",
         "version_from": "1.134",
@@ -7433,7 +7442,8 @@
       ],
       "limite_connecteur": "Archivage produit non dispo via MCP — Dominique archive les 2 obsolètes dans l'UI.",
       "note_paiement_modes": "Produits supervision créés au prix ANNUEL de référence. Variante mensuelle (et Essential 15.07) à gérer via override de prix sur line item OU produits dédiés — décision structure CPQ à trancher."
-    }
+    },
+    "cpq_payment_mode_resolution": "Prix catalogue = tarif annuel (le moins cher), affiché en mensuel, Annuel présélectionné. Mensuel = override de prix supérieur sur le line item (alternative). Reflété dans OZECAR_Modele_Devis_HubSpot_CPQ.html (sélecteur mode de paiement)."
   },
   "pricing_canonical_2026_06_17": {
     "_note": "GRILLE TARIFAIRE CANONIQUE — validée ligne par ligne par Dominique le 2026-06-17. SOURCE DE VÉRITÉ unique. Prime sur pricing / catalogue_prix antérieurs (marqués superseded). Tous prix HT.",
@@ -7507,6 +7517,11 @@
         "base": "prix annuel",
         "engagement_mois": 24,
         "note": "Paiement biannuel = prix annuel -15%, engagement 24 mois. Validé conservé 2026-06-17."
+      },
+      "_affichage_prix": {
+        "regle": "Toujours afficher le prix au MOIS le moins cher (= tarif annuel ramené au mois). Option Annuel PRÉSÉLECTIONNÉE par défaut.",
+        "mensuel": "Alternative plus chère, sélectionnable (ex: Essential 6,90 vs 4,90 annuel).",
+        "decision_par": "Dominique 2026-06-17"
       }
     },
     "kits": {
