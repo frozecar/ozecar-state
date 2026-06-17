@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.145",
+    "version": "1.146",
     "updated": "2026-06-17",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-17",
+        "version_from": "1.145",
+        "version_to": "1.146",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Make 05 debug: diagnostic verrouille via maillog. TOUS les {{1.*}} (y compris {{1.id}} et bundle entier) resolvent vides -> probleme = reference module, PAS sous-chemin propriete (hypothese sous-chemin ECARTEE).",
+          "2 causes candidates: (A) SearchContacts != module ID 1, ou (B) sortie en tableau contacts[] necessitant Iterator. Departage = lecture blueprint requise.",
+          "Blocage session: scenarios_get MCP = 'No approval received' (4x). scenarios_update exige blueprint complet -> aucun fix sans lire le blueprint. Decision: ne pas ecraser en aveugle le scenario qui tourne.",
+          "Envoi reel toujours bloque sur OZ_SMTP_PASS vide (dependance Dominique)."
+        ]
+      },
       {
         "date": "2026-06-17",
         "version_from": "1.144",
@@ -2397,7 +2409,15 @@
       ],
       "fix_applique": "outputProperties doit être un array, pas une chaîne CSV. Corrigé v scénario 07:33.",
       "confirmation_native": "DÉSACTIVÉE le 2026-06-17 (toggle E-mail de confirmation OFF sur page démo ozecar-demo/1). Make 05 = seule confirmation désormais.",
-      "a_valider": "1 booking avec NOUVELLE adresse → vérifier email depuis hello@ + deal créé. (run du 07:35 = pas de contact neuf, epoch après tester2)"
+      "a_valider": "1 booking avec NOUVELLE adresse → vérifier email depuis hello@ + deal créé. (run du 07:35 = pas de contact neuf, epoch après tester2)",
+      "debug_2026_06_17_reference_vide": {
+        "constat": "Run de debug (corps RAW JSON, champs d_*) confirme via api/maillog.txt: TOUS les chemins de reference au module 1 resolvent VIDE au runtime — d_prop_email {{1.properties.email}}, d_flat_email {{1.email}}, d_id {{1.id}}, d_prop_oid {{1.properties.hs_object_id}}, d_prop_first {{1.properties.firstname}} = tous vides. Le module HTTP s'execute pourtant (payloads logges).",
+        "diagnostic": "Le probleme n'est PAS le sous-chemin de propriete (hypothese ecartee definitivement). Comme MEME {{1.id}} et le bundle entier sont vides alors que le module HTTP tourne, la reference {{1.*}} ne pointe pas sur la sortie de SearchContacts. 2 causes racines candidates, departageables uniquement avec le blueprint: (A) SearchContacts n'a PAS l'ID interne 1 dans le blueprint (piege Make: ID interne != position) -> il faut referencer {{N.*}} avec le vrai N; (B) le module Search renvoie un TABLEAU dans 1 seul bundle (contacts[]) -> il faut un Iterator sur {{1.contacts}} puis referencer {{<iterator>.properties.email}}.",
+        "blocage_session_2026_06_17": "scenarios_get (Make MCP) renvoie 'No approval received' (4 tentatives) -> impossible de lire le blueprint. Or scenarios_update exige le blueprint COMPLET (pas de patch partiel). Donc aucun fix applicable sans soit (1) lecture blueprint (retry MCP ulterieur), soit (2) Dominique lit dans eu1.make.com le numero du module SearchContacts + sa structure de sortie (bundle simple vs tableau).",
+        "ne_pas_faire": "Ne PAS ecraser en aveugle le blueprint via scenarios_update: il valide et tourne deja, on ne peut pas le relire pour backup, et un rebuild IML hubspotcrm/http a la main reintroduirait tres probablement les BundleValidationError deja vus.",
+        "dependance_dominique_inchangee": "L'envoi reel reste bloque sur OZ_SMTP_PASS vide (send-mail.php fail-closed 503). A fournir: mdp SMTP hello@ozecar.fr OU reconnexion Google Restricted dans Make. Le mdp ne doit JAMAIS etre stocke dans state.json.",
+        "etat_propre_a_garder": "Contacts proteges ozecar_demo_confirme=true: Myriam Benaim (774418588919), Clement Gosselin (798962964698). Sujet test demo4 (800090493121) actuellement deflagge. A nettoyer en fin: contact test 800040087799 + meeting 497512738004 + api/maillog.txt + send-mail.php.bak-*."
+      }
     }
   },
   "hubspot": {
