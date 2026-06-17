@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.143",
+    "version": "1.144",
     "updated": "2026-06-17",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-17",
+        "version_from": "1.143",
+        "version_to": "1.144",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Tentative build template PandaDoc via Claude-in-Chrome: editeur NON pilotable de maniere fiable par l'agent (entree edition echoue, bouton non expose).",
+          "Template vierge 'Nouveau modele' cree + copie orpheline CS a nettoyer.",
+          "Recommandation: build kit turnkey (guidage) ou upload PDF/DOCX + pricing table native, plutot que hand-build automatise."
+        ]
+      },
       {
         "date": "2026-06-17",
         "version_from": "1.142",
@@ -7545,7 +7556,17 @@
     },
     "affichage_comparatif": "Configurateur refait en tableaux comparatifs (style v2/capture) pour supervision (15 lignes feature) ET maintenance (N0-N4). Colonnes selectionnables. Donnees prix = grille canonique; features fonctionnelles enrichies depuis CS 2026092. Fichier OZECAR_Configurateur_Devis_CPQ.html.",
     "template_pandadoc": "ASSEMBLÉ (master) -> OZECAR_Template_PandaDoc_Devis_Contrat.html : couverture+tokens, offre (comparatifs supervision 4 + maintenance N0-N4 + options bundles + mise en service), récap, modalités paiement (mensuel/annuel/biannuel -15%), CGV supervision COMPLÈTE (Monta conservé dans reversement), bloc CONDITIONNEL maintenance (si N1-N4), données station + signature unique. À charger dans PandaDoc (manuel ou via Make 02) — pas de connecteur PandaDoc direct.",
-    "deal_props_status": "BLOQUÉ scope: création propriétés deal (station_count, pdc_count, forfait_supervision, niveau_maintenance) nécessite crm.schemas.deals.write. PAT proxy = 403. Connecteur MCP n'expose pas la création de propriétés. NON bloquant pour le CPQ (line items portent les quantités). À injecter en 30s dès scope ajouté/connecteur reconnecté."
+    "deal_props_status": "BLOQUÉ scope: création propriétés deal (station_count, pdc_count, forfait_supervision, niveau_maintenance) nécessite crm.schemas.deals.write. PAT proxy = 403. Connecteur MCP n'expose pas la création de propriétés. NON bloquant pour le CPQ (line items portent les quantités). À injecter en 30s dès scope ajouté/connecteur reconnecté.",
+    "pandadoc_browser_build": {
+      "statut": "Tentative via Claude-in-Chrome. Navigateur connecte, PandaDoc loggue (compte OZECAR).",
+      "constat": "L'editeur PandaDoc N'EST PAS pilotable de maniere fiable via l'agent navigateur: entree en mode edition echoue (bouton 'Modifier le modele' non expose dans l'arbre d'accessibilite), clics pixel fragiles (viewport 1662 vs screenshot 1512). La config table de prix selectionnable + contenu conditionnel serait encore moins automatisable.",
+      "artefacts_crees": [
+        "Template vierge 'Nouveau modele' (/templates/8yufknwVuboy6BDyXuvw3U) — shell, a garder ou supprimer selon choix",
+        "Copie orpheline 'CS Contrat de Supervision - [Client] copy' (17 juin 2026) — A NETTOYER"
+      ],
+      "templates_existants_selectionnables": "Plusieurs CS Contrat de Supervision deja selectionnables (on line, [Name] cs, [Client], [Client] v2, [Client] 2 juin 2026).",
+      "chemin_recommande": "Path A: build kit PandaDoc turnkey (ordre des blocs + config pricing table selectable forfaits+N0-N4 + prix + options + tokens + regle conditionnelle) execute par Dominique dans l'editeur (rapide a la main) ou en guidage. Path B: upload PDF/DOCX assemble comme base + ajout pricing table native + tokens."
+    }
   },
   "pricing_canonical_2026_06_17": {
     "_note": "GRILLE TARIFAIRE CANONIQUE — validée ligne par ligne par Dominique le 2026-06-17. SOURCE DE VÉRITÉ unique. Prime sur pricing / catalogue_prix antérieurs (marqués superseded). Tous prix HT.",
