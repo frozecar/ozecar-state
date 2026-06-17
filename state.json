@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.139",
+    "version": "1.140",
     "updated": "2026-06-17",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-17",
+        "version_from": "1.139",
+        "version_to": "1.140",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Matrice options MAJ: Wallet inclus Pro/Pro+/Transit; CSM + Module Flotte 10 inclus Transit.",
+          "Integration PandaDoc<->HubSpot ACTIVE (dependance levee).",
+          "Ordre etapes devis: Options en 2, Maintenance en 3. Configurateur mis a jour."
+        ]
+      },
       {
         "date": "2026-06-17",
         "version_from": "1.138",
@@ -7479,7 +7490,9 @@
     "conditional_options_engine_note": "Options liées au forfait (bundles conditionnels) = mieux gérées par PandaDoc (product bundles + pricing tables conditionnelles) que par HubSpot Quotes (logique conditionnelle limitée). Archi recommandée: HubSpot = catalogue/CRM source de vérité (déjà construit) -> PandaDoc tire les produits via l'intégration HubSpot -> devis avec bundles par forfait. Décision engine devis à confirmer par Dominique.",
     "devis_engine_decision": "DEVIS = PandaDoc (bundles conditionnels), alimenté par catalogue HubSpot (source de vérité). Confirmé Dominique 2026-06-17.",
     "document_structure": "Document UNIQUE signable: garde + devis configuré (pricing table bundles) + CGV supervision (toujours) + annexe maintenance (BLOC CONDITIONNEL si N1-N4) + paiement + e-sign. Une signature = acceptation supervision + maintenance si optée.",
-    "legal_text_dependency": "CGV supervision (B-LEGAL-01) + conditions maintenance (B-LEGAL-02) à fournir par Dominique/juriste. Claude n'invente pas de clauses. Squelette de têtes de chapitre fourni dans OZECAR_PandaDoc_Mapping_Devis_Contrat.md."
+    "legal_text_dependency": "CGV supervision (B-LEGAL-01) + conditions maintenance (B-LEGAL-02) à fournir par Dominique/juriste. Claude n'invente pas de clauses. Squelette de têtes de chapitre fourni dans OZECAR_PandaDoc_Mapping_Devis_Contrat.md.",
+    "pandadoc_hubspot_integration": "ACTIVE des deux cotes (HubSpot + PandaDoc) — confirme Dominique 2026-06-17. Dependance levee.",
+    "devis_steps_order": "1) Forfait supervision  2) Options (filtrees par forfait)  3) Maintenance N0-N4  4) Mise en place. (Reflete dans OZECAR_Configurateur_Devis_CPQ.html)"
   },
   "pricing_canonical_2026_06_17": {
     "_note": "GRILLE TARIFAIRE CANONIQUE — validée ligne par ligne par Dominique le 2026-06-17. SOURCE DE VÉRITÉ unique. Prime sur pricing / catalogue_prix antérieurs (marqués superseded). Tous prix HT.",
@@ -7678,7 +7691,7 @@
       }
     },
     "option_compatibility": {
-      "_note": "Options conditionnées au forfait (bundles). Évite les combinaisons incompatibles dans le CPQ.",
+      "_note": "Options conditionnees au forfait (bundles). MAJ 2026-06-17: Wallet inclus sur public; CSM + Flotte10 inclus sur Transit.",
       "data": {
         "payante_sur": [
           "Essential",
@@ -7693,7 +7706,11 @@
         "payante_sur": [
           "Essential"
         ],
-        "raison": "Monétisation borne privée uniquement"
+        "incluse_sur": [
+          "Pro",
+          "Pro+",
+          "Transit"
+        ]
       },
       "assistance_247": {
         "payante_sur": [
@@ -7705,12 +7722,32 @@
           "Transit"
         ]
       },
-      "recharge_domicile": "globale (tous forfaits)",
-      "csm": "globale",
+      "recharge_domicile": "globale",
+      "csm": {
+        "payante_sur": [
+          "Essential",
+          "Pro",
+          "Pro+"
+        ],
+        "incluse_sur": [
+          "Transit"
+        ]
+      },
       "module_flotte": "globale",
       "rapport_mensuel": "globale",
       "api_webhooks": "globale",
-      "maintenance_N0_N4": "globale (tous forfaits)"
+      "maintenance_N0_N4": "globale (tous forfaits)",
+      "module_flotte_10": {
+        "payante_sur": [
+          "Essential",
+          "Pro",
+          "Pro+"
+        ],
+        "incluse_sur": [
+          "Transit"
+        ]
+      },
+      "module_flotte_50": "globale (payante tous forfaits)"
     }
   }
 }
