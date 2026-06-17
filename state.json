@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.146",
+    "version": "1.147",
     "updated": "2026-06-17",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-17",
+        "version_from": "1.146",
+        "version_to": "1.147",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "REFRAME Dominique: hello@ = alias de dominique@ (pas de mdp propre). send-mail.php corrige: auth SMTP en dominique@ozecar.fr, From=hello@ via nouvelle constante OZ_SMTP_FROM.",
+          "Dependance Dominique reformulee: fournir le mdp de la boite dominique@ozecar.fr dans OZ_SMTP_PASS (pas un mdp hello@ qui n'existe pas). Jamais stocke dans state.json.",
+          "Backup api/send-mail.php.bak-20260617-205642 ajoute a la liste de nettoyage."
+        ]
+      },
       {
         "date": "2026-06-17",
         "version_from": "1.145",
@@ -2417,6 +2428,12 @@
         "ne_pas_faire": "Ne PAS ecraser en aveugle le blueprint via scenarios_update: il valide et tourne deja, on ne peut pas le relire pour backup, et un rebuild IML hubspotcrm/http a la main reintroduirait tres probablement les BundleValidationError deja vus.",
         "dependance_dominique_inchangee": "L'envoi reel reste bloque sur OZ_SMTP_PASS vide (send-mail.php fail-closed 503). A fournir: mdp SMTP hello@ozecar.fr OU reconnexion Google Restricted dans Make. Le mdp ne doit JAMAIS etre stocke dans state.json.",
         "etat_propre_a_garder": "Contacts proteges ozecar_demo_confirme=true: Myriam Benaim (774418588919), Clement Gosselin (798962964698). Sujet test demo4 (800090493121) actuellement deflagge. A nettoyer en fin: contact test 800040087799 + meeting 497512738004 + api/maillog.txt + send-mail.php.bak-*."
+      },
+      "mailer_auth_fix_2026_06_17": {
+        "constat": "hello@ozecar.fr est un ALIAS de dominique@ozecar.fr -> pas de mailbox propre, donc pas de mot de passe 'hello@'. La config send-mail.php (OZ_SMTP_USER=hello@) ne pouvait pas s'authentifier.",
+        "fix": "send-mail.php corrige: OZ_SMTP_USER='dominique@ozecar.fr' (auth sur la mailbox reelle) + nouvelle constante OZ_SMTP_FROM='hello@ozecar.fr' (From affiche cote client). setFrom utilise desormais OZ_SMTP_FROM.",
+        "reste_dominique": "Renseigner OZ_SMTP_PASS avec le mot de passe de la BOITE dominique@ozecar.fr (le mdp webmail/IMAP de Dominique). 1 edition. JAMAIS stocke dans state.json.",
+        "backup": "api/send-mail.php.bak-20260617-205642 (a nettoyer en fin avec les autres .bak)"
       }
     }
   },
