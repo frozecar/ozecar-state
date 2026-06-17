@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.144",
+    "version": "1.145",
     "updated": "2026-06-17",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-17",
+        "version_from": "1.144",
+        "version_to": "1.145",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "DECISION CPQ verrouillee: pricing table native PandaDoc (CPQ fonctionnel, compatibilites en libelles), pas le moteur CPQ a regles.",
+          "Brief Cowork (OZECAR_Cowork_Brief_Template_PandaDoc.md) conforme, pret a executer cote Claude Desktop."
+        ]
+      },
       {
         "date": "2026-06-17",
         "version_from": "1.143",
@@ -7566,7 +7576,9 @@
       ],
       "templates_existants_selectionnables": "Plusieurs CS Contrat de Supervision deja selectionnables (on line, [Name] cs, [Client], [Client] v2, [Client] 2 juin 2026).",
       "chemin_recommande": "Path A: build kit PandaDoc turnkey (ordre des blocs + config pricing table selectable forfaits+N0-N4 + prix + options + tokens + regle conditionnelle) execute par Dominique dans l'editeur (rapide a la main) ou en guidage. Path B: upload PDF/DOCX assemble comme base + ajout pricing table native + tokens."
-    }
+    },
+    "cpq_approche_DECISION": "VERROUILLE 2026-06-17: pricing table NATIVE PandaDoc (CPQ fonctionnel) = section forfait choix unique + section maintenance choix unique (N0-N4) + options cases a cocher + mise en service one-shot + contenu conditionnel pour bloc maintenance. PAS le moteur CPQ a regles PandaDoc. Compatibilites par forfait (Wallet incluse public, CSM/Flotte10/Data incluses Transit, etc.) AFFICHEES EN LIBELLES, non auto-appliquees par regles. Confirme Dominique.",
+    "cowork_brief": "Livre: OZECAR_Cowork_Brief_Template_PandaDoc.md (self-contained, a coller dans Cowork). Conforme a la decision native pricing table. Aucun changement requis. Lancement par Dominique cote Claude Desktop (Cowork ne se lance pas depuis claude.ai)."
   },
   "pricing_canonical_2026_06_17": {
     "_note": "GRILLE TARIFAIRE CANONIQUE — validée ligne par ligne par Dominique le 2026-06-17. SOURCE DE VÉRITÉ unique. Prime sur pricing / catalogue_prix antérieurs (marqués superseded). Tous prix HT.",
