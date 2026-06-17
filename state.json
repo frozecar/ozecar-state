@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.137",
+    "version": "1.138",
     "updated": "2026-06-17",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-17",
+        "version_from": "1.137",
+        "version_to": "1.138",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Matrice compatibilité options/forfait figée (Wallet=Essential, Assistance247=Essential sinon incluse, Data option sauf Transit=incluse, reste global).",
+          "Configurateur filtre désormais les options selon le forfait (purge incompatibles, affiche 'incluse').",
+          "Note archi: bundles conditionnels mieux gérés par PandaDoc; HubSpot reste catalogue source. Engine devis à confirmer."
+        ]
+      },
       {
         "date": "2026-06-17",
         "version_from": "1.136",
@@ -7453,7 +7464,8 @@
       "note_paiement_modes": "Produits supervision créés au prix ANNUEL de référence. Variante mensuelle (et Essential 15.07) à gérer via override de prix sur line item OU produits dédiés — décision structure CPQ à trancher."
     },
     "cpq_payment_mode_resolution": "Prix catalogue = tarif annuel (le moins cher), affiché en mensuel, Annuel présélectionné. Mensuel = override de prix supérieur sur le line item (alternative). Reflété dans OZECAR_Modele_Devis_HubSpot_CPQ.html (sélecteur mode de paiement).",
-    "devis_self_select": "Devis = configurateur: client choisit 1 forfait supervision /4 + 1 niveau maintenance /5 + options (cases). Mappe sur line items HubSpot SÉLECTIONNABLES (multiple-choice pour supervision et maintenance, optionnels pour options/one-shot). Quantité = nb PDC. Fichier: OZECAR_Configurateur_Devis_CPQ.html (interactif, recalcul live, annuel présélectionné, mensuel = alternative plus chère)."
+    "devis_self_select": "Devis = configurateur: client choisit 1 forfait supervision /4 + 1 niveau maintenance /5 + options (cases). Mappe sur line items HubSpot SÉLECTIONNABLES (multiple-choice pour supervision et maintenance, optionnels pour options/one-shot). Quantité = nb PDC. Fichier: OZECAR_Configurateur_Devis_CPQ.html (interactif, recalcul live, annuel présélectionné, mensuel = alternative plus chère).",
+    "conditional_options_engine_note": "Options liées au forfait (bundles conditionnels) = mieux gérées par PandaDoc (product bundles + pricing tables conditionnelles) que par HubSpot Quotes (logique conditionnelle limitée). Archi recommandée: HubSpot = catalogue/CRM source de vérité (déjà construit) -> PandaDoc tire les produits via l'intégration HubSpot -> devis avec bundles par forfait. Décision engine devis à confirmer par Dominique."
   },
   "pricing_canonical_2026_06_17": {
     "_note": "GRILLE TARIFAIRE CANONIQUE — validée ligne par ligne par Dominique le 2026-06-17. SOURCE DE VÉRITÉ unique. Prime sur pricing / catalogue_prix antérieurs (marqués superseded). Tous prix HT.",
@@ -7650,6 +7662,41 @@
         "label": "Curatif & SLA 24h",
         "scope": "1 visite/an + diagnostic & intervention INCLUS sous 24h. Remplacement pièces sur devis."
       }
+    },
+    "option_compatibility": {
+      "_note": "Options conditionnées au forfait (bundles). Évite les combinaisons incompatibles dans le CPQ.",
+      "data": {
+        "payante_sur": [
+          "Essential",
+          "Pro",
+          "Pro+"
+        ],
+        "incluse_sur": [
+          "Transit"
+        ]
+      },
+      "wallet": {
+        "payante_sur": [
+          "Essential"
+        ],
+        "raison": "Monétisation borne privée uniquement"
+      },
+      "assistance_247": {
+        "payante_sur": [
+          "Essential"
+        ],
+        "incluse_sur": [
+          "Pro",
+          "Pro+",
+          "Transit"
+        ]
+      },
+      "recharge_domicile": "globale (tous forfaits)",
+      "csm": "globale",
+      "module_flotte": "globale",
+      "rapport_mensuel": "globale",
+      "api_webhooks": "globale",
+      "maintenance_N0_N4": "globale (tous forfaits)"
     }
   }
 }
