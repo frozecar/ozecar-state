@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.142",
+    "version": "1.143",
     "updated": "2026-06-17",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-17",
+        "version_from": "1.142",
+        "version_to": "1.143",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Template PandaDoc master assemblé (devis configuré + CGV complète Monta-conservé + maintenance conditionnelle + paiement + signature unique). Fichier HTML livré.",
+          "Propriétés deal toujours bloquées (scope crm.schemas.deals.write) — non bloquant CPQ.",
+          "Contrat maintenance validé provisoirement par Dominique (contrôle juridique ultérieur)."
+        ]
+      },
       {
         "date": "2026-06-17",
         "version_from": "1.141",
@@ -7532,7 +7543,9 @@
       "maintenance_B_LEGAL_02": "REDIGE (brouillon) -> OZECAR_Contrat_Maintenance_B-LEGAL-02_DRAFT.md. A valider par juriste.",
       "monta_mention_INTENTIONNELLE": "NON une fuite. Monta ApS doit etre nomme dans la clause de reversement/encaissement de la CGV car le client final recoit un VIREMENT BANCAIRE emanant de Monta ApS et doit pouvoir le rapprocher. Scoping regle marque blanche: Monta autorise UNIQUEMENT dans le contexte paiement/reversement de la CGV; reste interdit comme fournisseur technique de supervision partout ailleurs (site, pages, emails, descriptions produits). Confirme Dominique 2026-06-17. NE PAS retirer."
     },
-    "affichage_comparatif": "Configurateur refait en tableaux comparatifs (style v2/capture) pour supervision (15 lignes feature) ET maintenance (N0-N4). Colonnes selectionnables. Donnees prix = grille canonique; features fonctionnelles enrichies depuis CS 2026092. Fichier OZECAR_Configurateur_Devis_CPQ.html."
+    "affichage_comparatif": "Configurateur refait en tableaux comparatifs (style v2/capture) pour supervision (15 lignes feature) ET maintenance (N0-N4). Colonnes selectionnables. Donnees prix = grille canonique; features fonctionnelles enrichies depuis CS 2026092. Fichier OZECAR_Configurateur_Devis_CPQ.html.",
+    "template_pandadoc": "ASSEMBLÉ (master) -> OZECAR_Template_PandaDoc_Devis_Contrat.html : couverture+tokens, offre (comparatifs supervision 4 + maintenance N0-N4 + options bundles + mise en service), récap, modalités paiement (mensuel/annuel/biannuel -15%), CGV supervision COMPLÈTE (Monta conservé dans reversement), bloc CONDITIONNEL maintenance (si N1-N4), données station + signature unique. À charger dans PandaDoc (manuel ou via Make 02) — pas de connecteur PandaDoc direct.",
+    "deal_props_status": "BLOQUÉ scope: création propriétés deal (station_count, pdc_count, forfait_supervision, niveau_maintenance) nécessite crm.schemas.deals.write. PAT proxy = 403. Connecteur MCP n'expose pas la création de propriétés. NON bloquant pour le CPQ (line items portent les quantités). À injecter en 30s dès scope ajouté/connecteur reconnecté."
   },
   "pricing_canonical_2026_06_17": {
     "_note": "GRILLE TARIFAIRE CANONIQUE — validée ligne par ligne par Dominique le 2026-06-17. SOURCE DE VÉRITÉ unique. Prime sur pricing / catalogue_prix antérieurs (marqués superseded). Tous prix HT.",
