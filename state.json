@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.128",
+    "version": "1.129",
     "updated": "2026-06-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-16",
+        "version_from": "1.128",
+        "version_to": "1.129",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Correction logo officiel: logo_OZe_final.png (PAS logo_hor_bw_tr.png). Email confirmation màj. Règle instructions: ne jamais générer le logo officiel."
+        ]
+      },
       {
         "date": "2026-06-16",
         "version_from": "1.127",
@@ -7188,11 +7197,11 @@
   "design_system": {
     "logo_officiel": {
       "regle": "TOUJOURS le logo officiel OZECAR. JAMAIS généré/recréé/substitué par texte.",
-      "dossier": "https://ozecar.fr/wp-content/uploads/ozecar/ (les 2 versions toujours dispo ici)",
-      "png_raster_email": "https://ozecar.fr/wp-content/uploads/ozecar/logo_hor_bw_tr.png (966x263, ratio 3.67, sombre sur transparent → fond clair)",
+      "dossier": "https://ozecar.fr/wp-content/uploads/ozecar/",
+      "png_officiel": "https://ozecar.fr/wp-content/uploads/ozecar/logo_OZe_final.png (5001x1029, ratio 4.86, sombre sur transparent → fond clair)",
       "svg_web": "https://ozecar.fr/wp-content/uploads/ozecar/logo-ozecar-officiel.svg",
-      "variante": "dark-on-light → fond clair/blanc obligatoire, invisible sur fond sombre",
-      "usage": "Email/raster → PNG. Web → SVG."
+      "ne_pas_utiliser": "logo_hor_bw_tr.png (mauvais fichier, corrigé 2026-06-16)",
+      "variante": "dark-on-light → fond clair/blanc obligatoire, invisible sur fond sombre"
     }
   }
 }
