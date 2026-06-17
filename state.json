@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.129",
-    "updated": "2026-06-16",
+    "version": "1.130",
+    "updated": "2026-06-17",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-17",
+        "version_from": "1.129",
+        "version_to": "1.130",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Scénario Make 05 créé (id 6219549, inactif, valide): booking démo → email brandé hello@ + deal Démo planifiée. À tester avec 1 booking. Slack + association deal-contact + désactivation native à suivre."
+        ]
+      },
       {
         "date": "2026-06-16",
         "version_from": "1.128",
@@ -2195,6 +2204,31 @@
       "status": "to_run_once_v110",
       "trigger": "manual run",
       "_note": "Pousse les 2 contrats partenaires HTML depuis GitHub vers PandaDoc"
+    },
+    "05": {
+      "id": 6219549,
+      "name": "05 - Booking démo → Email hello@ + Deal L&Q",
+      "status": "INACTIF (créé, valide, pas encore activé)",
+      "tested": false,
+      "created": "2026-06-17",
+      "team": 197685,
+      "trigger": "hubspotcrm watchContacts (nouveau contact) + filtre 'engagements_last_meeting_booked exist' = a réservé une démo",
+      "modules": [
+        "1-Watch Contacts (conn 6538723)",
+        "2-Gmail ActionSendEmail FROM hello@ozecar.fr (conn 6662604, HTML brandé logo officiel)",
+        "3-createDeal pipeline 3747862733 stage Démo planifiée 5215721687 + ozecar_origine=formulaire_web"
+      ],
+      "a_valider_au_test": [
+        "alias hello@ autorisé en send-as sur la connexion Gmail",
+        "format date engagements_last_meeting_booked",
+        "filtre déclenche bien sur booking"
+      ],
+      "reste": [
+        "Brancher module Slack #rdv-demo (nécessite OAuth Slack côté Dominique)",
+        "Associer le deal au contact (CreateAssociation) - à ajouter",
+        "Gérer aussi bookings de contacts EXISTANTS (v1 = nouveaux contacts only)",
+        "Une fois validé: désactiver confirmation native HubSpot (part de l'adresse perso)"
+      ]
     }
   },
   "hubspot": {
