@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.136",
+    "version": "1.137",
     "updated": "2026-06-17",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-17",
+        "version_from": "1.136",
+        "version_to": "1.137",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Devis transformé en configurateur self-select (client choisit supervision 1/4 + maintenance 1/5 + options). Mappe sur line items sélectionnables HubSpot. Fichier interactif livré."
+        ]
+      },
       {
         "date": "2026-06-17",
         "version_from": "1.135",
@@ -7443,7 +7452,8 @@
       "limite_connecteur": "Archivage produit non dispo via MCP — Dominique archive les 2 obsolètes dans l'UI.",
       "note_paiement_modes": "Produits supervision créés au prix ANNUEL de référence. Variante mensuelle (et Essential 15.07) à gérer via override de prix sur line item OU produits dédiés — décision structure CPQ à trancher."
     },
-    "cpq_payment_mode_resolution": "Prix catalogue = tarif annuel (le moins cher), affiché en mensuel, Annuel présélectionné. Mensuel = override de prix supérieur sur le line item (alternative). Reflété dans OZECAR_Modele_Devis_HubSpot_CPQ.html (sélecteur mode de paiement)."
+    "cpq_payment_mode_resolution": "Prix catalogue = tarif annuel (le moins cher), affiché en mensuel, Annuel présélectionné. Mensuel = override de prix supérieur sur le line item (alternative). Reflété dans OZECAR_Modele_Devis_HubSpot_CPQ.html (sélecteur mode de paiement).",
+    "devis_self_select": "Devis = configurateur: client choisit 1 forfait supervision /4 + 1 niveau maintenance /5 + options (cases). Mappe sur line items HubSpot SÉLECTIONNABLES (multiple-choice pour supervision et maintenance, optionnels pour options/one-shot). Quantité = nb PDC. Fichier: OZECAR_Configurateur_Devis_CPQ.html (interactif, recalcul live, annuel présélectionné, mensuel = alternative plus chère)."
   },
   "pricing_canonical_2026_06_17": {
     "_note": "GRILLE TARIFAIRE CANONIQUE — validée ligne par ligne par Dominique le 2026-06-17. SOURCE DE VÉRITÉ unique. Prime sur pricing / catalogue_prix antérieurs (marqués superseded). Tous prix HT.",
