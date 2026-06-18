@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.149",
+    "version": "1.150",
     "updated": "2026-06-18",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-18",
+        "version_from": "1.149",
+        "version_to": "1.150",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Wallet: frais operateur Essential 10% (et non 12,5%) - decision validee Dominique.",
+          "Wallet inclut desormais: tarification dynamique + paiement CB/Apple Pay/Google Pay.",
+          "Configurateur v3: hover colonne corrige, cibles forfaits reformulees, infos SIM/Data/Rapport corrigees, etoile maintenance retiree, remises negociation (gate ?sales=1, par section et/ou globales)."
+        ]
+      },
       {
         "date": "2026-06-18",
         "version_from": "1.148",
@@ -7661,7 +7672,7 @@
           "mensuel": 6.9
         },
         "frais_operateur_pct": 0,
-        "frais_operateur_pct_si_wallet": 12.5,
+        "frais_operateur_pct_si_wallet": 10,
         "frais_itinerance_pct": 0,
         "options_dispo": [
           "wallet",
@@ -7776,7 +7787,14 @@
       "wallet": {
         "prix": 5.0,
         "unit": "HT/PDC/mois",
-        "desc": "Accepter les transactions sur borne privée. Frais opérateur 12,5%. Sur Essential."
+        "desc": "Encaissez les recharges : CB, Apple Pay, Google Pay, badge, app. Inclut la tarification dynamique. Sur Essential : 10% de frais operateur. Incluse sur les forfaits publics.",
+        "inclut": [
+          "tarification_dynamique",
+          "paiement_cb",
+          "apple_pay",
+          "google_pay"
+        ],
+        "frais_operateur_essential_pct": 10
       },
       "assistance_247": {
         "prix": 2.0,
