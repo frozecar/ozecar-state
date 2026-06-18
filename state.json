@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.150",
+    "version": "1.151",
     "updated": "2026-06-18",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-18",
+        "version_from": "1.150",
+        "version_to": "1.151",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Architecture devis/contrat VERROUILLEE: pas de configurateur public; devis HTML prive par lead post-demo.",
+          "Flux 1 temps: devis HTML fige (n°/date/validite) -> Form PandaDoc embarquee (sans API, plan Business) pour signature CGV.",
+          "Client repart avec 2 PDF: devis (cote OZECAR) + CGV signee (PandaDoc).",
+          "Configurateur restructure en 2 vues (commerciale ?sales / client ?client fige) + entete devis + bouton Accepter&signer + zone embed PandaDoc + impression PDF."
+        ]
+      },
       {
         "date": "2026-06-18",
         "version_from": "1.149",
@@ -7973,5 +7985,28 @@
       "a_confirmer": "Garantie routeur 4G (24 mois mis par defaut).",
       "fichier": "ozecar-configurateur-devis.html v2 genere, a heberger sur staging apres validation visuelle."
     }
+  },
+  "devis_contrat_flow": {
+    "statut": "architecture verrouillee 2026-06-18",
+    "configurateur_public": "ABANDONNE - decision Dominique: ne pas se positionner sur le prix avant la demo, ne pas exposer la grille tarifaire",
+    "principe": "Le configurateur HTML = devis PRIVE par lead, envoye apres la demo (jamais public)",
+    "deux_vues": {
+      "commerciale": "?sales (ou defaut): configurateur interactif + remises + bouton 'Generer le lien client'",
+      "client": "?client&c=<payload b64>&docnum=&issued=&valid=: devis FIGE lecture seule, entete n°/date/validite, bouton 'Accepter et signer'"
+    },
+    "flux_1_temps": "devis HTML fige -> 'Accepter et signer' -> Form PandaDoc EMBARQUEE (iframe, sans API) = contrat CGV+signature -> PDF CGV signee envoye par PandaDoc",
+    "pandadoc": "Form embeddable via code d'embed (pas d'API). Incluse plan Business: 250 documents/an, puis 2$/reponse. Contrat sans variables + champs societe/nom/email + n° devis en reference.",
+    "client_recoit": "2 PDF: (1) devis genere cote OZECAR (bouton imprimer/PDF sur la page) + (2) CGV signee (PandaDoc)",
+    "fichier": "/mnt/user-data/outputs/ozecar-configurateur-devis.html (52KB)",
+    "a_faire_dominique": [
+      "Monter la Form PandaDoc (CGV + conditions maintenance + champs societe/nom/email + champ n° devis + signature)",
+      "Fournir le code d'embed -> a coller dans div#pandadocEmbed"
+    ],
+    "a_faire_claude": [
+      "Heberger sur staging pour validation visuelle",
+      "Endpoint suivi d'ouverture du devis (PHP api/, notif via deal_id)",
+      "Optionnel: generation devis PDF server-side WeasyPrint pour piece jointe"
+    ],
+    "embed_signature_1_temps_via_api": "reporte en v2 (plan API Developer 40$/mo + dev backend) une fois le volume/levee justifie"
   }
 }
