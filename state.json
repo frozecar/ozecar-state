@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.151",
+    "version": "1.152",
     "updated": "2026-06-18",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-18",
+        "version_from": "1.151",
+        "version_to": "1.152",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Correction vue client: configurateur entierement editable (forfaits/options/quantites), seuls n°/date/validite fixes (et non fige lecture seule).",
+          "Remise + bloc 'generer lien client' restent commercial-only (caches cote client); remise appliquee si negociee."
+        ]
+      },
       {
         "date": "2026-06-18",
         "version_from": "1.150",
@@ -7992,7 +8002,7 @@
     "principe": "Le configurateur HTML = devis PRIVE par lead, envoye apres la demo (jamais public)",
     "deux_vues": {
       "commerciale": "?sales (ou defaut): configurateur interactif + remises + bouton 'Generer le lien client'",
-      "client": "?client&c=<payload b64>&docnum=&issued=&valid=: devis FIGE lecture seule, entete n°/date/validite, bouton 'Accepter et signer'"
+      "client": "?client&c=<payload>&docnum=&issued=&valid=: configurateur ENTIEREMENT EDITABLE (forfaits, options, quantites, parc) PRE-REMPLI; SEULS n°/date/validite sont fixes. Remise et bloc generation = commercial-only (caches). Entete devis + bouton 'Accepter et signer' + impression PDF."
     },
     "flux_1_temps": "devis HTML fige -> 'Accepter et signer' -> Form PandaDoc EMBARQUEE (iframe, sans API) = contrat CGV+signature -> PDF CGV signee envoye par PandaDoc",
     "pandadoc": "Form embeddable via code d'embed (pas d'API). Incluse plan Business: 250 documents/an, puis 2$/reponse. Contrat sans variables + champs societe/nom/email + n° devis en reference.",
@@ -8007,6 +8017,7 @@
       "Endpoint suivi d'ouverture du devis (PHP api/, notif via deal_id)",
       "Optionnel: generation devis PDF server-side WeasyPrint pour piece jointe"
     ],
-    "embed_signature_1_temps_via_api": "reporte en v2 (plan API Developer 40$/mo + dev backend) une fois le volume/levee justifie"
+    "embed_signature_1_temps_via_api": "reporte en v2 (plan API Developer 40$/mo + dev backend) une fois le volume/levee justifie",
+    "correction_2026_06_18": "La vue client n'est PAS figee: le client ajuste librement forfaits/options/quantites; seuls numero de devis, date d'emission et validite sont fixes. La remise reste commercial-only (appliquee si negociee, panneau cache cote client)."
   }
 }
