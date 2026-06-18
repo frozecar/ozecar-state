@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.147",
-    "updated": "2026-06-17",
+    "version": "1.148",
+    "updated": "2026-06-18",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-18",
+        "version_from": "1.147",
+        "version_to": "1.148",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Nomenclature: Kit Site -> Kit OZECAR (remplacement definitif, Kit Site = terme interdit). MAJ pricing.products.ozkm + naming_migration + canonical forbidden list.",
+          "Devis configurateur etape 2: 7 proprietes deal creees (ozecar_forfait, _maintenance, _mode_paiement, _total_recurrent_ht, _total_unique_ht, _nb_stations, _devis_json).",
+          "Revue configurateur: prix conformes au canonical; 3 ecarts a corriger (CSM/Flotte Transit, Wallet 12,5%); bloquant deal_id non porte.",
+          "Architecture validee: clic 'Create Document' natif (0 EUR), workflows HubSpot et API PandaDoc ecartes pour cout."
+        ]
+      },
       {
         "date": "2026-06-17",
         "version_from": "1.146",
@@ -1604,11 +1616,11 @@
     },
     "products": {
       "ozkm": {
-        "label": "Kit Site (SKU OZKM)",
+        "label": "Kit OZECAR (SKU OZKM)",
         "price_catalog_ht": 49,
         "cogs_estimated": 15,
         "description": "Composant de mise en service du site. 1 par parking/site (1 a 10 PDC). SIM multi-operateurs, QR code, etiquettes 1A a 10B.",
-        "display_name_client": "Kit Site"
+        "display_name_client": "Kit OZECAR"
       },
       "ozku": {
         "label": "Kit Borne (SKU OZKU)",
@@ -3895,7 +3907,7 @@
     "brief_de_reference": "OZECAR-NAMING-MIGRATION.md (livre 2026-05-10)",
     "vocabulaire_officiel": {
       "produit_principal_shopify": "Kit OZECAR",
-      "ex_kit_master": "Kit Site",
+      "ex_kit_master": "Kit OZECAR",
       "ex_kit_unit": "Kit Borne",
       "sku_internes_inchanges": [
         "OZKM",
@@ -3910,7 +3922,7 @@
       ]
     },
     "rules_d_or": [
-      "Sur surfaces client (Shopify, emails, factures, notices, doc commerciale, WP) : utiliser 'Kit Site' et 'Kit Borne' UNIQUEMENT",
+      "Sur surfaces client (Shopify, emails, factures, notices, doc commerciale, WP) : utiliser 'Kit OZECAR' et 'Kit Borne' UNIQUEMENT",
       "Sur backend (monday Stock Kits, HubSpot, Make webhooks, base de donnees, code) : SKU OZKM/OZKU restent",
       "Kit IDs physiques (OZKM-0001, OZKU-0001) restent INCHANGES car ils sont dans les QR codes des kits a imprimer + URLs activation",
       "Make scenarios doivent lire le SKU (OZKM/OZKU) et non le titre du produit pour ne pas casser apres renommage Shopify"
@@ -3947,7 +3959,8 @@
         "wp-deploy.php ALLOWED_DIRS extended to include wp-content/themes/ozecar-theme",
         "Shopify renaming pending in Claude Code brief"
       ]
-    }
+    },
+    "supersession_2026_06_18": "Kit Site remplace DEFINITIVEMENT par Kit OZECAR (decision Dominique 2026-06-18). 'Kit Site' est desormais un terme OBSOLETE/INTERDIT sur toutes surfaces. Conserve en legacy_names uniquement."
   },
   "operating_framework": {
     "version": "1.0",
@@ -7708,7 +7721,7 @@
         "desc": "Par PDC supplémentaire: autocollants, QR, 1 carte RFID",
         "quantite": "nb PDC - 1"
       },
-      "_nomenclature": "Kit OZECAR + Kit Borne. Termes obsolètes INTERDITS: Kit Master/Unit, OZKM/OZKU public, Pack Basic, QR Code."
+      "_nomenclature": "Kit OZECAR + Kit Borne. Termes obsolètes INTERDITS: Kit Master/Unit, OZKM/OZKU public, Pack Basic, QR Code, Kit Site."
     },
     "mise_en_service": {
       "_unit": "HT one-shot",
@@ -7872,5 +7885,37 @@
       },
       "module_flotte_50": "globale (payante tous forfaits)"
     }
+  },
+  "devis_configurateur_2026_06_18": {
+    "_note": "Flux devis post-visio: configurateur HTML -> HubSpot (deal) -> PandaDoc (clic 'Create Document' natif) -> signature. Decide 2026-06-18.",
+    "architecture": {
+      "trigger": "webhook Make custom (configurateur POST payload structure complet)",
+      "etape2_make": "parse payload -> getDeal par deal_id -> Iterator items[] -> createALineItem (recurrence mensuelle si recurring sinon one-time, associe au deal) -> updateDeal (forfait/maintenance/mode/totaux/pdc/stations/amount/devis_json). Garde-fou si deal_id absent ou multiple.",
+      "etape3_pandadoc": "clic manuel 'Create Document' (integration native, 0 EUR). Workflows HubSpot ecartes (Sales Hub Pro ~90-100$/siege + 1500$ onboarding). API PandaDoc ecartee (Enterprise, sur devis).",
+      "connexions_make": {
+        "hubspotcrm": 6538723,
+        "pandadoc": 3207704
+      }
+    },
+    "deal_properties_created_2026_06_18": [
+      "ozecar_forfait",
+      "ozecar_maintenance",
+      "ozecar_mode_paiement",
+      "ozecar_total_recurrent_ht",
+      "ozecar_total_unique_ht",
+      "ozecar_nb_stations",
+      "ozecar_devis_json"
+    ],
+    "configurateur_review_2026_06_18": {
+      "prix_vs_canonical": "CONFORMES a pricing_canonical_2026_06_17 (forfaits, kits, mise en service, options, maintenance N0-N4).",
+      "ecarts_a_corriger": [
+        "CSM (responsable_client_dedie) marque 'inclus Transit' dans le configurateur; canonical = 'option globale par compte', PAS d'inclusion Transit.",
+        "Module Flotte 10 vehicules marque 'inclus Transit'; canonical ne l'inclut pas sur Transit.",
+        "Option Wallet sur Essential: frais operateur 12,5% (canonical) NON affiche dans le configurateur."
+      ],
+      "bloquant_avant_hosting": "deal_id/contact_id non portes par le configurateur (ni URL ni payload) -> requis pour lier le deal en etape 2.",
+      "fichier": "ozecar-configurateur-devis.html (a corriger puis heberger sur staging)"
+    },
+    "status": "Etape 2 en preparation (scenario Make pas encore cree). 7 proprietes deal creees. Configurateur a corriger + heberger."
   }
 }
