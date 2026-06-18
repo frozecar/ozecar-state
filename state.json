@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.152",
+    "version": "1.153",
     "updated": "2026-06-18",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-18",
+        "version_from": "1.152",
+        "version_to": "1.153",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "ESP transactionnel: Brevo Starter valide (DNS/SMTP a configurer cote Dominique).",
+          "Propriete deal lien_devis creee.",
+          "Finding: proxy hubspot.php incoherent (object-create 400, body-style 302); batir lien_devis sur modules HubSpot Make natifs."
+        ]
+      },
       {
         "date": "2026-06-18",
         "version_from": "1.151",
@@ -2654,7 +2665,8 @@
         "booking_demo": "Crée deal directement stage 'Démo planifiée' (5215721687). Peut sauter les 2 premières étapes (intention directe)."
       },
       "principe": "Un deal = une vraie opportunité commerciale. On ne pollue pas le pipeline avec les leads marketing (newsletter/livre blanc)."
-    }
+    },
+    "propriete_lien_devis": "Creee (deal, type string, group dealinformation) - URL configurateur pre-rempli, ecrite par Make"
   },
   "pages_html": {
     "activation": {
@@ -8019,5 +8031,17 @@
     ],
     "embed_signature_1_temps_via_api": "reporte en v2 (plan API Developer 40$/mo + dev backend) une fois le volume/levee justifie",
     "correction_2026_06_18": "La vue client n'est PAS figee: le client ajuste librement forfaits/options/quantites; seuls numero de devis, date d'emission et validite sont fixes. La remise reste commercial-only (appliquee si negociee, panneau cache cote client)."
+  },
+  "infra_decisions": {
+    "transactional_email": {
+      "service": "Brevo (Starter ~9 EUR/mois, branding retire)",
+      "statut": "valide par Dominique 2026-06-18",
+      "raisons": "FR/EU + RGPD, relais SMTP (remplace Hostinger dans send-mail.php, debloque Scenario 05), connecteur Make natif, API PHP, 300 mails/j inclus",
+      "a_faire_dominique": "Creer compte + Starter; authentifier domaine ozecar.fr (brevo-code TXT + DKIM brevo._domainkey + DMARC _dmarc + SPF include:spf.brevo.com); fournir identifiants SMTP Brevo",
+      "a_faire_claude": "Repointer send-mail.php + Make sur SMTP Brevo une fois domaine verifie"
+    }
+  },
+  "findings": {
+    "proxy_hubspot_php_2026_06_18": "Proxy hubspot.php incoherent: style ?path= OK pour search (200) et property-create (201) mais 400 sur object-create; style {endpoint,method,body} (utilise par Scenario 02 pour ecrire les deals) renvoie 302 -> les ecritures HubSpot des scenarios existants via ce style sont probablement degradees. Recommandation: batir lien_devis sur les modules natifs HubSpot Make (connexion 6538723, read/write) plutot que sur le proxy."
   }
 }
