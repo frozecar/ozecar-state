@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.148",
+    "version": "1.149",
     "updated": "2026-06-18",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-18",
+        "version_from": "1.148",
+        "version_to": "1.149",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Transit inclut CSM + Module Flotte 10 (confirme Dominique) -> canonical mis a jour.",
+          "Configurateur devis v2 genere: options PDC/compte, infos detaillees, totaux par section, SIM/RFID/routeur en quantite, colonnes forfait/maintenance entierement cliquables, deal_id/contact_id portes, Wallet 12,5% affiche.",
+          "A confirmer: garantie routeur 4G (24 mois par defaut)."
+        ]
+      },
       {
         "date": "2026-06-18",
         "version_from": "1.147",
@@ -7694,7 +7705,14 @@
         },
         "frais_operateur_pct": 6,
         "frais_itinerance_pct": 12,
-        "data_incluse": true
+        "data_incluse": true,
+        "inclusions": [
+          "data",
+          "wallet",
+          "assistance_247",
+          "csm",
+          "module_flotte_10"
+        ]
       },
       "_biannuel": {
         "actif": true,
@@ -7768,7 +7786,10 @@
       "responsable_client_dedie": {
         "prix": 49.0,
         "unit": "HT/mois",
-        "desc": "CSM dédié. Option globale par compte."
+        "desc": "CSM dedie. Option globale par compte. INCLUS sur Transit.",
+        "inclus_sur": [
+          "transit"
+        ]
       },
       "recharge_collaborateur_domicile": {
         "prix": 5.9,
@@ -7777,11 +7798,12 @@
       },
       "module_flotte": {
         "unit": "HT/mois",
-        "desc": "Rattachement véhicule/session, reporting par véhicule/conducteur, accès par groupe. Facturé par package.",
+        "desc": "Rattachement véhicule/session, reporting par véhicule/conducteur, accès par groupe. Facturé par package. Pack 10 vehicules INCLUS sur Transit.",
         "packages": {
           "pack_10_vehicules": 20.0,
           "pack_50_vehicules": 50.0
-        }
+        },
+        "inclus_sur_transit": "pack_10_vehicules"
       },
       "rapport_mensuel_automatise": {
         "prix": 19.0,
@@ -7916,6 +7938,22 @@
       "bloquant_avant_hosting": "deal_id/contact_id non portes par le configurateur (ni URL ni payload) -> requis pour lier le deal en etape 2.",
       "fichier": "ozecar-configurateur-devis.html (a corriger puis heberger sur staging)"
     },
-    "status": "Etape 2 en preparation (scenario Make pas encore cree). 7 proprietes deal creees. Configurateur a corriger + heberger."
+    "status": "Etape 2 en preparation (scenario Make pas encore cree). 7 proprietes deal creees. Configurateur a corriger + heberger.",
+    "configurateur_v2_2026_06_18": {
+      "changements": [
+        "Options scindees en 2: liees au PDC vs liees au compte",
+        "Infos detaillees sur chaque option + chaque element mise en service",
+        "Total par section",
+        "SIM/RFID/Routeur 4G = quantite selectionnable",
+        "Routeur: modele Teltonika RUT240/241 + garantie 24 mois (A CONFIRMER par Dominique)",
+        "Forfaits & maintenance selectionnables sur toute la colonne + survol colonne",
+        "deal_id/contact_id lus depuis l'URL et inclus dans le payload",
+        "Wallet/Essential: frais operateur 12,5% desormais affiche",
+        "MAKE_WEBHOOK ajoute (vide, a renseigner) en plus du fallback formulaire HubSpot"
+      ],
+      "ecarts_resolus": "CSM + Flotte10 inclus Transit = confirme par Dominique, canonical mis a jour (configurateur etait correct).",
+      "a_confirmer": "Garantie routeur 4G (24 mois mis par defaut).",
+      "fichier": "ozecar-configurateur-devis.html v2 genere, a heberger sur staging apres validation visuelle."
+    }
   }
 }
