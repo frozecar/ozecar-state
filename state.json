@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.154",
-    "updated": "2026-06-18",
+    "version": "1.155",
+    "updated": "2026-06-19",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-19",
+        "version_from": "1.154",
+        "version_to": "1.155",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Mailer Brevo entierement cable et fonctionnel jusqu'a l'envoi (auth+IP resolus).",
+          "Blocage restant = activation manuelle de la plateforme transactionnelle Brevo (ticket support, ~1-2j). Apres: retest + repointage Scenario 05."
+        ]
+      },
       {
         "date": "2026-06-18",
         "version_from": "1.153",
@@ -8045,12 +8055,14 @@
   "infra_decisions": {
     "transactional_email": {
       "service": "Brevo (Starter ~9 EUR/mois, branding retire)",
-      "statut": "Brevo verifie (domaine ozecar.fr authentifie SPF/DKIM/DMARC). send-mail.php repointe sur Brevo (smtp-relay.brevo.com:587 STARTTLS, From hello@ozecar.fr), deploye en prod ozecar.fr/api/send-mail.php, verifie live (garde-fou smtp_credentials_not_set).",
+      "statut": "Cablage COMPLET et correct: send-mail.php sur Brevo (smtp-relay.brevo.com:587 STARTTLS), login dominique@ozecar.fr, cle SMTP xsmtpsib OK, From hello@ozecar.fr. Auth OK apres levee de la restriction IP. Le mail atteint l'etage d'envoi Brevo.",
       "raisons": "FR/EU + RGPD, relais SMTP (remplace Hostinger dans send-mail.php, debloque Scenario 05), connecteur Make natif, API PHP, 300 mails/j inclus",
       "a_faire_dominique": "Creer compte + Starter; authentifier domaine ozecar.fr (brevo-code TXT + DKIM brevo._domainkey + DMARC _dmarc + SPF include:spf.brevo.com); fournir identifiants SMTP Brevo",
       "a_faire_claude": "Repointer send-mail.php + Make sur SMTP Brevo une fois domaine verifie",
       "reste_dominique": "Poser OZ_SMTP_USER (Login SMTP Brevo) + OZ_SMTP_PASS (cle SMTP / Master Password) dans hPanel File Manager api/send-mail.php. Secret jamais stocke dans state.",
-      "reste_claude": "Apres credentials: mail de test, puis repointer l'envoi du Scenario 05 (6219549) vers send-mail.php (remplace le module Gmail casse)."
+      "reste_claude": "Apres credentials: mail de test, puis repointer l'envoi du Scenario 05 (6219549) vers send-mail.php (remplace le module Gmail casse).",
+      "blocage_restant": "Plateforme transactionnelle Brevo PAS ENCORE ACTIVEE (validation manuelle anti-spam des nouveaux comptes). Domaine deja verifie. -> Dominique doit demander l'activation via ticket support Brevo (icone ? > Support/Tickets): activer le TRANSACTIONNEL (pas marketing), site ozecar.fr, type=confirmations demo/devis/notifs, volume qqs centaines/mois. Delai Brevo ~1-2 j ouvres. Gate s'applique aussi a l'API, pas de contournement.",
+      "apres_activation": "Rien a changer cote config. Retester send-mail.php, puis repointer le Scenario 05 (6219549) vers send-mail.php."
     }
   },
   "findings": {
