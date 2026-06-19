@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.153",
+    "version": "1.154",
     "updated": "2026-06-18",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-18",
+        "version_from": "1.153",
+        "version_to": "1.154",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Brevo verifie; send-mail.php repointe sur Brevo (587 STARTTLS) et deploye en prod.",
+          "Reste: Dominique pose Login+cle SMTP dans api/send-mail.php; puis test + repointage Scenario 05 vers send-mail.php."
+        ]
+      },
       {
         "date": "2026-06-18",
         "version_from": "1.152",
@@ -8035,10 +8045,12 @@
   "infra_decisions": {
     "transactional_email": {
       "service": "Brevo (Starter ~9 EUR/mois, branding retire)",
-      "statut": "valide par Dominique 2026-06-18",
+      "statut": "Brevo verifie (domaine ozecar.fr authentifie SPF/DKIM/DMARC). send-mail.php repointe sur Brevo (smtp-relay.brevo.com:587 STARTTLS, From hello@ozecar.fr), deploye en prod ozecar.fr/api/send-mail.php, verifie live (garde-fou smtp_credentials_not_set).",
       "raisons": "FR/EU + RGPD, relais SMTP (remplace Hostinger dans send-mail.php, debloque Scenario 05), connecteur Make natif, API PHP, 300 mails/j inclus",
       "a_faire_dominique": "Creer compte + Starter; authentifier domaine ozecar.fr (brevo-code TXT + DKIM brevo._domainkey + DMARC _dmarc + SPF include:spf.brevo.com); fournir identifiants SMTP Brevo",
-      "a_faire_claude": "Repointer send-mail.php + Make sur SMTP Brevo une fois domaine verifie"
+      "a_faire_claude": "Repointer send-mail.php + Make sur SMTP Brevo une fois domaine verifie",
+      "reste_dominique": "Poser OZ_SMTP_USER (Login SMTP Brevo) + OZ_SMTP_PASS (cle SMTP / Master Password) dans hPanel File Manager api/send-mail.php. Secret jamais stocke dans state.",
+      "reste_claude": "Apres credentials: mail de test, puis repointer l'envoi du Scenario 05 (6219549) vers send-mail.php (remplace le module Gmail casse)."
     }
   },
   "findings": {
