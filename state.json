@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.169",
+    "version": "1.170",
     "updated": "2026-06-21",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-21",
+        "version_from": "1.169",
+        "version_to": "1.170",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Scénario 05: fix 422 email (date côté serveur via demo_iso, payload propre, filtre email obligatoire, handleErrors=false). Run test status1/operations5. Réactivé.",
+          "Email: design master propagé aux 5 autres templates (logo officiel centré + adresse retirée), pastilles préservées. Tokens documentés.",
+          "05 + les 6 templates: adresse postale retirée du footer."
+        ]
+      },
       {
         "date": "2026-06-21",
         "version_from": "1.168",
@@ -8193,17 +8204,28 @@
     "templates_dispo": "6 templates sur project/email-templates/ : 01-confirmation-commande, 02-kit-expedie, 03-bienvenue-client, 04-guide-demarrage, 05-confirmation-demo, 06-bienvenue-installateur.",
     "logo_header": "Logo officiel logo_OZe_final.png (sombre) placé dans cartouche blanc arrondi 220px centré sur le header ink. À propager aux 5 autres templates (header actuellement en wordmark texte).",
     "template_05_finalise": "05-confirmation-demo : bouton 'Rejoindre' remplacé par note 'lien dans l'invitation calendrier' (trigger polling ne porte pas le lien visio), cancel=mailto, désinscription retirée (transactionnel). Tokens dynamiques restants: {{prenom}},{{demo_date}},{{demo_time}}.",
-    "a_faire": "Propager logo header + design master aux 5 autres templates (adapter texte). Câbler 05 dans Make scénario 05."
+    "a_faire": "Propager logo header + design master aux 5 autres templates (adapter texte). Câbler 05 dans Make scénario 05.",
+    "propagation_5_templates": "FAIT 2026-06-21: design master (logo officiel centré cartouche blanc + adresse postale retirée) appliqué aux 5 autres templates (01-confirmation-commande, 02-kit-expedie, 03-bienvenue-client, 04-guide-demarrage, 06-bienvenue-installateur). Pastilles header préservées: Commande/Expédition/Activation/Onboarding/Installateur.",
+    "tokens_par_template": {
+      "01-confirmation-commande": "prenom, order_number, product_name, montant, unsubscribe_url",
+      "02-kit-expedie": "prenom, tracking_number, tracking_url, delivery_date, shipping_address, unsubscribe_url",
+      "03-bienvenue-client": "prenom, station_name, nb_bornes, activation_date, unsubscribe_url",
+      "04-guide-demarrage": "prenom, unsubscribe_url",
+      "06-bienvenue-installateur": "prenom, unsubscribe_url",
+      "05-confirmation-demo": "prenom, demo_iso (-> demo_date/demo_time dérivés serveur)"
+    },
+    "todo_unsubscribe": "Les 5 templates gardent {{unsubscribe_url}} (href videé par le moteur). À finaliser (comme 05) au moment où chacun sera câblé dans un scénario."
   },
   "make_scenario_05_2026_06_21": {
     "id": 6219549,
     "name": "05 - Booking démo → Email confirmation + Deal L&Q",
     "teamId": 197685,
-    "etat": "ACTIF (activé 2026-06-21). Tourne sur schedule 900s. Filtre renvoie 0 quand tous les contacts meeting-booké sont déjà confirmés → ne traite que les nouveaux.",
+    "etat": "ACTIF (corrigé + réactivé 2026-06-21 ~17:18). Tunnel démo→email branded+deal L&Q+association+marquage opérationnel.",
     "trigger": "Polling HubSpot SearchContacts (interval 900s), filtre: engagements_last_meeting_booked HAS_PROPERTY AND ozecar_demo_confirme NEQ true. Connexion HubSpot Make 6538723.",
     "flow": "1.SearchContacts → 2.HTTP send-mail.php (template 05-confirmation-demo, vars prenom/demo_date/demo_time via formatDate Europe/Paris) → 3.createDeal compact (pipeline 3747862733 L&Q, dealstage 5215721688 Démo planifiée, dealname 'Démo OZECAR — {firstname} {lastname}') → 4.CreateAssociation definitionId 3 (Deal→Contact, from {{3.id}} to {{1.id}}) → 5.updateContact compact (ozecar_demo_confirme=true, idempotency).",
     "test": "Run responsive sur contact 1212 dé-confirmé temporairement = SUCCESS. Email envoyé, deal créé+associé (num_associated_contacts 1), contact re-marqué true. 4 deals de test renommés [TEST – à supprimer] (507510492380, 507566609612, 507512107247, 507548723387) → Dominique à supprimer.",
     "note_activation": "ATTENTION: activer le scénario déclenche un run immédiat. Lors du test, activation + run manuel simultanés ont créé 2 deals en double (race: les 2 runs lisent le contact non-confirmé avant que module 5 ne marque). En fonctionnement normal (schedule 15min séquentiel) pas de doublon. À l'activation réelle: laisser tourner sur schedule, ne pas lancer de run manuel en parallèle.",
-    "a_faire": "GO activation Dominique → scenarios_activate(6219549). Vérifier rendu date email (formatDate)."
+    "a_faire": "GO activation Dominique → scenarios_activate(6219549). Vérifier rendu date email (formatDate).",
+    "fix_email_422": "Le 422 (received_to vide) venait de formatDate dans le payload JSON du module 2 (guillemets imbriqués cassaient le JSON → to/template vides). FIX: (1) formatage date côté serveur — send-mail.php dérive demo_date/demo_time depuis demo_iso brut (DateTime Europe/Paris); (2) module 2 payload propre (plus de formatDate, juste {{1.properties.email/firstname/engagements_last_meeting_booked}}); (3) garde-fou filtre email HAS_PROPERTY (un contact sans email ne déclenche jamais l'envoi); (4) module 2 handleErrors=false (si l'email échoue, le run s'arrête et réessaie au lieu de créer un deal sans email). Run de test 17:15:45 = status 1, operations 5 (email module PASSÉ). Réactivé."
   }
 }
