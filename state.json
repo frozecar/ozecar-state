@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.168",
+    "version": "1.169",
     "updated": "2026-06-21",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-21",
+        "version_from": "1.168",
+        "version_to": "1.169",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Scénario Make 05 (6219549) ACTIVÉ. Tunnel démo→email confirmation+deal L&Q+marquage opérationnel et automatique."
+        ]
+      },
       {
         "date": "2026-06-21",
         "version_from": "1.167",
@@ -8190,7 +8199,7 @@
     "id": 6219549,
     "name": "05 - Booking démo → Email confirmation + Deal L&Q",
     "teamId": 197685,
-    "etat": "CONSTRUIT + TESTÉ OK, INACTIF (en attente du GO activation de Dominique).",
+    "etat": "ACTIF (activé 2026-06-21). Tourne sur schedule 900s. Filtre renvoie 0 quand tous les contacts meeting-booké sont déjà confirmés → ne traite que les nouveaux.",
     "trigger": "Polling HubSpot SearchContacts (interval 900s), filtre: engagements_last_meeting_booked HAS_PROPERTY AND ozecar_demo_confirme NEQ true. Connexion HubSpot Make 6538723.",
     "flow": "1.SearchContacts → 2.HTTP send-mail.php (template 05-confirmation-demo, vars prenom/demo_date/demo_time via formatDate Europe/Paris) → 3.createDeal compact (pipeline 3747862733 L&Q, dealstage 5215721688 Démo planifiée, dealname 'Démo OZECAR — {firstname} {lastname}') → 4.CreateAssociation definitionId 3 (Deal→Contact, from {{3.id}} to {{1.id}}) → 5.updateContact compact (ozecar_demo_confirme=true, idempotency).",
     "test": "Run responsive sur contact 1212 dé-confirmé temporairement = SUCCESS. Email envoyé, deal créé+associé (num_associated_contacts 1), contact re-marqué true. 4 deals de test renommés [TEST – à supprimer] (507510492380, 507566609612, 507512107247, 507548723387) → Dominique à supprimer.",
