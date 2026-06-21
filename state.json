@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.166",
+    "version": "1.167",
     "updated": "2026-06-21",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-21",
+        "version_from": "1.166",
+        "version_to": "1.167",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Email: send-mail.php doté d'un moteur de template ({template,vars}) → rend les 6 templates HTML à la charte.",
+          "05-confirmation-demo VALIDÉ par Dominique = MASTER design email (logo officiel centré + charte sandwich). Standard: garder ce design, adapter le texte pour les prochains.",
+          "Template 05 finalisé (bouton visio→note calendrier, cancel mailto, désinscription retirée). 3 tokens dynamiques: prenom/demo_date/demo_time.",
+          "À faire: propager le logo header aux 5 autres templates + câbler 05 dans le scénario Make 05."
+        ]
+      },
       {
         "date": "2026-06-21",
         "version_from": "1.165",
@@ -8154,5 +8166,13 @@
     "fix_fait": "Dominique a republié une page contact à /contact/ (HTTP 200) avec le formulaire HubSpot natif 'Supervision OZECAR — Clients B2B' + reCAPTCHA.",
     "reste_a_faire": "MENU: l'item 'Contactez-nous' pointe ENCORE vers ?page_id=5322 (404). Le repointer vers /contact/ dans Apparence > Menus (WP admin). wp-deploy read_page/create_page/update_page sont DÉSACTIVÉS sur la prod → fix manuel WP admin uniquement.",
     "diagnostic_formulaires_hubspot": "9 formulaires. Nouvel éditeur (Demande de contact 04f412bf, Livres blancs, Newsletter) vs Hérité (Supervision B2B, Kit Installateurs, ozecar.fr_professionnel, _maison_copro, _maison_individuelle). Seul /installateurs/ (form 521913ea, hérité, sans captcha) + /contact/ ont des formulaires live sur la prod."
+  },
+  "email_system_2026_06_21": {
+    "standard_design": "Le template 05-confirmation-demo (VALIDÉ par Dominique) est le MASTER design pour tous les emails OZECAR : logo officiel centré dans cartouche blanc sur header ink, filet jaune, structure sandwich ink/cream, pills .sec-tag, signature + footer. Pour les prochains templates : garder ce design, adapter UNIQUEMENT le texte.",
+    "moteur_template": "send-mail.php étendu : POST {secret,to,subject,template,vars:{token:valeur}} → charge project/email-templates/{template}.html, remplace les {{tokens}}, nettoie les tokens restants. Réutilisable pour les 6 templates. Fallback HTTP si fichier disque absent.",
+    "templates_dispo": "6 templates sur project/email-templates/ : 01-confirmation-commande, 02-kit-expedie, 03-bienvenue-client, 04-guide-demarrage, 05-confirmation-demo, 06-bienvenue-installateur.",
+    "logo_header": "Logo officiel logo_OZe_final.png (sombre) placé dans cartouche blanc arrondi 220px centré sur le header ink. À propager aux 5 autres templates (header actuellement en wordmark texte).",
+    "template_05_finalise": "05-confirmation-demo : bouton 'Rejoindre' remplacé par note 'lien dans l'invitation calendrier' (trigger polling ne porte pas le lien visio), cancel=mailto, désinscription retirée (transactionnel). Tokens dynamiques restants: {{prenom}},{{demo_date}},{{demo_time}}.",
+    "a_faire": "Propager logo header + design master aux 5 autres templates (adapter texte). Câbler 05 dans Make scénario 05."
   }
 }
