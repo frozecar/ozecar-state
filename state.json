@@ -1,12 +1,13 @@
 {
   "_meta": {
-    "version": "1.171",
+    "version": "1.172",
     "updated": "2026-06-21",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      "v1.172 (2026-06-21) — Correction archi devis: hubspot_cpq marqué SUPERSEDÉ par devis_contrat_flow (custom + CGV PandaDoc embed, sans API). 7 propriétés deal vérifiées présentes. Reco #2 reformulée: finaliser flux devis custom (étape 2 Make + hosting staging) + Form PandaDoc CGV côté Dominique.",
       "v1.171 (2026-06-21) — Reco #1 LIVRÉE : scénario Make 07 (id 6276389) ACTIF = notifications de transition. Digest quotidien email des deals L&Q en stagnation >5j (stages Démo planifiée/réalisée/Devis envoyé) vers dominique@ozecar.fr. send-mail.php étendu (dérivations stage_label, days_inactive, deals_count). 2 templates créés (99-relance-deal, 99-relance-digest). CONSTAT: 16 deals dormants tous au stage 'Devis envoyé' depuis ~27 mai = fuite phase 3 confirmée. Test exec SUCCESS 3 ops (digest groupé).",
       {
         "date": "2026-06-21",
@@ -7804,7 +7805,9 @@
       "chemin_recommande": "Path A: build kit PandaDoc turnkey (ordre des blocs + config pricing table selectable forfaits+N0-N4 + prix + options + tokens + regle conditionnelle) execute par Dominique dans l'editeur (rapide a la main) ou en guidage. Path B: upload PDF/DOCX assemble comme base + ajout pricing table native + tokens."
     },
     "cpq_approche_DECISION": "VERROUILLE 2026-06-17: pricing table NATIVE PandaDoc (CPQ fonctionnel) = section forfait choix unique + section maintenance choix unique (N0-N4) + options cases a cocher + mise en service one-shot + contenu conditionnel pour bloc maintenance. PAS le moteur CPQ a regles PandaDoc. Compatibilites par forfait (Wallet incluse public, CSM/Flotte10/Data incluses Transit, etc.) AFFICHEES EN LIBELLES, non auto-appliquees par regles. Confirme Dominique.",
-    "cowork_brief": "Livre: OZECAR_Cowork_Brief_Template_PandaDoc.md (self-contained, a coller dans Cowork). Conforme a la decision native pricing table. Aucun changement requis. Lancement par Dominique cote Claude Desktop (Cowork ne se lance pas depuis claude.ai)."
+    "cowork_brief": "Livre: OZECAR_Cowork_Brief_Template_PandaDoc.md (self-contained, a coller dans Cowork). Conforme a la decision native pricing table. Aucun changement requis. Lancement par Dominique cote Claude Desktop (Cowork ne se lance pas depuis claude.ai).",
+    "superseded_by": "devis_contrat_flow (2026-06-18) — architecture verrouillée: devis CUSTOM (configurateur HTML privé par lead) + CGV/signature via Form PandaDoc EMBED (sans API). Le CPQ HubSpot natif (Product Library/line items/quote) n'est PLUS la direction. PandaDoc ne porte QUE la CGV signée, pas le devis ni le pricing.",
+    "statut": "SUPERSEDÉ — ne pas relancer le CPQ. Voir devis_contrat_flow + devis_configurateur_2026_06_18."
   },
   "pricing_canonical_2026_06_17": {
     "_note": "GRILLE TARIFAIRE CANONIQUE — validée ligne par ligne par Dominique le 2026-06-17. SOURCE DE VÉRITÉ unique. Prime sur pricing / catalogue_prix antérieurs (marqués superseded). Tous prix HT.",
@@ -8150,7 +8153,21 @@
       "Optionnel: generation devis PDF server-side WeasyPrint pour piece jointe"
     ],
     "embed_signature_1_temps_via_api": "reporte en v2 (plan API Developer 40$/mo + dev backend) une fois le volume/levee justifie",
-    "correction_2026_06_18": "La vue client n'est PAS figee: le client ajuste librement forfaits/options/quantites; seuls numero de devis, date d'emission et validite sont fixes. La remise reste commercial-only (appliquee si negociee, panneau cache cote client)."
+    "correction_2026_06_18": "La vue client n'est PAS figee: le client ajuste librement forfaits/options/quantites; seuls numero de devis, date d'emission et validite sont fixes. La remise reste commercial-only (appliquee si negociee, panneau cache cote client).",
+    "etat_reel_2026_06_21": {
+      "verifie": "7 propriétés deal confirmées présentes côté HubSpot (ozecar_forfait/maintenance/mode_paiement/total_recurrent_ht/total_unique_ht/nb_stations/devis_json).",
+      "reste_claude": [
+        "Scénario Make étape 2 (webhook configurateur → getDeal → Iterator line items → updateDeal) PAS encore créé",
+        "Héberger le configurateur corrigé sur staging",
+        "Endpoint suivi d'ouverture devis (PHP, notif via deal_id)"
+      ],
+      "reste_dominique": [
+        "Monter la Form PandaDoc (CGV + maintenance + champs société/nom/email + n° devis + signature)",
+        "Fournir le code d'embed → div#pandadocEmbed"
+      ],
+      "bloquant": "deal_id/contact_id non portés par le configurateur (ni URL ni payload) — requis pour lier le deal en étape 2.",
+      "lien_avec_scenario_07": "Le scénario 07 sonne l'alarme sur les 16 devis morts ; ce flux custom+CGV est ce qui les convertit (signature). La relance auto J+3/J+7 viendra se brancher sur ce même flux."
+    }
   },
   "infra_decisions": {
     "transactional_email": {
