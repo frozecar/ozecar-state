@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.167",
+    "version": "1.168",
     "updated": "2026-06-21",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-21",
+        "version_from": "1.167",
+        "version_to": "1.168",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Scénario Make 05 (6219549) finalisé: module 2 basculé sur moteur de template (05-confirmation-demo branded). 5 modules: SearchContacts→email→createDeal L&Q→association→marquage.",
+          "Testé end-to-end (run responsive sur contact 1212): SUCCESS. Email+deal+association+re-marquage OK. 4 deals de test flaggés [TEST – à supprimer] pour Dominique.",
+          "Scénario laissé INACTIF en attente du GO activation. Note: activation déclenche un run immédiat (éviter run manuel parallèle)."
+        ]
+      },
       {
         "date": "2026-06-21",
         "version_from": "1.166",
@@ -8174,5 +8185,16 @@
     "logo_header": "Logo officiel logo_OZe_final.png (sombre) placé dans cartouche blanc arrondi 220px centré sur le header ink. À propager aux 5 autres templates (header actuellement en wordmark texte).",
     "template_05_finalise": "05-confirmation-demo : bouton 'Rejoindre' remplacé par note 'lien dans l'invitation calendrier' (trigger polling ne porte pas le lien visio), cancel=mailto, désinscription retirée (transactionnel). Tokens dynamiques restants: {{prenom}},{{demo_date}},{{demo_time}}.",
     "a_faire": "Propager logo header + design master aux 5 autres templates (adapter texte). Câbler 05 dans Make scénario 05."
+  },
+  "make_scenario_05_2026_06_21": {
+    "id": 6219549,
+    "name": "05 - Booking démo → Email confirmation + Deal L&Q",
+    "teamId": 197685,
+    "etat": "CONSTRUIT + TESTÉ OK, INACTIF (en attente du GO activation de Dominique).",
+    "trigger": "Polling HubSpot SearchContacts (interval 900s), filtre: engagements_last_meeting_booked HAS_PROPERTY AND ozecar_demo_confirme NEQ true. Connexion HubSpot Make 6538723.",
+    "flow": "1.SearchContacts → 2.HTTP send-mail.php (template 05-confirmation-demo, vars prenom/demo_date/demo_time via formatDate Europe/Paris) → 3.createDeal compact (pipeline 3747862733 L&Q, dealstage 5215721688 Démo planifiée, dealname 'Démo OZECAR — {firstname} {lastname}') → 4.CreateAssociation definitionId 3 (Deal→Contact, from {{3.id}} to {{1.id}}) → 5.updateContact compact (ozecar_demo_confirme=true, idempotency).",
+    "test": "Run responsive sur contact 1212 dé-confirmé temporairement = SUCCESS. Email envoyé, deal créé+associé (num_associated_contacts 1), contact re-marqué true. 4 deals de test renommés [TEST – à supprimer] (507510492380, 507566609612, 507512107247, 507548723387) → Dominique à supprimer.",
+    "note_activation": "ATTENTION: activer le scénario déclenche un run immédiat. Lors du test, activation + run manuel simultanés ont créé 2 deals en double (race: les 2 runs lisent le contact non-confirmé avant que module 5 ne marque). En fonctionnement normal (schedule 15min séquentiel) pas de doublon. À l'activation réelle: laisser tourner sur schedule, ne pas lancer de run manuel en parallèle.",
+    "a_faire": "GO activation Dominique → scenarios_activate(6219549). Vérifier rendu date email (formatDate)."
   }
 }
