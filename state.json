@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.164",
+    "version": "1.165",
     "updated": "2026-06-21",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-21",
+        "version_from": "1.164",
+        "version_to": "1.165",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "✅ MailerSend RÉACTIVÉ (preuve captcha /contact/ acceptée). Mailer transactionnel = blocage #1 levé.",
+          "Next: wiring send-mail.php sur SMTP MailerSend + test, puis reprise chaîne lead→activation."
+        ]
+      },
       {
         "date": "2026-06-21",
         "version_from": "1.163",
@@ -8119,13 +8129,13 @@
     "lien_chaine": "Prolonge le flux post-démo: PandaDoc signé -> (préparation) -> mise en service -> facturation. S'enchaîne après le devis configurateur + signature PandaDoc."
   },
   "mailersend_reactivation_2026_06_21": {
-    "statut": "Preuve CAPTCHA en place, mail de réactivation envoyé à Glenn (support MailerSend)",
+    "statut": "✅ RÉACTIVÉ par MailerSend (support Cyro) le 2026-06-21. Compte opérationnel.",
     "blocage_resolu": "MailerSend exigeait CAPTCHA ou validateur email + preuve. reCAPTCHA (Google v2 invisible via HubSpot) activé sur le formulaire de contact.",
     "preuve_url": "https://ozecar.fr/contact/ — badge 'protected by reCAPTCHA' visible au-dessus du bouton submit",
     "formulaire_contact": "HubSpot legacy 'Supervision OZECAR — Clients B2B' (formId f4b47a3c-2200-4ab8-b10c-e04cd349b9c4), embarqué sur /contact/",
     "mecanisme_captcha_hubspot": "Editeur HÉRITÉ: onglet Formulaire > panneau gauche bas > 'Autres éléments de formulaire (Captcha...)' > glisser CAPTCHA > Mettre à jour. Editeur NOUVEAU: +add > Other > Security & Privacy > glisser reCAPTCHA. Pas de toggle dans Options/Paramètres.",
     "caveat_critique": "Une fois CAPTCHA activé sur un formulaire, les soumissions via l'API Forms sont REFUSÉES (FORM_HAS_RECAPTCHA_ENABLED). N'activer le CAPTCHA QUE sur les formulaires remplis par des humains, jamais sur un formulaire alimenté par Make/API.",
-    "next": "Glenn réactive le compte → tester un envoi transactionnel."
+    "next": "Rendre l'envoi réellement opérationnel: (1) vérifier domaine ozecar.fr dans MailerSend si pas déjà fait (SPF/DKIM), (2) récupérer creds SMTP MailerSend, (3) pointer send-mail.php sur smtp.mailersend.net:587 (from hello@ozecar.fr), (4) test d'envoi transactionnel. Puis reprendre l'ordre: démo scénario 05 → PandaDoc → activation Monta → relances/Slack → onboarding."
   },
   "contact_page_repair_2026_06_21": {
     "probleme": "Page contact prod (ancien WP page_id 5322) avait été SUPPRIMÉE → menu 'Contactez-nous' (href ?page_id=5322) renvoyait 404.",
