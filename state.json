@@ -1,12 +1,13 @@
 {
   "_meta": {
-    "version": "1.170",
+    "version": "1.171",
     "updated": "2026-06-21",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      "v1.171 (2026-06-21) — Reco #1 LIVRÉE : scénario Make 07 (id 6276389) ACTIF = notifications de transition. Digest quotidien email des deals L&Q en stagnation >5j (stages Démo planifiée/réalisée/Devis envoyé) vers dominique@ozecar.fr. send-mail.php étendu (dérivations stage_label, days_inactive, deals_count). 2 templates créés (99-relance-deal, 99-relance-digest). CONSTAT: 16 deals dormants tous au stage 'Devis envoyé' depuis ~27 mai = fuite phase 3 confirmée. Test exec SUCCESS 3 ops (digest groupé).",
       {
         "date": "2026-06-21",
         "version_from": "1.169",
@@ -2607,6 +2608,20 @@
         "reste_dominique": "Renseigner OZ_SMTP_PASS avec le mot de passe de la BOITE dominique@ozecar.fr (le mdp webmail/IMAP de Dominique). 1 edition. JAMAIS stocke dans state.json.",
         "backup": "api/send-mail.php.bak-20260617-205642 (a nettoyer en fin avec les autres .bak)"
       }
+    },
+    "07": {
+      "id": 6276389,
+      "name": "07 - Relances pipeline L&Q → Notif stagnation",
+      "status": "ACTIVE",
+      "scheduling": "daily (interval 86400s ; 1ère exéc = activation)",
+      "role": "Notifications de transition (reco #1 du diagnostic tunnel) — digest quotidien des deals L&Q stagnants >5j",
+      "team": 197685,
+      "conn_hubspot": 6538723,
+      "flow": "1) hubspotcrm:searchDeals v2 (filter OR 3 groupes: dealstage EQ 5215721688/89/90 AND hs_lastmodifieddate LT now-5j ; outputProperties=ARRAY) → 2) util:TextAggregator v1 (feeder:1, value=ligne <li> guillemets SIMPLES) → 3) http:ActionSendData v3 → send-mail.php template 99-relance-digest, vars.rows={{2.text}}",
+      "recipient": "dominique@ozecar.fr",
+      "tested": "2026-06-21 exec ad29794c90fd4963859fa0f74df687bc SUCCESS, 3 ops = digest groupé OK (PAS 16 emails)",
+      "design_notes": "Présentation centralisée côté send-mail.php (stage_label/days_inactive/deals_count) pour garder le payload Make sans fonction-à-guillemets → évite le bug 422 du scénario 05. Guillemets SIMPLES dans le template de ligne de l'aggregator pour que {{2.text}} s'insère proprement dans le data raw JSON.",
+      "next": "Swap Slack 1-clic = remplacer module 3 par un post Slack une fois Bot Token fourni (pas de connexion Slack dans Make actuellement). v2 possible: routing par owner (hubspot_owner_id), alertes temps réel par transition (WatchCRMObjects instant trigger), fenêtre horaire matinale (restrict dans l'UI Make)."
     }
   },
   "hubspot": {
@@ -8214,7 +8229,16 @@
       "06-bienvenue-installateur": "prenom, unsubscribe_url",
       "05-confirmation-demo": "prenom, demo_iso (-> demo_date/demo_time dérivés serveur)"
     },
-    "todo_unsubscribe": "Les 5 templates gardent {{unsubscribe_url}} (href videé par le moteur). À finaliser (comme 05) au moment où chacun sera câblé dans un scénario."
+    "todo_unsubscribe": "Les 5 templates gardent {{unsubscribe_url}} (href videé par le moteur). À finaliser (comme 05) au moment où chacun sera câblé dans un scénario.",
+    "send_mail_php_derivations": "demo_iso→demo_date/demo_time (Europe/Paris) ; dealstage_id→stage_label (map L&Q 88/89/90) ; last_activity_iso→days_inactive (DateTime diff) ; rows→deals_count (substr_count '<li')",
+    "templates_relance": [
+      "99-relance-deal.html (per-deal: dealname,stage_label,days_inactive,deal_url)",
+      "99-relance-digest.html (digest: deals_count,rows ; utilisé par scénario 07)"
+    ],
+    "send_mail_php_backups": [
+      "api/send-mail.php.bak-20260621-175150",
+      "api/send-mail.php.bak-20260621-175804"
+    ]
   },
   "make_scenario_05_2026_06_21": {
     "id": 6219549,
@@ -8227,5 +8251,35 @@
     "note_activation": "ATTENTION: activer le scénario déclenche un run immédiat. Lors du test, activation + run manuel simultanés ont créé 2 deals en double (race: les 2 runs lisent le contact non-confirmé avant que module 5 ne marque). En fonctionnement normal (schedule 15min séquentiel) pas de doublon. À l'activation réelle: laisser tourner sur schedule, ne pas lancer de run manuel en parallèle.",
     "a_faire": "GO activation Dominique → scenarios_activate(6219549). Vérifier rendu date email (formatDate).",
     "fix_email_422": "Le 422 (received_to vide) venait de formatDate dans le payload JSON du module 2 (guillemets imbriqués cassaient le JSON → to/template vides). FIX: (1) formatage date côté serveur — send-mail.php dérive demo_date/demo_time depuis demo_iso brut (DateTime Europe/Paris); (2) module 2 payload propre (plus de formatDate, juste {{1.properties.email/firstname/engagements_last_meeting_booked}}); (3) garde-fou filtre email HAS_PROPERTY (un contact sans email ne déclenche jamais l'envoi); (4) module 2 handleErrors=false (si l'email échoue, le run s'arrête et réessaie au lieu de créer un deal sans email). Run de test 17:15:45 = status 1, operations 5 (email module PASSÉ). Réactivé."
+  },
+  "make_scenario_07_relances_2026_06_21": {
+    "what": "Notifications de transition — reco #1 du diagnostic tunnel lead→mise en service",
+    "scenario_id": 6276389,
+    "status": "ACTIVE - quotidien",
+    "finding_16_dormant_deals": {
+      "count": 16,
+      "all_stage": "Devis envoyé (5215721690)",
+      "since": "~2026-05-27 (certains 04-16/06)",
+      "interpretation": "Fuite phase 3 (devis→relance) confirmée: 16 devis envoyés sans aucune relance. C'est exactement la déperdition que le diagnostic pointait.",
+      "ids_noms": [
+        "Comepa",
+        "Les Terrasses d'Arsella",
+        "Serpollet Aromazone",
+        "Agriel/Lelycenter",
+        "Client NOVA Zaptec",
+        "NOVA Zaptec",
+        "Serpollet St Alban",
+        "Entreprise Natali",
+        "Marion Strazzabosco",
+        "EIG Zaptec",
+        "EIB Zaptec AO 05/2026",
+        "EIB AO 05/2026",
+        "EIB 05/26",
+        "Camping Arinella Bianca",
+        "Rossi Diffusion Prunete",
+        "Benjamin Piazza d'Olmo"
+      ]
+    },
+    "next_reco": "#2 PandaDoc CPQ (devis+e-signature) = la vraie réponse structurelle à cette fuite phase 3."
   }
 }
