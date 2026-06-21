@@ -1,12 +1,13 @@
 {
   "_meta": {
-    "version": "1.172",
+    "version": "1.173",
     "updated": "2026-06-21",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      "v1.173 (2026-06-21) — Étape 2 flux devis LIVRÉE: scénario Make 08 (id 6276646, webhook hook 3270135) ACTIF, testé OK end-to-end (deal TEST: 7 propriétés ozecar_* écrites). Configurateur câblé sur staging (MAKE_WEBHOOK + sendToMake() au clic Accepter + devis_json). Piège résolu: parameters.hook (pas __IMTHOOK__) + apprentissage structure webhook via UI. Bloquant deal_id périmé (déjà porté). Reste: line items 2b + Form PandaDoc CGV (Dominique).",
       "v1.172 (2026-06-21) — Correction archi devis: hubspot_cpq marqué SUPERSEDÉ par devis_contrat_flow (custom + CGV PandaDoc embed, sans API). 7 propriétés deal vérifiées présentes. Reco #2 reformulée: finaliser flux devis custom (étape 2 Make + hosting staging) + Form PandaDoc CGV côté Dominique.",
       "v1.171 (2026-06-21) — Reco #1 LIVRÉE : scénario Make 07 (id 6276389) ACTIF = notifications de transition. Digest quotidien email des deals L&Q en stagnation >5j (stages Démo planifiée/réalisée/Devis envoyé) vers dominique@ozecar.fr. send-mail.php étendu (dérivations stage_label, days_inactive, deals_count). 2 templates créés (99-relance-deal, 99-relance-digest). CONSTAT: 16 deals dormants tous au stage 'Devis envoyé' depuis ~27 mai = fuite phase 3 confirmée. Test exec SUCCESS 3 ops (digest groupé).",
       {
@@ -2623,6 +2624,17 @@
       "tested": "2026-06-21 exec ad29794c90fd4963859fa0f74df687bc SUCCESS, 3 ops = digest groupé OK (PAS 16 emails)",
       "design_notes": "Présentation centralisée côté send-mail.php (stage_label/days_inactive/deals_count) pour garder le payload Make sans fonction-à-guillemets → évite le bug 422 du scénario 05. Guillemets SIMPLES dans le template de ligne de l'aggregator pour que {{2.text}} s'insère proprement dans le data raw JSON.",
       "next": "Swap Slack 1-clic = remplacer module 3 par un post Slack une fois Bot Token fourni (pas de connexion Slack dans Make actuellement). v2 possible: routing par owner (hubspot_owner_id), alertes temps réel par transition (WatchCRMObjects instant trigger), fenêtre horaire matinale (restrict dans l'UI Make)."
+    },
+    "08": {
+      "id": 6276646,
+      "name": "08 - Configurateur devis → MAJ deal HubSpot",
+      "status": "ACTIVE",
+      "role": "Étape 2 du flux devis custom : à l'acceptation du devis (configurateur), MAJ du deal HubSpot.",
+      "trigger": "gateway:CustomWebHook (hookId 3270135) — URL https://hook.eu1.make.com/tyrqua16txbcc3u5ighy5bi63jvxjwt3",
+      "flow": "webhook → garde-fou (filter deal_id exist) → hubspotcrm:updateDeal v2 (conn 6538723) : ozecar_forfait/maintenance/mode_paiement/nb_stations/total_recurrent_ht/total_unique_ht/devis_json",
+      "tested": "2026-06-21 OK end-to-end sur deal TEST 507612143808 — 7 propriétés écrites, hs_lastmodifieddate maj.",
+      "piege_resolu": "Le module gateway:CustomWebHook attend parameters.hook (PAS __IMTHOOK__). Et un webhook créé par API reste isinvalid tant que la structure de données n'a pas été apprise via l'UI (Redéterminer la structure → POST). Fait par Dominique le 21/06.",
+      "next_2b": "Line items détaillés : ajouter Iterator({{1.totals.items}}) → hubspotcrm:createALineItem (recurring vs oneshot, associer au deal). Les items[] sont DÉJÀ envoyés dans le payload (totals.items), il ne reste qu'à les consommer."
     }
   },
   "hubspot": {
@@ -8155,18 +8167,18 @@
     "embed_signature_1_temps_via_api": "reporte en v2 (plan API Developer 40$/mo + dev backend) une fois le volume/levee justifie",
     "correction_2026_06_18": "La vue client n'est PAS figee: le client ajuste librement forfaits/options/quantites; seuls numero de devis, date d'emission et validite sont fixes. La remise reste commercial-only (appliquee si negociee, panneau cache cote client).",
     "etat_reel_2026_06_21": {
-      "verifie": "7 propriétés deal confirmées présentes côté HubSpot (ozecar_forfait/maintenance/mode_paiement/total_recurrent_ht/total_unique_ht/nb_stations/devis_json).",
-      "reste_claude": [
-        "Scénario Make étape 2 (webhook configurateur → getDeal → Iterator line items → updateDeal) PAS encore créé",
-        "Héberger le configurateur corrigé sur staging",
-        "Endpoint suivi d'ouverture devis (PHP, notif via deal_id)"
-      ],
+      "scenario_08_actif": "webhook configurateur → updateDeal testé OK (deal TEST 507612143808).",
+      "configurateur_cable": "staging/configurateur-devis.html : MAKE_WEBHOOK rempli (hook 3270135) + fonction sendToMake() (fire-and-forget, anti-double-envoi) appelée au clic 'Accepter et signer' ; ajoute devis_json=JSON.stringify(payload). Déployé staging (backup .bak-20260621-191730).",
+      "bloquant_perime": "Le configurateur PORTE DÉJÀ deal_id/contact_id (lus de l'URL, propagés dans le lien client). L'ancien 'bloquant deal_id non porté' est FAUX.",
+      "process": "Le commercial doit ouvrir le configurateur avec ?deal_id=<id HubSpot> (à terme: bouton depuis le deal). Le deal_id se propage jusqu'au lien client.",
       "reste_dominique": [
-        "Monter la Form PandaDoc (CGV + maintenance + champs société/nom/email + n° devis + signature)",
-        "Fournir le code d'embed → div#pandadocEmbed"
+        "Monter la Form PandaDoc CGV + coller le code d'embed dans #signEmbed (div existe déjà dans le configurateur)"
       ],
-      "bloquant": "deal_id/contact_id non portés par le configurateur (ni URL ni payload) — requis pour lier le deal en étape 2.",
-      "lien_avec_scenario_07": "Le scénario 07 sonne l'alarme sur les 16 devis morts ; ce flux custom+CGV est ce qui les convertit (signature). La relance auto J+3/J+7 viendra se brancher sur ce même flux."
+      "reste_claude": [
+        "Incrément 2b: line items (Iterator totals.items → createALineItem)",
+        "Endpoint suivi d'ouverture du devis (optionnel)",
+        "Définir convention 'amount' du deal (MRR vs ACV vs TCV) avant de le pousser"
+      ]
     }
   },
   "infra_decisions": {
