@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.175",
+    "version": "1.176",
     "updated": "2026-06-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-22",
+        "version_from": "1.175",
+        "version_to": "1.176",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Ristorcelli: ajout selecteur de borne (simuler n'importe quelle place) sur la version 4 places",
+          "Ristorcelli: publication variante 6 places en marche arriere controlee (ristorcelli-6.html), recul rectiligne verifie zero mordant, entree/sortie cote Nord"
+        ]
+      },
       {
         "date": "2026-06-22",
         "version_from": "1.174",
@@ -8335,13 +8345,24 @@
       "entree_gps": "41.99108, 9.40078",
       "sortie_gps": "41.99063, 9.40091",
       "url_publique": "https://ozecar.fr/wp-content/uploads/ozecar/clients/ristorcelli.html",
-      "statut": "publie (indicatif, a valider sur releve geometre)",
+      "statut": "2 versions publiees (4 PL marche avant + 6 PL marche arriere), indicatif a valider geometre",
       "arbitrage": "6 places impossibles sans mordant/marche arriere sur 2200 m2 pour semis 16,5 m; Dominique a choisi 4 places marche avant",
       "a_finaliser": [
         "cote reelle d'un cote (geometre) pour calage exact",
         "largeurs voies + rayons en etude d'execution",
         "modele borne DC PL"
-      ]
+      ],
+      "versions": {
+        "4_places_marche_avant": {
+          "url": "https://ozecar.fr/wp-content/uploads/ozecar/clients/ristorcelli.html",
+          "desc": "drive-through, entree Nord -> sortie Sud-Ouest, selecteur borne 1-4, zero mordant verifie"
+        },
+        "6_places_marche_arriere": {
+          "url": "https://ozecar.fr/wp-content/uploads/ozecar/clients/ristorcelli-6.html",
+          "desc": "places en bataille, recul rectiligne, entree/sortie cote Nord (RT10), selecteur borne 1-6, zero mordant verifie. Aire de manoeuvre ~25m a valider en execution"
+        }
+      },
+      "selecteur_borne": true
     }
   }
 }
