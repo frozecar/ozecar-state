@@ -1,12 +1,13 @@
 {
   "_meta": {
-    "version": "1.173",
-    "updated": "2026-06-21",
+    "version": "1.174",
+    "updated": "2026-06-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      "v1.174 (2026-06-22) — Scénario 08 VALIDÉ E2E via navigateur+rejeu: configurateur staging produit le bon payload, CORS OK, deal mis à jour avec valeurs exactes. Flux devis custom→deal opérationnel. Reste: Form PandaDoc CGV (Dominique, demain) + line items 2b.",
       "v1.173 (2026-06-21) — Étape 2 flux devis LIVRÉE: scénario Make 08 (id 6276646, webhook hook 3270135) ACTIF, testé OK end-to-end (deal TEST: 7 propriétés ozecar_* écrites). Configurateur câblé sur staging (MAKE_WEBHOOK + sendToMake() au clic Accepter + devis_json). Piège résolu: parameters.hook (pas __IMTHOOK__) + apprentissage structure webhook via UI. Bloquant deal_id périmé (déjà porté). Reste: line items 2b + Form PandaDoc CGV (Dominique).",
       "v1.172 (2026-06-21) — Correction archi devis: hubspot_cpq marqué SUPERSEDÉ par devis_contrat_flow (custom + CGV PandaDoc embed, sans API). 7 propriétés deal vérifiées présentes. Reco #2 reformulée: finaliser flux devis custom (étape 2 Make + hosting staging) + Form PandaDoc CGV côté Dominique.",
       "v1.171 (2026-06-21) — Reco #1 LIVRÉE : scénario Make 07 (id 6276389) ACTIF = notifications de transition. Digest quotidien email des deals L&Q en stagnation >5j (stages Démo planifiée/réalisée/Devis envoyé) vers dominique@ozecar.fr. send-mail.php étendu (dérivations stage_label, days_inactive, deals_count). 2 templates créés (99-relance-deal, 99-relance-digest). CONSTAT: 16 deals dormants tous au stage 'Devis envoyé' depuis ~27 mai = fuite phase 3 confirmée. Test exec SUCCESS 3 ops (digest groupé).",
@@ -2632,9 +2633,10 @@
       "role": "Étape 2 du flux devis custom : à l'acceptation du devis (configurateur), MAJ du deal HubSpot.",
       "trigger": "gateway:CustomWebHook (hookId 3270135) — URL https://hook.eu1.make.com/tyrqua16txbcc3u5ighy5bi63jvxjwt3",
       "flow": "webhook → garde-fou (filter deal_id exist) → hubspotcrm:updateDeal v2 (conn 6538723) : ozecar_forfait/maintenance/mode_paiement/nb_stations/total_recurrent_ht/total_unique_ht/devis_json",
-      "tested": "2026-06-21 OK end-to-end sur deal TEST 507612143808 — 7 propriétés écrites, hs_lastmodifieddate maj.",
+      "tested": "2026-06-22 VALIDÉ E2E: configurateur (navigateur) produit le bon payload (deal_id lu de l'URL, forfait/maintenance/totaux corrects), CORS préflight OK (Make renvoie access-control-allow-origin:*), webhook→updateDeal écrit les valeurs exactes sur 2 deals TEST (507612143808 puis 507510492380: ess/n2/annual/59.6/136). Seul le clic physique 'Accepter' non rejoué (navigateur MCP a planté) mais tous les maillons prouvés.",
       "piege_resolu": "Le module gateway:CustomWebHook attend parameters.hook (PAS __IMTHOOK__). Et un webhook créé par API reste isinvalid tant que la structure de données n'a pas été apprise via l'UI (Redéterminer la structure → POST). Fait par Dominique le 21/06.",
-      "next_2b": "Line items détaillés : ajouter Iterator({{1.totals.items}}) → hubspotcrm:createALineItem (recurring vs oneshot, associer au deal). Les items[] sont DÉJÀ envoyés dans le payload (totals.items), il ne reste qu'à les consommer."
+      "next_2b": "Line items détaillés : ajouter Iterator({{1.totals.items}}) → hubspotcrm:createALineItem (recurring vs oneshot, associer au deal). Les items[] sont DÉJÀ envoyés dans le payload (totals.items), il ne reste qu'à les consommer.",
+      "cors": "OK — fetch cross-origin staging.ozecar.fr → hook.eu1.make.com autorisé (préflight OPTIONS 200, allow-origin *, allow-headers content-type)."
     }
   },
   "hubspot": {
