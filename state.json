@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.174",
+    "version": "1.175",
     "updated": "2026-06-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-22",
+        "version_from": "1.174",
+        "version_to": "1.175",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Livrable client Ristorcelli publie: plan d'implantation 4 bornes PL (DC) marche avant, balayage semi 16,5m verifie sans mordant",
+          "URL: uploads/ozecar/clients/ristorcelli.html (dossier clients cree)",
+          "Contrainte etablie: 6 places impossibles proprement sur 2200 m2 pour semis 16,5m -> arbitrage 4 places marche avant"
+        ]
+      },
       "v1.174 (2026-06-22) — Scénario 08 VALIDÉ E2E via navigateur+rejeu: configurateur staging produit le bon payload, CORS OK, deal mis à jour avec valeurs exactes. Flux devis custom→deal opérationnel. Reste: Form PandaDoc CGV (Dominique, demain) + line items 2b.",
       "v1.173 (2026-06-21) — Étape 2 flux devis LIVRÉE: scénario Make 08 (id 6276646, webhook hook 3270135) ACTIF, testé OK end-to-end (deal TEST: 7 propriétés ozecar_* écrites). Configurateur câblé sur staging (MAKE_WEBHOOK + sendToMake() au clic Accepter + devis_json). Piège résolu: parameters.hook (pas __IMTHOOK__) + apprentissage structure webhook via UI. Bloquant deal_id périmé (déjà porté). Reste: line items 2b + Form PandaDoc CGV (Dominique).",
       "v1.172 (2026-06-21) — Correction archi devis: hubspot_cpq marqué SUPERSEDÉ par devis_contrat_flow (custom + CGV PandaDoc embed, sans API). 7 propriétés deal vérifiées présentes. Reco #2 reformulée: finaliser flux devis custom (étape 2 Make + hosting staging) + Form PandaDoc CGV côté Dominique.",
@@ -8312,5 +8323,25 @@
       ]
     },
     "next_reco": "#2 PandaDoc CPQ (devis+e-signature) = la vraie réponse structurelle à cette fuite phase 3."
+  },
+  "clients": {
+    "ristorcelli": {
+      "type": "Plan d'implantation IRVE poids lourds (livrable client)",
+      "lieu": "Corse, zone artisanale RT10",
+      "gps_terrain": "41.99092, 9.40104",
+      "surface_m2": 2200,
+      "vehicule_ref": "semi 16,5 m (confirme Dominique)",
+      "config": "4 places traversantes (drive-through), marche avant, sens unique entree Nord -> sortie Sud-Ouest, zero marche arriere, balayage verifie au calcul sans mordant sur places voisines",
+      "entree_gps": "41.99108, 9.40078",
+      "sortie_gps": "41.99063, 9.40091",
+      "url_publique": "https://ozecar.fr/wp-content/uploads/ozecar/clients/ristorcelli.html",
+      "statut": "publie (indicatif, a valider sur releve geometre)",
+      "arbitrage": "6 places impossibles sans mordant/marche arriere sur 2200 m2 pour semis 16,5 m; Dominique a choisi 4 places marche avant",
+      "a_finaliser": [
+        "cote reelle d'un cote (geometre) pour calage exact",
+        "largeurs voies + rayons en etude d'execution",
+        "modele borne DC PL"
+      ]
+    }
   }
 }
