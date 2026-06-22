@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.176",
+    "version": "1.177",
     "updated": "2026-06-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-22",
+        "version_from": "1.176",
+        "version_to": "1.177",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Ristorcelli v6 revue: meme entree NW/sortie SW que la v4, places en cul-de-sac le long de l'allee, simulation complete arrivee+recul+sortie, zero mordant verifie sur les 6 (entraxe 8m)"
+        ]
+      },
       {
         "date": "2026-06-22",
         "version_from": "1.175",
@@ -8359,7 +8368,7 @@
         },
         "6_places_marche_arriere": {
           "url": "https://ozecar.fr/wp-content/uploads/ozecar/clients/ristorcelli-6.html",
-          "desc": "places en bataille, recul rectiligne, entree/sortie cote Nord (RT10), selecteur borne 1-6, zero mordant verifie. Aire de manoeuvre ~25m a valider en execution"
+          "desc": "places en cul-de-sac le long d'une allee, MEME entree Nord-Ouest / sortie Sud-Ouest que la version 4, recul rectiligne (entraxe 8m) verifie zero mordant, simulation complete arrivee+recul+sortie, selecteur borne 1-6"
         }
       },
       "selecteur_borne": true
