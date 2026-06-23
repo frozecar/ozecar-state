@@ -1,12 +1,13 @@
 {
   "_meta": {
-    "version": "1.179",
+    "version": "1.180",
     "updated": "2026-06-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      "v1.180 (2026-06-23) — Configurateur WIZARD 3 étapes (Matériel→Supervision→Récap/Signature) + catalogue Sungrow complet (AC22E/IDC30/60/80/120/180/armoire/accessoires) avec VRAIS prix (PDF) + 8 photos hébergées (SVG-embed) + achat/marge côté commercial + edit-lock dormant. Prix d'achat Sungrow archivés. Déployé staging, vérifié navigateur. PLAN flux 'Devis à faire' (1 action manuelle: créer le stage) + digest 'devis à relancer' notés.",
       "v1.179 (2026-06-23) — Configurateur: catalogue multi-gammes (Zaptec AC + Sungrow DC + accessoires, prix du state) + curation commerciale (le commercial choisit ce que le client voit) + 3 mois de supervision offerts auto dès qu'une borne est au devis. Photos câblées (placeholder en attendant visuels). Déployé staging, JS validé. Reste: wizard + remises volume + photos.",
       "v1.178 (2026-06-23) — Configurateur étendu: section commerciale Matériel (Zaptec Pro/GO2 + colonnes, prix catalogue du state, éditables) + Installation & prestations (lignes libres pour chiffrage installateur). Intégrés aux items one-shot → deal HubSpot. PandaDoc reste CGV/signature uniquement. Déployé staging, JS validé.",
       {
@@ -8240,7 +8241,26 @@
         "Photos produits",
         "Bundle OZECAR comme ligne packagée (optionnel, le 3-mois auto couvre déjà l'essentiel)"
       ]
-    }
+    },
+    "configurateur_wizard_2026_06_23": {
+      "what": "Configurateur passé en WIZARD 3 étapes + catalogue Sungrow complet + photos.",
+      "wizard": "3 étapes : 1) Matériel (catalogue+photos, en 1er) · 2) Supervision (PDC/forfait/options/maintenance/MeS/remises) · 3) Récap + coordonnées + signature. Nav onglets + Précédent/Suivant injectés dans la stickybar existante (réutilisée, totaux barOs/barRec). Sections wrappées en .wstep data-w (2,1,2,3), toggle display par étape ; impression = toutes étapes visibles. Vérifié navigateur : 3 onglets, 19 produits, 8 photos chargées, finishBtn gated étape 3.",
+      "catalogue": "19 réf. Zaptec AC (Pro 1325/GO2 890/colonnes 325/410/530) + Sungrow AC22E (sur devis) + DC (IDC30E MID 7250 / MID+TPE 8150 ; IDC60E 9500 ; IDC80E 10538 ; IDC120E/180E + armoire = sur devis) + accessoires (piédestal30 295, chariot 775, DLM 390, piédestal60/80 520, CMS 832, TPE Payter 647). Prix de vente : IDC60/80 = propal PDF2 ; IDC30 = state×marge ; AC22E/120/180/armoire = 'Sur devis' (marge non validée → NE PAS inventer). Champ buy=achat affiché côté commercial avec marge%.",
+      "photos": "Extraites des PDF Sungrow, recomposées sur fond blanc (smask), hébergées en SVG-embed (wp-deploy bloque .png mais autorise .svg) sous uploads/ozecar/catalogue/{ac22e,idc30,idc60,idc80,idc120180,armoire}.svg. Zaptec = pas de photo (absente des PDF) → placeholder éclair.",
+      "trois_mois_offerts": "Conservé : toute borne (cat='borne', toute gamme) au devis → ligne récap 3 mois supervision offerts.",
+      "deploy": "staging/configurateur-devis.html (backup .bak-20260623-123201). À déployer en prod AVEC le dossier catalogue/*.svg.",
+      "edit_lock_DORMANT": "Hook client checkEditLock() posé : en vue CLIENT réelle, fetch /api/devis-status.php?deal_id=X ; si stage!='sent' → overlay 'Votre devis est en cours d'édition'. Dégrade silencieusement si endpoint absent (cas actuel). Reste à construire l'endpoint + le câblage HubSpot."
+    },
+    "flux_devis_a_faire_PLAN": {
+      "demande_Dominique_2026_06_23": "Ajouter étape 'Devis à faire' avant 'Devis envoyé'. Passage → 'Devis envoyé' = email client avec bouton 'Ouvrir devis'. Repasser en 'Devis à faire' = mode édition. Client qui ouvre pendant édition → 'votre devis est en cours d'édition'.",
+      "etape1_MANUEL_Dominique": "Créer le stage 'Devis à faire' dans pipeline L&Q (3747862733), positionné ENTRE 'Démo réalisée' (5215721689) et 'Devis envoyé' (5215721690). Création de stage IMPOSSIBLE via MCP/proxy → Settings HubSpot. Me communiquer le nouvel ID de stage.",
+      "etape2_Claude_apres": [
+        "Make : scénario stage→'Devis envoyé' (poll deals hs_date_entered_5215721690 récent) → send-mail.php template 'devis-pret' avec bouton 'Ouvrir devis' (lien configurateur client ?deal_id).",
+        "Endpoint /api/devis-status.php?deal_id : lit le dealstage HubSpot, renvoie {stage:'sent'|'todo'}. Active l'overlay edit-lock déjà câblé côté client.",
+        "Template email 'devis-pret' à créer."
+      ]
+    },
+    "digest07_devis_a_relancer_TODO": "Scénario 07 (id 6276389) : ajouter colonne/indication 'devis à relancer' dans le digest (les 16 deals stagnants sont à 'Devis envoyé'). Petit ajustement TextAggregator + template 99-relance-digest."
   },
   "infra_decisions": {
     "transactional_email": {
@@ -8401,6 +8421,52 @@
         }
       },
       "selecteur_borne": true
+    }
+  },
+  "sungrow_achat_2025_h1": {
+    "_note": "Prix d'ACHAT HT fournisseur (PDF confidentiels ozecar.fr/sungrow/1.pdf & 2.pdf). MeS+transport inclus. Garantie 3 ans. Ext.garantie +5ans=7,5%/an, +10ans=10%/an. NE PAS exposer au client.",
+    "AC22E_G2": {
+      "ref": "A0CH0006",
+      "achat": 450,
+      "min_qte": 42,
+      "pied_simple": 80,
+      "pied_double": 90,
+      "compteur_mono_chint": 60,
+      "compteur_tri_chint": 80
+    },
+    "IDC30E": {
+      "non_mid": 4680,
+      "mid": 5356,
+      "mid_tpe": 6032,
+      "piedestal": 210,
+      "chariot": 575,
+      "compteur_dlm": 300
+    },
+    "IDC60E_vente_propal": 9500,
+    "IDC80E_vente_propal": 10538,
+    "accessoires_60_80_vente_propal": {
+      "piedestal": 520,
+      "cms_bras_cable": 832,
+      "tpe_apollo_payter": 647
+    },
+    "IDC120E": {
+      "mid": 20280,
+      "mid_tpe": 21320
+    },
+    "IDC180E": {
+      "mid_400A": 24440,
+      "mid_tpe_400A": 25480,
+      "mid_250A": 22880,
+      "mid_tpe_250A": 23920
+    },
+    "armoires": {
+      "IDC480E": 42525,
+      "IDC360E": 35175,
+      "satellites": [
+        7875,
+        8400,
+        9450
+      ]
     }
   }
 }
