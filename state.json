@@ -1,12 +1,13 @@
 {
   "_meta": {
-    "version": "1.177",
-    "updated": "2026-06-22",
+    "version": "1.178",
+    "updated": "2026-06-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      "v1.178 (2026-06-23) — Configurateur étendu: section commerciale Matériel (Zaptec Pro/GO2 + colonnes, prix catalogue du state, éditables) + Installation & prestations (lignes libres pour chiffrage installateur). Intégrés aux items one-shot → deal HubSpot. PandaDoc reste CGV/signature uniquement. Déployé staging, JS validé.",
       {
         "date": "2026-06-22",
         "version_from": "1.176",
@@ -8210,6 +8211,19 @@
         "Incrément 2b: line items (Iterator totals.items → createALineItem)",
         "Endpoint suivi d'ouverture du devis (optionnel)",
         "Définir convention 'amount' du deal (MRR vs ACV vs TCV) avant de le pousser"
+      ]
+    },
+    "configurateur_materiel_2026_06_23": {
+      "what": "Section commerciale Matériel + Installation ajoutée au configurateur (staging).",
+      "materiel": "Bloc sales-only 'Matériel' : steppers quantité + prix catalogue ÉDITABLE par ligne. Réfs/prix tirés de pricing.products du state: Zaptec Pro 22kW 1325€, Zaptec GO 2 890€, Colonne Zaptec S/T 325€, OnePole S/T 410€, OnePole Twin SBS 530€. (Pas de T2S/Payter: prix absents du state, à fournir.)",
+      "installation": "Bloc sales-only 'Installation & prestations' : lignes libres (libellé + montant) — le commercial saisit le chiffrage de l'installateur partenaire. Add/suppr dynamique.",
+      "calcul": "Matériel+presta intégrés aux items[] one-shot (scope 'materiel'/'prestation') → remontent dans totals.items → deal HubSpot (scénario 08). La remise 'mise en service' ne s'applique PAS au matériel/pose ; seule la remise globale one-shot s'y applique.",
+      "propagation_client": "mat/matPrice/presta ajoutés à config (encodé b64 dans le lien client + restaurés à l'init). En vue client: contrôles masqués (sales-only), mais matériel/install visibles dans le récap.",
+      "deploy": "staging/configurateur-devis.html (backup .bak-20260623-112426). JS validé (node --check OK).",
+      "reste": [
+        "Validation visuelle Dominique",
+        "Prix T2S / TPE Payter à fournir si besoin",
+        "Éventuel: remise % dédiée matériel"
       ]
     }
   },
