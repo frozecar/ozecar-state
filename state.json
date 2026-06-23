@@ -1,12 +1,13 @@
 {
   "_meta": {
-    "version": "1.178",
+    "version": "1.179",
     "updated": "2026-06-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      "v1.179 (2026-06-23) — Configurateur: catalogue multi-gammes (Zaptec AC + Sungrow DC + accessoires, prix du state) + curation commerciale (le commercial choisit ce que le client voit) + 3 mois de supervision offerts auto dès qu'une borne est au devis. Photos câblées (placeholder en attendant visuels). Déployé staging, JS validé. Reste: wizard + remises volume + photos.",
       "v1.178 (2026-06-23) — Configurateur étendu: section commerciale Matériel (Zaptec Pro/GO2 + colonnes, prix catalogue du state, éditables) + Installation & prestations (lignes libres pour chiffrage installateur). Intégrés aux items one-shot → deal HubSpot. PandaDoc reste CGV/signature uniquement. Déployé staging, JS validé.",
       {
         "date": "2026-06-22",
@@ -8224,6 +8225,20 @@
         "Validation visuelle Dominique",
         "Prix T2S / TPE Payter à fournir si besoin",
         "Éventuel: remise % dédiée matériel"
+      ]
+    },
+    "configurateur_catalogue_2026_06_23": {
+      "what": "Catalogue matériel multi-gammes + curation commerciale + 3 mois offerts (staging).",
+      "gammes": "Zaptec AC (Pro 1325€, GO2 890€, 3 colonnes 325/410/530€) ; Sungrow DC (IDC30E MID 7250€, IDC30E MID+TPE 8150€, 50-80 & 120-180 = Sur devis) ; accessoires Sungrow (piédestal 295€, chariot 775€, DLM 390€). Prix tirés de pricing.products + sungrow_catalog du state.",
+      "curation": "Toggle 'proposer au client' par produit (state.matShow). Vue commerciale = catalogue complet groupé par gamme ; vue client = uniquement produits proposés ou avec qty>0. Évite de noyer le client.",
+      "trois_mois_offerts": "Auto : dès qu'une borne (cat='borne', toute gamme) a qty>0 → ligne récap '3 premiers mois de supervision offerts (valeur 3×récurrent)'. Conforme décision Dominique 2026-06-23: 3 mois offerts avec TOUTES les bornes vendues.",
+      "photos": "Champ 'img' câblé par produit avec fallback placeholder (éclair violet) via onerror. À héberger sous uploads/ozecar/catalogue/ — visuels officiels Zaptec/Sungrow à fournir ou sourcer.",
+      "deploy": "staging/configurateur-devis.html (backup .bak-20260623-115345). JS validé node.",
+      "reste": [
+        "Wizard 3 étapes (Matériel→Supervision→Récap/Signature)",
+        "Remises volume paramétrables",
+        "Photos produits",
+        "Bundle OZECAR comme ligne packagée (optionnel, le 3-mois auto couvre déjà l'essentiel)"
       ]
     }
   },
