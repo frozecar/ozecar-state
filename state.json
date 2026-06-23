@@ -1,12 +1,13 @@
 {
   "_meta": {
-    "version": "1.180",
+    "version": "1.181",
     "updated": "2026-06-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      "v1.181 (2026-06-23) — Flux 'Devis à faire' : étape créée par API (id 5584432342, entre Démo réalisée et Devis envoyé, IDs préservés) + prop deal ozecar_devis_url créée + digest 07 colonne 'Devis à relancer' + template email devis-pret + scénario 09 (email Devis envoyé→client) créé INACTIF. Reste : câbler genClientLink→ozecar_devis_url + mapping scénario 08, activer 09, endpoint edit-lock.",
       "v1.180 (2026-06-23) — Configurateur WIZARD 3 étapes (Matériel→Supervision→Récap/Signature) + catalogue Sungrow complet (AC22E/IDC30/60/80/120/180/armoire/accessoires) avec VRAIS prix (PDF) + 8 photos hébergées (SVG-embed) + achat/marge côté commercial + edit-lock dormant. Prix d'achat Sungrow archivés. Déployé staging, vérifié navigateur. PLAN flux 'Devis à faire' (1 action manuelle: créer le stage) + digest 'devis à relancer' notés.",
       "v1.179 (2026-06-23) — Configurateur: catalogue multi-gammes (Zaptec AC + Sungrow DC + accessoires, prix du state) + curation commerciale (le commercial choisit ce que le client voit) + 3 mois de supervision offerts auto dès qu'une borne est au devis. Photos câblées (placeholder en attendant visuels). Déployé staging, JS validé. Reste: wizard + remises volume + photos.",
       "v1.178 (2026-06-23) — Configurateur étendu: section commerciale Matériel (Zaptec Pro/GO2 + colonnes, prix catalogue du state, éditables) + Installation & prestations (lignes libres pour chiffrage installateur). Intégrés aux items one-shot → deal HubSpot. PandaDoc reste CGV/signature uniquement. Déployé staging, JS validé.",
@@ -8260,7 +8261,21 @@
         "Template email 'devis-pret' à créer."
       ]
     },
-    "digest07_devis_a_relancer_TODO": "Scénario 07 (id 6276389) : ajouter colonne/indication 'devis à relancer' dans le digest (les 16 deals stagnants sont à 'Devis envoyé'). Petit ajustement TextAggregator + template 99-relance-digest."
+    "digest07_devis_a_relancer_TODO": "Scénario 07 (id 6276389) : ajouter colonne/indication 'devis à relancer' dans le digest (les 16 deals stagnants sont à 'Devis envoyé'). Petit ajustement TextAggregator + template 99-relance-digest.",
+    "flux_devis_a_faire_LIVE": {
+      "stage_cree": "Étape 'Devis à faire' CRÉÉE via API (Make MakeAPICall + conn HubSpot 6538723). id=5584432342, displayOrder 4, pipeline L&Q 3747862733, entre Démo réalisée (5215721689) et Devis envoyé (désormais 5215721690 displayOrder 5). Tous les IDs de stages existants préservés (PUT complet), aucun deal déplacé.",
+      "prop_devis_url": "Propriété deal 'ozecar_devis_url' (text) CRÉÉE via API. Stocke le lien figé vue client. Group dealinformation.",
+      "digest_relance": "Scénario 07 (6276389) MAJ : badge par deal + flag '📄 Devis à relancer' (pastille jaune) sur les deals en Devis envoyé. Actif, valide.",
+      "template_email": "project/email-templates/devis-pret.html créé (bouton 'Ouvrir mon devis', vars {{firstname}} {{devis_url}} {{total_os}} {{total_rec}}).",
+      "scenario_09": "'09 - Devis envoyé → email client (Ouvrir devis)' CRÉÉ id=6301518, INACTIF (sécurité, écrit à de vrais clients). Trigger: searchDeals dealstage=5215721690 ET hs_date_entered_5215721690 > now-25min (les 16 deals historiques NE déclenchent PAS). Récupère email+prénom du contact associé (2 MakeAPICall), envoie devis-pret. Interval 900s. À ACTIVER après test (déplacer un deal test en Devis envoyé).",
+      "reste_a_cabler": [
+        "Configurateur genClientLink() : POSTer buildPayload + client.devis_url=<url généré> vers le webhook 08 (hook 3270135) pour PERSISTER config + URL au moment de la génération du lien (et non plus seulement à l'acceptation).",
+        "Scénario 08 (6276646, ACTIF) : ajouter mapping {ozecar_devis_url ← {{1.client.devis_url}}} dans updateDeal (module 2 uniquement, ne pas toucher le webhook module 1 pour éviter le redetermine).",
+        "Activer scénario 09 après validation visuelle du template + test.",
+        "Edit-lock (overlay 'devis en cours d'édition' déjà câblé dormant côté client) : construire endpoint /api/devis-status.php?deal_id → {stage:'sent'|'todo'} via webhook Make (getDeal dealstage). Nudge: webhook API reste isinvalid jusqu'à 'Redéterminer la structure' en UI Make."
+      ],
+      "deblocage": "Création de STAGES de pipeline ET de PROPRIÉTÉS deal via API CONFIRMÉE possible (Make hubspotcrm:MakeAPICall, conn 6538723, body en STRING JSON + header Content-Type application/json). L'ancienne note 'impossible via MCP' est levée pour ce canal."
+    }
   },
   "infra_decisions": {
     "transactional_email": {
