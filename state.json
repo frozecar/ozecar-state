@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.182",
+    "version": "1.183",
     "updated": "2026-06-24",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-24",
+        "version_from": "1.182",
+        "version_to": "1.183",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "ROAMING: hausse cachée repérée par Dominique. Roaming passe de 4% à 8% (inbound+outbound) = doublement. Impact ~+18,7k€/an sur 468k€ d'itinérance inbound (84,8% du GMV). Neutralise 2/3 de l'économie sur le minimum PdC.",
+          "Économie nette réelle ~17k€/an (vs 8475€ affichés par Monta qui masquent la hausse variable roaming).",
+          "Exigences réordonnées par impact: 1.OCPP marque blanche 2.Roaming à 4% 3.Tarif privé 1€ 4.Clause protection staircase 5.Support+dégressivité."
+        ]
+      },
       {
         "date": "2026-06-24",
         "version_from": "1.181",
@@ -8521,7 +8532,20 @@
         "SUPPORT HUMAIN — remplacé par AI gratuit (downgrade vs 1,03€/socket évoqué)."
       ],
       "recommandation": "NE PAS SIGNER en l'état malgré pression 30 juin. Répondre: (1) valider cadre (min 500, structure, roaming), (2) exiger les 3 manquants, (3) négocier staircase (plus progressif OU clause protection 80%). Option 2 (3 ans 4,50€) meilleure SI clause protection obtenue; sinon Option 1 (2 ans) limite l'exposition.",
-      "questions_facturation_en_suspens": "La facturation porte-t-elle sur PdC opérés (teams) ou tout le tenant (incl. bornes perso utilisateurs app marque blanche)? Crucial pour le modèle bornes perso non facturées. eMSP/markup roaming activable confirmé via roaming outbound 8%."
+      "questions_facturation_en_suspens": "La facturation porte-t-elle sur PdC opérés (teams) ou tout le tenant (incl. bornes perso utilisateurs app marque blanche)? Crucial pour le modèle bornes perso non facturées. eMSP/markup roaming activable confirmé via roaming outbound 8%.",
+      "ROAMING_HAUSSE_CACHEE": {
+        "constat": "Roaming était à 4% (contrat actuel). Proposition Monta: inbound 8% + outbound 8% = DOUBLEMENT.",
+        "impact_chiffre": "84,8% du GMV OZECAR (552k€) est de l'itinérance inbound ≈ 468k€. Doublement 4→8% = +18 700€/an de coût (37,4k€ à 8% vs 18,7k€ à 4%). Croissant avec le GMV.",
+        "effet_sur_bilan": "Neutralise ~2/3 de l'économie sur le minimum PdC. Économie nette réelle ~17k€/an (vs 8475€ affichés par Monta qui ne comptent que le fixe et masquent la hausse variable roaming).",
+        "exigence": "Ramener roaming inbound à 4% (a minima), idéalement inbound+outbound. Levier plus chiffrable que la dégressivité prix PdC."
+      },
+      "exigences_ordre_impact": [
+        "1. Marque blanche OCPP incluse (sans quoi pas de reprises, staircase intenable)",
+        "2. Roaming ramené à 4% (~18,7k€/an, croissant avec GMV) - HAUSSE CACHÉE repérée par Dominique",
+        "3. Tarif PdC privé 1€/sans transaction",
+        "4. Clause protection staircase (renégo à 80% des commits)",
+        "5. Support humain + dégressivité prix PdC (secondaires)"
+      ]
     }
   }
 }
