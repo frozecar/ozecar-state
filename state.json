@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.183",
+    "version": "1.184",
     "updated": "2026-06-24",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-24",
+        "version_from": "1.183",
+        "version_to": "1.184",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Réponse Chloé reçue. Roaming GAGNÉ (retour taux précédent 4%) — à verrouiller au contrat + lever ambiguïté inbound/outbound.",
+          "Bornes 1€: clarification = bornes PRO SANS TRANSACTION (flottes/parkings employés), pas résidentielles. Besoin: supervision+accès+load management au 1€. Email rédigé défendant le principe 'absence de transaction = 1€' vs home+ résidentiel.",
+          "Support humain: tarification saisonnière en cours. OCPP marque blanche: en étude technique Monta (point critique toujours ouvert).",
+          "Chloé revient avec détails le 25/06."
+        ]
+      },
       {
         "date": "2026-06-24",
         "version_from": "1.182",
@@ -8545,7 +8557,16 @@
         "3. Tarif PdC privé 1€/sans transaction",
         "4. Clause protection staircase (renégo à 80% des commits)",
         "5. Support humain + dégressivité prix PdC (secondaires)"
-      ]
+      ],
+      "reponse_chloe_2026_06_24": {
+        "roaming": "GAGNÉ: maintien du taux du contrat précédent (4%). À VERROUILLER: lever l'ambiguïté inbound vs outbound (4% sur les deux?) + faire INSCRIRE AU CONTRAT (ne pas refaire l'erreur du 1€ Margaux jamais contractualisé).",
+        "bornes_privees": "Chloé ne confirme PAS le 1€, elle demande quelles fonctionnalités. CLARIFICATION DOMINIQUE: il s'agit des bornes PRO SANS TRANSACTION (flottes, parkings employés accès gratuit), PAS résidentielles. Fonctions voulues au tarif 1€: supervision + contrôle d'accès + load management (DLM). Piège à éviter: que Monta classe le load management en home+ tarif plein. Principe à défendre: le 1€ se justifie par l'absence de transaction (pas de paiement/roaming), pas par un service dégradé.",
+        "bornes_privees_enjeu": "Le 1€ rend l'offre Essential viable (4,90€ facturé > 1€ coûté; sinon déficitaire à 5€). Concerne une part importante du parc B2B (flottes/entreprises en accès gratuit).",
+        "support": "Pas inclus gratuitement. Chloé se renseigne sur une tarification SAISONNIÈRE pour la redirection support humain (cohérent avec saisonnalité ×5). À chiffrer.",
+        "ocpp": "EN ÉTUDE: ingénieurs Monta étudient la faisabilité technique. Ni oui ni non. POINT CRITIQUE TOUJOURS OUVERT (sans OCPP marque blanche, pas de reprises, staircase intenable). À surveiller de près.",
+        "dynamique": "Chloé coopérative (concède roaming, cherche solutions support, étudie OCPP). Revient avec détails le 2026-06-25.",
+        "emails_rediges": "1) Email 4 questions clarification (envoyé). 2) Réponse bornes pro sans transaction (supervision+accès+load management au 1€, distinction vs home+ résidentiel)."
+      }
     }
   }
 }
