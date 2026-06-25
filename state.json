@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.189",
+    "version": "1.190",
     "updated": "2026-06-25",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-25",
+        "version_from": "1.189",
+        "version_to": "1.190",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Stratégie sans-transaction analysée. JUSTE: sans-transaction = actif margé ~83% + pipeline conversion vers GMV.",
+          "FAILLE 1: les 80% présupposent le 1€ (pas acquis); à 5€ = 15% marge.",
+          "FAILLE 2 (critique): les 'remises au dépassement' n'existent pas — proposition Monta = prix FIXE 4,50€, pas de grille dégressive. Surperformer ne rapporte rien sans grille.",
+          "VRAI MOVE: négocier grille dégressive par paliers de volume TOTAL (payantes + 1€ comptent). À tester: la conversion sans-transaction→payant est-elle réelle (cas clients) ou hypothèse?"
+        ]
+      },
       {
         "date": "2026-06-25",
         "version_from": "1.188",
@@ -8663,6 +8675,15 @@
       "obtenu_par": "Question soft 'le Basic me garde-t-il les fonctions du Pro?' (mention domaine sans Monta = fonction Pro-only). Chloé a confirmé Pro au prix réduit sans qu'on ait à brandir l'addendum.",
       "bornes_privees_suite": "Chloé a ACCEPTÉ le concept de bornes pro sans transaction à tarif réduit (débat passé de 'existe?' à 'combien?'). Demande le volume prévu dans le staircase. À CLARIFIER en retour: ces bornes 1€ comptent-elles dans le staircase d'engagement (750/1300) ou en plus? Si elles comptent ET à 1€ → staircase atteignable à coût réduit (désamorce le risque). Meilleur segment en marge (abonnement supervision facturé - 1€ coût Monta).",
       "en_attente": "Volume bornes pro sans transaction à donner par Dominique. OCPP marque blanche toujours en étude (keystone). Roaming écrit + support saisonnier."
+    },
+    "strategie_sans_transaction_2026_06_25": {
+      "raisonnement_dominique": "Garder le staircase en bornes payantes (5€) + bornes pro sans transaction EN SUPPLÉMENT à 1€. Objectif: surperformer le staircase pour débloquer des remises, et profiter des 80% de marge sur le sans-transaction. Pipeline: véhicules de fonction (gratuit aujourd'hui) → refacturation salariés progressive (GMV demain).",
+      "ce_qui_est_juste": "Le sans-transaction est un ACTIF margé ~83% (client paie supervision ~5,90€, coût Monta 1€), pas un coût. Pipeline de conversion vers transactionnel = vrai moteur. Garder le staircase en payant pur reflète le GMV (propre pour la levée).",
+      "faille_1_marge": "Les 80% de marge PRÉSUPPOSENT le 1€ (pas encore acquis - Chloé a renvoyé la question des fonctionnalités). À 5€, cette borne = 15% de marge seulement. Tout le raisonnement dépend d'abord de l'obtention écrite du 1€.",
+      "faille_2_remises": "CRITIQUE: les 'remises' au dépassement n'existent PAS dans la proposition Monta. Structure actuelle = prix FIXE (4,50€ option 3 ans), pas de grille dégressive par volume. Dépasser le staircase ne baisse pas le prix unitaire. Surperformer ne rapporte rien d'autre que plus de bornes au même tarif.",
+      "vrai_move": "Négocier d'abord une GRILLE DÉGRESSIVE PAR PALIERS DE VOLUME (ex: 4,50€ jusqu'à 1000 PdC, 4,00€ de 1000-2000, 3,50€ au-delà) AVEC le volume TOTAL (payantes + sans transaction 1€) comptant pour franchir les paliers. C'est ça qui transforme la surperformance en gain réel ET fait baisser le prix des payantes grâce aux bornes 1€.",
+      "supplement_vs_staircase": "Une fois la grille obtenue, secondaire. Staircase payant pur (option Dominique) = engagement reflète le GMV (propre levée) MAIS expose au risque (tenir 1300 PAYANTES, pas 1300 total). Arbitrage ambition/risque à trancher par Dominique.",
+      "point_a_tester": "La conversion sans-transaction → payant est le maillon faible: une entreprise qui OFFRE la recharge aux salariés en fait un avantage RH difficile à retirer. À valider: Dominique a-t-il DÉJÀ vu cette conversion chez des clients existants (2-3 cas réels), ou est-ce une hypothèse de marché? Détermine si le staircase agressif repose sur du concret ou du sable."
     }
   },
   "benchmark_marche": {
