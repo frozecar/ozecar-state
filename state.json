@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.190",
+    "version": "1.191",
     "updated": "2026-06-25",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-25",
+        "version_from": "1.190",
+        "version_to": "1.191",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Réponse Chloé: décisions Dominique = 36 mois (4,50€), CLAUSE SUSPENSIVE OCPP sur staircase (s'active à la livraison OCPP, pas à la signature), ambition haute (grille dégressive + revoyure).",
+          "Acquis à formaliser: roaming taux actuel inbound/outbound, Pro 3500€, 1€ sans transaction. Volume sans transaction ~20%.",
+          "Mail de réponse à Chloé rédigé. À vérifier avant envoi: taux roaming exacts, volume 20%, option grille à l'oral."
+        ]
+      },
       {
         "date": "2026-06-25",
         "version_from": "1.189",
@@ -8684,6 +8695,31 @@
       "vrai_move": "Négocier d'abord une GRILLE DÉGRESSIVE PAR PALIERS DE VOLUME (ex: 4,50€ jusqu'à 1000 PdC, 4,00€ de 1000-2000, 3,50€ au-delà) AVEC le volume TOTAL (payantes + sans transaction 1€) comptant pour franchir les paliers. C'est ça qui transforme la surperformance en gain réel ET fait baisser le prix des payantes grâce aux bornes 1€.",
       "supplement_vs_staircase": "Une fois la grille obtenue, secondaire. Staircase payant pur (option Dominique) = engagement reflète le GMV (propre levée) MAIS expose au risque (tenir 1300 PAYANTES, pas 1300 total). Arbitrage ambition/risque à trancher par Dominique.",
       "point_a_tester": "La conversion sans-transaction → payant est le maillon faible: une entreprise qui OFFRE la recharge aux salariés en fait un avantage RH difficile à retirer. À valider: Dominique a-t-il DÉJÀ vu cette conversion chez des clients existants (2-3 cas réels), ou est-ce une hypothèse de marché? Détermine si le staircase agressif repose sur du concret ou du sable."
+    },
+    "reponse_chloe_2026_06_25": {
+      "date": "2026-06-25",
+      "decisions_dominique": {
+        "duree": "36 mois — 4,50 €/PdC (option 3 ans)",
+        "posture_ocpp": "CLAUSE SUSPENSIVE: signer maintenant (verrouille roaming/Pro/1€/prix), mais staircase (750/1000/1500) ne s'active qu'à la LIVRAISON de l'endpoint OCPP marque blanche fonctionnel. Staircase démarre à la livraison OCPP, PAS à la signature.",
+        "ambition": "Haute: pousser aussi grille dégressive par volume + clause de revoyure staircase"
+      },
+      "acquis_a_formaliser": [
+        "Roaming: taux contrat actuel (pas 8%), distinction inbound/outbound écrite",
+        "WL Pro maintenu 3500€ + toutes fonctionnalités Pro",
+        "1€/PdC bornes pro sans transaction (justifié par absence de transaction)"
+      ],
+      "volume_sans_transaction": "~20% du parc opéré, avec conversion progressive vers transactionnel (refacturation salariés véhicules perso = obligation avantage en nature)",
+      "demandes_montee_en_charge": [
+        "Grille dégressive par paliers de volume TOTAL (payants + 1€ comptent)",
+        "Clause suspensive OCPP sur staircase",
+        "Clause de revoyure si <80% d'un palier (ajuster calendrier vs pénalité)"
+      ],
+      "email_redige": "Mail de réponse à Chloé rédigé (option 36 mois + formalisation acquis + volume + grille dégressive + clause suspensive OCPP + revoyure). PRÊT sous réserve: Dominique vérifie les taux roaming exacts (4% inbound / 6% outbound? le 6% inclut-il les 2% transaction comme contrat 2024?) + confirme le volume 20% avant envoi.",
+      "a_verifier_avant_envoi": [
+        "Taux roaming exacts (inbound/outbound, inclusion transaction)",
+        "Volume 20% confirmé",
+        "Option: garder grille dégressive pour l'échange oral plutôt que tout par écrit"
+      ]
     }
   },
   "benchmark_marche": {
