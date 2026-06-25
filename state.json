@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.185",
-    "updated": "2026-06-24",
+    "version": "1.186",
+    "updated": "2026-06-25",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-25",
+        "version_from": "1.185",
+        "version_to": "1.186",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Addendum I (12/12/2025) récupéré et analysé. Signé par Max Scherer (COO Monta) + Dominique + Frédéric. Remplace WL Basic par WL PRO. Partie intégrante du contrat, prime en cas de conflit, autres clauses inchangées.",
+          "LEVIER MAJEUR: OZECAR est contractuellement en PRO depuis 6 mois (signé COO). La proposition Basic est un downgrade refusable qui réexpose Monta (viole marque blanche) et perd le domaine custom sans Monta. Chloé (CSM) ne peut contredire son propre COO.",
+          "Prix Pro non fixé dans l'addendum: le PLAN Pro est acquis, le PRIX reste discutable. Distinction: refuser downgrade Basic, négocier prix Pro.",
+          "4 points durs consolidés: OCPP, roaming (6% incluant 2%), 1€ (extension pro à négocier), maintien PRO."
+        ]
+      },
       {
         "date": "2026-06-24",
         "version_from": "1.184",
@@ -8598,6 +8610,16 @@
       "ARGUMENT_FORT": "Load management + intégration flotte sont INCLUS dans le backend 500€/mois (fonctions de base, pas premium). Donc ils ne peuvent pas justifier un surclassement des bornes au tarif plein. Argument à utiliser contre la tentative de Chloé de lier le tarif aux fonctionnalités home+.",
       "NOTE_MARQUE_BLANCHE": "Plan Basic souscrit = Monta VISIBLE (logo + couleur primaire). Tension avec la règle OZECAR (Monta jamais visible côté client). Plan Pro = Monta logo sans couleur. À surveiller mais hors scope négo immédiate.",
       "action": "AVANT d'envoyer le mail bornes pro: retrouver l'email Margaux (extension 1€ au commercial sans transaction) OU reformuler en demande négociée assumée."
+    },
+    "addendum_pro_dec2025": {
+      "source": "PDF 'Addendum I - Ozecar - 1.11.2025' (Drive fileId 17XupJd_ccWbbY-3dJIfhoqVUY0fUxD7n), DocuSign 43222A79",
+      "signe_le": "12 décembre 2025",
+      "signataires": "Max Scherer (COO Monta ApS) + Dominique Manfredi (Directeur OZECAR) + Frédéric Pommet (Directeur/Responsable Terrain)",
+      "contenu": "Art 2.1: le plan White Label Basic d'OZECAR est REMPLACÉ par le plan White Label PRO. Partie intégrante du contrat. Toutes les autres clauses du contrat 2024 restent en vigueur. En cas de conflit, l'addendum prime.",
+      "prix_pro": "NON spécifié dans l'addendum ('under the applicable terms and conditions'). Le PLAN Pro est acquis; le PRIX du Pro reste discutable.",
+      "LEVIER_NEGO": "OZECAR est CONTRACTUELLEMENT en White Label PRO depuis le 12/12/2025, signé par le COO Monta. La proposition de Chloé (repasser en Basic) est un DOWNGRADE qui nécessite l'accord d'OZECAR — refusé. Réexpose Monta (logo+couleur) côté client = viole la règle marque blanche absolue. Basic perd aussi le 'custom domain without Monta represented' (Pro only). C'est le levier le plus solide de la négo: Chloé (CSM) ne peut pas contredire un addendum signé par son COO 6 mois avant.",
+      "tour_de_passe_passe": "Le 'WL Basic 3500€' proposé est présenté comme une baisse vs 5000€ — mais OZECAR est en PRO (€€€€), pas Basic (€€€). C'est un downgrade vendu comme une économie. Distinction clé: refuser le downgrade Basic, négocier le prix du Pro.",
+      "action": "Exiger maintien en Pro en citant Addendum I du 12/12/2025 signé Max Scherer (COO). La proposition de renouvellement doit être un White Label PRO."
     }
   }
 }
