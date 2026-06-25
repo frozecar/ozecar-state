@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.188",
+    "version": "1.189",
     "updated": "2026-06-25",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-25",
+        "version_from": "1.188",
+        "version_to": "1.189",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "VRAI benchmark supervision/CPMS (le 1er portait à tort sur tarifs conducteurs). Marché = 5-30€/PdC/mois HT segmenté (basique 5-10 / intermédiaire 10-20 / premium 20-30+).",
+          "Acteurs prix affiché: ChargeGuru 8€, ChargeKeeper (MA BORNE LR) 14,90/19,90€. Sur devis: AMPECO, DRIVECO, Wattpark, EVBox/Everon, Virta, E-Totem, etc.",
+          "OZECAR très bien positionné: Essential ~5,90€ (sous ChargeGuru), Pro 14,90€ (= ChargeKeeper Pro), Pro+ marge jusqu'à 30€.",
+          "Lien Monta: marché plafonne entrée de gamme ~6€ → 1€ vital pour bornes sans transaction (marge 0,90€ à 5€ vs 4,90€ à 1€). Levier: AMPECO = alternative marque blanche crédible à Monta (pas captif)."
+        ]
+      },
       {
         "date": "2026-06-25",
         "version_from": "1.187",
@@ -8666,6 +8678,19 @@
         "Freshmile 10% commission = repère pour les frais opérateur sur bornes avec transaction."
       ],
       "lien_nego_monta": "Le marché plafonne la supervision ~5€/mois en entrée de gamme (Waat). Donc sur une borne pro sans transaction facturée 5€/PdC par Monta, marge nulle/négative au prix marché. Le 1€ n'est pas un confort mais LA condition pour exister sur ce segment au tarif imposé par le marché. = argument de fond pour défendre le 1€ face à Chloé."
+    },
+    "supervision_CPMS_2026_06_25": {
+      "date": "2026-06-25",
+      "note": "CORRECTION: le 1er benchmark portait sur les tarifs CONDUCTEUR (pass/badges Freshmile/Bump/Waat). Ceci est le VRAI benchmark: tarif de SUPERVISION/CPMS facturé au propriétaire de borne (le marché d'OZECAR).",
+      "consensus_marche": "Supervision SaaS = 5-30€/PdC/mois HT, segmenté: Basique (suivi/alertes/reporting) 5-10€ | Intermédiaire (DLM/smart charging/reporting avancé) 10-20€ | Premium/public (monétisation/itinérance Gireve/paiement) 20-30€+. Setup initial souvent 1000-3000€. Sources convergentes: ECO Performance (5-15/15-30), Nexteneo (12-30), Hopla (5-10/10-20/20-30+), Acieb (5-15).",
+      "acteurs_prix_affiche": {
+        "ChargeGuru": "8€/PdC/mois (supervision SaaS pure, prix affiché). 98% des clients pros prennent la supervision, 2/3 du CA ChargeGuru.",
+        "ChargeKeeper_via_MaBorneLR": "Pro 14,90€ HT/mois, Public 19,90€ HT/mois (plateforme FR OCPP)"
+      },
+      "acteurs_sur_devis": "AMPECO (CPMS marque blanche, équivalent Monta), DRIVECO (fabricant+CPMS+opérateur), Wattpark (LOA/tiers-investisseur, partage revenus), EVBox/Everon (Engie), Virta (Hub Virta OCPP), E-TOTEM, Beev, WattzHub, Park'n Plug (Nemo, supervision locale), ChargePoint, Izivia (EDF)",
+      "positionnement_ozecar": "EXCELLENT. Essential ~5,90€ = bas fourchette basique, SOUS ChargeGuru (8€), compétitif. Pro 14,90€ = EXACTEMENT ChargeKeeper Pro (14,90€), pile prix marché intermédiaire. Pro+ sur devis = premium (marge jusqu'à 30€). Ni cher ni bradé, avec marge vers le haut sur Pro+.",
+      "lien_monta_1euro": "Sur Pro (14,90€), coût Monta 5€ → marge ~10€ (OK). Sur Essential (~5,90€, = tarif bornes pro sans transaction), coût Monta 5€ → marge ~0,90€ (insuffisant); à 1€ → marge ~4,90€ (sain). Le marché plafonne l'entrée de gamme ~6€, donc le 1€ est LA condition de viabilité du segment sans transaction. Argument chiffré pour Chloé.",
+      "levier_ampeco": "AMPECO = CPMS marque blanche, même rôle que Monta pour OZECAR = ALTERNATIVE CRÉDIBLE. OZECAR n'est pas captif. Levier de rapport de force à garder en tête (sans brandir) pendant la négo OCPP/staircase."
     }
   }
 }
