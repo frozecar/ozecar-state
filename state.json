@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.187",
+    "version": "1.188",
     "updated": "2026-06-25",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-25",
+        "version_from": "1.187",
+        "version_to": "1.188",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Benchmark marché supervision: Freshmile (commission 10% + devis, pass 4,99€), Bump (clé en main devis, badge 2€/mois, concurrent direct flottes/reprises), Waat (abo dès 4,90€/mois tout inclus copro).",
+          "Constat: marché vend du clé en main/commission, peu de supervision pure. OZECAR asset-light distinct. Marché plafonne entrée de gamme ~5€ (Waat = niveau Essential OZECAR).",
+          "Lien négo Monta: le plafond marché ~5€ rend le 1€ Monta vital pour la marge sur bornes sans transaction (argument de fond pour Chloé). Bump = concurrent frontal mais capital-lourd."
+        ]
+      },
       {
         "date": "2026-06-25",
         "version_from": "1.186",
@@ -8640,6 +8651,21 @@
       "obtenu_par": "Question soft 'le Basic me garde-t-il les fonctions du Pro?' (mention domaine sans Monta = fonction Pro-only). Chloé a confirmé Pro au prix réduit sans qu'on ait à brandir l'addendum.",
       "bornes_privees_suite": "Chloé a ACCEPTÉ le concept de bornes pro sans transaction à tarif réduit (débat passé de 'existe?' à 'combien?'). Demande le volume prévu dans le staircase. À CLARIFIER en retour: ces bornes 1€ comptent-elles dans le staircase d'engagement (750/1300) ou en plus? Si elles comptent ET à 1€ → staircase atteignable à coût réduit (désamorce le risque). Meilleur segment en marge (abonnement supervision facturé - 1€ coût Monta).",
       "en_attente": "Volume bornes pro sans transaction à donner par Dominique. OCPP marque blanche toujours en étude (keystone). Roaming écrit + support saisonnier."
+    }
+  },
+  "benchmark_marche": {
+    "supervision_2026_06_25": {
+      "date": "2026-06-25",
+      "freshmile": "CPO/eMSP. Modèle: commission 10% des recettes HT + abonnement sur devis + frais non récurrents. Pass conducteur 4,99€ TTC one-shot sans abonnement. Pas de prix supervision/borne public.",
+      "bump": "Opérateur clé en main flottes/entreprises. Supervision/reprise sur devis (maintenance corrective 100% incluse). Carte Bump Pass 10€ + abonnement pro dès 2€/mois/badge. Modèle Charge on Demand (bornes sans financement, paiement au kWh). CONCURRENT LE PLUS DIRECT: reprise parcs (Enedis 3500 bornes en 3 mois), remboursement domicile (Socotec), flottes. Différence: Bump finance+installe (capital lourd), OZECAR asset-light.",
+      "waat": "Opérateur clé en main copro/tertiaire/bailleurs. Abonnement dès 4,90€/mois (1re année, offre Confort avec financement infra copro) incluant supervision distante + maintenance + support + app MyWAAT (hors énergie facturée au réel). Levée 100M€ (DWS/Bpifrance/RAISE). Modèle infra 0€ via Logivolt/Advenir.",
+      "constats": [
+        "Le marché vend surtout du CLÉ EN MAIN (install+supervision+maintenance+souvent énergie) ou de la COMMISSION, peu de supervision pure à prix affiché. OZECAR = quasi pure-player supervision asset-light (positionnement distinct).",
+        "Seul abonnement supervision public comparable = Waat 4,90€/mois. OZECAR Essential pile au niveau. Le marché PLAFONNE l'entrée de gamme ~5€.",
+        "Bump = concurrent frontal (reprise parcs, remboursement domicile, flottes) mais modèle capital-lourd. Asset-light OZECAR = argument scalabilité/levée.",
+        "Freshmile 10% commission = repère pour les frais opérateur sur bornes avec transaction."
+      ],
+      "lien_nego_monta": "Le marché plafonne la supervision ~5€/mois en entrée de gamme (Waat). Donc sur une borne pro sans transaction facturée 5€/PdC par Monta, marge nulle/négative au prix marché. Le 1€ n'est pas un confort mais LA condition pour exister sur ce segment au tarif imposé par le marché. = argument de fond pour défendre le 1€ face à Chloé."
     }
   }
 }
