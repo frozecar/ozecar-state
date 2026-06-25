@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.186",
+    "version": "1.187",
     "updated": "2026-06-25",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-25",
+        "version_from": "1.186",
+        "version_to": "1.187",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "VICTOIRE Pro: Chloé confirme maintien White Label PRO + toutes fonctionnalités AU PRIX 3500€ (produit supérieur au tarif du Basic). Obtenu via la question soft, sans brandir l'addendum.",
+          "À faire inscrire au contrat (pas juste email).",
+          "Bornes privées: Chloé ACCEPTE le concept pro sans transaction (débat passé de 'existe?' à 'combien?'). Demande le volume. À clarifier: comptent-elles dans le staircase? Si oui à 1€ → désamorce le risque staircase.",
+          "Reste: volume bornes pro (Dominique), OCPP (keystone, en étude), roaming écrit, support saisonnier."
+        ]
+      },
       {
         "date": "2026-06-25",
         "version_from": "1.185",
@@ -8620,6 +8632,14 @@
       "LEVIER_NEGO": "OZECAR est CONTRACTUELLEMENT en White Label PRO depuis le 12/12/2025, signé par le COO Monta. La proposition de Chloé (repasser en Basic) est un DOWNGRADE qui nécessite l'accord d'OZECAR — refusé. Réexpose Monta (logo+couleur) côté client = viole la règle marque blanche absolue. Basic perd aussi le 'custom domain without Monta represented' (Pro only). C'est le levier le plus solide de la négo: Chloé (CSM) ne peut pas contredire un addendum signé par son COO 6 mois avant.",
       "tour_de_passe_passe": "Le 'WL Basic 3500€' proposé est présenté comme une baisse vs 5000€ — mais OZECAR est en PRO (€€€€), pas Basic (€€€). C'est un downgrade vendu comme une économie. Distinction clé: refuser le downgrade Basic, négocier le prix du Pro.",
       "action": "Exiger maintien en Pro en citant Addendum I du 12/12/2025 signé Max Scherer (COO). La proposition de renouvellement doit être un White Label PRO."
+    },
+    "pro_confirme_2026_06_25": {
+      "date": "2026-06-25",
+      "victoire": "Chloé CONFIRME le maintien du White Label PRO + toutes ses fonctionnalités (domaine perso sans Monta, personnalisation actuelle) AU PRIX DE 3500€. Double gain: produit supérieur (Pro €€€€) au tarif du Basic (3500€). Vraie baisse sur le bon produit.",
+      "reflexe": "FAIRE INSCRIRE 'White Label Pro à 3500€' au contrat de renouvellement (pas juste email). Même rigueur que pour le roaming.",
+      "obtenu_par": "Question soft 'le Basic me garde-t-il les fonctions du Pro?' (mention domaine sans Monta = fonction Pro-only). Chloé a confirmé Pro au prix réduit sans qu'on ait à brandir l'addendum.",
+      "bornes_privees_suite": "Chloé a ACCEPTÉ le concept de bornes pro sans transaction à tarif réduit (débat passé de 'existe?' à 'combien?'). Demande le volume prévu dans le staircase. À CLARIFIER en retour: ces bornes 1€ comptent-elles dans le staircase d'engagement (750/1300) ou en plus? Si elles comptent ET à 1€ → staircase atteignable à coût réduit (désamorce le risque). Meilleur segment en marge (abonnement supervision facturé - 1€ coût Monta).",
+      "en_attente": "Volume bornes pro sans transaction à donner par Dominique. OCPP marque blanche toujours en étude (keystone). Roaming écrit + support saisonnier."
     }
   }
 }
