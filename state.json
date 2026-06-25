@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.191",
+    "version": "1.192",
     "updated": "2026-06-25",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-25",
+        "version_from": "1.191",
+        "version_to": "1.192",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Correction mail Chloé: support humain (escalade, tarif saisonnier) ré-intégré — il avait été omis de la synthèse. Platform fee (périmètre + figée/révisable) ajoutée en option.",
+          "Liste complète des demandes consolidée (8 points dont 1 optionnel)."
+        ]
+      },
       {
         "date": "2026-06-25",
         "version_from": "1.190",
@@ -8719,7 +8729,21 @@
         "Taux roaming exacts (inbound/outbound, inclusion transaction)",
         "Volume 20% confirmé",
         "Option: garder grille dégressive pour l'échange oral plutôt que tout par écrit"
-      ]
+      ],
+      "correction_points_omis": {
+        "support_humain": "REINTEGRE: escalade vers support humain quand l'IA ne suffit pas (point 3 du mail de clarification). Chloé se renseignait sur une tarification SAISONNIERE. À faire confirmer (modalités) et inscrire au contrat.",
+        "platform_fee": "OPTION (5e question suggérée, non tranchée par Dominique): ce que couvre la platform fee 1500€ + figée sur la durée ou révisable.",
+        "liste_complete_demandes": [
+          "Roaming taux actuel inbound/outbound écrit",
+          "WL Pro 3500€",
+          "1€ sans transaction",
+          "Support humain (escalade, tarif saisonnier)",
+          "Grille dégressive volume total",
+          "OCPP clause suspensive (staircase à la livraison)",
+          "Revoyure staircase <80%",
+          "(option) Platform fee: périmètre + figée/révisable"
+        ]
+      }
     }
   },
   "benchmark_marche": {
