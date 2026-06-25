@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.184",
+    "version": "1.185",
     "updated": "2026-06-24",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-24",
+        "version_from": "1.184",
+        "version_to": "1.185",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Contrat 2024 analysé (Google Sheets). Le 1€ ET le roaming SONT contractuels (pas que des emails).",
+          "CRITIQUE: le 1€ contractuel = 'domestique (équipe privée, max 2 prises)', PAS 'pro sans transaction'. Commercial = 5€ transaction ou pas. La demande 1€ pour bornes pro/flottes est une EXTENSION à négocier, pas un acquis. Mail bornes pro à ajuster avant envoi.",
+          "Roaming contractuel = 6% incluant 2% transaction (≈4% pur). Clarifier si le 8% proposé inclut les 2%.",
+          "ARGUMENT: load management + intégration flotte inclus dans backend 500€ (pas premium) → ne justifie pas surclassement tarif.",
+          "Note: plan Basic = Monta visible (tension règle marque blanche)."
+        ]
+      },
       {
         "date": "2026-06-24",
         "version_from": "1.183",
@@ -8567,6 +8580,24 @@
         "dynamique": "Chloé coopérative (concède roaming, cherche solutions support, étudie OCPP). Revient avec détails le 2026-06-25.",
         "emails_rediges": "1) Email 4 questions clarification (envoyé). 2) Réponse bornes pro sans transaction (supervision+accès+load management au 1€, distinction vs home+ résidentiel)."
       }
+    },
+    "contrat_2024_analyse": {
+      "source": "Google Sheets contrat signé 2024 (fileId 1h9Qh-IFiRzatyOffEHmlt154nrFnv83f)",
+      "termes_contractuels": {
+        "white_label_app_portail": "5000€/mois",
+        "backend_portail": "500€/mois (inclut: load balancing, intégration flotte, logs OCPP, activation itinérance, jobs installateur, abonnement, facturation/paiement, remote start/stop, multi-locataires, remboursement recharge domicile, réservation/file d'attente)",
+        "setup_one_off": "6000€ (paiement unique, 15j après signature)",
+        "pdc_commercial": "5€/socket/mois (def: installé sous 'clients professionnels' ou 'opérateurs')",
+        "pdc_domestique": "1€/socket/mois (def: configuré sous 'équipe privée', MAX 2 PRISES)",
+        "transaction": "2%",
+        "roaming": "6% INCLUANT 2% frais de transaction (= ~4% roaming pur + 2%)",
+        "engagement": "min 1000 PdC commerciaux, contrat min 24 mois"
+      },
+      "DECOUVERTE_CRITIQUE_1E": "Le 1€ EST contractuel MAIS défini comme 'domestique = équipe privée, max 2 prises', PAS 'pro sans transaction'. Le commercial (pro/opérateurs) = 5€ transaction ou pas. La demande de Dominique (1€ pour bornes pro sans transaction/flottes) N'EST PAS un acquis contractuel — c'est une EXTENSION à négocier. Le mail bornes pro qui invoque 'convenu avec Margaux' est fragile: soit retrouver l'email Margaux étendant au commercial, soit reformuler en demande assumée.",
+      "DECOUVERTE_ROAMING": "Taux contractuel exact = 6% INCLUANT 2% transaction (≈4% roaming pur). Rappel précis à faire. Clarifier si le 8% de la proposition 2026 inclut ou non les 2% (change l'ampleur de la hausse: 6→8 = +2pts ≈+9k€/an, ou 6→10 = +4pts ≈+18,7k€/an).",
+      "ARGUMENT_FORT": "Load management + intégration flotte sont INCLUS dans le backend 500€/mois (fonctions de base, pas premium). Donc ils ne peuvent pas justifier un surclassement des bornes au tarif plein. Argument à utiliser contre la tentative de Chloé de lier le tarif aux fonctionnalités home+.",
+      "NOTE_MARQUE_BLANCHE": "Plan Basic souscrit = Monta VISIBLE (logo + couleur primaire). Tension avec la règle OZECAR (Monta jamais visible côté client). Plan Pro = Monta logo sans couleur. À surveiller mais hors scope négo immédiate.",
+      "action": "AVANT d'envoyer le mail bornes pro: retrouver l'email Margaux (extension 1€ au commercial sans transaction) OU reformuler en demande négociée assumée."
     }
   }
 }
