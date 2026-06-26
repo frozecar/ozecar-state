@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.193",
-    "updated": "2026-06-25",
+    "version": "1.194",
+    "updated": "2026-06-26",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-26",
+        "version_from": "1.193",
+        "version_to": "1.194",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Slack Knowledge Bot DÉPLOYÉ et LIVE en prod (slash /ozecar + mention @ozecar-bot + DM langage naturel)",
+          "Endpoint ozecar.fr/api/slack-bot.php : handshake url_verification, signature, ack<3s, response_url pour slash, message.im+anti-boucle pour DM",
+          "Modèle Haiku 4.5 pour le Q/R ; secrets dans slack-bot-config.php (non versionné)",
+          "Roadmap agent à outils définie (Incréments 1-3, scope sans actions sensibles, modèle Sonnet) — audit scopes HubSpot/Make/Shopify à faire avant Incrément 1"
+        ]
+      },
       {
         "date": "2026-06-25",
         "version_from": "1.192",
@@ -8798,5 +8810,46 @@
       "lien_monta_1euro": "Sur Pro (14,90€), coût Monta 5€ → marge ~10€ (OK). Sur Essential (~5,90€, = tarif bornes pro sans transaction), coût Monta 5€ → marge ~0,90€ (insuffisant); à 1€ → marge ~4,90€ (sain). Le marché plafonne l'entrée de gamme ~6€, donc le 1€ est LA condition de viabilité du segment sans transaction. Argument chiffré pour Chloé.",
       "levier_ampeco": "AMPECO = CPMS marque blanche, même rôle que Monta pour OZECAR = ALTERNATIVE CRÉDIBLE. OZECAR n'est pas captif. Levier de rapport de force à garder en tête (sans brandir) pendant la négo OCPP/staircase."
     }
+  },
+  "slack_bot": {
+    "status": "live",
+    "deployed": "2026-06-26",
+    "endpoint": "https://ozecar.fr/api/slack-bot.php",
+    "config_file": "api/slack-bot-config.php (non versionné, secrets: SLACK_SIGNING_SECRET / SLACK_BOT_TOKEN / ANTHROPIC_API_KEY)",
+    "model": "claude-haiku-4-5-20251001 (Q/R interne, surchargeable via CLAUDE_MODEL dans le config)",
+    "channels": {
+      "slash": "/ozecar [question] — répond via response_url (in_channel), marche partout sans inviter le bot",
+      "mention": "@ozecar-bot dans un thread — chat.postMessage en thread (bot doit être invité au channel)",
+      "dm": "message direct en langage naturel — message.im + anti-boucle (ignore bot_id/subtype)"
+    },
+    "slack_app": {
+      "name": "OZECAR Knowledge Bot",
+      "bot_user": "ozecar-bot",
+      "scopes": [
+        "app_mentions:read",
+        "chat:write",
+        "commands",
+        "users:read",
+        "users:read.email",
+        "im:history",
+        "im:read",
+        "im:write"
+      ],
+      "events": [
+        "app_mention",
+        "message.im"
+      ],
+      "workspace": "ozecarworkspace"
+    },
+    "knowledge_seed": "system prompt seedé sur grille canonique 17/06 (kits 49/29, Essential 4,90->5,90 au 15/07, Pro 14,90, Pro+ 24,90, Transit 54,90) + marque blanche absolue",
+    "roadmap_agent": {
+      "scope_retenu": "Lectures + créations légères + génération de contenu (marque blanche). Actions sensibles exclues (réservées Dominique).",
+      "increment_1": "lectures (hubspot deal/contact, monday stock board 18409310538 + tâches, make health, shopify commandes)",
+      "increment_2": "créations légères avec bouton Confirmer Slack -> exécution via webhooks Make (création tâche Monday, note/contact HubSpot)",
+      "increment_3": "génération brouillons devis/emails (texte affiché, pas d'envoi auto), garde marque blanche",
+      "modele_agent": "Sonnet requis pour tool use (Haiku insuffisant en orchestration)",
+      "next_action": "audit scopes HubSpot/Make/Shopify avant Incrément 1"
+    },
+    "cout_estime": "Q/R Haiku ~0,20-1 €/mois ; agent Sonnet quelques € à ~10 €/mois selon usage"
   }
 }
