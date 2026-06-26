@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.194",
+    "version": "1.195",
     "updated": "2026-06-26",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-26",
+        "version_from": "1.194",
+        "version_to": "1.195",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Slack bot -> AGENT à outils, Incrément 1 (lectures) LIVRÉ et testé end-to-end",
+          "Nouveau api/bot-tools.php : façade Bearer, lectures whitelistées (hubspot_deal/contact, monday_stock), tokens lus à chaud depuis proxies existants",
+          "slack-bot.php refactoré en boucle tool use (Haiku)",
+          "FINDING SÉCURITÉ: hubspot.php + monday.php sont des proxies ouverts non authentifiés (exposition CRM/Monday) — à sécuriser en chantier séparé"
+        ]
+      },
       {
         "date": "2026-06-26",
         "version_from": "1.193",
@@ -8816,7 +8828,7 @@
     "deployed": "2026-06-26",
     "endpoint": "https://ozecar.fr/api/slack-bot.php",
     "config_file": "api/slack-bot-config.php (non versionné, secrets: SLACK_SIGNING_SECRET / SLACK_BOT_TOKEN / ANTHROPIC_API_KEY)",
-    "model": "claude-haiku-4-5-20251001 (Q/R interne, surchargeable via CLAUDE_MODEL dans le config)",
+    "model": "claude-haiku-4-5-20251001 (tool use OK pour lectures simples)",
     "channels": {
       "slash": "/ozecar [question] — répond via response_url (in_channel), marche partout sans inviter le bot",
       "mention": "@ozecar-bot dans un thread — chat.postMessage en thread (bot doit être invité au channel)",
@@ -8844,12 +8856,29 @@
     "knowledge_seed": "system prompt seedé sur grille canonique 17/06 (kits 49/29, Essential 4,90->5,90 au 15/07, Pro 14,90, Pro+ 24,90, Transit 54,90) + marque blanche absolue",
     "roadmap_agent": {
       "scope_retenu": "Lectures + créations légères + génération de contenu (marque blanche). Actions sensibles exclues (réservées Dominique).",
-      "increment_1": "lectures (hubspot deal/contact, monday stock board 18409310538 + tâches, make health, shopify commandes)",
-      "increment_2": "créations légères avec bouton Confirmer Slack -> exécution via webhooks Make (création tâche Monday, note/contact HubSpot)",
-      "increment_3": "génération brouillons devis/emails (texte affiché, pas d'envoi auto), garde marque blanche",
+      "increment_1": "LIVRÉ — hubspot_deal/contact + monday_stock via bot-tools.php",
+      "increment_2": "À FAIRE — créations légères (tâche Monday, note/contact HubSpot) avec bouton Confirmer Slack -> webhooks Make",
+      "increment_3": "À FAIRE — génération brouillons devis/emails (marque blanche)",
       "modele_agent": "Sonnet requis pour tool use (Haiku insuffisant en orchestration)",
-      "next_action": "audit scopes HubSpot/Make/Shopify avant Incrément 1"
+      "next_action": "audit scopes HubSpot/Make/Shopify avant Incrément 1",
+      "bloqueurs": [
+        "Token API Make manquant (pour make_health) — à fournir par Dominique",
+        "Board Stock Kits 18409310538 quasi vide (1 item) -> monday_stock sans valeur tant que non alimenté",
+        "SÉCURITÉ: hubspot.php et monday.php sont des proxies OUVERTS (Access-Control *, aucune auth) -> lecture/écriture CRM+Monday possible depuis internet. À sécuriser (Bearer ou PAT read-only dédié). Chantier séparé."
+      ]
     },
-    "cout_estime": "Q/R Haiku ~0,20-1 €/mois ; agent Sonnet quelques € à ~10 €/mois selon usage"
+    "cout_estime": "Q/R Haiku ~0,20-1 €/mois ; agent Sonnet quelques € à ~10 €/mois selon usage",
+    "mode": "AGENT à outils (Incrément 1 lectures LIVRÉ)",
+    "bot_tools": {
+      "file": "api/bot-tools.php",
+      "auth": "Bearer (BOT_TOOLS_SECRET, partagé avec slack-bot.php, hardcodé même serveur)",
+      "design": "façade lectures whitelistées — PAS un passe-plat. Tokens lus à chaud depuis hubspot.php/monday.php (pas de duplication de secret).",
+      "tools_live": [
+        "hubspot_deal (recherche deals + montant/étape/pipeline/clôture)",
+        "hubspot_contact",
+        "monday_stock (board 18409310538)"
+      ],
+      "teste": "end-to-end OK le 2026-06-26 : Claude appelle le bon outil, lit les vraies données HubSpot (29 deals), synthétise."
+    }
   }
 }
