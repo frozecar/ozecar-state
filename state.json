@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.192",
+    "version": "1.193",
     "updated": "2026-06-25",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-25",
+        "version_from": "1.192",
+        "version_to": "1.193",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Nouveau mail Chloé (non précédé du grand mail stratégique, qui reste NON ENVOYÉ/à refondre).",
+          "1€ pro sans transaction REFUSÉ (restreint au résidentiel). Ancrage DC 12€. Segment pro sans transaction ramené à ~24% de marge.",
+          "Support humain RÉGLÉ (one-off estival, attend le nombre de bornes).",
+          "OCPP: SILENCE + contrat envoyé demain = PIÈGE (staircase sans OCPP). Priorité: répondre avant le contrat, conditionner le staircase à la livraison OCPP."
+        ]
+      },
       {
         "date": "2026-06-25",
         "version_from": "1.191",
@@ -8744,6 +8756,19 @@
           "(option) Platform fee: périmètre + figée/révisable"
         ]
       }
+    },
+    "reponse_chloe_2026_06_25_v2": {
+      "date": "2026-06-25",
+      "contexte": "Chloé revient SANS que Dominique ait envoyé le grand mail stratégique (36 mois + clause suspensive). Ce mail reste rédigé mais NON ENVOYÉ / à refondre selon ce nouveau message.",
+      "bornes_privees_1euro": "REFUSÉ pour le pro sans transaction. Le 1€ est restreint aux bornes RÉSIDENTIELLES uniquement (= périmètre contrat 2024 domestique 2 prises). Argument d'ancrage: 'les DC ont un minimum de 12€, tu as déjà une remise' — mais DC et AC pro sans transaction ne sont pas fongibles. Impact: segment pro sans transaction ramené à ~24% de marge (4,50€ coût vs 5,90€ Essential), plus l'actif 83% espéré. DC sans transaction = Pro+ sur devis (plancher 12€).",
+      "support_humain": "RÉGLÉ: Monta propose une facturation one-off pour la période estivale. Dominique doit indiquer le nombre de bornes à activer avec l'option.",
+      "ocpp": "SILENCE TOTAL dans ce mail. Aucune mention. ALERTE: elle veut envoyer le contrat DEMAIN — le draft n'aura donc ni endpoint marque blanche ni clause suspensive. PIÈGE: choisir l'option sans condition = staircase verrouillé sans OCPP.",
+      "pression_close": "Chloé demande quelle option retenir + veut envoyer le contrat demain pour relecture avant validation.",
+      "priorite_action": "Répondre AVANT le contrat: oui 36 mois MAIS conditions à intégrer au draft (OCPP clause suspensive, roaming 4% écrit, Pro 3500, modalités support). Grille dégressive: garder pour l'oral (ne pas surcharger le close). 1€: décision Dominique (push de principe / accepter / point dur).",
+      "decisions_attendues_dominique": [
+        "Posture sur le refus du 1€ (push/accepter/levier)",
+        "Nombre de bornes pour le support humain estival one-off"
+      ]
     }
   },
   "benchmark_marche": {
