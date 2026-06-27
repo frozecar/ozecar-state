@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.195",
+    "version": "1.196",
     "updated": "2026-06-26",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-26",
+        "version_from": "1.195",
+        "version_to": "1.196",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Cadrage OZECAR 2.0 valide par Dominique. Corrections: WP PAS gelee (appuie kit+doc), dataroom retiree, Sungrow=affichage partenaire simple, support IA gele sauf auto-responder.",
+          "Strategie croissance actee: kits GRATUITS a installateurs influents (LinkedIn) -> test -> activation -> supervision recurrente.",
+          "Moteur installateur chiffre: 2 actifs (Soleco ~50/an, Izitek ~10 clients/an). Cible 3000 => ~44 actifs au regime (x22). Tendu sans reprises OCPP / tetes de reseau. Cible sept = prouver le mecanisme + taux conversion.",
+          "Hygiene equipe: le systeme relance (pas Dominique qui ne suit pas). PM porte le suivi, remonte seulement les decisions."
+        ]
+      },
       {
         "date": "2026-06-26",
         "version_from": "1.194",
@@ -8879,6 +8891,40 @@
         "monday_stock (board 18409310538)"
       ],
       "teste": "end-to-end OK le 2026-06-26 : Claude appelle le bon outil, lit les vraies données HubSpot (29 deals), synthétise."
+    }
+  },
+  "ozecar_2_0": {
+    "date_cadrage": "2026-06-26",
+    "definition": "Passer de l'artisanat (Dominique fait tout) a une machine qui active les bornes en autonomie, vend sans friction, automatise l'admin, et prouve une pente de croissance. La croissance = envoyer des kits GRATUITS a des installateurs influents (sources LinkedIn) qui testent puis activent des bornes => supervision recurrente.",
+    "arbitrages_dominique_2026_06_26": {
+      "gel_support_ia_full": "OUI sauf auto-responder email (on garde l'auto-responder + tickets; on gele Make 07-13 triage/draft/auto-resolve/SLA/learning)",
+      "refonte_wp": "PAS GELEE (correction). Le site WP appuie le kit + la doc, support direct de la strategie kits gratuits installateurs.",
+      "international": "GELE",
+      "sungrow": "Reduit a un affichage partenaire simple (marque compatible), pas de catalogue DC complet",
+      "dataroom": "RETIREE du chemin critique (pas utile maintenant). La levee passe d'abord par prouver le mecanisme kits->activations."
+    },
+    "ordre_sprints_revise": [
+      "S1 PREREQUIS PHYSIQUE: constituer un STOCK de kits + imprimer les supports (notices, pochettes, stickers). Sans stock, pas d'activation possible. + Monta/connectivite (survie).",
+      "S2 ACTIVATION AUTONOME: formulaire G19 + Make 02/06 + notice A5 marque blanche + test bout-en-bout.",
+      "S3 FUNNEL VENTE: Make 05 devis, configurateur->HubSpot->PandaDoc, facturation Pennylane, formulaires landing.",
+      "S4 MOTEUR INSTALLATEUR: demarchage LinkedIn d'installateurs influents -> kit gratuit pour test -> mesure conversion -> envoi en masse. Pages /installateurs.",
+      "S5 (RETIRE) dataroom - reporte"
+    ],
+    "moteur_installateur": {
+      "actifs_actuels": {
+        "soleco": "1-2 clients/mois = ~50 bornes/an (~4,2/mois), pure supervision (pas d'achat hardware OZECAR)",
+        "izitek": "~10 clients/an avec achat Zaptec (nb bornes/client a confirmer, hypothese ~2,5 => ~25 bornes/an)"
+      },
+      "calcul": "Parc ~514 PdC. Cible 3000 fin 2027 = +~2486 sur ~18 mois = ~138/mois nets. Installateur actif moyen ~37 bornes/an (~3/mois). => ~44 installateurs actifs au regime necessaires. On en a 2. Soit x22 sur le reseau actif en 18 mois.",
+      "franc": "Objectif 3000 par le canal organique SEUL = tres tendu. Ne tient que SI (a) reprises de parcs via OCPP Monta apportent du volume non-installateur, ET/OU (b) quelques tetes de reseau (franchises, Leroy Merlin) apportent du volume non-lineaire.",
+      "chiffre_inconnu_decisif": "Taux de conversion kit gratuit -> installateur ACTIF (produisant ~3/mois recurrent). A MESURER cet ete.",
+      "cible_septembre": "Prouver le MECANISME, pas le volume. ~30 kits gratuits a installateurs influents LinkedIn, mesurer le taux kit->activation, montrer une courbe ascendante. Preuve investisseur = replicabilite + taux mesure + pente, pas un nombre absolu.",
+      "cout_amorcage": "Kit gratuit ~50e cout reel + envoi. 30 kits ~1500e, 100 kits ~5000e. NON limitant. Le vrai goulot = le temps de Dominique pour demarcher/onboarder => a scripter/automatiser."
+    },
+    "hygiene_equipe_suivi": {
+      "probleme_avoue_dominique": "Ne suit pas / ne controle pas / ne relance pas l'equipe. Probleme non resolu de son cote.",
+      "solution": "Le suivi ne doit PAS dependre de la discipline manageriale de Dominique. Le SYSTEME relance (automatisme Make/Slack sur taches en retard), pas l'humain. Le PM (Claude) fait le point hebdo en lisant board+state et ne remonte a Dominique que ce qui exige sa decision. Dominique garde 1 seul rituel: repondre au point hebdo (5 min). Aucun management actif requis de sa part.",
+      "boards": "Run quotidien (Marie-Estelle) + Orchestration agents (actuel 18411921057, a nettoyer)."
     }
   }
 }
