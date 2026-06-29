@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.202",
+    "version": "1.203",
     "updated": "2026-06-26",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-26",
+        "version_from": "1.202",
+        "version_to": "1.203",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Ajout tel +33 4 23 500 112 au guide EVlink (bloc support, accompagnement installateur). Les 2 docs du kit Udife portent désormais le numéro."
+        ]
+      },
       {
         "date": "2026-06-26",
         "version_from": "1.201",
@@ -9045,7 +9054,8 @@
           "Quelle borne porte le modem (passerelle)? A1 par défaut.",
           "Identifiant OCPP = n° série à confirmer côté plateforme."
         ]
-      }
+      },
+      "maj_tel": "Ajout du numéro service +33 4 23 500 112 dans le bloc support du guide EVlink (accompagnement installateur). Cohérent avec le kit bienvenue qui porte le même numéro."
     }
   },
   "marque_blanche": {
