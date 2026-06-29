@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.198",
+    "version": "1.199",
     "updated": "2026-06-26",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-26",
+        "version_from": "1.198",
+        "version_to": "1.199",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Guide config EVlink Pro AC produit pour installateur tiers (Udife, 3 bornes A1/A2/A3).",
+          "FUITE MARQUE BLANCHE ASSUMÉE par Dominique (alerté): ws://ocpp.monta.app/ en clair car endpoint ocpp.ozecar.app INEXISTANT (DNS vérifié). Choix conscient pour honorer la commande, PAS à corriger.",
+          "Vérif: ocpp.ozecar.app=0, ocpp.monta.app=ELB AWS actif => renforce la clause suspensive OCPP dans la négo Monta.",
+          "Valeurs: ws:// (pas wss://), OCPP 1.6, APN simbase.eu, OCPP ID=n° série. Captures en emplacements à remplir."
+        ]
+      },
       {
         "date": "2026-06-26",
         "version_from": "1.197",
@@ -8968,6 +8980,24 @@
       "contenu": "Bienvenue + contenu kit (cartes RFID OZECARD, carte SIM, guide) + 5 etapes config (connectivite SIM, cartes RFID, 1ere charge test, suivi sur hub.ozecar.app, modes d'acces RFID/QR/app OZECAR One). Support hello@ozecar.fr.",
       "a_glisser_dans_enveloppe": "Le PDF imprime (A5) + cartes RFID + carte SIM",
       "statut": "PRET. Imprimable sur HP M454dw / papier A5. A valider par Dominique avant impression."
+    },
+    "guide_evlink_udife": {
+      "date": "2026-06-26",
+      "livrable": "OZECAR-Guide-Config-EVlink-Pro-AC.pdf (A4, 3 pages). Guide installateur tiers: config OCPP + APN + tableau bornes + emplacements captures.",
+      "fuite_marque_blanche_ASSUMEE": "Ce guide est destiné à un INSTALLATEUR TIERS et contient ws://ocpp.monta.app/ en clair. Dominique l'ASSUME en connaissance de cause (alerté explicitement). Raison: endpoint marque blanche ocpp.ozecar.app INEXISTANT (vérifié: pas de résolution DNS), donc aucune alternative technique aujourd'hui. NE PAS traiter comme une fuite à corriger pour cette commande — c'est un choix conscient pour honorer la commande Udife.",
+      "verif_technique": "ocpp.ozecar.app = pas de DNS / injoignable. ocpp.monta.app = ELB AWS eu-west-1 fonctionnel. => confirme que l'endpoint marque blanche est à 0, ce qui RENFORCE la nécessité de la clause suspensive OCPP dans la négo Monta.",
+      "valeurs": "URL OCPP ws://ocpp.monta.app/ (ws:// PAS wss://), OCPP 1.6, Authentification Requise/Public, APN simbase.eu, identifiant OCPP = numéro de série de la borne.",
+      "bornes_udife": {
+        "A1": "A25361020199",
+        "A2": "A25361020198",
+        "A3": "A25361020197"
+      },
+      "points_ouverts": [
+        "Confirmer côté Monta que l'identifiant OCPP = numéro de série (sinon corriger)",
+        "Fournir/insérer les vraies captures eSetup (4 emplacements: APN, sélection+PIN, écran OCPP, borne en ligne)",
+        "Deeplinks déjà attribués: à coller physiquement selon le tableau repère↔série"
+      ],
+      "implication_guide_public": "ATTENTION: ce PDF n'est PAS publiable sur /guides/schneider-evlink public (contient Monta). Le futur guide public marque blanche devra masquer l'URL (ou utiliser l'endpoint marque blanche une fois livré)."
     }
   },
   "marque_blanche": {
