@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.205",
+    "version": "1.206",
     "updated": "2026-06-26",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-26",
+        "version_from": "1.205",
+        "version_to": "1.206",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Guide EVlink: couverture passée en gris clair (#ECEAE5) -> logo officiel visible (était invisible sur fond ink).",
+          "Ajout fichier d'impression imposé OZECAR-Guide-EVlink-IMPRESSION-A4.pdf (4 faces A4 paysage, ordre cahier saddle-stitch [8|1][2|7][6|3][4|5]). Recto-verso bords courts, 2 feuilles emboîtées pliées au centre."
+        ]
+      },
       {
         "date": "2026-06-26",
         "version_from": "1.204",
@@ -9076,7 +9086,14 @@
       },
       "maj_tel": "Ajout du numéro service +33 4 23 500 112 dans le bloc support du guide EVlink (accompagnement installateur). Cohérent avec le kit bienvenue qui porte le même numéro.",
       "format_brochure_a5": "Guide transformé en BROCHURE A5 4 pages (au lieu d'A4 3 pages): P1 couverture / P2-P3 procédure + 4 captures / P4 dos (Phases B-C + tableau + support tel). Raison: l'enveloppe ne prend pas de feuille A4, et plier de l'A4 n'est pas pro. IMPRESSION: mode 'Livret/Booklet' du pilote HP = 1 feuille A4 recto-verso pliée en 2 -> brochure A5. Captures à capw=24mm (testé: 4 pages pile via len(doc.pages)).",
-      "format_brochure_a5_8p": "Brochure A5 8 PAGES (2 feuilles A4 pliées) avec captures PLEINE LARGEUR (52mm, ~3x plus grandes) — 1 capture/page, vraiment lisibles (ws://ocpp.monta.app/ et simbase.eu lisibles dans les captures). Choix Dominique (Option A) car captures à 24mm sur la 4-pages trop petites. Structure: P1 couverture / P2 prérequis+architecture+tableau / P3-P6 Phase A étapes 1-4 (1 capture/page) / P7 Phase B / P8 Phase C+support. BUG CORRIGÉ: overflow:hidden masquait les captures débordantes (faux '8 pages'); retiré sur pages de contenu -> compteur fiable, 8 pages réelles à capw=52mm. IMPRESSION: mode Livret, 2 feuilles A4 R/V pliées."
+      "format_brochure_a5_8p": "Brochure A5 8 PAGES (2 feuilles A4 pliées) avec captures PLEINE LARGEUR (52mm, ~3x plus grandes) — 1 capture/page, vraiment lisibles (ws://ocpp.monta.app/ et simbase.eu lisibles dans les captures). Choix Dominique (Option A) car captures à 24mm sur la 4-pages trop petites. Structure: P1 couverture / P2 prérequis+architecture+tableau / P3-P6 Phase A étapes 1-4 (1 capture/page) / P7 Phase B / P8 Phase C+support. BUG CORRIGÉ: overflow:hidden masquait les captures débordantes (faux '8 pages'); retiré sur pages de contenu -> compteur fiable, 8 pages réelles à capw=52mm. IMPRESSION: mode Livret, 2 feuilles A4 R/V pliées.",
+      "final_impression": {
+        "date": "2026-06-26",
+        "couverture": "Fond gris clair #ECEAE5 (au lieu d'ink) + logo/texte foncés -> logo officiel (mascotte comprise) bien visible. Accent jaune sur le kicker.",
+        "deux_fichiers": "OZECAR-Guide-EVlink-LECTURE.pdf (8 pages A5, ordre de lecture) + OZECAR-Guide-EVlink-IMPRESSION-A4.pdf (4 faces A4 paysage, IMPOSÉ en ordre cahier saddle-stitch).",
+        "imposition": "2 feuilles A4 emboîtées (cahier 8 pages). Feuille 1 recto [8|1], verso [2|7]; Feuille 2 recto [6|3], verso [4|5]. Repère de pli au centre. Impression: recto-verso, retournement bords courts (short edge); emboîter feuille 2 dans feuille 1, plier au centre -> lecture 1->8.",
+        "note": "La demande initiale mentionnait [2|3] au verso, mais le bon ordre cahier est [2|7] (sinon pages centrales 4-5 non contiguës). Corrigé en saddle-stitch standard."
+      }
     }
   },
   "marque_blanche": {
