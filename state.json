@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.199",
+    "version": "1.200",
     "updated": "2026-06-26",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-26",
+        "version_from": "1.199",
+        "version_to": "1.200",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Guide EVlink v2 refondu selon fiche Schneider GEX5945401-02: mode CLUSTER (1 modem/3 bornes en chaînage), config eSetup Bluetooth + mot de passe, APN simbase.eu, DHCP serveur sur passerelle, supervision OCPP ws://ocpp.monta.app.",
+          "Captures eSetup ozecar.fr/config/SE-proac/ = 404 (non accessibles). 4 emplacements prêts, à transmettre par Dominique."
+        ]
+      },
       {
         "date": "2026-06-26",
         "version_from": "1.198",
@@ -8997,7 +9007,14 @@
         "Fournir/insérer les vraies captures eSetup (4 emplacements: APN, sélection+PIN, écran OCPP, borne en ligne)",
         "Deeplinks déjà attribués: à coller physiquement selon le tableau repère↔série"
       ],
-      "implication_guide_public": "ATTENTION: ce PDF n'est PAS publiable sur /guides/schneider-evlink public (contient Monta). Le futur guide public marque blanche devra masquer l'URL (ou utiliser l'endpoint marque blanche une fois livré)."
+      "implication_guide_public": "ATTENTION: ce PDF n'est PAS publiable sur /guides/schneider-evlink public (contient Monta). Le futur guide public marque blanche devra masquer l'URL (ou utiliser l'endpoint marque blanche une fois livré).",
+      "v2_cluster": {
+        "date": "2026-06-26",
+        "amelioration": "Guide refondu selon la fiche Schneider GEX5945401-02 (modem 4G embarqué EVA1MS/MM). Procédure CLUSTER: 1 modem dessert jusqu'à 10 bornes en chaînage. Pour Udife (3 bornes, 1 SIM): 1 borne PASSERELLE (modem, serveur DHCP) + 2 bornes CHAÎNÉES (DHCP ON).",
+        "points_techniques_confirmes": "Config via eSetup en BLUETOOTH (pas Ethernet/PIN). Mot de passe créé à la 1ere connexion (3 essais). Bluetooth actif 2h après mise sous tension, réactivable 10min via badge. Logiciel borne >=1.2.1. Phase A passerelle: activer modem+APN simbase.eu, DHCP OFF + serveur DHCP ON (ne pas redémarrer), supervision OCPP, redémarrer. Phase B chaînées: DHCP ON, supervision, redémarrer.",
+        "captures_404": "Les 4 captures eSetup à ozecar.fr/config/SE-proac/1-4.png renvoient HTTP 404 (chemins alternatifs testés aussi = 404). NON intégrées. Dominique doit les transmettre (attacher au chat = plus simple) ou les uploader. 4 emplacements prêts: (1) connexion/mot de passe, (2) modem+APN, (3) DHCP, (4) supervision OCPP.",
+        "a_confirmer": "Quelle borne porte le modem (passerelle)? A1 mis par défaut. Identifiant OCPP = n° série à confirmer côté plateforme."
+      }
     }
   },
   "marque_blanche": {
