@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.201",
+    "version": "1.202",
     "updated": "2026-06-26",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-26",
+        "version_from": "1.201",
+        "version_to": "1.202",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Kit bienvenue: ajout tel +33 4 23 500 112 (service commercial) + page client final 'espace de supervision' pour l'entreprise propriétaire (hub.ozecar.app, 1er accès). Section conducteurs retirée."
+        ]
+      },
       {
         "date": "2026-06-26",
         "version_from": "1.200",
@@ -8999,7 +9008,8 @@
       "livrable": "PDF A5 2 pages marque blanche 'OZECAR-Kit-Bienvenue-Configuration.pdf' = feuille de bienvenue + manuel de configuration. GENERIQUE (pas de nom client en dur) => reutilisable pour toutes les commandes en attendant le process final.",
       "contenu": "Bienvenue + contenu kit (cartes RFID OZECARD, carte SIM, guide) + 5 etapes config (connectivite SIM, cartes RFID, 1ere charge test, suivi sur hub.ozecar.app, modes d'acces RFID/QR/app OZECAR One). Support hello@ozecar.fr.",
       "a_glisser_dans_enveloppe": "Le PDF imprime (A5) + cartes RFID + carte SIM",
-      "statut": "PRET. Imprimable sur HP M454dw / papier A5. A valider par Dominique avant impression."
+      "statut": "PRET. Imprimable sur HP M454dw / papier A5. A valider par Dominique avant impression.",
+      "maj_2026_06_26": "Kit bienvenue mis à jour: ajout tel service commercial +33 4 23 500 112 (pages 1 et 2). Page client final = section 'Votre espace de supervision' pour l'ENTREPRISE PROPRIÉTAIRE des bornes (connexion hub.ozecar.app, identifiants par email, prise en main: sessions/conso/accès/export). Section conducteurs RETIRÉE (mauvaise interprétation initiale)."
     },
     "guide_evlink_udife": {
       "date": "2026-06-26",
