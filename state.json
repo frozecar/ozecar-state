@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.197",
+    "version": "1.198",
     "updated": "2026-06-26",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-26",
+        "version_from": "1.197",
+        "version_to": "1.198",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Solution intermediaire kits produite (commande Udife/Monta team 4621180 a honorer malgre process non fini): PDF A5 marque blanche bienvenue + manuel config, generique/reutilisable.",
+          "Logo: PNG local logo_OZe_final.png = fond NOIR (inadapte fond clair). Utiliser le SVG officiel logo-ozecar-officiel.svg (ink #121A28) pour tout imprime sur fond clair.",
+          "FUITE marque blanche detectee: wss://ocpp.monta.app en dur dans ozecar-activation.html (guides Zaptec). A corriger -> wss://ocpp.ozecar.app."
+        ]
+      },
       {
         "date": "2026-06-26",
         "version_from": "1.196",
@@ -8949,6 +8960,19 @@
       }
     },
     "jalon_2_semaines": "UN seul jalon prouvable a J+14: on peut envoyer un kit a un installateur et il active une borne en autonomie. PAS 'finir tous les chantiers' (= le piege de dispersion qu'on vient de diagnostiquer).",
-    "blocage_monday_mcp": "2026-06-26: connecteur monday.com MCP renvoie 'No approval received' sur ecriture/recherche (lecture OK). Reconnexion/reapprobation cote Dominique necessaire pour que le PM monte le board Run quotidien automatiquement. Meme symptome que Make precedemment."
+    "blocage_monday_mcp": "2026-06-26: connecteur monday.com MCP renvoie 'No approval received' sur ecriture/recherche (lecture OK). Reconnexion/reapprobation cote Dominique necessaire pour que le PM monte le board Run quotidien automatiquement. Meme symptome que Make precedemment.",
+    "solution_intermediaire_kits": {
+      "date": "2026-06-26",
+      "contexte": "Process kit final pas pret, mais commandes a honorer (ex: groupe Udife, Monta team ID 4621180, bornes deja activees - client doit configurer). Marie-Estelle indisponible (urgence).",
+      "livrable": "PDF A5 2 pages marque blanche 'OZECAR-Kit-Bienvenue-Configuration.pdf' = feuille de bienvenue + manuel de configuration. GENERIQUE (pas de nom client en dur) => reutilisable pour toutes les commandes en attendant le process final.",
+      "contenu": "Bienvenue + contenu kit (cartes RFID OZECARD, carte SIM, guide) + 5 etapes config (connectivite SIM, cartes RFID, 1ere charge test, suivi sur hub.ozecar.app, modes d'acces RFID/QR/app OZECAR One). Support hello@ozecar.fr.",
+      "a_glisser_dans_enveloppe": "Le PDF imprime (A5) + cartes RFID + carte SIM",
+      "statut": "PRET. Imprimable sur HP M454dw / papier A5. A valider par Dominique avant impression."
+    }
+  },
+  "marque_blanche": {
+    "fuites_a_corriger": [
+      "ozecar-activation.html (page interne /activation): URL OCPP en dur 'wss://ocpp.monta.app/{DeviceId}' dans les guides de config Zaptec (objet GUIDES). Visible cote installateur. A remplacer par l'endpoint marque blanche wss://ocpp.ozecar.app. NON bloquant pour la solution intermediaire client (doc client OK), mais a corriger."
+    ]
   }
 }
