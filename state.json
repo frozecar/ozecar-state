@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.208",
+    "version": "1.209",
     "updated": "2026-06-29",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-29",
+        "version_from": "1.208",
+        "version_to": "1.209",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Test relais sur borne réelle (Keba P30 'A01 Dojo' serial 24354364): ÉCHEC. La borne n'atteint jamais le relais (silence total côté Caddy). Cause probable: rejet TLS Let's Encrypt (ISRG Root X1) par firmware Keba ancien.",
+          "Action: remettre la borne sur wss://ocpp.monta.app pour repasser en ligne. Pistes demain: MAJ firmware Keba / désactiver vérif cert / vérifier chaîne Caddy.",
+          "Sécu VPS à faire: changer root pwd, clé SSH, apt upgrade+reboot.",
+          "Relais lui-même VALIDÉ (test sandbox + wss://ocpp.ozecar.app avec id de test -> Monta Accepted). Blocage = compat TLS borne, pas le relais."
+        ]
+      },
       {
         "date": "2026-06-29",
         "version_from": "1.207",
@@ -9134,7 +9146,16 @@
         "menage_serveur": "Le VPS hébergeait une vieille appli morte 'monta-monday' (connecteur Monta<->Monday, crash-loop depuis aout 2025, 4Go de logs) + nginx fantôme. Appli stoppée + retirée de supervisor + sauvegardée dans /root/monta-monday-backup.tar.gz. nginx coupé/désactivé. ~4,5Go récupérés."
       },
       "reste_a_faire": "Borne RÉELLE (EVlink/Zaptec) reconfigurée sur wss://ocpp.ozecar.app/{id} pour valider en conditions réelles. Stabilité 24/7 (le VPS porte une appli zombie sauvegardée; PAS une base de prod -> prévoir VPS dédié propre ou réinstall OS pour la prod). Volet contractuel Monta.",
-      "recommandation_prod": "NE PAS mettre la prod 514 PdC sur ce VPS en l'état (historique douteux: monta-monday + nginx). Pour industrialiser: VPS dédié propre (ou réinstall OS de celui-ci après récupération du backup), monter à 2vCPU/4Go, ajouter monitoring + HA."
+      "recommandation_prod": "NE PAS mettre la prod 514 PdC sur ce VPS en l'état (historique douteux: monta-monday + nginx). Pour industrialiser: VPS dédié propre (ou réinstall OS de celui-ci après récupération du backup), monter à 2vCPU/4Go, ajouter monitoring + HA.",
+      "test_borne_reelle": {
+        "date": "2026-06-29 ~23h",
+        "borne": "A01 OZECAR Dojo (bureau), Keba P30 X-Series, serial 24354364, Monta id 3430505.",
+        "resultat": "ÉCHEC de connexion via le relais. Borne reconfigurée wss://ocpp.monta.app -> wss://ocpp.ozecar.app (port 443, boxId dans case séparée, config correcte en principe). Côté Monta: state=disconnected, ocpp status=unavailable, disconnectedAt 20:37. Côté relais: journalctl -u caddy -f = AUCUNE tentative de connexion entrante de la borne (silence total).",
+        "diagnostic": "La borne n'atteint jamais le relais. Cause la plus probable: REJET TLS côté Keba. Le cert ozecar.app est un Let's Encrypt (racine ISRG Root X1); les firmwares Keba P30 ont un magasin de racines figé/ancien qui peut ne pas contenir ISRG Root X1 -> handshake TLS refusé silencieusement. ocpp.monta.app (cert AWS) était accepté.",
+        "pistes_demain": "1) Confirmer via journalctl que la borne ne tape jamais le relais. 2) MAJ firmware Keba (vraie correction). 3) OU option 'ne pas vérifier le certificat' si dispo dans la Keba. 4) Vérifier la chaîne servie par Caddy (fullchain incl. intermédiaires). 5) Tester avec une borne dont le firmware est récent.",
+        "action_immediate": "Remettre la borne du bureau sur wss://ocpp.monta.app pour qu'elle repasse en ligne (borne de démo, doit rester supervisée)."
+      },
+      "securite_vps": "À FAIRE: changer le mot de passe root (affiché en clair sur page IONOS), passer en clé SSH, apt upgrade + reboot (192 MAJ dont 164 sécu + kernel en attente)."
     }
   },
   "marque_blanche": {
