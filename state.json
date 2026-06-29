@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.200",
+    "version": "1.201",
     "updated": "2026-06-26",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-26",
+        "version_from": "1.200",
+        "version_to": "1.201",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Guide EVlink Pro AC FINALISÉ: 4 captures eSetup intégrées (URLs en .PNG majuscule) + séquence officielle cluster (fiche SE chapitre 6).",
+          "Config différenciée maître/esclaves confirmée: passerelle = DHCP OFF + serveur DHCP (ne pas redémarrer avant supervision); chaînées = DHCP ON."
+        ]
+      },
       {
         "date": "2026-06-26",
         "version_from": "1.199",
@@ -9014,6 +9024,17 @@
         "points_techniques_confirmes": "Config via eSetup en BLUETOOTH (pas Ethernet/PIN). Mot de passe créé à la 1ere connexion (3 essais). Bluetooth actif 2h après mise sous tension, réactivable 10min via badge. Logiciel borne >=1.2.1. Phase A passerelle: activer modem+APN simbase.eu, DHCP OFF + serveur DHCP ON (ne pas redémarrer), supervision OCPP, redémarrer. Phase B chaînées: DHCP ON, supervision, redémarrer.",
         "captures_404": "Les 4 captures eSetup à ozecar.fr/config/SE-proac/1-4.png renvoient HTTP 404 (chemins alternatifs testés aussi = 404). NON intégrées. Dominique doit les transmettre (attacher au chat = plus simple) ou les uploader. 4 emplacements prêts: (1) connexion/mot de passe, (2) modem+APN, (3) DHCP, (4) supervision OCPP.",
         "a_confirmer": "Quelle borne porte le modem (passerelle)? A1 mis par défaut. Identifiant OCPP = n° série à confirmer côté plateforme."
+      },
+      "v3_final": {
+        "date": "2026-06-26",
+        "statut": "FINALISÉ. Guide A4 3 pages avec les 4 captures eSetup intégrées + séquence officielle Schneider (fiche GEX5945401-02 chapitre 6, mise en service cluster).",
+        "captures": "Récupérées via ozecar.fr/config/SE-proac/N.PNG (extension MAJUSCULE). Mapping: 1=écran borne (nom=identifiant), 4=menu Configuration, 2=Connectivité, 3=Supervision OCPP.",
+        "sequence_cluster_confirmee": "Borne PASSERELLE (modem): activer modem+APN simbase.eu, DHCP OFF + serveur DHCP activé, NE PAS redémarrer, puis supervision OCPP, puis redémarrer. Bornes CHAÎNÉES: DHCP ON, supervision, redémarrer. La maître et les esclaves ont une config DHCP DIFFÉRENTE (point clé soulevé par Dominique).",
+        "fichier": "OZECAR-Guide-Config-EVlink-Pro-AC.pdf",
+        "confirmations_restantes": [
+          "Quelle borne porte le modem (passerelle)? A1 par défaut.",
+          "Identifiant OCPP = n° série à confirmer côté plateforme."
+        ]
       }
     }
   },
