@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.206",
-    "updated": "2026-06-26",
+    "version": "1.207",
+    "updated": "2026-06-29",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-29",
+        "version_from": "1.206",
+        "version_to": "1.207",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "POC relais OCPP marque blanche VALIDÉ en test sans solliciter Monta: relais transparent borne->relais->Monta fonctionne (BootNotification relayé -> status Accepted).",
+          "Monta accepte connexion relayée (pas de filtrage IP ni auth handshake), ws:// et wss:// OK, chemin = racine /{id} (toolkit /ocpp/* = 404).",
+          "Livrables: Caddyfile + relay.py + README de déploiement. Reste: borne réelle via VPS public + stabilité + volet contractuel."
+        ]
+      },
       {
         "date": "2026-06-26",
         "version_from": "1.205",
@@ -9094,6 +9105,16 @@
         "imposition": "2 feuilles A4 emboîtées (cahier 8 pages). Feuille 1 recto [8|1], verso [2|7]; Feuille 2 recto [6|3], verso [4|5]. Repère de pli au centre. Impression: recto-verso, retournement bords courts (short edge); emboîter feuille 2 dans feuille 1, plier au centre -> lecture 1->8.",
         "note": "La demande initiale mentionnait [2|3] au verso, mais le bon ordre cahier est [2|7] (sinon pages centrales 4-5 non contiguës). Corrigé en saddle-stitch standard."
       }
+    },
+    "poc_ocpp_marque_blanche": {
+      "date": "2026-06-29",
+      "statut": "POC VALIDÉ en test (sandbox), sans solliciter Monta.",
+      "resultats": "(1) ocpp.monta.app accepte le handshake WS sur ws://(80) ET wss://(443 TLS natif), sous-protocole ocpp1.6. (2) Chemin prod = racine /{identifiant} (le pattern /ocpp/* du toolkit V2 renvoie 404 sur cet hôte). (3) Relais transparent borne->relais->Monta fonctionne: un BootNotification relayé a reçu status:Accepted. (4) Monta n'applique NI filtrage IP NI auth bloquante au handshake -> connexion relayée acceptée. L'inconnue principale est levée.",
+      "reste_a_prouver": "Borne réelle reconfigurée sur wss://ocpp.ozecar.app/{id} via relais déployé sur VPS public; stabilité 24/7; volet contractuel Monta.",
+      "livrables": "Caddyfile (relais TLS transparent ozecar.app->monta.app), POC-OCPP-relais-README.md, relay.py (relais Python).",
+      "deploiement": "VPS Hetzner CX23 ~4€/mois + DNS A ocpp.ozecar.app + Caddy (certif Let's Encrypt auto). ~30 min.",
+      "vigilance": "2 BootNotification de test envoyés (identités bidon OZ-PROXY-PROBE-0001/0002) -> vérifier qu'aucune borne fantôme ne traîne dans le dashboard Monta operator 2257.",
+      "implication_nego": "Renforce la position OCPP: l'endpoint MB est démontrablement faisable en best-effort interne. Argument levée 'Monta swappable' désormais étayé par un POC réel."
     }
   },
   "marque_blanche": {
