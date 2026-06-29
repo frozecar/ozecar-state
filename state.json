@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.207",
+    "version": "1.208",
     "updated": "2026-06-29",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-29",
+        "version_from": "1.207",
+        "version_to": "1.208",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "RELAIS OCPP MARQUE BLANCHE DÉPLOYÉ ET VALIDÉ EN PROD: wss://ocpp.ozecar.app (VPS IONOS + Caddy + Let's Encrypt) relaie vers Monta en TLS. BootNotification réel -> status Accepted.",
+          "Ménage VPS IONOS: appli morte monta-monday stoppée/sauvegardée (/root/monta-monday-backup.tar.gz), nginx fantôme coupé, ~4,5Go récupérés.",
+          "Reco: ce VPS OK pour POC/preuve levée, PAS pour prod 514 PdC en l'état (prévoir VPS dédié propre + 4Go + monitoring/HA)."
+        ]
+      },
       {
         "date": "2026-06-29",
         "version_from": "1.206",
@@ -9108,13 +9119,22 @@
     },
     "poc_ocpp_marque_blanche": {
       "date": "2026-06-29",
-      "statut": "POC VALIDÉ en test (sandbox), sans solliciter Monta.",
+      "statut": "DÉPLOYÉ ET VALIDÉ EN PRODUCTION (29/06/2026 ~20:34). wss://ocpp.ozecar.app relaie vers Monta en TLS.",
       "resultats": "(1) ocpp.monta.app accepte le handshake WS sur ws://(80) ET wss://(443 TLS natif), sous-protocole ocpp1.6. (2) Chemin prod = racine /{identifiant} (le pattern /ocpp/* du toolkit V2 renvoie 404 sur cet hôte). (3) Relais transparent borne->relais->Monta fonctionne: un BootNotification relayé a reçu status:Accepted. (4) Monta n'applique NI filtrage IP NI auth bloquante au handshake -> connexion relayée acceptée. L'inconnue principale est levée.",
       "reste_a_prouver": "Borne réelle reconfigurée sur wss://ocpp.ozecar.app/{id} via relais déployé sur VPS public; stabilité 24/7; volet contractuel Monta.",
       "livrables": "Caddyfile (relais TLS transparent ozecar.app->monta.app), POC-OCPP-relais-README.md, relay.py (relais Python).",
       "deploiement": "VPS Hetzner CX23 ~4€/mois + DNS A ocpp.ozecar.app + Caddy (certif Let's Encrypt auto). ~30 min.",
       "vigilance": "2 BootNotification de test envoyés (identités bidon OZ-PROXY-PROBE-0001/0002) -> vérifier qu'aucune borne fantôme ne traîne dans le dashboard Monta operator 2257.",
-      "implication_nego": "Renforce la position OCPP: l'endpoint MB est démontrablement faisable en best-effort interne. Argument levée 'Monta swappable' désormais étayé par un POC réel."
+      "implication_nego": "Renforce la position OCPP: l'endpoint MB est démontrablement faisable en best-effort interne. Argument levée 'Monta swappable' désormais étayé par un POC réel.",
+      "deploiement_reel": {
+        "serveur": "VPS IONOS 217.154.214.19 (VPS 1-1-10, 1 vCore/1Go/10Go, Ubuntu 22.04, DC Allemagne/Berlin, ~2-5€/mois).",
+        "dns": "Namecheap: A ocpp.ozecar.app -> 217.154.214.19 (propagé).",
+        "stack": "Caddy v2.11.4, /etc/caddy/Caddyfile (reverse_proxy https://ocpp.monta.app, header_up Host, transport http tls). Certif Let's Encrypt OBTENU automatiquement. Ports 80+443 ouverts (firewall IONOS).",
+        "test": "wss://ocpp.ozecar.app/OZ-PROXY-PROBE-0003 -> TLS OK + UPGRADE 101 (ocpp1.6) + BootNotification relayé -> Monta a répondu status:Accepted. Relais transparent fonctionnel de bout en bout EN PROD.",
+        "menage_serveur": "Le VPS hébergeait une vieille appli morte 'monta-monday' (connecteur Monta<->Monday, crash-loop depuis aout 2025, 4Go de logs) + nginx fantôme. Appli stoppée + retirée de supervisor + sauvegardée dans /root/monta-monday-backup.tar.gz. nginx coupé/désactivé. ~4,5Go récupérés."
+      },
+      "reste_a_faire": "Borne RÉELLE (EVlink/Zaptec) reconfigurée sur wss://ocpp.ozecar.app/{id} pour valider en conditions réelles. Stabilité 24/7 (le VPS porte une appli zombie sauvegardée; PAS une base de prod -> prévoir VPS dédié propre ou réinstall OS pour la prod). Volet contractuel Monta.",
+      "recommandation_prod": "NE PAS mettre la prod 514 PdC sur ce VPS en l'état (historique douteux: monta-monday + nginx). Pour industrialiser: VPS dédié propre (ou réinstall OS de celui-ci après récupération du backup), monter à 2vCPU/4Go, ajouter monitoring + HA."
     }
   },
   "marque_blanche": {
