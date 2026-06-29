@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.203",
+    "version": "1.204",
     "updated": "2026-06-26",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-26",
+        "version_from": "1.203",
+        "version_to": "1.204",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Guide EVlink transformé en brochure A5 4 pages (couverture + procédure + dos support). Impression mode Livret (A4 R/V plié en 2). 4 pages pile (capw=24mm)."
+        ]
+      },
       {
         "date": "2026-06-26",
         "version_from": "1.202",
@@ -9055,7 +9064,8 @@
           "Identifiant OCPP = n° série à confirmer côté plateforme."
         ]
       },
-      "maj_tel": "Ajout du numéro service +33 4 23 500 112 dans le bloc support du guide EVlink (accompagnement installateur). Cohérent avec le kit bienvenue qui porte le même numéro."
+      "maj_tel": "Ajout du numéro service +33 4 23 500 112 dans le bloc support du guide EVlink (accompagnement installateur). Cohérent avec le kit bienvenue qui porte le même numéro.",
+      "format_brochure_a5": "Guide transformé en BROCHURE A5 4 pages (au lieu d'A4 3 pages): P1 couverture / P2-P3 procédure + 4 captures / P4 dos (Phases B-C + tableau + support tel). Raison: l'enveloppe ne prend pas de feuille A4, et plier de l'A4 n'est pas pro. IMPRESSION: mode 'Livret/Booklet' du pilote HP = 1 feuille A4 recto-verso pliée en 2 -> brochure A5. Captures à capw=24mm (testé: 4 pages pile via len(doc.pages))."
     }
   },
   "marque_blanche": {
