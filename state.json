@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.209",
-    "updated": "2026-06-29",
+    "version": "1.210",
+    "updated": "2026-06-30",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-30",
+        "version_from": "1.209",
+        "version_to": "1.210",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "RELAIS VALIDÉ SUR VRAIE BORNE: 5 Zaptec du Parking P1 Bonifacio fonctionnent via wss://ocpp.ozecar.app (A05 RemoteStart -> busy-charging confirmé côté Monta). Cert Let's Encrypt OK sur Zaptec fw 6.5.0.0.",
+          "Keba P30 ancienne (bureau) NE passe PAS (rejet cert probable). Compat TLS = dépend du firmware.",
+          "RISQUE CRITIQUE acté: 5 bornes publiques sur VPS 1Go non monitoré/non redondé/non patché. Reco: rapatrier sur Monta ou sécuriser d'urgence.",
+          "Leçon: 'state available' Monta != connexion active (cache); vrai indicateur = lastConnectedAt qui avance. Caddy ne loggue pas les WS réussies par défaut."
+        ]
+      },
       {
         "date": "2026-06-29",
         "version_from": "1.208",
@@ -9155,7 +9167,15 @@
         "pistes_demain": "1) Confirmer via journalctl que la borne ne tape jamais le relais. 2) MAJ firmware Keba (vraie correction). 3) OU option 'ne pas vérifier le certificat' si dispo dans la Keba. 4) Vérifier la chaîne servie par Caddy (fullchain incl. intermédiaires). 5) Tester avec une borne dont le firmware est récent.",
         "action_immediate": "Remettre la borne du bureau sur wss://ocpp.monta.app pour qu'elle repasse en ligne (borne de démo, doit rester supervisée)."
       },
-      "securite_vps": "À FAIRE: changer le mot de passe root (affiché en clair sur page IONOS), passer en clé SSH, apt upgrade + reboot (192 MAJ dont 164 sécu + kernel en attente)."
+      "securite_vps": "À FAIRE: changer le mot de passe root (affiché en clair sur page IONOS), passer en clé SSH, apt upgrade + reboot (192 MAJ dont 164 sécu + kernel en attente).",
+      "validation_borne_reelle": {
+        "date": "2026-06-30 ~09h",
+        "resultat": "SUCCÈS sur Zaptec. Les 5 bornes du site Bonifacio (Parking P1, site Monta 631206) ont été basculées sur wss://ocpp.ozecar.app et FONCTIONNENT via le relais. Preuve: A05 (ZPR304708, id 4189724) a accepté un RemoteStartTransaction et est passée busy-charging — vu côté Monta (lastConnectedAt/ocpp.status mis à jour à 08:59:39Z). Le certificat Let's Encrypt est accepté par Zaptec Pro firmware 6.5.0.0.",
+        "bornes_concernees": "ZPR293472 (A01), ZPR293241 (A02), ZPR293439 (A03), ZPR353231 (A04), ZPR304708 (A05) — Parking P1 Bonifacio, site CLIENT PUBLIC.",
+        "keba_vs_zaptec": "La Keba P30 du bureau (24354364, A01 Dojo, firmware ancien) NE se connecte PAS via le relais (rejet probable racine ISRG Root X2 du cert Let's Encrypt). Les Zaptec récentes (fw 6.5.0.0) acceptent. Donc compat TLS dépend du firmware/borne. key_type rsa2048 ajouté au Caddyfile pour servir une chaîne ISRG Root X1 (plus compatible) - à valider sur Keba.",
+        "lecon_diagnostic": "Le 'state: available' de Monta NE prouve PAS une connexion active (cache de session). Le vrai indicateur = lastConnectedAt/protocolData.ocpp.updatedAt qui AVANCE. Le journalctl Caddy par défaut ne loggue PAS les connexions WebSocket réussies (pas de directive log) -> 'silence' != 'pas de connexion'. Erreur de diagnostic commise puis corrigée grâce aux logs OCPP de la borne (RemoteStart) + horodatages Monta."
+      },
+      "RISQUE_PROD_ACTUEL": "CRITIQUE: 5 bornes d'un parking PUBLIC (Bonifacio) tournent sur le VPS IONOS 1Go monté hier soir: PAS de monitoring, PAS de redondance (SPOF), kernel non patché + reboot système en attente, 164 MAJ sécu en attente. Si le VPS/Caddy tombe -> les 5 bornes publiques décrochent sans alerte. RECO: rapatrier sur wss://ocpp.monta.app (POC déjà prouvé) OU sécuriser d'urgence (Caddy Restart=always, UptimeRobot, ne pas rebooter, rollback prêt). Pour un site public, rapatriement conseillé tant que l'infra n'est pas dédiée+monitorée+redondée."
     }
   },
   "marque_blanche": {
