@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.222",
+    "version": "1.223",
     "updated": "2026-06-30",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-30",
+        "version_from": "1.222",
+        "version_to": "1.223",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Accuse de reception REFAIT a la charte (habillage complet 03-bienvenue-client) + renvoye pour validation",
+          "Pennylane: proxy api/pennylane.php cree, connexion OK (OZECAR SIREN 902757202), structure factures+clients documentee",
+          "Escalade matinale: cron Hostinger fourni (8h00)",
+          "Reste: sync Pennylane->HubSpot (proprietes+matching), autoresponder"
+        ]
+      },
       {
         "date": "2026-06-30",
         "version_from": "1.221",
@@ -9385,7 +9397,7 @@
       "tested": "endpoint teste 3x (demo->deal, support->ticket sav, question->ticket) OK puis nettoye. Test E2E JS sur la vraie page A FAIRE (necessite navigateur).",
       "voie_email_PENDING": "pas de boite support@ dediee = alias de dominique@. Capter les mails adresses a l'alias support sans tout transformer en ticket -> Make watch IMAP filtre sur destinataire, necessite acces IMAP boite dominique@.",
       "next": "valider test E2E form; puis brique 2 autoresponder Make+Claude",
-      "accuse_reception": "OPERATIONNEL: support-intake.php envoie un accuse de reception au demandeur apres creation (via send-mail.php/MailerSend, template project/email-templates/accuse-reception.html a la charte, tokens prenom/sujet/ref). Teste (mail parti, maillog OK)."
+      "accuse_reception": "OPERATIONNEL + CONFORME CHARTE: template project/email-templates/accuse-reception.html refait en reprenant l'habillage complet de 03-bienvenue-client (header logo fond blanc + lisere jaune, sections ink/creme, signature, footer). Tokens prenom/sujet/ref. Envoye via send-mail.php apres creation dans support-intake.php."
     },
     "esp": {
       "provider": "MailerSend",
@@ -9421,9 +9433,18 @@
       "scheduler_existant": "un digest quotidien tourne a 17:59 (cron/Make a identifier) -> point de greffe pour l escalade du matin"
     },
     "todo_restant": {
-      "declencheur_matinal_escalade": "brancher escalation-check.php 1x/jour le matin. A localiser: mecanisme du digest 17:59 (cron Hostinger ? Make ?) pour s'y greffer.",
+      "declencheur_matinal_escalade": "RESOLU: cron Hostinger a ajouter par Dominique. Ligne: 0 8 * * * curl -s 'https://ozecar.fr/api/escalation-check.php?key=oz_esc_<SECRET>&hours=48' >/dev/null 2>&1",
       "pennylane": "Dominique a la cle API. Pas encore de fichier pennylane.php dans api/. A construire: proxy + sync paiements/factures -> HubSpot (deals+companies). Necessite la cle.",
       "autoresponder": "brique 2: agent Claude classe + resout cas basiques + change statut. Gros chantier, prochaine etape."
     }
+  },
+  "pennylane": {
+    "proxy": "api/pennylane.php cree (proxy passthrough v2, cle serveur, acces protege par secret oz_pl_ dans le fichier). POST {secret,path,method,body}. Connexion OK: company OZECAR id 22114048 SIREN 902757202.",
+    "scopes": "customer_invoices:all, customers:all, supplier_invoices:all, suppliers:all, ledger_entries:all, quotes:all, etc. (lecture+ecriture)",
+    "base_url": "https://app.pennylane.com/api/external/v2",
+    "structure_facture_client": "champs cles: id, invoice_number, amount/currency_amount (TTC), currency_amount_before_tax (HT), currency, date, deadline (echeance), paid (bool), status (upcoming/late/paid), remaining_amount_with_tax (reste du), customer{id}, quote{id}, label, public_file_url (PDF). Pagination cursor (items/has_more/next_cursor).",
+    "structure_client": "GET /customers/{id}: name, emails[], reg_no (SIREN), vat_number, external_reference, customer_type, billing_address. => matching HubSpot par email OU nom OU SIREN.",
+    "volumetrie": "~200+ factures clients (pagination cursor).",
+    "todo_sync": "A CONSTRUIRE: sync factures->HubSpot. Plan: proprietes companies HubSpot (pennylane_statut_paiement, pennylane_montant_du, pennylane_date_derniere_facture, pennylane_derniere_facture_url, pennylane_customer_id), matcher client Pennylane->company HubSpot (email/nom/SIREN), stocker pennylane_customer_id pour matching robuste ensuite. Endpoint pennylane-sync.php + cron."
   }
 }
