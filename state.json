@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.212",
+    "version": "1.213",
     "updated": "2026-06-30",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-30",
+        "version_from": "1.212",
+        "version_to": "1.213",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Bot Slack: 3 commandes statut Monta LIVE (/ozecar parc|site|borne), synthèse courte, comptage sur vrai signal (disconnected/lastConnectedAt). Testé live, lint OK en ligne.",
+          "FLAG: Monta annonce 522 bornes mais n'en énumère que 422 dans le listing paginé (page5=22, page6=vide; 0 supprimée). Bot compte les 422 réelles. Possible bug listing Monta à investiguer."
+        ]
+      },
       {
         "date": "2026-06-30",
         "version_from": "1.211",
@@ -9074,6 +9084,13 @@
       "deploiement": "slack-bot.php 17092->20396 octets, lint PHP 8.3 OK en local ET sur la version en ligne. Backup api/slack-bot.php.bak-20260630-095720.",
       "DEPENDANCE_SCOPE_SLACK": "L'historique en CANAL exige les scopes channels:history / groups:history sur l'app Slack (im:history deja present pour DM). Si l'historique ne remonte pas en canal -> Dominique doit ajouter ces scopes (api.slack.com OAuth & Permissions) + reinstaller l'app. DM fonctionne deja.",
       "reste": "Demande initiale = 3 commandes statut Monta (/ozecar parc|site|borne) -> a implementer maintenant."
+    },
+    "commandes_statut_monta_2026_06_30": {
+      "livre": "3 commandes slash live: /ozecar parc (vue parc), /ozecar site <nom>, /ozecar borne <serie/nom>. Interception AVANT l'agent IA (slash uniquement, pas le chat DM). Synthèse courte. Repli ':warning: Supervision injoignable' si API KO.",
+      "comptage": "Règles validées: offline=state disconnected; charging=busy-charging|ocpp charging; busy=busy-non-released|finishing|paused-ev; online=reste. /ozecar borne affiche lastConnectedAt ('il y a X min'), l'indicateur honnête.",
+      "implementation": "Fonctions PHP (monta_all_points pagine /charge-points 6 pages via monta.php; cp_bucket; fmt_parc/site/borne; maybe_handle_status). Strip caractères de contrôle avant json_decode. Testé live: parc=422, site Bonifacio=26, borne ZPR304708 OK. Lint PHP 8.3 OK en ligne. Backup api/slack-bot.php.bak-20260630-100401. slack-bot.php ~25,7Ko.",
+      "FLAG_MONTA_522_vs_422": "L'API Monta annonce meta.totalItemCount=522 / totalPageCount=6, MAIS le listing pagine ne renvoie que 422 bornes (page5=22 items, page6=vide). 0 deletedAt, 411 isActive=true, 11 inactive sur les 422. Les ~100 manquantes ne sont pas dans le listing -> possible bug/limite de listing cote Monta. Le bot compte les 422 reellement enumerees (honnete). A investiguer separement si Dominique veut reconcilier le 522.",
+      "depend_scope_slack": "Rien de plus requis pour les commandes slash (utilisent response_url). Le scope channels:history reste utile seulement pour la MEMOIRE conversationnelle en canal (cf entree precedente)."
     }
   },
   "ozecar_2_0": {
