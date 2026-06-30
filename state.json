@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.226",
+    "version": "1.227",
     "updated": "2026-06-30",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-30",
+        "version_from": "1.226",
+        "version_to": "1.227",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Ajout section gtm_launch_2026: strategie GTM launch pilote (decision Dominique 30/06)",
+          "Timing: pilote juillet (mesure kit->activation) -> hard launch rentree (5 sept)",
+          "Budget media 1000e GELE, reserve rentree (split prevu: 350 LI boost / 400 Google Search / 250 retargeting / 0 Meta froid)",
+          "Campagnes draftees: relance devis dormants (16, accroche 15/07, envoi cette semaine), DM LinkedIn installateurs pilote, posts founder lancement",
+          "Decisions en attente: outil mailing marketing (HubSpot reco), confirmation stock kits + papier A5"
+        ]
+      },
       {
         "date": "2026-06-30",
         "version_from": "1.225",
@@ -9517,5 +9530,74 @@
       "G5 suppression doublons (WP admin Dominique)",
       "G6 copy (punch-list ME)"
     ]
+  },
+  "gtm_launch_2026": {
+    "date_cadrage": "2026-06-30",
+    "decision_dominique_30_06": "Launch PILOTE maintenant. Preparer kits + pixels + mailings. 0 budget media pour l'instant (media reserve rentree). Commit + drafts premieres campagnes valides.",
+    "these_timing": "Pilote juillet (8-10 kits aux installateurs influents pour MESURER kit->activation) -> ete = contenu/cas clients + soft touch installateurs -> hard launch rentree (semaine 1-8 sept, aligne deadline preuve 5 sept). Pas de media en juillet/aout.",
+    "budget_media": {
+      "cap_total": 1000,
+      "statut": "GELE (decision Dominique 30/06). Reserve rentree.",
+      "split_prevu_sept": {
+        "boost_posts_linkedin": 350,
+        "google_ads_search": 400,
+        "retargeting": 250,
+        "meta_acquisition_froide": 0
+      },
+      "note": "LinkedIn Ads froid + Meta froid ecartes a ce budget (gaspillage sur audience IRVE niche). Moteur installateur = DM + organique = 0e media."
+    },
+    "campagnes_draftees_30_06": [
+      "relance_devis_dormants",
+      "dm_linkedin_installateurs_pilote",
+      "posts_linkedin_founder_lancement"
+    ],
+    "relance_devis_dormants": {
+      "cible": "16 devis stage 'Devis envoye' (5215721690) dormants depuis ~fin mai (cf make_scenario_07_relances)",
+      "accroche": "Essential 4,90 -> 5,90 au 15/07 => securiser le tarif 4,90 avant la hausse",
+      "statut": "DRAFTE 30/06, en attente validation Dominique avant envoi",
+      "fenetre_envoi": "cette semaine (seule action GTM qui n'attend PAS septembre)",
+      "outil_recommande": "HubSpot marketing email (opt-out + tracking RGPD), PAS le SMTP transactionnel"
+    },
+    "moteur_installateur_pilote": {
+      "cible_pilote": "8-10 installateurs IRVE influents FR sources sur LinkedIn",
+      "offre": "Kit OZECAR offert, zero engagement, ils le gardent",
+      "kpi_central": "taux kit->activation (chiffre inconnu decisif)",
+      "canal_primaire": "DM LinkedIn personnalise (pas d'email froid sur les tetes influentes)",
+      "onboarding_si_activation": "programme Installateur Certifie tier Demarrage (-25% kits + prime 30/130e)",
+      "cout": "~50e/kit COGS, bucket separe du media (non limitant)"
+    },
+    "canaux": {
+      "linkedin": "Coeur. Profil founder + cadence 3 posts/sem (probleme/preuve/pedagogie) + DM perso = arme n1.",
+      "mailing_devis_dormants": "Immediat, accroche 15/07.",
+      "mailing_clients": "Rentree. Annonce OZECAR 2.0 + cross-sell + referral installateurs.",
+      "mailing_prospects": "Rentree. Annonce site + demo. RGPD B2B: opt-out clair, via outil marketing.",
+      "mailing_installateurs": "Sequence nurture post-conversion (06-bienvenue-installateur), pas un blast froid.",
+      "retargeting": "Pixels poses MAINTENANT (LinkedIn Insight + Meta), depense reelle ~octobre (palier 300 audience LinkedIn).",
+      "meta_acquisition_froide": "Ecarte pour installateurs. Levier phase 2 pages secteurs (hotellerie/camping)."
+    },
+    "prerequis_lancement": {
+      "physique": "30-50 kits stock (Fred) + papier A5 160g recu + imprimante OK (a confirmer)",
+      "site": "Fuite marque blanche monta.imgix.net /bornes-compatibles A PROXIFIER (BLOQUANT prod) + page /installateurs offre kit + pixels LinkedIn/Meta + UTM",
+      "crm_automation": "Pipeline installateur HubSpot + cablage Make (04 expedition, 02 activation, 06 welcome, nurture) + segmentation 4 listes",
+      "contenu": "8-12 posts LinkedIn + scripts DM + one-pager offre + 1-2 cas clients (issus pilote)",
+      "liste": "50-80 installateurs IRVE influents FR (Marie-Estelle + PM)"
+    },
+    "automatisations": {
+      "funnel_installateur": "lead (form/Calendly) -> HubSpot -> expedition kit (Make 04 + tracking) -> activation -> Make 02 Monta -> 06-bienvenue-installateur -> nurture J+3/J+10 -> bascule partenaire si actif",
+      "relance_devis": "Make 07 (actif) + one-shot cible 16 dormants",
+      "mailings": "HubSpot marketing (clients/prospects) + MailerSend transactionnel (commande/expedition/welcome/activation)",
+      "mesure": "UTM partout + suivi taux kit->activation"
+    },
+    "decisions_en_attente_dominique": [
+      "Outil mailing marketing (recommande: HubSpot marketing email — confirmer seat actif sur Starter)",
+      "Confirmer stock kits reel + papier A5 recu"
+    ],
+    "bloquant_prod": "Fuite marque blanche monta.imgix.net sur /bornes-compatibles a proxifier avant tout passage prod (item WP-MARQUE-BLANCHE)",
+    "repartition": {
+      "pm_claude": "section state, pipeline installateur HubSpot, cablage Make, segmentation mailings, drafts contenu, pixels+UTM staging, page /installateurs, fix marque blanche",
+      "dominique": "decisions (outil mailing), poster LinkedIn (voix founder), valider mailings avant envoi, go/no-go prod, acces comptes media (sept)",
+      "fred": "stock 30-50 kits prets",
+      "marie_estelle": "sourcing liste installateurs, qualif leads, planif posts"
+    }
   }
 }
