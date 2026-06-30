@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.219",
+    "version": "1.220",
     "updated": "2026-06-30",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-30",
+        "version_from": "1.219",
+        "version_to": "1.220",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Escalade Slack OPERATIONNELLE: canal #support-alertes (C0BF00352AC) cree, bot invite, post valide (slack_ok)",
+          "Decouverte send-mail.php (MailerSend) deja en prod + systeme de templates -> accuse reception/autoresponder sans rien demander a Dominique",
+          "Decouverte planificateur quotidien existant (digest 17:59) -> point de greffe pour declencheur escalade matin"
+        ]
+      },
       {
         "date": "2026-06-30",
         "version_from": "1.218",
@@ -9362,16 +9373,21 @@
       "rappel_taches_incompletes": "meme scenario Make planifie"
     },
     "escalade_slack": {
-      "status": "moteur construit + teste (DM Slack recu, slack_ok)",
+      "status": "OPERATIONNEL — post valide dans #support-alertes (slack_ok true)",
       "endpoint": "ozecar.fr/api/escalation-check.php?key=<SECRET>&hours=48 (params: test=1, hours, channel). Scanne tickets Support ouverts (New/Waiting on us) crees avant cutoff, non encore escalades, -> recap Slack groupe, marque ozecar_escalade_le (idempotent). Token Slack via SLACK_BOT_TOKEN (slack-bot-config.php).",
       "propriete_idempotence": "ozecar_escalade_le (datetime) creee",
       "canal_test": "DM Dominique U039W5005K4 (test OK)",
       "PENDING": [
-        "choisir canal final (#general C039PFA00T0 ou canal dedie)",
-        "brancher declencheur Make planifie (HTTP GET periodique vers l'endpoint, ex 2x/jour)",
-        "ajouter rappel taches incompletes (HubSpot tasks ou Monday) si voulu"
-      ]
+        "brancher declencheur planifie 1x/jour le matin (se greffer sur le planificateur quotidien existant du digest 17:59, ou Make)"
+      ],
+      "canal": "#support-alertes C0BF00352AC (bot invite par Dominique)"
     },
-    "hubspot_seats_info": "Starter 2026: 1 seul siege payant (Core) ~15 EUR/mois annuel (20 mensuel). Pas de tarif differencie par usage. Acces Marie-Estelle(tout)/Fred(tickets) = via PERMISSIONS/roles, meme prix. View-only gratuit MAIS ne peut PAS editer/traiter tickets. Offre 7 EUR = promo nouveaux comptes, compte existant non eligible -> parler au commercial qui peut negocier. => renforce reco Slack-first."
+    "hubspot_seats_info": "Starter 2026: 1 seul siege payant (Core) ~15 EUR/mois annuel (20 mensuel). Pas de tarif differencie par usage. Acces Marie-Estelle(tout)/Fred(tickets) = via PERMISSIONS/roles, meme prix. View-only gratuit MAIS ne peut PAS editer/traiter tickets. Offre 7 EUR = promo nouveaux comptes, compte existant non eligible -> parler au commercial qui peut negocier. => renforce reco Slack-first.",
+    "mailer": {
+      "endpoint": "ozecar.fr/api/send-mail.php (MailerSend SMTP smtp.mailersend.net:587, From hello@ozecar.fr). POST {secret,to,subject,html|template,vars}. Secret OZ_MAIL_SECRET dans le fichier (NE PAS exposer). Operationnel (maillog actif).",
+      "templates": "project/email-templates/<nom>.html avec {{tokens}}. Existants: 03-bienvenue-client, 04-guide, 06-bienvenue-installateur, 99-relance-digest, devis-pret, etc.",
+      "note": "=> accuse de reception + autoresponder passeront par send-mail.php. Rien a demander a Dominique (cle deja en place).",
+      "scheduler_existant": "un digest quotidien tourne a 17:59 (cron/Make a identifier) -> point de greffe pour l escalade du matin"
+    }
   }
 }
