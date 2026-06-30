@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.227",
+    "version": "1.228",
     "updated": "2026-06-30",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-30",
+        "version_from": "1.227",
+        "version_to": "1.228",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "G1 demo RESOLU (pas bloque): /demo/ embarque deja meetings-eu1.hubspot.com/ozecar-demo. Bug = CTA pointaient vers /supervision#demo (ancre morte).",
+          "Fix global deploye: JS demo-cta-fix.js (enqueue prio 70) reecrit tout lien #demo -> /demo/. Verifie sur 6 pages, 200, sans fatal."
+        ]
+      },
       {
         "date": "2026-06-30",
         "version_from": "1.226",
@@ -9521,7 +9531,6 @@
       ],
       "reste_contraste": "encadre noir transport + 1er encadre supermarches = PAS de la meme cause (non low-opacity), check visuel a faire"
     },
-    "G1_demo_BLOCAGE": "Les URL CTA demo sont des attributs de bloc en BASE (ctaPrimaryUrl), pas du code. Et /demo/ n'embarque aucun booking (ni Calendly ni HubSpot Meetings), /supervision#demo = ancre inexistante. NEED: URL de reservation reelle (Calendly ou HubSpot Meetings) -> ensuite fix global via JS enqueue (rewrite tous les liens demo en 1 coup, sans editer la base).",
     "constat_archi_cle": "~60% du feedback ME = contenu en base WP (attributs blocs Gutenberg: liens, prix, copy) NON editable via wp-deploy. Options: (a) punch-list WP admin pour Marie-Estelle, (b) auth WP-REST pour find/replace programmatique sur post_content.",
     "reste": [
       "G1 (booking URL)",
@@ -9529,7 +9538,15 @@
       "G4 liens morts (audit, majoritairement base)",
       "G5 suppression doublons (WP admin Dominique)",
       "G6 copy (punch-list ME)"
-    ]
+    ],
+    "G1_demo_RESOLU_2026_06_30": {
+      "statut": "DEPLOYE staging + verifie",
+      "decouverte": "/demo/ embarque DEJA la prise de RDV: meetings-eu1.hubspot.com/ozecar-demo. Le booking existait, mon 1er check ratait le -eu1.",
+      "vrai_bug": "les CTA demo (attributs blocs en base) pointent vers /supervision#demo = ancre inexistante.",
+      "fix": "JS enqueue assets/js/demo-cta-fix.js (prio 70) qui reecrit tout href #demo -> /demo/ au chargement. Couvre les 11 remarques d'un coup, sans editer la base.",
+      "verifie": "JS 200, enqueue sur flottes/supermarches/hotellerie/transport/supervision-3/home, pages 200 (pas de fatal).",
+      "durable": "a terme, corriger ctaPrimaryUrl en base (editeur WP) puis retirer le JS."
+    }
   },
   "gtm_launch_2026": {
     "date_cadrage": "2026-06-30",
