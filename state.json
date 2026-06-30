@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.220",
+    "version": "1.221",
     "updated": "2026-06-30",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-30",
+        "version_from": "1.220",
+        "version_to": "1.221",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Bot Slack: nouvel outil monta_search_groups (recherche teams/groupes Monta par nom, insensible casse/accents)",
+          "Corrige le comportement: l'agent cherche desormais par nom au lieu de demander un numero de serie",
+          "Chaine monta-search.php(search_groups) -> bot-tools.php -> agent (ozecar_tools + run_tool + system_prompt)"
+        ]
+      },
       {
         "date": "2026-06-30",
         "version_from": "1.219",
@@ -9179,6 +9190,13 @@
       "decisions_design": "IBAN/BIC volontairement EXCLUS du digest (sensible, pas injecte dans chaque appel LLM). Exception marque blanche CGV preservee: Monta ApS nommable UNIQUEMENT dans clause reversement. Rendu generique: ajouter une option/forfait dans pricing_canonical apparait tout seul dans le bot.",
       "deploiement": "slack-bot.php ~31,9Ko, lint PHP 8.3 OK en ligne. Backup api/slack-bot.php.bak-20260630-102459. Teste: digest genere correctement depuis state v1.213.",
       "consequence_operationnelle": "IMPORTANT: pour mettre a jour ce que dit le bot (prix, options, CGV, identite), il faut editer state.json (sections canoniques), PAS le code du bot. Le hardcode tarifaire dans le system prompt est supprime."
+    },
+    "recherche_groupes_monta": {
+      "date": "2026-06-30",
+      "probleme": "l'agent n'avait aucun outil Monta -> face a une demande de groupe/team par nom il demandait un numero de serie",
+      "fix": "nouvel outil agent 'monta_search_groups' (recherche teams Monta par nom, insensible casse/accents, matche name + companyName). Chaine: monta-search.php action=search_groups (paginate /teams 176) -> bot-tools.php action=monta_search_groups -> declare dans ozecar_tools + whitelist run_tool + instruction system_prompt (chercher par nom, NE PAS demander de serie).",
+      "teste": "search_groups + bot-tools OK (santa/mairie/capu biancu). Test agent reel en Slack a faire par Dominique (mention/DM @ozecar-bot).",
+      "endpoints": "monta-search.php (search_groups), bot-tools.php (monta_search_groups), slack-bot.php (outil declare+autorise)"
     }
   },
   "ozecar_2_0": {
