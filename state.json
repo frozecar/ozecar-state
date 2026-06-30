@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.216",
+    "version": "1.217",
     "updated": "2026-06-30",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-30",
+        "version_from": "1.216",
+        "version_to": "1.217",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Intake branche sur le VRAI formulaire de contact staging (le neuf cree avant a ete supprime)",
+          "Endpoint support-intake.php elargi: routage par sujet (demo/partenariat->deal L&Q, support->ticket sav, question->ticket demande, presse->note), upsert contact+company, capte Sujet+Nb bornes",
+          "JS contact-routing.js deploye + enqueue functions.php (prio 60) redefinit window.handleSubmit, remplace l'ancien post api.hsforms (qui ne creait qu'un contact)",
+          "Constat: ancien form jetait Sujet+Nb bornes et ne creait aucun ticket. Form vit dans DB WP page 22466 (non modifiee)"
+        ]
+      },
       {
         "date": "2026-06-30",
         "version_from": "1.215",
@@ -9302,12 +9314,13 @@
       "outils lecture tickets/paiements dans bot-tools.php pour le bot Slack"
     ],
     "intake": {
-      "status": "back operationnel + formulaire deploye, teste end-to-end",
-      "endpoint": "ozecar.fr/api/support-intake.php (upsert contact + creation ticket Support pipeline id0 stage New, type_demande mappe, association contact, honeypot anti-spam, marque blanche)",
-      "form_demo": "ozecar.fr/api/support-form-demo.html (charte OZECAR, HTTP 200, poste vers l'endpoint)",
-      "test": "ticket 421901932741 + contact cree puis supprimes (204) — chaine validee",
-      "voie_email_PENDING_dominique": "connecter support@ozecar.fr soit a Conversations HubSpot (creation auto ticket), soit via Make watch IMAP -> support-intake.php. Necessite acces boite mail.",
-      "next": "integrer le formulaire dans la refonte staging / page contact apres validation design, puis brique 2 = autoresponder Make+Claude"
+      "status": "BRANCHE sur le vrai formulaire de contact (staging), routage par sujet operationnel",
+      "endpoint": "ozecar.fr/api/support-intake.php — route selon le sujet: demo/partenariat -> DEAL (pipeline L&Q 3747862733, etape Formulaire recu 5215721686); support/panne -> TICKET sav; supervision/kit/question/autre -> TICKET demande_client; presse -> NOTE. Upsert contact + company (dedup par domaine), capte Sujet + Nb bornes, associations completes.",
+      "form_binding": "JS wp-content/themes/ozecar-child/assets/js/contact-routing.js (enqueue dans functions.php prio 60) redefinit window.handleSubmit sur la page contact (#oz-c-email) -> poste vers l'endpoint. Remplace l'ancien fetch api.hsforms.com (qui ne creait qu'un contact, ignorait sujet/nb bornes, sans ticket).",
+      "page": "staging.ozecar.fr/contact-5/ (contenu form dans DB WP page 22466, non modifie)",
+      "tested": "endpoint teste 3x (demo->deal, support->ticket sav, question->ticket) OK puis nettoye. Test E2E JS sur la vraie page A FAIRE (necessite navigateur).",
+      "voie_email_PENDING": "pas de boite support@ dediee = alias de dominique@. Capter les mails adresses a l'alias support sans tout transformer en ticket -> Make watch IMAP filtre sur destinataire, necessite acces IMAP boite dominique@.",
+      "next": "valider test E2E form; puis brique 2 autoresponder Make+Claude"
     }
   }
 }
