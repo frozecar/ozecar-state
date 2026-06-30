@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.225",
+    "version": "1.226",
     "updated": "2026-06-30",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-30",
+        "version_from": "1.225",
+        "version_to": "1.226",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Feedback staging Marie-Estelle (10/06, ~70 remarques) traite: regroupe en 6 groupes, decisions Dominique actees.",
+          "G2 CONTRASTE DEPLOYE+VERIFIE sur staging: 4 correctifs d'opacite texte sur fond fonce (banner nouveaute, pricing cards x2, hero-duo). CSS live confirme.",
+          "BLOCAGE G1 demo: pas de destination de reservation (/demo/ sans booking, /supervision#demo ancre inexistante) + liens CTA en base. NEED URL Calendly/HubSpot Meetings.",
+          "CONSTAT: ~60% du feedback = contenu en base WP (attributs blocs) non editable via wp-deploy -> punch-list ME ou auth WP-REST a trancher."
+        ]
+      },
       {
         "date": "2026-06-30",
         "version_from": "1.224",
@@ -9475,5 +9487,35 @@
     "sync_OPERATIONNEL": "FAIT. 8 proprietes companies creees (groupe 'Facturation (Pennylane)'): pennylane_customer_id, pennylane_statut_paiement (a_jour/en_attente/en_retard), pennylane_montant_du, pennylane_nb_factures_impayees, pennylane_date_derniere_facture, pennylane_derniere_facture_url, pennylane_sync_le, siren. 140 fiches entreprise creees/peuplees (93 a jour / 10 en attente / 37 en retard, 54 516 EUR d'impayes). 8 doublons Ozecar de test supprimes.",
     "sync_endpoint": "api/pennylane-sync.php?key=oz_pls_<SECRET> (+&dry=1 pour simulation). Refait toute la chaine: clients+factures Pennylane -> agregation par client -> upsert company HubSpot (match par pennylane_customer_id puis nom). Idempotent. Teste: 140 updated, 0 erreur. Total companies HubSpot: 154.",
     "cron": "A ajouter par Dominique (Hostinger): 0 6 * * * curl -s 'https://ozecar.fr/api/pennylane-sync.php?key=oz_pls_<SECRET>' >/dev/null 2>&1"
+  },
+  "feedback_staging_me_2026_06_10": {
+    "source": "Google Doc 'Feedback Staging 10-06-2026' (Marie-Estelle), ~70 remarques, ajoute au projet",
+    "regroupement": "6 groupes: G1 liens demo, G2 contraste, G3 prix, G4 liens morts, G5 doublons/slugs, G6 wording/visuels",
+    "decisions_dominique_2026_06_30": {
+      "cta_demo": "tous vers /demo/ (mais /demo/ n'a AUCUN booking -> blocage)",
+      "prix": "canonical: 3 forfaits publics Essential 5,90 / Pro 14,90 / Pro+ sur devis",
+      "doublons": "garder contenu refonte (slugs -3/-5), liberer slugs propres en supprimant vieilles pages (WP admin)",
+      "creneaux": "lundi-vendredi partout"
+    },
+    "G2_contraste_FAIT_2026_06_30": {
+      "statut": "DEPLOYE staging + verifie CSS live",
+      "cause": "textes a tres faible opacite sur fond fonce (rgba 245,240,235 alpha 0.3-0.5)",
+      "fixes": [
+        "banner-announcement (barre nouveaute) 0.5 -> 0.85",
+        "product-pricing-cards sous-titre forfait 0.3 -> 0.72",
+        "product-pricing-cards suffixe /mois 0.4 -> 0.6",
+        "hero-duo-product sous-titre carte sombre 0.4 -> 0.72"
+      ],
+      "reste_contraste": "encadre noir transport + 1er encadre supermarches = PAS de la meme cause (non low-opacity), check visuel a faire"
+    },
+    "G1_demo_BLOCAGE": "Les URL CTA demo sont des attributs de bloc en BASE (ctaPrimaryUrl), pas du code. Et /demo/ n'embarque aucun booking (ni Calendly ni HubSpot Meetings), /supervision#demo = ancre inexistante. NEED: URL de reservation reelle (Calendly ou HubSpot Meetings) -> ensuite fix global via JS enqueue (rewrite tous les liens demo en 1 coup, sans editer la base).",
+    "constat_archi_cle": "~60% du feedback ME = contenu en base WP (attributs blocs Gutenberg: liens, prix, copy) NON editable via wp-deploy. Options: (a) punch-list WP admin pour Marie-Estelle, (b) auth WP-REST pour find/replace programmatique sur post_content.",
+    "reste": [
+      "G1 (booking URL)",
+      "G3 prix (base ou render.php a verifier)",
+      "G4 liens morts (audit, majoritairement base)",
+      "G5 suppression doublons (WP admin Dominique)",
+      "G6 copy (punch-list ME)"
+    ]
   }
 }
