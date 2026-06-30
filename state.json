@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.221",
+    "version": "1.222",
     "updated": "2026-06-30",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-30",
+        "version_from": "1.221",
+        "version_to": "1.222",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Bot: recherche groupes Monta enrichie avec etat temps reel des bornes (en charge/occupee/maintenance/deconnectee/disponible)",
+          "Accuse de reception OPERATIONNEL: email auto au demandeur via send-mail.php/MailerSend + template a la charte (teste)",
+          "Reste: declencheur matinal escalade, Pennylane (cle a fournir), autoresponder"
+        ]
+      },
       {
         "date": "2026-06-30",
         "version_from": "1.220",
@@ -9196,7 +9207,8 @@
       "probleme": "l'agent n'avait aucun outil Monta -> face a une demande de groupe/team par nom il demandait un numero de serie",
       "fix": "nouvel outil agent 'monta_search_groups' (recherche teams Monta par nom, insensible casse/accents, matche name + companyName). Chaine: monta-search.php action=search_groups (paginate /teams 176) -> bot-tools.php action=monta_search_groups -> declare dans ozecar_tools + whitelist run_tool + instruction system_prompt (chercher par nom, NE PAS demander de serie).",
       "teste": "search_groups + bot-tools OK (santa/mairie/capu biancu). Test agent reel en Slack a faire par Dominique (mention/DM @ozecar-bot).",
-      "endpoints": "monta-search.php (search_groups), bot-tools.php (monta_search_groups), slack-bot.php (outil declare+autorise)"
+      "endpoints": "monta-search.php (search_groups), bot-tools.php (monta_search_groups), slack-bot.php (outil declare+autorise)",
+      "etat_bornes": "search_groups enrichi: par groupe, bilan temps reel des bornes (total/disponible/en_charge/occupee/maintenance/deconnectee) via /charge-points?teamId=X. Teste (santa teresa, dojo). Description outil + system prompt MAJ pour presenter l'etat."
     }
   },
   "ozecar_2_0": {
@@ -9372,7 +9384,8 @@
       "page": "staging.ozecar.fr/contact-5/ (contenu form dans DB WP page 22466, non modifie)",
       "tested": "endpoint teste 3x (demo->deal, support->ticket sav, question->ticket) OK puis nettoye. Test E2E JS sur la vraie page A FAIRE (necessite navigateur).",
       "voie_email_PENDING": "pas de boite support@ dediee = alias de dominique@. Capter les mails adresses a l'alias support sans tout transformer en ticket -> Make watch IMAP filtre sur destinataire, necessite acces IMAP boite dominique@.",
-      "next": "valider test E2E form; puis brique 2 autoresponder Make+Claude"
+      "next": "valider test E2E form; puis brique 2 autoresponder Make+Claude",
+      "accuse_reception": "OPERATIONNEL: support-intake.php envoie un accuse de reception au demandeur apres creation (via send-mail.php/MailerSend, template project/email-templates/accuse-reception.html a la charte, tokens prenom/sujet/ref). Teste (mail parti, maillog OK)."
     },
     "esp": {
       "provider": "MailerSend",
@@ -9406,6 +9419,11 @@
       "templates": "project/email-templates/<nom>.html avec {{tokens}}. Existants: 03-bienvenue-client, 04-guide, 06-bienvenue-installateur, 99-relance-digest, devis-pret, etc.",
       "note": "=> accuse de reception + autoresponder passeront par send-mail.php. Rien a demander a Dominique (cle deja en place).",
       "scheduler_existant": "un digest quotidien tourne a 17:59 (cron/Make a identifier) -> point de greffe pour l escalade du matin"
+    },
+    "todo_restant": {
+      "declencheur_matinal_escalade": "brancher escalation-check.php 1x/jour le matin. A localiser: mecanisme du digest 17:59 (cron Hostinger ? Make ?) pour s'y greffer.",
+      "pennylane": "Dominique a la cle API. Pas encore de fichier pennylane.php dans api/. A construire: proxy + sync paiements/factures -> HubSpot (deals+companies). Necessite la cle.",
+      "autoresponder": "brique 2: agent Claude classe + resout cas basiques + change statut. Gros chantier, prochaine etape."
     }
   }
 }
