@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.214",
+    "version": "1.215",
     "updated": "2026-06-30",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-30",
+        "version_from": "1.214",
+        "version_to": "1.215",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "HubSpot hub: creation des 7 proprietes Ticket (type_demande, dates intervention/realisee/paiement, technicien, montant, statut_paiement)",
+          "Scope 'tickets' read+write ajoute a la Private App du proxy hubspot.php (debloque ecriture schema tickets)",
+          "Decision: 1 pipeline tickets (Support id 0) + tag type_demande, pas de nouveau pipeline (compat Starter)"
+        ]
+      },
       {
         "date": "2026-06-30",
         "version_from": "1.213",
@@ -9254,6 +9265,30 @@
   "marque_blanche": {
     "fuites_a_corriger": [
       "ozecar-activation.html (page interne /activation): URL OCPP en dur 'wss://ocpp.monta.app/{DeviceId}' dans les guides de config Zaptec (objet GUIDES). Visible cote installateur. A remplacer par l'endpoint marque blanche wss://ocpp.ozecar.app. NON bloquant pour la solution intermediaire client (doc client OK), mais a corriger."
+    ]
+  },
+  "hubspot_hub": {
+    "ticket_properties_created": {
+      "date": "2026-06-30",
+      "pipeline": "Support Pipeline (id 0) — pas de nouveau pipeline, tags via propriété",
+      "properties": [
+        "ozecar_type_demande (enum: maintenance_preventive/maintenance_devis/sav/demande_client)",
+        "ozecar_date_intervention_prevue (date)",
+        "ozecar_date_realisee (date)",
+        "ozecar_technicien (text)",
+        "ozecar_montant (number)",
+        "ozecar_statut_paiement (enum: non_facture/facture/paye/impaye)",
+        "ozecar_date_paiement (date)"
+      ],
+      "group": "ticketinformation",
+      "scope_fix": "Private App proxy: scope 'tickets' (read+write) ajouté par Dominique — débloque POST crm/v3/properties/tickets via hubspot.php"
+    },
+    "architecture": "HubSpot = hub central. Tickets HubSpot (1 pipeline Support + tag type_demande) pour maintenance/SAV/demandes. Paiements lus Pennylane -> poussés sur deals+companies. Autoresponder via Make + agent Claude (Workflows natifs = Pro, indispo Starter). Bot Slack lit HubSpot.",
+    "next": [
+      "intake support -> tickets (Form HubSpot + Email->Conversations)",
+      "autoresponder Make+Claude (classe/resout/statuts)",
+      "sync paiements Pennylane (cle API a fournir)",
+      "outils lecture tickets/paiements dans bot-tools.php pour le bot Slack"
     ]
   }
 }
