@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.213",
+    "version": "1.214",
     "updated": "2026-06-30",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-30",
+        "version_from": "1.213",
+        "version_to": "1.214",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Bot Slack: connaissance DYNAMIQUE. Plus de tarifs/CGV codes en dur — le bot lit state.json en direct (cache 10 min) et genere forfaits/options/maintenance/kits/CGV/identite depuis pricing_canonical + cgv + legal_company_info. Source de verite unique = state.json.",
+          "Commande /ozecar refresh pour forcer la MAJ immediate. IBAN/BIC exclus du prompt. Exception CGV Monta ApS preservee.",
+          "Consequence: pour changer ce que dit le bot, editer state.json (pas le code). Lint OK, deploye (slack-bot.php 31,9Ko)."
+        ]
+      },
       {
         "date": "2026-06-30",
         "version_from": "1.212",
@@ -9091,6 +9102,15 @@
       "implementation": "Fonctions PHP (monta_all_points pagine /charge-points 6 pages via monta.php; cp_bucket; fmt_parc/site/borne; maybe_handle_status). Strip caractères de contrôle avant json_decode. Testé live: parc=422, site Bonifacio=26, borne ZPR304708 OK. Lint PHP 8.3 OK en ligne. Backup api/slack-bot.php.bak-20260630-100401. slack-bot.php ~25,7Ko.",
       "FLAG_MONTA_522_vs_422": "L'API Monta annonce meta.totalItemCount=522 / totalPageCount=6, MAIS le listing pagine ne renvoie que 422 bornes (page5=22 items, page6=vide). 0 deletedAt, 411 isActive=true, 11 inactive sur les 422. Les ~100 manquantes ne sont pas dans le listing -> possible bug/limite de listing cote Monta. Le bot compte les 422 reellement enumerees (honnete). A investiguer separement si Dominique veut reconcilier le 522.",
       "depend_scope_slack": "Rien de plus requis pour les commandes slash (utilisent response_url). Le scope channels:history reste utile seulement pour la MEMOIRE conversationnelle en canal (cf entree precedente)."
+    },
+    "connaissance_dynamique_2026_06_30": {
+      "principe": "Le bot ne contient PLUS de tarifs/CGV codés en dur. Il lit state.json EN DIRECT (via github-relay) et génère sa connaissance à chaque cycle. Source de vérité unique = state.json. Modifier un prix/option/CGV/identité dans le state -> le bot suit automatiquement.",
+      "sections_branchees": "pricing_canonical_2026_06_17 (forfaits + options + option_compatibility + maintenance + kits + mise_en_service, rendus dynamiquement), hubspot_cpq.cgv_supervision_B_LEGAL_01.params_cles (CGV), legal_company_info (identité). Tout est rendu en texte FR propre par build_knowledge_digest().",
+      "implementation": "Fonctions ajoutees: ozecar_fetch_state (github-relay, control-char safe), render_pricing/render_cgv/render_legal, build_knowledge_digest, ozecar_knowledge (cache fichier sys_get_temp_dir/ozecar_knowledge.txt, TTL 600s, fallback cache périmé puis message prudent). ozecar_system_prompt = cadre statique (role/outils/marque blanche/regle choix forfait/compat) + ozecar_knowledge() concatene.",
+      "rafraichissement": "Auto toutes les 10 min (TTL cache). Immédiat via commande slash '/ozecar refresh' (vide le cache + rebuild, renvoie la version state).",
+      "decisions_design": "IBAN/BIC volontairement EXCLUS du digest (sensible, pas injecte dans chaque appel LLM). Exception marque blanche CGV preservee: Monta ApS nommable UNIQUEMENT dans clause reversement. Rendu generique: ajouter une option/forfait dans pricing_canonical apparait tout seul dans le bot.",
+      "deploiement": "slack-bot.php ~31,9Ko, lint PHP 8.3 OK en ligne. Backup api/slack-bot.php.bak-20260630-102459. Teste: digest genere correctement depuis state v1.213.",
+      "consequence_operationnelle": "IMPORTANT: pour mettre a jour ce que dit le bot (prix, options, CGV, identite), il faut editer state.json (sections canoniques), PAS le code du bot. Le hardcode tarifaire dans le system prompt est supprime."
     }
   },
   "ozecar_2_0": {
