@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.224",
+    "version": "1.225",
     "updated": "2026-06-30",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-30",
+        "version_from": "1.224",
+        "version_to": "1.225",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Pennylane sync OPERATIONNEL: scope companies ajoute, 8 proprietes creees, 140 fiches entreprise creees/peuplees avec statut paiement reel",
+          "pennylane-sync.php deploye et teste (140 updated, 0 erreur, idempotent) - pret pour cron quotidien",
+          "8 doublons Ozecar de test supprimes. Total companies: 154"
+        ]
+      },
       {
         "date": "2026-06-30",
         "version_from": "1.223",
@@ -9457,11 +9468,12 @@
     "structure_facture_client": "champs cles: id, invoice_number, amount/currency_amount (TTC), currency_amount_before_tax (HT), currency, date, deadline (echeance), paid (bool), status (upcoming/late/paid), remaining_amount_with_tax (reste du), customer{id}, quote{id}, label, public_file_url (PDF). Pagination cursor (items/has_more/next_cursor).",
     "structure_client": "GET /customers/{id}: name, emails[], reg_no (SIREN), vat_number, external_reference, customer_type, billing_address. => matching HubSpot par email OU nom OU SIREN.",
     "volumetrie": "~200+ factures clients (pagination cursor).",
-    "todo_sync": "A CONSTRUIRE: sync factures->HubSpot. Plan: proprietes companies HubSpot (pennylane_statut_paiement, pennylane_montant_du, pennylane_date_derniere_facture, pennylane_derniere_facture_url, pennylane_customer_id), matcher client Pennylane->company HubSpot (email/nom/SIREN), stocker pennylane_customer_id pour matching robuste ensuite. Endpoint pennylane-sync.php + cron.",
     "decision_archi": "Dominique a tranche: creer une fiche entreprise HubSpot par client facture (miroir complet: nom, SIREN, statut paiement, montant du).",
     "dry_run_valide": "Logique de sync validee sur donnees reelles (600 factures, 140 clients factures): 93 a jour / 10 en attente / 37 en retard, 54 516 EUR d'impayes. Calcul statut: paid=true=>a_jour; impaye+deadline depassee=>en_retard; impaye+deadline future=>en_attente. Montant du = somme remaining_amount_with_tax des impayees.",
     "constat_hubspot": "HubSpot ne contient que 14 companies (dont ~8 doublons Ozecar de tests intake + 1 'test'). Les 247 clients Pennylane (140 factures) sont absents => le sync CREE les fiches. Matching futur par SIREN/nom/email.",
-    "BLOCAGE_scope": "Private App HubSpot (proxy serveur) n'a PAS le scope companies. Lit contacts/deals/tickets seulement. Pour creer les proprietes + creer/maj les fiches en cron, Dominique doit ajouter a la Private App: crm.objects.companies.read + .write ET crm.schemas.companies.read + .write (comme il a fait pour tickets). Le MCP ne peut ni creer de proprietes custom ni tourner en cron => le scope est indispensable.",
-    "next_des_scope": "1) creer proprietes companies (pennylane_customer_id, pennylane_statut_paiement, pennylane_montant_du, pennylane_nb_impayees, pennylane_date_derniere_facture, pennylane_derniere_facture_url, pennylane_sync_le). 2) pennylane-sync.php: pagination factures + agregation + upsert company (SIREN/nom/email) + ecriture. 3) cron quotidien. 4) nettoyer doublons Ozecar de test."
+    "BLOCAGE_scope": "RESOLU: scope companies (objects+schemas R/W) ajoute a la Private App par Dominique. Proxy lit/ecrit les companies.",
+    "sync_OPERATIONNEL": "FAIT. 8 proprietes companies creees (groupe 'Facturation (Pennylane)'): pennylane_customer_id, pennylane_statut_paiement (a_jour/en_attente/en_retard), pennylane_montant_du, pennylane_nb_factures_impayees, pennylane_date_derniere_facture, pennylane_derniere_facture_url, pennylane_sync_le, siren. 140 fiches entreprise creees/peuplees (93 a jour / 10 en attente / 37 en retard, 54 516 EUR d'impayes). 8 doublons Ozecar de test supprimes.",
+    "sync_endpoint": "api/pennylane-sync.php?key=oz_pls_<SECRET> (+&dry=1 pour simulation). Refait toute la chaine: clients+factures Pennylane -> agregation par client -> upsert company HubSpot (match par pennylane_customer_id puis nom). Idempotent. Teste: 140 updated, 0 erreur. Total companies HubSpot: 154.",
+    "cron": "A ajouter par Dominique (Hostinger): 0 6 * * * curl -s 'https://ozecar.fr/api/pennylane-sync.php?key=oz_pls_<SECRET>' >/dev/null 2>&1"
   }
 }
