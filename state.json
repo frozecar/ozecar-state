@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.215",
+    "version": "1.216",
     "updated": "2026-06-30",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-30",
+        "version_from": "1.215",
+        "version_to": "1.216",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Intake support: endpoint support-intake.php deploye (upsert contact + ticket HubSpot + association, marque blanche)",
+          "Formulaire client support-form-demo.html deploye a la charte (HTTP 200), teste end-to-end (ticket cree+supprime)",
+          "Voie email (support@->Conversations ou Make IMAP) en attente acces boite mail Dominique"
+        ]
+      },
       {
         "date": "2026-06-30",
         "version_from": "1.214",
@@ -9289,6 +9300,14 @@
       "autoresponder Make+Claude (classe/resout/statuts)",
       "sync paiements Pennylane (cle API a fournir)",
       "outils lecture tickets/paiements dans bot-tools.php pour le bot Slack"
-    ]
+    ],
+    "intake": {
+      "status": "back operationnel + formulaire deploye, teste end-to-end",
+      "endpoint": "ozecar.fr/api/support-intake.php (upsert contact + creation ticket Support pipeline id0 stage New, type_demande mappe, association contact, honeypot anti-spam, marque blanche)",
+      "form_demo": "ozecar.fr/api/support-form-demo.html (charte OZECAR, HTTP 200, poste vers l'endpoint)",
+      "test": "ticket 421901932741 + contact cree puis supprimes (204) — chaine validee",
+      "voie_email_PENDING_dominique": "connecter support@ozecar.fr soit a Conversations HubSpot (creation auto ticket), soit via Make watch IMAP -> support-intake.php. Necessite acces boite mail.",
+      "next": "integrer le formulaire dans la refonte staging / page contact apres validation design, puis brique 2 = autoresponder Make+Claude"
+    }
   }
 }
