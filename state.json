@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.218",
+    "version": "1.219",
     "updated": "2026-06-30",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-30",
+        "version_from": "1.218",
+        "version_to": "1.219",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Escalade Slack 48h: endpoint escalation-check.php construit, deploye, teste (DM Slack OK). Propriete idempotence ozecar_escalade_le creee.",
+          "Reste: canal final + declencheur Make planifie",
+          "Infos sieges HubSpot Starter 2026 documentees (1 Core ~15EUR/mois, pas de tarif par usage, view-only ne traite pas les tickets)",
+          "Backlog: idee tracking visite page tarifs -> alerte commerciale (item monday 12407401152)"
+        ]
+      },
       {
         "date": "2026-06-30",
         "version_from": "1.217",
@@ -9348,6 +9360,18 @@
       "2_autoresponder": "Make + agent Claude, dep MailerSend",
       "3_escalade_slack_48h": "Make + Slack, AUCUNE dep externe sauf canal Slack - faisable tout de suite",
       "rappel_taches_incompletes": "meme scenario Make planifie"
-    }
+    },
+    "escalade_slack": {
+      "status": "moteur construit + teste (DM Slack recu, slack_ok)",
+      "endpoint": "ozecar.fr/api/escalation-check.php?key=<SECRET>&hours=48 (params: test=1, hours, channel). Scanne tickets Support ouverts (New/Waiting on us) crees avant cutoff, non encore escalades, -> recap Slack groupe, marque ozecar_escalade_le (idempotent). Token Slack via SLACK_BOT_TOKEN (slack-bot-config.php).",
+      "propriete_idempotence": "ozecar_escalade_le (datetime) creee",
+      "canal_test": "DM Dominique U039W5005K4 (test OK)",
+      "PENDING": [
+        "choisir canal final (#general C039PFA00T0 ou canal dedie)",
+        "brancher declencheur Make planifie (HTTP GET periodique vers l'endpoint, ex 2x/jour)",
+        "ajouter rappel taches incompletes (HubSpot tasks ou Monday) si voulu"
+      ]
+    },
+    "hubspot_seats_info": "Starter 2026: 1 seul siege payant (Core) ~15 EUR/mois annuel (20 mensuel). Pas de tarif differencie par usage. Acces Marie-Estelle(tout)/Fred(tickets) = via PERMISSIONS/roles, meme prix. View-only gratuit MAIS ne peut PAS editer/traiter tickets. Offre 7 EUR = promo nouveaux comptes, compte existant non eligible -> parler au commercial qui peut negocier. => renforce reco Slack-first."
   }
 }
