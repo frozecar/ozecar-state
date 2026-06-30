@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.217",
+    "version": "1.218",
     "updated": "2026-06-30",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-30",
+        "version_from": "1.217",
+        "version_to": "1.218",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "ESP acte = MailerSend (corrige Mailjet). Cle API a fournir par Dominique.",
+          "Orga users: comptes individuels = sieges payants -> reco Slack-first (Fred/Marie-Estelle sans siege, via bot Slack + propriete ozecar_assigne_a + notif Slack ciblee, 0 siege paye)",
+          "Briques: accuse reception + autoresponder dep MailerSend; escalade Slack 48h + rappel taches faisable sans dep externe"
+        ]
+      },
       {
         "date": "2026-06-30",
         "version_from": "1.216",
@@ -9321,6 +9332,22 @@
       "tested": "endpoint teste 3x (demo->deal, support->ticket sav, question->ticket) OK puis nettoye. Test E2E JS sur la vraie page A FAIRE (necessite navigateur).",
       "voie_email_PENDING": "pas de boite support@ dediee = alias de dominique@. Capter les mails adresses a l'alias support sans tout transformer en ticket -> Make watch IMAP filtre sur destinataire, necessite acces IMAP boite dominique@.",
       "next": "valider test E2E form; puis brique 2 autoresponder Make+Claude"
+    },
+    "esp": {
+      "provider": "MailerSend",
+      "status": "acte par Dominique 2026-06-30",
+      "note": "API https://api.mailersend.com/v1/email, Bearer token. Cle API a fournir par Dominique (jamais en clair, cote serveur). Sert: accuse de reception + autoresponder + emails transactionnels."
+    },
+    "orga_users": {
+      "decision": "comptes individuels valides MAIS chaque siege HubSpot est payant -> arbitrage en cours",
+      "reco_claude": "Slack-first: Fred & Marie-Estelle SANS siege HubSpot, ils bossent via le bot Slack; assignation par role via propriete custom ozecar_assigne_a + notif Slack ciblee; ecritures HubSpot sous identite technique. 0 siege paye. Ajouter des sieges payants plus tard si besoin de travailler DANS HubSpot.",
+      "owner_dominique": "1714568940"
+    },
+    "todo_briques": {
+      "1_accuse_reception": "dep MailerSend (cle API)",
+      "2_autoresponder": "Make + agent Claude, dep MailerSend",
+      "3_escalade_slack_48h": "Make + Slack, AUCUNE dep externe sauf canal Slack - faisable tout de suite",
+      "rappel_taches_incompletes": "meme scenario Make planifie"
     }
   }
 }
