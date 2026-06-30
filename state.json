@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.210",
+    "version": "1.211",
     "updated": "2026-06-30",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-30",
+        "version_from": "1.210",
+        "version_to": "1.211",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Bot Slack: corrige forfaits + ajoute TOUTES les options (Wallet/Data/Assistance/CSM/Flotte/Maintenance) dans le system prompt, depuis pricing_canonical_2026_06_17. Resout 'option wallet non reconnue' signale par Marie-Estelle. Deploye+verifie (slack-bot.php 17092 o).",
+          "A TRANCHER par Dominique: prix Essential bot = 4,90 annuel (canonical: ->5,90 au 15/07). Confirmer si devis doivent deja afficher 5,90 aujourd'hui."
+        ]
+      },
       {
         "date": "2026-06-30",
         "version_from": "1.209",
@@ -9038,6 +9048,14 @@
         "monday_stock (board 18409310538)"
       ],
       "teste": "end-to-end OK le 2026-06-26 : Claude appelle le bon outil, lit les vraies données HubSpot (29 deals), synthétise."
+    },
+    "correction_forfaits_options_2026_06_30": {
+      "contexte": "Marie-Estelle signale (en direct) que le bot donne de mauvaises infos sur les forfaits supervision et que l'option Wallet n'est pas reconnue.",
+      "diagnostic": "Le system prompt du bot (ozecar_system_prompt) ne contenait AUCUNE option (wallet/data/assistance/CSM/flotte) et une section forfaits incomplète. Le state contenait pourtant l'info (pricing_canonical_2026_06_17).",
+      "correction": "Bloc tarifs du system prompt réécrit depuis pricing_canonical_2026_06_17: KITS+matériel, 4 FORFAITS (annuel/mensuel, frais opérateur/itinérance, inclusions Transit), section OPTIONS complète (Wallet 5€ payante Essential +10%/incluse public, Data 2€, Assistance 2€, CSM 49€, Module Flotte 20/50€, recharge domicile, rapport mensuel, API), MAINTENANCE N0-N4.",
+      "deploiement": "slack-bot.php 15019->17092 octets via wp-deploy (backup api/slack-bot.php.bak-20260630-094514). Vérifié en ligne: toutes les options présentes.",
+      "POINT_A_TRANCHER": "Prix Essential affiché par le bot = 4,90€ annuel (canonical: jusqu'au 14/07/2026, puis 5,90€ au 15/07). À confirmer par Dominique: faut-il déjà annoncer 5,90€ en devis aujourd'hui (30/06) ? userMemories suggèrent 'Essential 5,90 not 4,90'. Conflit non tranché.",
+      "reste": "Demande initiale (commandes statut Monta /ozecar parc|site|borne) mise en pause pour traiter ce bug. À reprendre."
     }
   },
   "ozecar_2_0": {
