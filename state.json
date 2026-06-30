@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.211",
+    "version": "1.212",
     "updated": "2026-06-30",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-06-30",
+        "version_from": "1.211",
+        "version_to": "1.212",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Bot Slack bug forfait: ajout regle privé/public (borne privée+transaction = Essential+Wallet, pas Pro/Pro+).",
+          "Bot Slack memoire: relit le fil Slack (thread/DM) et passe l'historique a l'agent (normalize_msgs). Repli sur comportement actuel si KO. Lint PHP OK en ligne.",
+          "Dependance: scopes channels:history/groups:history a ajouter sur l'app Slack pour l'historique EN CANAL (DM ok)."
+        ]
+      },
       {
         "date": "2026-06-30",
         "version_from": "1.210",
@@ -9056,6 +9067,13 @@
       "deploiement": "slack-bot.php 15019->17092 octets via wp-deploy (backup api/slack-bot.php.bak-20260630-094514). Vérifié en ligne: toutes les options présentes.",
       "POINT_A_TRANCHER": "Prix Essential affiché par le bot = 4,90€ annuel (canonical: jusqu'au 14/07/2026, puis 5,90€ au 15/07). À confirmer par Dominique: faut-il déjà annoncer 5,90€ en devis aujourd'hui (30/06) ? userMemories suggèrent 'Essential 5,90 not 4,90'. Conflit non tranché.",
       "reste": "Demande initiale (commandes statut Monta /ozecar parc|site|borne) mise en pause pour traiter ce bug. À reprendre."
+    },
+    "correction_2_2026_06_30": {
+      "bug_1_forfait": "Le bot recommandait Pro/Pro+ pour 'borne privée avec transaction'. Faux. Ajout d'une règle de décision dans le system prompt: privé vs public = ACCÈS borne (pas paiement). Borne privée qui encaisse = Essential + option Wallet, jamais Pro/Pro+. En cas de doute, le bot demande si ouverte au public ou réservée.",
+      "bug_2_memoire": "Le bot perdait le contexte (claude_agent partait d'un seul message, sans historique). Ajout: slack_history() relit le fil (conversations.replies pour thread, conversations.history pour DM), normalize_msgs() fusionne les tours consecutifs de meme role et garantit le demarrage en 'user'. claude_agent($question,$history). Repli sur comportement actuel si lecture KO.",
+      "deploiement": "slack-bot.php 17092->20396 octets, lint PHP 8.3 OK en local ET sur la version en ligne. Backup api/slack-bot.php.bak-20260630-095720.",
+      "DEPENDANCE_SCOPE_SLACK": "L'historique en CANAL exige les scopes channels:history / groups:history sur l'app Slack (im:history deja present pour DM). Si l'historique ne remonte pas en canal -> Dominique doit ajouter ces scopes (api.slack.com OAuth & Permissions) + reinstaller l'app. DM fonctionne deja.",
+      "reste": "Demande initiale = 3 commandes statut Monta (/ozecar parc|site|borne) -> a implementer maintenant."
     }
   },
   "ozecar_2_0": {
