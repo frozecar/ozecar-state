@@ -1,12 +1,28 @@
 {
   "_meta": {
-    "version": "1.228",
-    "updated": "2026-06-30",
+    "version": "1.229",
+    "updated": "2026-07-01",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-01",
+        "version_from": "1.228",
+        "version_to": "1.229",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Cree FICHIER VARIABLES CENTRAL project/config/ozecar-vars.json (source unique: tarifs canoniques, kits, options, liens, OCPP wss://ocpp.ozecar.app, domaines, legal, brand, contact). Modifiable en un endroit au lieu de retranscrire.",
+          "Page HubSpot Meetings ROUND-ROBIN creee par Dominique: meetings-eu1.hubspot.com/ozecar-demo/demo-ozecar (Dominique + Marie-Estelle, l'un OU l'autre). Remplace lien perso ozecar-demo/1.",
+          "Lien demo round-robin propage: (a) template devis-pret.html (bouton Reserver un echange), (b) page WP /demo/ id=22641 embed HubSpot data-src. Verifie live HTTP 200.",
+          "Template devis-pret.html refait a la charte (bouton remonte sous intro, section 'Acceder au devis' supprimee, footer=invitation reservation). Ecrit via wp-deploy (guillemets simples pour contourner echappement Make).",
+          "Autoresponder scenario 09 (id 6301518, Devis envoye -> email client) ACTIVE. Ne se declenche que sur transitions <25min, pas retroactif sur les 16 devis dormants.",
+          "CONSTAT mails confirmation demo: scenario Make 05 (id 6219549) OFF + INVALIDE (36 erreurs, ancien booking). Les mails confirmation/rappel actifs = NATIFS HubSpot. DECISION Dominique = option B (remettre mail charte via Make). A FAIRE: recreer scenario 05 sur nouvelle resa + MAJ lien dans 05-confirmation-demo.html + decocher confirmation native HubSpot APRES (garder rappel natif).",
+          "6 proprietes Deal HubSpot creees (groupe ozecar_devis_paiement). Doublon a reconcilier avec ozecar_devis_url existant.",
+          "curl direct vers wp-deploy/github-relay/send-mail depuis env Claude = OK (pas de 403). Voie d'ecriture fiable retenue."
+        ]
+      },
       {
         "date": "2026-06-30",
         "version_from": "1.227",
@@ -7698,6 +7714,13 @@
         "Bloc Gutenberg ozecar/meetings-modal cree precedemment dans le theme child est INUTILISE - peut etre retire si on est sur de ne plus en avoir besoin (4 fichiers dans blocks/meetings-modal + 1 ligne dans inc/gutenberg-blocks.php)",
         "Le widget hardcode inline dans la page Supervision 22463 (oz-meetings-overlay) reste, mais n'est plus utilise par la home - peut etre retire plus tard"
       ]
+    },
+    "maj_2026_07_01": {
+      "page_demo_wp_id": 22641,
+      "ancien_lien": "meetings-eu1.hubspot.com/ozecar-demo/1 (perso Dominique)",
+      "nouveau_lien": "meetings-eu1.hubspot.com/ozecar-demo/demo-ozecar (round-robin Dominique+Marie-Estelle)",
+      "mecanisme_actuel": "bloc meetings-modal SUPPRIME 2026-06-01. Desormais: JS assets/js/demo-cta-fix.js redirige a[href*=#demo] vers /demo/ (page 22641) qui embed HubSpot Meetings (meetings-iframe-container data-src).",
+      "propage": true
     }
   },
   "monta_negotiation": {
@@ -9616,5 +9639,29 @@
       "fred": "stock 30-50 kits prets",
       "marie_estelle": "sourcing liste installateurs, qualif leads, planif posts"
     }
+  },
+  "config_variables_centralisees_2026_07_01": {
+    "_note": "Fichier variables central, source unique modifiable. Cree suite demande Dominique 2026-07-01 (arreter de retranscrire les valeurs a chaque fois).",
+    "fichier": "project/config/ozecar-vars.json",
+    "acces": "wp-deploy read/write (backend). curl direct OK.",
+    "contenu": [
+      "pricing (canonical 2026-06-17)",
+      "kits",
+      "options",
+      "liens (demo round-robin, configurateur, legal, logo)",
+      "ocpp (wss://ocpp.ozecar.app)",
+      "domaines",
+      "legal",
+      "brand",
+      "contact",
+      "_internal (proxies, hubspot ids)"
+    ],
+    "regle_marque_blanche": "Section _internal backend-only. Ne jamais servir tel quel en public.",
+    "a_cabler": [
+      "send-mail.php lit les valeurs par defaut (liens demo) depuis ce fichier",
+      "endpoint public filtre api/vars.php (sans _internal) pour pages JS",
+      "scenarios Make lisent ce fichier au lieu de hardcoder"
+    ],
+    "statut": "Cree. Cablage consommateurs = etape suivante."
   }
 }
