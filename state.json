@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.245",
+    "version": "1.246",
     "updated": "2026-07-02",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-02",
+        "version_from": "1.245",
+        "version_to": "1.246",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Form support .one (aide-conducteur) porte sur le composant charte commun de staging (meme CSS form-input/label/btn-yellow), variante particulier, transport contact.php conserve, message succes. Rendu+endpoint verifies.",
+          "Reste: cabler HubSpot(ticket 3935127798)+Make autoresponder mode B, puis aligner staging (placeholder)."
+        ]
+      },
       {
         "date": "2026-07-02",
         "version_from": "1.244",
@@ -10099,7 +10109,9 @@
     "constat_one": "Form support .one = custom + contact.php -> send-mail -> support@ozecar.one (fonctionnel mais visuellement different de staging).",
     "decision": "Unifier sur UN composant form charte partage. Cote .one: porter le composant visuel de staging (meme look/champs, variante particulier: nom, email, lieu/borne, categorie, message, consentement) en gardant un transport REEL. Transport cible commun: POST same-origin -> HubSpot (creation contact + ticket pipeline support 3935127798) + autoresponder via Make (mode B). Staging devra etre cable pareil (son handleSubmit est un placeholder) = tache soeur.",
     "prochaine_action_claude": "Porter le composant form staging sur .one (aide-conducteur + CTA 'Nous contacter'), cable HubSpot+Make, puis proposer le meme cablage pour staging.",
-    "emails_ref_staging": "demo@ozecar.fr, support@ozecar.fr (mailto sur staging)."
+    "emails_ref_staging": "demo@ozecar.fr, support@ozecar.fr (mailto sur staging).",
+    "etat": "FAIT cote .one (aide-conducteur): composant form charte = copie exacte du composant staging (.form-input/.form-select/.form-textarea 1.5px radius12 focus violet, .form-label Space Mono 10px uppercase gris, .btn-yellow pill jaune). Variante particulier: prenom, nom, email, sujet(select->recharge/paiement/reclamation/autre/presse), lieu/borne, message, consentement. Message de succes (check violet). Transport reel conserve: POST /api/contact.php (422 verifie). Rendu verifie playwright.",
+    "reste": "1) Cabler le transport commun HubSpot: contact.php (ou Make webhook) -> creation contact + ticket pipeline 3935127798 + autoresponder Make mode B (brouillon Slack #support). 2) Appliquer le meme cablage a staging (son handleSubmit est un placeholder). 3) Verifier que le CTA landing \"Nous contacter\" pointe vers /aide-conducteur/."
   },
   "reprise_supervision_2026_07_02": {
     "_note": "Landing + offre publique Reprise de supervision. Rend publique la these consolidateur (growth_strategy.these_consolidateur_2026_06_05). Moteur B = principal (50-60% PDC futurs estime Dominique).",
