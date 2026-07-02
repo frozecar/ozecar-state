@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.243",
+    "version": "1.244",
     "updated": "2026-07-02",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-02",
+        "version_from": "1.243",
+        "version_to": "1.244",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Landing: hero 'Rechargez.' -> violet, tout l'or retire (jaune/violet only), nav 'Notre histoire' retiree.",
+          "Strategie formulaires definie: composant charte commun .fr/.one. Constat: form staging = placeholder non cable (handleSubmit fake), demo staging = HubSpot Meetings. Decision: unifier + cabler HubSpot(ticket)+Make. Prochaine action: porter le form staging sur .one avec transport reel."
+        ]
+      },
       {
         "date": "2026-07-02",
         "version_from": "1.242",
@@ -10031,7 +10041,8 @@
     "polices": "DM Sans (400-700), Instrument Serif (italic, accents), Space Mono (400/700 labels techniques). PAS Open Sans (c'est le vieux theme Woodmart du site one, a NE PAS utiliser).",
     "couleurs": "--ink #0F141E, --ink-soft #1E2433, --ink-muted #5A6070, --cream #F5F0EB, --cream-warm #EDE8E2, --yellow #FAC828, --yellow-deep #D4A800, --violet #5F2DFF (ACCENT signature), --grey #AAACB4.",
     "accent_signature": "Les mots-accent en Instrument Serif italic sont colores en VIOLET #5F2DFF (comme staging: 'font-serif-accent text-[#5F2DFF]').",
-    "logo_ozecar_one": "Logo different d'ozecar.fr: mascotte + 'OZECAR One' (lockup), assets ozecar.one. Le reste de la charte = staging."
+    "logo_ozecar_one": "Logo different d'ozecar.fr: mascotte + 'OZECAR One' (lockup), assets ozecar.one. Le reste de la charte = staging.",
+    "pas_d_or": "AUCUN or (#D4A800) en charte cote client. Accents texte = jaune #FAC828 OU violet #5F2DFF uniquement. Violet sur fond clair, jaune sur fond ink."
   },
   "landing_ozecar_one": {
     "url": "https://ozecar.one/landing/ (preview, fichier /landing/index.html — prod intouchée)",
@@ -10059,9 +10070,22 @@
       ],
       "usage": "Remplacent les 4 anciens boutons custom (hero + CTA). Rendus 162x48 chacun, chargés OK. Liens texte footer/nav conservés.",
       "note": "Badge Google Play = version EN (choisi par Dominique)."
-    }
+    },
+    "corrections_2026_07_02_b": [
+      "Hero 'Rechargez.' or (#D4A800) -> VIOLET #5F2DFF (regle Dominique: pas d'or en charte, jaune ou violet uniquement; violet sur fond clair).",
+      "Tous accents texte 'or' retires: faq/nav 'One' -> violet; eyebrows -> jaune. 0 gold texte restant.",
+      "Entree nav 'Notre histoire' retiree (section #histoire conservee)."
+    ]
   },
   "aide_conducteur_ozecar_one": {
     "charte": "Alignée charte staging le 2026-07-02: DM Sans poids fixes (opsz variable retiré), fond --bg passé #FBF9F6 -> crème #F5F0EB. Page indépendante à /aide-conducteur/."
+  },
+  "formulaires_strategie": {
+    "principe": ".fr (staging, mere, pros) et .one (fille, particuliers) partagent UN meme composant formulaire charte (coherence visuelle). Strategie commune demandee par Dominique.",
+    "constat_staging": "staging /contact-3/ = formulaire HTML custom stylé charte (Tailwind space-y-5: prenom, nom, email, entreprise, 2 selects, message, consentement) MAIS handleSubmit = PLACEHOLDER (masque form + message succes, n'envoie rien). Demo staging = embed HubSpot Meetings (meetings-eu1/ozecar-demo). Pas de form HubSpot embed, pas de transport reel cote contact.",
+    "constat_one": "Form support .one = custom + contact.php -> send-mail -> support@ozecar.one (fonctionnel mais visuellement different de staging).",
+    "decision": "Unifier sur UN composant form charte partage. Cote .one: porter le composant visuel de staging (meme look/champs, variante particulier: nom, email, lieu/borne, categorie, message, consentement) en gardant un transport REEL. Transport cible commun: POST same-origin -> HubSpot (creation contact + ticket pipeline support 3935127798) + autoresponder via Make (mode B). Staging devra etre cable pareil (son handleSubmit est un placeholder) = tache soeur.",
+    "prochaine_action_claude": "Porter le composant form staging sur .one (aide-conducteur + CTA 'Nous contacter'), cable HubSpot+Make, puis proposer le meme cablage pour staging.",
+    "emails_ref_staging": "demo@ozecar.fr, support@ozecar.fr (mailto sur staging)."
   }
 }
