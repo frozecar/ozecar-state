@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.253",
+    "version": "1.254",
     "updated": "2026-07-02",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-02",
+        "version_from": "1.253",
+        "version_to": "1.254",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Burger mobile v2: main.js parent definissait deja toggleMobileMenu (CSS/cascade OK a l'analyse). Fix robuste nav-mobile.js v1.0.2 = ecouteur direct + ouverture forcee inline !important + cache bust ver 1.0.2.",
+          "A verifier par Dominique en navigation privee; si KO envoyer capture/console."
+        ]
+      },
       {
         "date": "2026-07-02",
         "version_from": "1.252",
@@ -9863,6 +9873,12 @@
         "fix": "meme JS nav-mobile.js: si #compatibilite absent de la page, reecrit les liens vers /bornes-compatibles-3/ (page verificateur).",
         "statut": "DEPLOYE + verifie",
         "note": "durable: soit remettre une section #compatibilite sur la home, soit corriger href des blocs en base."
+      },
+      "burger_mobile_v2": {
+        "correction_diagnostic": "main.js (theme parent) definissait DEJA toggleMobileMenu (toggle .mobile-open sur #navWrap). CSS + cascade + ordre media = tous corrects a l'analyse statique. Cause runtime non reproductible cote serveur.",
+        "fix_v2_robuste": "nav-mobile.js v1.0.2: ecouteur direct sur #navBurger avec stopPropagation, OUVERTURE FORCEE en style inline !important (display:block + translateX(0)), burger force display:flex en <=1023, override de window.toggleMobileMenu. Contourne cache/cascade/propagation/burger-masque.",
+        "cache": "enqueue bump ver 1.0.0 -> 1.0.2 (bust navigateur + LiteSpeed).",
+        "a_verifier_dominique": "tester sur staging.ozecar.fr en navigation privee ; si toujours KO, envoyer capture + erreur console (debug statique epuise)."
       }
     }
   },
