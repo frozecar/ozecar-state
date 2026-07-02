@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.255",
+    "version": "1.256",
     "updated": "2026-07-02",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-02",
+        "version_from": "1.255",
+        "version_to": "1.256",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "BURGER MOBILE RESOLU (prouve Playwright): cause racine = backdrop-filter:blur sur le header -> containing block pour le .mobile-menu fixed -> height 0. Fix nav-mobile.js v1.0.3 force height calc(100dvh-64px)!important. Menu ouvre 780px, liens visibles, 0 erreur.",
+          "Verifier ma borne resolu (href -> /bornes-compatibles-3/)."
+        ]
+      },
       {
         "date": "2026-07-02",
         "version_from": "1.254",
@@ -9881,7 +9891,7 @@
         "symptome": "bouton 'Verifier ma borne' ne reagit pas",
         "cause": "3 boutons href=#compatibilite mais AUCUN id=compatibilite sur la home -> ancre morte.",
         "fix": "meme JS nav-mobile.js: si #compatibilite absent de la page, reecrit les liens vers /bornes-compatibles-3/ (page verificateur).",
-        "statut": "DEPLOYE + verifie",
+        "statut": "RESOLU + verifie (href reecrit vers /bornes-compatibles-3/ en navigateur)",
         "note": "durable: soit remettre une section #compatibilite sur la home, soit corriger href des blocs en base."
       },
       "burger_mobile_v2": {
@@ -9889,6 +9899,13 @@
         "fix_v2_robuste": "nav-mobile.js v1.0.2: ecouteur direct sur #navBurger avec stopPropagation, OUVERTURE FORCEE en style inline !important (display:block + translateX(0)), burger force display:flex en <=1023, override de window.toggleMobileMenu. Contourne cache/cascade/propagation/burger-masque.",
         "cache": "enqueue bump ver 1.0.0 -> 1.0.2 (bust navigateur + LiteSpeed).",
         "a_verifier_dominique": "tester sur staging.ozecar.fr en navigation privee ; si toujours KO, envoyer capture + erreur console (debug statique epuise)."
+      },
+      "burger_mobile_RESOLU": {
+        "statut": "RESOLU + PROUVE en navigateur headless (Playwright, viewport 390px)",
+        "cause_racine": "Le header .nav-wrap a 'backdrop-filter: blur(16px)'. Cette propriete fait du header le bloc conteneur des descendants position:fixed. Le .mobile-menu (fixed, DANS le header) se dimensionnait donc sur la hauteur du header (~65px) -> height:0 -> menu ouvert mais invisible (scrollHeight etait bien 1002). Ni le JS ni le CSS n'etaient en cause, c'etait un containing-block CSS.",
+        "fix": "nav-mobile.js v1.0.3: a l'ouverture, force height:calc(100dvh - 64px) !important (dvh/vh = viewport-relative, ignore le bloc conteneur) + display:block + translateX(0). Ecouteur direct + stopPropagation, cache bust ver 1.0.3.",
+        "preuve": "Playwright: menu ouvre a 780px de haut, 1er lien visible y=176, ferme au 2e clic (h=0,x=390), 0 erreur JS, sur home ET flottes.",
+        "refacto_propre_future": "ideal = sortir #mobileMenu du <header> (fixed vs viewport) OU retirer le backdrop-filter du header, mais le fix dvh suffit et est sans risque."
       }
     }
   },
