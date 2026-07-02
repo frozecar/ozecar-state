@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.252",
+    "version": "1.253",
     "updated": "2026-07-02",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-02",
+        "version_from": "1.252",
+        "version_to": "1.253",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Reprise: LIVRE lettre de resiliation type (staging uploads/ozecar/reprise-lettre-resiliation.html). Draft a valider.",
+          "Tag HubSpot Type d opportunite = action Dominique (spec fournie; MCP/PAT ne permettent pas la creation de propriete).",
+          "Rapport d audit: spec structuree prete, build a la demande."
+        ]
+      },
       {
         "date": "2026-07-02",
         "version_from": "1.251",
@@ -10325,6 +10336,39 @@
         "limite_honnete": "Diagnostic technique/electrique profond = PAS a distance. Vrai diag OCPP (logs, decrochages, firmware reel) possible seulement APRES bascule (borne connectee chez nous). Avant bascule = declaratif + base de compat.",
         "livrable": "Rapport d audit = statut de reprise par borne + plan de bascule + estimation tarifaire + points de vigilance + ligne OPTION audit sur site (payant)."
       }
+    },
+    "livrables": {
+      "lettre_resiliation": {
+        "statut": "LIVRE 2026-07-02 (draft a valider Dominique)",
+        "fichier": "reprise-lettre-resiliation.html",
+        "staging_url": "https://staging.ozecar.fr/wp-content/uploads/ozecar/reprise-lettre-resiliation.html",
+        "desc": "Modele A4 print-ready, envoye PAR le client A son ancien operateur. LRAR, respect preavis, clause restitution donnees (historique reste chez ancien op -> exporter avant fin contrat), cesser prelevements, liberation equipements (deverrouillage OCPP). Bandeau discret modele fourni par OZECAR. Notice d emploi ecran-seulement + variables entre crochets. Bouton imprimer/PDF.",
+        "next": "Valider wording; option: version docx editable pour le client; brancher dans flux devis (remis avec le devis, cf mapping phase Devis envoye)."
+      }
+    },
+    "tag_hubspot_a_creer": {
+      "statut": "ACTION DOMINIQUE (MCP HubSpot n a pas d outil de creation de propriete; PAT sans scope crm.schemas.deals.write).",
+      "spec": "Deal property. Label: Type d opportunite. Type: Dropdown select. Group: informations sur la transaction (ou OZECAR). Options: [Vente kit (parc neuf), Reprise de supervision]. Interne name auto ex: type_d_opportunite.",
+      "ou": "HubSpot > Reglages > Proprietes > Deal > Creer une propriete.",
+      "usage": "Tague les deals L&Q. Sert reporting (mesurer % PDC reprise), re-semantise etapes Demo->Audit, declenche docs via Make."
+    },
+    "rapport_audit_spec": {
+      "statut": "SPEC prete, build a la demande (apres validation Dominique).",
+      "format_propose": "HTML A4 print-ready on-brand OZECAR (comme lettre + notice A5). Convertible PDF. Variables + tableau par PDC.",
+      "structure": [
+        "En-tete OZECAR + client + date + reference audit",
+        "Synthese (nb PDC, nb sites, verdict global reprise oui/partiel)",
+        "Tableau PAR BORNE: site / marque-modele / firmware / connectivite / usage / STATUT REPRISE (repris tel quel | MAJ firmware | remplacement Zaptec AC ou Sungrow DC | verrouille operateur | a diagnostiquer sur site)",
+        "Compatibilite OCPP (version, endpoint modifiable)",
+        "Connectivite (SIM/reseau/pare-feu)",
+        "Volet contractuel (operateur actuel, preavis, date fin, verrouillage)",
+        "Plan de bascule propose (calendrier cale sur preavis)",
+        "Estimation tarifaire (kit + abonnement 5,90/14,90/devis + maintenance)",
+        "Points de vigilance",
+        "LIGNE OPTION audit sur site (payant via installateurs)",
+        "Rappel: diag technique fin = post-bascule via logs OCPP"
+      ],
+      "rappel_lock": "Audit = remote/declaratif gratuit (v1.252). Rapport ne promet PAS d inspection electrique sur site en gratuit."
     }
   }
 }
