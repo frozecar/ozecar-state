@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.256",
+    "version": "1.257",
     "updated": "2026-07-02",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-02",
+        "version_from": "1.256",
+        "version_to": "1.257",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Fiche intervention Fred: bornes repetables (Marque/Modele/N serie/Nb PDC, une ligne par borne, add/remove). Champ 'Tension neutre/terre (V)' retire. Collecte JS d.bornes[] + restore. Deploye staging, verifie navigateur."
+        ]
+      },
       {
         "date": "2026-07-02",
         "version_from": "1.255",
@@ -10157,6 +10166,14 @@
       "contenu": "Mobile/iPad. Sections: 1 Client&site (societe, adresse, type intervention, niveau N0-N4) 2 Equipe&dates 3 Materiel (modele, nb PDC, n serie) 4 Prestations checklist Fait/N-A/KO + commentaire + PHOTO appareil arriere (capture=environment) par tache, groupes: Entretien general / Connexions electriques / Verification fonctionnelle / Remplacements-reparations + lignes CUSTOM ajoutables 5 Mesures (terre Ohm, tension neutre/terre V) 6 Observations + suite a donner 7 Conformite + signature tactile canvas. Brouillon auto localStorage (offline terrain). Boutons Apercu/PDF (window.print CSS print) + Enregistrer (POST /api/fiche-intervention.php).",
       "propriete_lien": "Ticket 'ozecar_lien_fiche_intervention' (string) creee -> remplie par Make a la creation du ticket avec l'URL+ticketId. Fred ouvre depuis HubSpot.",
       "TODO": "(a) Creer endpoint /api/fiche-intervention.php: recoit le JSON, ecrit resume+etat sur le ticket HubSpot (via hubspot.php same-origin), stocke photos (upload-photo.php), passe le ticket au stage 'Rapport d'intervention'/'Terminee'. (b) Deployer la fiche sur PROD ozecar.fr quand validee (URL stable pour HubSpot). (c) Generation PDF serveur + envoi client a 'Intervention terminee' (brique 6). (d) Pre-remplir site/materiel depuis le ticket via ?ticket=."
+    },
+    "fiche_intervention": {
+      "url": "https://staging.ozecar.fr/wp-content/uploads/ozecar/fiche-intervention.html?ticket={id}",
+      "maj_2026_07_02": [
+        "Section 3 Materiel = BORNES REPETABLES: bouton '+ Ajouter une borne', 1 ligne par borne (Marque + Modele + N de serie + Nb PDC), suppression + renumerotation auto.",
+        "Champ 'Tension neutre / terre (V)' (m_tension) RETIRE (demande Dominique). 'Valeur de terre (Ohm)' m_terre conserve.",
+        "Collecte JS adaptee: d.bornes[] (marque/modele/serie/pdc) en plus de d.fields; brouillon localStorage + restore geres. Verifie navigateur (ajout/suppression/renum, 0 erreur JS)."
+      ]
     }
   },
   "ozecar_one_infra_2026_07_01": {
