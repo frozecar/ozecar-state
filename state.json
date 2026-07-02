@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.251",
+    "version": "1.252",
     "updated": "2026-07-02",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-02",
+        "version_from": "1.251",
+        "version_to": "1.252",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Reprise: LOCK definition audit = gratuit 100% remote/declaratif (faisabilite). Sur site = option payante via installateurs.",
+          "Rapport d audit inclura une ligne option audit sur site."
+        ]
+      },
       {
         "date": "2026-07-02",
         "version_from": "1.250",
@@ -10303,7 +10313,18 @@
       "blocage_scope": "Creation propriete deal via PAT bloquee (crm.schemas.deals.write manquant). A tenter via MCP HubSpot, sinon creation manuelle Dominique (Reglages HubSpot, 1 min).",
       "routeur_formulaire": "Ajouter type demande \"Reprise / Audit de parc\" au routeur Make (support_maintenance_architecture_2026_07_01) -> cree deal L&Q tagge Reprise.",
       "conflit_maintenance": "support_maintenance_architecture_2026_07_01 prevoyait un NOUVEAU pipeline de deals maintenance -> IMPOSSIBLE avec cap Starter 2 pipelines. A arbitrer: tickets / tag L&Q / upgrade plan. Traiter separement.",
-      "statut": "DESIGN valide par contrainte, EN ATTENTE go Dominique pour creer tag + 3 templates."
+      "statut": "DESIGN valide par contrainte, EN ATTENTE go Dominique pour creer tag + 3 templates.",
+      "definition_audit_LOCK_2026_07_02": {
+        "decision_dominique": "Audit gratuit = 100% REMOTE / DECLARATIF uniquement (evaluation de faisabilite de reprise). Visite SUR SITE = OPTION PAYANTE via le reseau installateurs (OZECAR n installe pas).",
+        "perimetre_audit_gratuit": [
+          "Inventaire declare (marques/modeles, nb PDC, firmware, connectivite, usage prive/public, operateur actuel, fin de contrat/preavis)",
+          "Compatibilite OCPP (croisement base de compat: repris tel quel / MAJ firmware / remplacement Zaptec AC ou Sungrow DC / verrouille operateur)",
+          "Connectivite (borne joint notre endpoint: SIM/reseau/pare-feu)",
+          "Contractuel (preavis, verrouillage config OCPP par operateur en place)"
+        ],
+        "limite_honnete": "Diagnostic technique/electrique profond = PAS a distance. Vrai diag OCPP (logs, decrochages, firmware reel) possible seulement APRES bascule (borne connectee chez nous). Avant bascule = declaratif + base de compat.",
+        "livrable": "Rapport d audit = statut de reprise par borne + plan de bascule + estimation tarifaire + points de vigilance + ligne OPTION audit sur site (payant)."
+      }
     }
   }
 }
