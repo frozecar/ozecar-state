@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.247",
+    "version": "1.248",
     "updated": "2026-07-02",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-02",
+        "version_from": "1.247",
+        "version_to": "1.248",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Landing reprise-supervision (22660): CORRECTION claim faux \"ne vend pas de bornes\". OZECAR vend Zaptec AC/Sungrow DC.",
+          "Angle recadre = supervision d abord; neuf seulement si bornes HS/obsoletes. asset-light (pas de chantier) = vrai differenciateur vs Bump/WAAT.",
+          "Com: axe majeur reprise mais publication differee (pas encore de com, aligne GTM rentree)."
+        ]
+      },
       {
         "date": "2026-07-02",
         "version_from": "1.246",
@@ -10179,6 +10190,20 @@
         "Lead magnet checklist PDF A4 (gated HubSpot)",
         "Chiffrer forfait formation sur site"
       ]
-    }
+    },
+    "correction_2026_07_02_bornes": {
+      "note": "CORRECTION Dominique 2026-07-02: OZECAR VEND bien des bornes (Zaptec AC, Sungrow DC). Le claim initial \"le seul reprenant qui ne vend pas de bornes / aucun materiel a vous vendre\" etait FAUX -> retire.",
+      "angle_corrige": "La reprise = SUPERVISION D ABORD, pas un chantier. On garde les bornes existantes tant qu elles tiennent. Remplacement neuf (AC Zaptec / DC Sungrow) propose UNIQUEMENT si materiel HS ou obsolete, signale a l audit. Vendre des bornes n est jamais le point de depart de la reprise.",
+      "differenciateur_recadre": "asset-light vs Bump/WAAT (financent+reinstallent, capital lourd, lock-in) -> migration logicielle par kit sans chantier. PAS \"on ne vend pas de hardware\" (faux).",
+      "edits_landing_22660": [
+        "step1 audit",
+        "H2 pourquoi",
+        "subcopy pourquoi",
+        "card differenciateur 1 (Neutralite -> Supervision d abord)",
+        "transparence bullet 2"
+      ],
+      "rendu": "HTTP 200 verifie, claim faux disparu, Zaptec/Sungrow presents, 0 fuite Monta. Backup page-22660-20260702-034437."
+    },
+    "com_timing": "Dominique 2026-07-02: la com sera AXEE EN GRANDE PARTIE sur la reprise, mais on ne communique pas encore. Drafts a preparer, publication alignee GTM rentree (media gele juillet/aout)."
   }
 }
