@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.254",
+    "version": "1.255",
     "updated": "2026-07-02",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-02",
+        "version_from": "1.254",
+        "version_to": "1.255",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Reprise: DECISION placement lettre de resiliation. Va dans le PACK DEVIS telechargeable, active par le commercial (toggle configurateur, auto si tag deal Reprise). PAS dans l audit (hook, pre-engagement).",
+          "Garde-fou timing: lettre a n envoyer qu au top depart du plan de bascule (eviter trou de supervision). Audit livre a sa propre etape + repris en annexe devis."
+        ]
+      },
       {
         "date": "2026-07-02",
         "version_from": "1.253",
@@ -10359,7 +10369,8 @@
         "fichier": "reprise-lettre-resiliation.html",
         "staging_url": "https://staging.ozecar.fr/wp-content/uploads/ozecar/reprise-lettre-resiliation.html",
         "desc": "Modele A4 print-ready, envoye PAR le client A son ancien operateur. LRAR, respect preavis, clause restitution donnees (historique reste chez ancien op -> exporter avant fin contrat), cesser prelevements, liberation equipements (deverrouillage OCPP). Bandeau discret modele fourni par OZECAR. Notice d emploi ecran-seulement + variables entre crochets. Bouton imprimer/PDF.",
-        "next": "Valider wording; option: version docx editable pour le client; brancher dans flux devis (remis avec le devis, cf mapping phase Devis envoye)."
+        "next": "Valider wording; option: version docx editable pour le client; brancher dans flux devis (remis avec le devis, cf mapping phase Devis envoye).",
+        "placement": "Pack devis telechargeable, toggle 'Reprise' active par le commercial (auto si tag deal Reprise). PAS dans l audit. Garde-fou: n envoyer qu au top depart du plan de bascule. cf placement_lettre_decision_2026_07_02."
       }
     },
     "tag_hubspot_a_creer": {
@@ -10385,6 +10396,23 @@
         "Rappel: diag technique fin = post-bascule via logs OCPP"
       ],
       "rappel_lock": "Audit = remote/declaratif gratuit (v1.252). Rapport ne promet PAS d inspection electrique sur site en gratuit."
+    },
+    "placement_lettre_decision_2026_07_02": {
+      "question_dominique": "Ou mettre la lettre de resiliation dans le process ? Dans le devis a telecharger avec l audit si le commercial l active ?",
+      "decision": "OUI a l inclusion dans le PACK DEVIS telechargeable, activee par le commercial. NON a l inclusion dans l audit.",
+      "pas_dans_audit": "L audit (gratuit, remote/declaratif) est le HOOK avant tout engagement. Y glisser une lettre de resiliation pre-remplie pousse a resilier avant devis/engagement OZECAR = risque trou de supervision + trop agressif. L audit reste un document propre livre a l etape Audit realise; il contient deja le plan de bascule (calendrier cale preavis) = bon niveau a ce stade.",
+      "dans_pack_devis": "La lettre n apparait QUE si (a) deal tague 'Reprise de supervision' ET (b) le commercial l active (toggle configurateur devis). Un devis de vente kit neuf ne la porte jamais. = exactement 'si le commercial l active'.",
+      "pack_devis_reprise_contenu": [
+        "Devis chiffre",
+        "Rappel/annexe audit (synthese)",
+        "Lettre de resiliation pre-remplie (si activee)",
+        "Plan de bascule (cale preavis)",
+        "Checklist 'quoi exporter avant de resilier'"
+      ],
+      "garde_fou_timing": "CRITIQUE: la lettre ne doit PAS partir avant le top depart du plan de bascule (sinon client resilie son operateur avant reprise OZECAR = trou de service + perte acces). Ideal: commercial ne remet/active la lettre qu a la SIGNATURE/accord, pas au 1er devis froid. Bandeau lettre: 'A envoyer uniquement au demarrage convenu de la bascule (voir plan)' + rappel exporter historique avant (coherent contrainte_cle: historique reste chez ancien op).",
+      "audit_double": "L audit est livre a SA propre etape (Audit realise, avant le devis) comme document de confiance, ET repris en annexe/synthese dans le pack devis. Ne pas le reserver au seul moment du devis.",
+      "mecanisme": "Ajouter au configurateur-devis (le 'devis a telecharger') un toggle 'Reprise de supervision' qui, ON, appende lettre + plan bascule + checklist au PDF. Auto-coche si tag HubSpot deal = Reprise; sinon coche manuel commercial.",
+      "next": "Cabler le toggle 'Reprise' dans le configurateur-devis + finaliser wording lettre (draft reprise-lettre-resiliation.html) + version editable (docx) pour le client."
     }
   }
 }
