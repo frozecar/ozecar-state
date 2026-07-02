@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.244",
+    "version": "1.245",
     "updated": "2026-07-02",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-02",
+        "version_from": "1.244",
+        "version_to": "1.245",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Nouvelle offre publique REPRISE DE SUPERVISION (these consolidateur rendue publique). Angle MIX valide Dominique.",
+          "Landing staging /reprise-supervision/ creee (page_id 22660, template-wide, publish). HTTP 200, 0 fuite Monta.",
+          "CONTRAINTE: aucune promesse de reprise d historique de recharge (directive Dominique). On reprend bornes/badges/droits/maintenance/flotte, pas la data ancienne.",
+          "22660 ajoute a PAGE_ALLOWLIST du proxy wp-deploy (editable via update_page).",
+          "Reste: nav item (Dominique), cross-link supervision, blog+LinkedIn+lead magnet (Claude PM next)."
+        ]
+      },
       {
         "date": "2026-07-02",
         "version_from": "1.243",
@@ -10087,5 +10100,60 @@
     "decision": "Unifier sur UN composant form charte partage. Cote .one: porter le composant visuel de staging (meme look/champs, variante particulier: nom, email, lieu/borne, categorie, message, consentement) en gardant un transport REEL. Transport cible commun: POST same-origin -> HubSpot (creation contact + ticket pipeline support 3935127798) + autoresponder via Make (mode B). Staging devra etre cable pareil (son handleSubmit est un placeholder) = tache soeur.",
     "prochaine_action_claude": "Porter le composant form staging sur .one (aide-conducteur + CTA 'Nous contacter'), cable HubSpot+Make, puis proposer le meme cablage pour staging.",
     "emails_ref_staging": "demo@ozecar.fr, support@ozecar.fr (mailto sur staging)."
+  },
+  "reprise_supervision_2026_07_02": {
+    "_note": "Landing + offre publique Reprise de supervision. Rend publique la these consolidateur (growth_strategy.these_consolidateur_2026_06_05). Moteur B = principal (50-60% PDC futurs estime Dominique).",
+    "date": "2026-07-02",
+    "validated_by": "Dominique",
+    "angle": "MIX: hook consultatif (deja equipe, reprenez le controle) + edge offensif (parcs orphelins, operateur qui se desengage). Valide 2026-07-02.",
+    "contrainte_cle": "AUCUNE promesse de reprise de l historique/data de recharge de l ancien superviseur (directive Dominique 2026-07-02). On reprend bornes/badges/utilisateurs/droits/maintenance/flotte. Historique reste chez l ancien operateur -> conseiller au client d exporter avant resiliation. Supervision redemarre a neuf.",
+    "landing_staging": {
+      "page_id": 22660,
+      "slug": "reprise-supervision",
+      "url": "https://staging.ozecar.fr/reprise-supervision/",
+      "template": "page-templates/template-wide.php",
+      "status": "publish (staging)",
+      "created": "2026-07-02",
+      "content_chars": 24065,
+      "rendu_verifie": "HTTP 200, contenu complet, 0 fuite Monta/imgix",
+      "sections": [
+        "hero",
+        "constat (etes-vous concerne)",
+        "5 etapes reprise",
+        "pourquoi OZECAR (neutralite/48h/prix/OCPP)",
+        "tarifs (audit gratuit + 3 plans 5,90/14,90/sur devis)",
+        "transparence (ce qu on reprend / pas)",
+        "FAQ checklist bascule",
+        "CTA final audit gratuit"
+      ],
+      "CTA": "#demo (audit gratuit) + /contact/ (expert). Pas de nouveau form dedie en v1.",
+      "ajoute_a_PAGE_ALLOWLIST": "22660 ajoute a api/wp-deploy.php  le 2026-07-02 (backup auto). Editable via update_page desormais."
+    },
+    "packaging_tarifaire": {
+      "audit": "GRATUIT (hook + differenciateur vs setup 1000-3000e du marche)",
+      "frais_reprise": "0 e (argument massue)",
+      "kit": "Kit OZECAR facture 49e HT/station + 29e HT/PDC additionnel",
+      "abonnement": "grille canonique 5,90 Essential / 14,90 Pro / sur devis Pro+ (pricing_canonical_2026_06_17)",
+      "formation": "visio incluse, sur site en option (forfait jour a chiffrer - TODO)",
+      "maintenance": "contrats modulables preventif+correctif (brancher sur support_maintenance_architecture_2026_07_01 N0-N4)"
+    },
+    "differenciateurs_vs_concurrents": {
+      "neutralite": "OZECAR n installe/finance pas de hardware -> conseil objectif. Bump/WAAT/MobilyGreen installent+financent -> conflit d interet.",
+      "delai": "48h (kit) vs 2-4 semaines chantier concurrents",
+      "prix_affiche": "le marche plafonne entree ~5e mais ne l affiche jamais (Waat 4,90 seul comparable). OZECAR affiche.",
+      "sans_changer_bornes": "migration logicielle OCPP"
+    },
+    "benchmark_source": "benchmark_marche + web 2026-07-02: Bump (reprise totale parc, GMAO, 20-30 modeles, Enedis 3500 PDC/3mois, maintenance corrective incluse, MAIS capital-lourd install+finance), WAAT (tertiaire, audit+monetique+decret tertiaire), MobilyGreen (continuite service pendant migration), article maborneauto (checklist bascule Driveco->Bump = angle FAQ).",
+    "a_sourcer_avant_publication_com": "Signaux \"Freshmile sous tension / ChargePoint se desengage de Sonepar\" = notes \"a sourcer formellement\" dans growth_strategy. NE PAS publier nommement sans source. Stat Avere (~200k PDC publics, dispo en baisse) OK sourcable.",
+    "reste_a_faire": {
+      "dominique": "Ajouter item nav \"Reprise de supervision\" sous Nos solutions (menu 1603, WP admin) -> /reprise-supervision/. Valider packaging (audit gratuit / 0e reprise).",
+      "claude_pm_next": [
+        "Cross-link section sur page supervision (22463) vers /reprise-supervision/",
+        "Draft blog SEO (checklist bascule)",
+        "Draft post LinkedIn fondateur (these parcs orphelins)",
+        "Lead magnet checklist PDF A4 (gated HubSpot)",
+        "Chiffrer forfait formation sur site"
+      ]
+    }
   }
 }
