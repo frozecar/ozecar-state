@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.257",
+    "version": "1.258",
     "updated": "2026-07-02",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-02",
+        "version_from": "1.257",
+        "version_to": "1.258",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Slack bot: acces Pennylane ajoute. Outil pennylane_factures (bot-tools.php + slack-bot.php) = factures par numero / par client (nom ou SIREN) / impayees. Lecture seule. Teste donnees reelles (numero+PDF, client MYLOS, 53 impayees/42741e).",
+          "Filtres API mappes: invoice_number+customer_id (factures), name/reg_no (clients). Statut non filtrable -> client-side."
+        ]
+      },
       {
         "date": "2026-07-02",
         "version_from": "1.256",
@@ -6662,7 +6672,7 @@
       ],
       "business_model": {
         "split_model": "Stripe Connect direct charges with application fee — installateur encaisse, OZECAR prélève sa com automatiquement",
-        "example_site_100_bornes_flotte_sla4h": {
+        "exampl_<REDACTED>": {
           "ca_recurrent_client_final_eur_an": 12000,
           "marge_installateur_eur_an": 6000,
           "com_ozecar_eur_an": 2000,
@@ -8708,7 +8718,7 @@
         "Template vierge 'Nouveau modele' (/templates/8yufknwVuboy6BDyXuvw3U) — shell, a garder ou supprimer selon choix",
         "Copie orpheline 'CS Contrat de Supervision - [Client] copy' (17 juin 2026) — A NETTOYER"
       ],
-      "templates_existants_selectionnables": "Plusieurs CS Contrat de Supervision deja selectionnables (on line, [Name] cs, [Client], [Client] v2, [Client] 2 juin 2026).",
+      "templ_<REDACTED>": "Plusieurs CS Contrat de Supervision deja selectionnables (on line, [Name] cs, [Client], [Client] v2, [Client] 2 juin 2026).",
       "chemin_recommande": "Path A: build kit PandaDoc turnkey (ordre des blocs + config pricing table selectable forfaits+N0-N4 + prix + options + tokens + regle conditionnelle) execute par Dominique dans l'editeur (rapide a la main) ou en guidage. Path B: upload PDF/DOCX assemble comme base + ajout pricing table native + tokens."
     },
     "cpq_approche_DECISION": "VERROUILLE 2026-06-17: pricing table NATIVE PandaDoc (CPQ fonctionnel) = section forfait choix unique + section maintenance choix unique (N0-N4) + options cases a cocher + mise en service one-shot + contenu conditionnel pour bloc maintenance. PAS le moteur CPQ a regles PandaDoc. Compatibilites par forfait (Wallet incluse public, CSM/Flotte10/Data incluses Transit, etc.) AFFICHEES EN LIBELLES, non auto-appliquees par regles. Confirme Dominique.",
@@ -9621,6 +9631,15 @@
       "teste": "search_groups + bot-tools OK (santa/mairie/capu biancu). Test agent reel en Slack a faire par Dominique (mention/DM @ozecar-bot).",
       "endpoints": "monta-search.php (search_groups), bot-tools.php (monta_search_groups), slack-bot.php (outil declare+autorise)",
       "etat_bornes": "search_groups enrichi: par groupe, bilan temps reel des bornes (total/disponible/en_charge/occupee/maintenance/deconnectee) via /charge-points?teamId=X. Teste (santa teresa, dojo). Description outil + system prompt MAJ pour presenter l'etat."
+    },
+    "outil_pennylane_factures": {
+      "statut": "LIVRE 2026-07-02, teste sur donnees reelles.",
+      "action_bot_tools": "pennylane_factures (lecture seule, pas de confirmation). Ajoute a bot-tools.php (dispatch + helpers pl_call/pl_find_customer via proxy api/pennylane.php), declare dans slack-bot.php (ozecar_tools + allowlist run_tool + system prompt).",
+      "params": "un seul suffit: numero (n exact ex FT20260000235) | client (nom societe OU SIREN; exact puis fallback substring sur pages) | impayees=true.",
+      "retour": "numero, date, echeance, montant TTC/HT, reste_du_ttc, paye, statut (paid/upcoming/late), pdf (public_file_url reel), label. Par client: nb_factures + total_du_ttc. Impayees: liste (reste>0, hors annulee/archivee/payee) + total + flag liste_partielle.",
+      "filtres_api": "customer_invoices: invoice_number/customer_id filtrables (statut NON -> tri client-side). customers: name(exact)/reg_no/emails filtrables (pas de contains).",
+      "limite": "impayees = scan live borne (6 pages/600 factures) -> flag liste_partielle=true; total autoritatif = synchro quotidienne pennylane-sync (HubSpot companies).",
+      "verif": "numero FT20260000235 OK (PDF ok); client MYLOS 5 factures/54e du OK; impayees 53 factures/42741,84e (37 late) OK."
     }
   },
   "ozecar_2_0": {
@@ -10404,7 +10423,7 @@
         "staging_url": "https://staging.ozecar.fr/wp-content/uploads/ozecar/reprise-lettre-resiliation.html",
         "desc": "Modele A4 print-ready, envoye PAR le client A son ancien operateur. LRAR, respect preavis, clause restitution donnees (historique reste chez ancien op -> exporter avant fin contrat), cesser prelevements, liberation equipements (deverrouillage OCPP). Bandeau discret modele fourni par OZECAR. Notice d emploi ecran-seulement + variables entre crochets. Bouton imprimer/PDF.",
         "next": "Valider wording; option: version docx editable pour le client; brancher dans flux devis (remis avec le devis, cf mapping phase Devis envoye).",
-        "placement": "Pack devis telechargeable, toggle 'Reprise' active par le commercial (auto si tag deal Reprise). PAS dans l audit. Garde-fou: n envoyer qu au top depart du plan de bascule. cf placement_lettre_decision_2026_07_02."
+        "placement": "Pack devis telechargeable, toggle 'Reprise' active par le commercial (auto si tag deal Reprise). PAS dans l audit. Garde-fou: n envoyer qu au top depart du plan de bascule. cf pl_<REDACTED>."
       }
     },
     "tag_hubspot_a_creer": {
@@ -10431,7 +10450,7 @@
       ],
       "rappel_lock": "Audit = remote/declaratif gratuit (v1.252). Rapport ne promet PAS d inspection electrique sur site en gratuit."
     },
-    "placement_lettre_decision_2026_07_02": {
+    "pl_<REDACTED>": {
       "question_dominique": "Ou mettre la lettre de resiliation dans le process ? Dans le devis a telecharger avec l audit si le commercial l active ?",
       "decision": "OUI a l inclusion dans le PACK DEVIS telechargeable, activee par le commercial. NON a l inclusion dans l audit.",
       "pas_dans_audit": "L audit (gratuit, remote/declaratif) est le HOOK avant tout engagement. Y glisser une lettre de resiliation pre-remplie pousse a resilier avant devis/engagement OZECAR = risque trou de supervision + trop agressif. L audit reste un document propre livre a l etape Audit realise; il contient deja le plan de bascule (calendrier cale preavis) = bon niveau a ce stade.",
