@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.250",
+    "version": "1.251",
     "updated": "2026-07-02",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-02",
+        "version_from": "1.250",
+        "version_to": "1.251",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "BUG burger mobile CORRIGE: toggleMobileMenu() n'etait pas defini -> nav-mobile.js (prio 80) le definit (toggle .mobile-open sur .nav-wrap).",
+          "BUG 'Verifier ma borne' CORRIGE: href=#compatibilite = ancre morte sur home -> reecrit vers /bornes-compatibles-3/ (meme JS).",
+          "Deploye staging + verifie (JS 200, enqueue toutes pages, pas de fatal)."
+        ]
+      },
       {
         "date": "2026-07-02",
         "version_from": "1.249",
@@ -9817,6 +9828,21 @@
       "fix": "JS enqueue assets/js/demo-cta-fix.js (prio 70) qui reecrit tout href #demo -> /demo/ au chargement. Couvre les 11 remarques d'un coup, sans editer la base.",
       "verifie": "JS 200, enqueue sur flottes/supermarches/hotellerie/transport/supervision-3/home, pages 200 (pas de fatal).",
       "durable": "a terme, corriger ctaPrimaryUrl en base (editeur WP) puis retirer le JS."
+    },
+    "bugs_mobile_2026_07_02": {
+      "burger_mobile": {
+        "symptome": "menu burger mobile ne s'ouvre pas",
+        "cause": "header.php parent appelle onclick=toggleMobileMenu() mais la fonction n'etait DEFINIE nulle part. CSS OK (.nav-wrap.mobile-open .mobile-menu{translateX(0)}).",
+        "fix": "assets/js/nav-mobile.js (enqueue prio 80) definit window.toggleMobileMenu (toggle .mobile-open sur .nav-wrap) + ferme au clic lien + ferme au resize>1023.",
+        "statut": "DEPLOYE + verifie (JS 200, defini, enqueue sur toutes pages, 200 sans fatal)"
+      },
+      "verifier_ma_borne": {
+        "symptome": "bouton 'Verifier ma borne' ne reagit pas",
+        "cause": "3 boutons href=#compatibilite mais AUCUN id=compatibilite sur la home -> ancre morte.",
+        "fix": "meme JS nav-mobile.js: si #compatibilite absent de la page, reecrit les liens vers /bornes-compatibles-3/ (page verificateur).",
+        "statut": "DEPLOYE + verifie",
+        "note": "durable: soit remettre une section #compatibilite sur la home, soit corriger href des blocs en base."
+      }
     }
   },
   "gtm_launch_2026": {
