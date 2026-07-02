@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.249",
+    "version": "1.250",
     "updated": "2026-07-02",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-02",
+        "version_from": "1.249",
+        "version_to": "1.250",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Reprise de supervision: design PROCESS/CRM. Cap Starter 2 pipelines -> reprise dans L&Q via TAG (Type d opportunite), pas de pipeline dedie.",
+          "Mapping phases L&Q->reprise + 3 livrables prospect (rapport audit / devis+lettre resiliation / kit+formation).",
+          "Flag conflit: pipeline maintenance aussi bloque par cap 2 pipelines -> a arbitrer."
+        ]
+      },
       {
         "date": "2026-07-02",
         "version_from": "1.248",
@@ -10246,6 +10257,27 @@
       ],
       "rendu": "HTTP 200 verifie, claim faux disparu, Zaptec/Sungrow presents, 0 fuite Monta. Backup page-22660-20260702-034437."
     },
-    "com_timing": "Dominique 2026-07-02: la com sera AXEE EN GRANDE PARTIE sur la reprise, mais on ne communique pas encore. Drafts a preparer, publication alignee GTM rentree (media gele juillet/aout)."
+    "com_timing": "Dominique 2026-07-02: la com sera AXEE EN GRANDE PARTIE sur la reprise, mais on ne communique pas encore. Drafts a preparer, publication alignee GTM rentree (media gele juillet/aout).",
+    "process_crm_2026_07_02": {
+      "contrainte_decisive": "HubSpot Starter = max 2 pipelines de deals, deja pris (default Supervision + L&Q 3747862733). PAS de 3e pipeline possible -> reprise geree DANS L&Q via TAG, pas de pipeline dedie.",
+      "mecanisme": "Propriete deal TAG \"Type d opportunite\" enum: [Vente kit (parc neuf), Reprise de supervision]. Le tag: segmente reporting (mesurer 50-60% PDC), re-semantise etapes Demo->Audit pour ces deals, declenche les bons docs via Make.",
+      "mapping_phase_L&Q_pour_reprise": {
+        "Formulaire recu": "Demande audit -> prospect recoit: accuse auto charte + proposition creneau audit",
+        "Lead qualifie": "parc pre-qualifie (interne)",
+        "Demo planifiee": "= AUDIT PLANIFIE -> prospect recoit: confirmation RDV + liste infos a preparer (marques/acces/nb PDC)",
+        "Demo realisee": "= AUDIT REALISE -> prospect recoit: (1) RAPPORT D AUDIT PDF",
+        "Devis envoye": "plan de reprise chiffre -> prospect recoit: (2) DEVIS + (3) LETTRE RESILIATION type pre-remplie + plan bascule cale preavis + checklist quoi exporter avant resilier",
+        "Kit envoye": "= MIGRATION -> prospect recoit: Kit OZECAR + convocation formation visio + acces portail post-bascule"
+      },
+      "documents_client_a_creer": [
+        "1. Rapport d audit type (trame reutilisable par PDC/site)",
+        "2. Lettre de resiliation type (pre-remplie, variables client/operateur/preavis)",
+        "3. Plan de reprise + checklist export (1-pager remis avec devis)"
+      ],
+      "blocage_scope": "Creation propriete deal via PAT bloquee (crm.schemas.deals.write manquant). A tenter via MCP HubSpot, sinon creation manuelle Dominique (Reglages HubSpot, 1 min).",
+      "routeur_formulaire": "Ajouter type demande \"Reprise / Audit de parc\" au routeur Make (support_maintenance_architecture_2026_07_01) -> cree deal L&Q tagge Reprise.",
+      "conflit_maintenance": "support_maintenance_architecture_2026_07_01 prevoyait un NOUVEAU pipeline de deals maintenance -> IMPOSSIBLE avec cap Starter 2 pipelines. A arbitrer: tickets / tag L&Q / upgrade plan. Traiter separement.",
+      "statut": "DESIGN valide par contrainte, EN ATTENTE go Dominique pour creer tag + 3 templates."
+    }
   }
 }
