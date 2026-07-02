@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.248",
+    "version": "1.249",
     "updated": "2026-07-02",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-02",
+        "version_from": "1.248",
+        "version_to": "1.249",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Brief cablage form->HubSpot(ticket 3935127798)+Slack pret dans formulaires_strategie.brief_cablage_pret (a executer contexte frais). Modeliser modules HubSpot sur scenario demo 6400488.",
+          "#support Slack a creer (n'existe pas)."
+        ]
+      },
       {
         "date": "2026-07-02",
         "version_from": "1.247",
@@ -10135,7 +10145,39 @@
     "prochaine_action_claude": "Cabler transport HubSpot: creer scenario Make [Webhook -> HubSpot upsert contact -> HubSpot create ticket pipeline 3935127798 -> Slack #support] via MCP Make (connexion HubSpot 6538723), recuperer URL webhook, faire forwarder contact.php (server-side) vers ce webhook, tester bout-en-bout. Puis autoresponder mode B (brouillon Slack). Puis aligner staging (handleSubmit placeholder).",
     "emails_ref_staging": "demo@ozecar.fr, support@ozecar.fr (mailto sur staging).",
     "etat": "FAIT cote .one (aide-conducteur): composant form charte = copie exacte du composant staging (.form-input/.form-select/.form-textarea 1.5px radius12 focus violet, .form-label Space Mono 10px uppercase gris, .btn-yellow pill jaune). Variante particulier: prenom, nom, email, sujet(select->recharge/paiement/reclamation/autre/presse), lieu/borne, message, consentement. Message de succes (check violet). Transport reel conserve: POST /api/contact.php (422 verifie). Rendu verifie playwright.",
-    "reste": "1) Cabler le transport commun HubSpot: contact.php (ou Make webhook) -> creation contact + ticket pipeline 3935127798 + autoresponder Make mode B (brouillon Slack #support). 2) Appliquer le meme cablage a staging (son handleSubmit est un placeholder). 3) Verifier que le CTA landing \"Nous contacter\" pointe vers /aide-conducteur/."
+    "reste": "1) Cabler le transport commun HubSpot: contact.php (ou Make webhook) -> creation contact + ticket pipeline 3935127798 + autoresponder Make mode B (brouillon Slack #support). 2) Appliquer le meme cablage a staging (son handleSubmit est un placeholder). 3) Verifier que le CTA landing \"Nous contacter\" pointe vers /aide-conducteur/.",
+    "brief_cablage_pret": {
+      "objectif": "Cabler le formulaire support .one (et plus tard staging) vers HubSpot + Slack, en gardant contact.php.",
+      "archi": "Formulaire -> contact.php (existant, envoie deja mail support@ozecar.one) forwarde aussi (server-side curl) le payload JSON vers un WEBHOOK Make. Scenario Make: [Webhook] -> [HubSpot: create/update Contact (email, firstname, lastname)] -> [HubSpot: create Ticket] -> [Slack: message #support].",
+      "hubspot": {
+        "account": "143920450",
+        "pipeline_tickets": "3935127798",
+        "stage_entree": "Diagnostic 5625047274",
+        "connexion_make_hubspot": "6538723",
+        "proprietes_ticket": [
+          "ozecar_niveau_maintenance (option, defaut N0)",
+          "ozecar_lien_fiche_intervention"
+        ],
+        "champs_form": "type(recharge/paiement/reclamation/presse/autre), nom(prenom+nom), email, borne(lieu), message"
+      },
+      "slack": {
+        "canal_cible": "#support (A CREER — n'existe pas; canaux actuels: general, random, installation, ac-elec). Sinon fallback #installation.",
+        "contenu": "Nouvelle demande support: sujet, nom, email, lieu/borne, message + lien ticket HubSpot. Base de l'autoresponder mode B (boutons Envoyer/Editer/Ignorer via slack-bot ozecar.fr/api/slack-bot.php ensuite)."
+      },
+      "make": {
+        "team": "197685",
+        "outils": "hooks_create (webhook), scenarios_create+scenarios_activate. Modeliser les modules HubSpot sur le scenario demo 6400488 (meme connexion 6538723 deja fonctionnelle en createDeal/updateContact)."
+      },
+      "etapes": [
+        "1. Slack: creer #support (ou choisir fallback).",
+        "2. Make: hooks_create webhook -> recuperer URL.",
+        "3. Make: scenarios_create blueprint [webhook->HubSpot contact->HubSpot ticket->Slack #support], valider, activer.",
+        "4. contact.php: ajouter forward server-side (curl) du payload vers l'URL webhook, non bloquant pour l'envoi mail.",
+        "5. Test bout-en-bout: soumission form -> mail + contact + ticket + message Slack. Verifier.",
+        "6. Repliquer le cablage sur staging (handleSubmit placeholder actuel)."
+      ],
+      "note": "Ne pas laisser de scenario Make a moitie configure actif. Construire, valider (validate_blueprint_schema), PUIS activer."
+    }
   },
   "reprise_supervision_2026_07_02": {
     "_note": "Landing + offre publique Reprise de supervision. Rend publique la these consolidateur (growth_strategy.these_consolidateur_2026_06_05). Moteur B = principal (50-60% PDC futurs estime Dominique).",
