@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.279",
+    "version": "1.280",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.279",
+        "version_to": "1.280",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Architecture maintenance DECIDEE: perimetre PAR SITE (registre = board Monday Sites/Parc a creer: niveau N0-N4 + mainteneur interne/sous-traitant/installateur + email + SLA). Check-360 (niveau/SLA/inclus-devis/mainteneur) a l'identification. Gate inclus/devis (N3/N4 curatif=inclus; sinon devis).",
+          "Dispatch mainteneur: Phase 1 = INTERNE Fred + gate MAINTENANT; Phase 2 = externe (sous-traitant/installateur email) PLUS TARD, data model par-site le permet."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.278",
@@ -10821,6 +10831,24 @@
       "calendrier": "Lien Google Calendar render (action=TEMPLATE, dates start/+2h, location=adresse, ctz=Europe/Paris) — 1 clic, zero auth, zero creds serveur. Pas d'automatisation Make pour l'instant (option future si 100% auto souhaite).",
       "verifie": "stage move 5625047278 OK + format lien calendrier OK. Modal non cliquable en test mais meme pattern que oz_edit (fonctionnel).",
       "reste": "1) Fiche d'intervention Fred -> endpoint /api/fiche-intervention.php (recoit bornes[]+photos -> ecrit sur le ticket -> avance stage Rapport/Terminee -> PDF client). 2) Option: automatisation calendrier via Make (webhook -> Google Calendar create event) si besoin de 100% auto (au lieu du lien 1-clic)."
+    },
+    "architecture_maintenance": {
+      "perimetre": "PAR SITE (decision Dominique): un client peut avoir plusieurs sites avec niveaux/mainteneurs differents. Le niveau de maintenance + le mainteneur sont portes par le SITE, pas par le client.",
+      "registre_source_verite": "Board Monday 'Sites / Parc bornes' (a creer). Colonnes: Nom du site, Client, Ville, Ref parc (supervision), Niveau (N0-N4), Mainteneur (Interne Fred / Sous-traitant / Installateur direct), Email mainteneur, SLA. Editable Marie-Estelle, interrogeable par le bot (proxy monday.php). HubSpot Starter ne fait pas d'objet Site propre -> Monday = home.",
+      "check_360": "Quand le bot identifie un site/borne (sans citer le n de serie), il affiche: Niveau souscrit + SLA contractuel (N4=24h, N3=48h, N0-N2=best effort/devis) + Inclus ou Devis (selon niveau+type panne) + Mainteneur assigne.",
+      "gate_inclus_devis": "N3/N4 + curatif hors exclusions => INCLUS (ticket -> Intervention a prevoir direct). N0/N1/N2 OU exclusion (piece hors garantie/vandalisme/accident/force majeure) => SUR DEVIS (ticket -> Devis a faire -> Devis envoye signe -> a prevoir). Visite preventive incluse des N2. Propriete ticket ozecar_niveau_maintenance pilote la bascule.",
+      "dispatch_mainteneur": {
+        "phase1_MAINTENANT": "INTERNE (Fred) uniquement + le gate niveau/SLA/devis + affichage check-360. 90% de la valeur, zero dependance externe.",
+        "phase2_PLUS_TARD": "Dispatch externe: sous-traitant (email 'ordre d'intervention' avec site/ville/modele/probleme SANS n de serie sauf lien securise, accept+report) ; installateur_direct (email notification, OZECAR superviseur/relais). A activer au 1er mainteneur externe reel. Data model par-site le permet deja."
+      },
+      "grille_N0_N4": {
+        "N0": "Sans maintenance 0e - tout sur devis",
+        "N1": "Monitoring 4e - teledigagnostic distant inclus; intervention physique sur devis",
+        "N2": "Preventif 9e - monitoring + 1 visite/an; curatif sur devis",
+        "N3": "Curatif SLA48h 18e - N2 + 2 visites/an + curatif inclus (deplacement+MO, pieces hors garantie au coutant) + hotline; exclusions sur devis",
+        "N4": "Curatif SLA24h 24e - curatif inclus sous 24h; memes exclusions"
+      },
+      "next": "1) Creer board Monday Sites/Parc. 2) Cabler le gate (lookup site -> niveau -> inclus/devis) dans la creation d'intervention. 3) Reprendre la feature 'note channel -> intervention' (direction 2) avec check-360 + gate integres."
     }
   },
   "presentations_v2_2026_07_03": {
