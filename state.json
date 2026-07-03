@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.273",
-    "updated": "2026-07-02",
+    "version": "1.274",
+    "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.273",
+        "version_to": "1.274",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Guide Alfen migre en page WP native : CPT guide #22662 (/guides/alfen-eve-single-pro-line/), contenu Gutenberg (bloc wp:html), header/footer theme comme EVlink",
+          "Mapping marque Alfen -> guide ajoute dans inc/borne-helpers.php : bouton 'Guide de configuration' actif sur fiches borne Alfen (onglet OCPP)",
+          "Preview statique HTML supprimee (remplacee par page WP)",
+          "Note: fuite marque blanche imgix persistante sur _external_img_url des fiches borne (a proxifier)"
+        ]
+      },
       {
         "date": "2026-07-02",
         "version_from": "1.272",
@@ -9935,7 +9947,8 @@
   },
   "marque_blanche": {
     "fuites_a_corriger": [
-      "ozecar-activation.html (page interne /activation): URL OCPP en dur 'wss://ocpp.monta.app/{DeviceId}' dans les guides de config Zaptec (objet GUIDES). Visible cote installateur. A remplacer par l'endpoint marque blanche wss://ocpp.ozecar.app. NON bloquant pour la solution intermediaire client (doc client OK), mais a corriger."
+      "ozecar-activation.html (page interne /activation): URL OCPP en dur 'wss://ocpp.monta.app/{DeviceId}' dans les guides de config Zaptec (objet GUIDES). Visible cote installateur. A remplacer par l'endpoint marque blanche wss://ocpp.ozecar.app. NON bloquant pour la solution intermediaire client (doc client OK), mais a corriger.",
+      "Fiches borne_recharge (CPT): _external_img_url pointe vers monta.imgix.net sur toutes les bornes (Alfen, etc). Fuite visible source. A proxifier (img-proxy.php). Reperee 2026-07-03."
     ]
   },
   "hubspot_hub": {
@@ -10722,15 +10735,18 @@
     "_note": "Guides de configuration par borne (fichiers HTML statiques deployes sous wp-content/uploads/ozecar/guides/). Cloner le template EVlink pour la charte.",
     "guides": {
       "alfen_eve_single_pro_line": {
-        "borne": "Alfen Eve Single Pro-line (Pro S) + Double Pro-line",
+        "borne": "Alfen Eve Single Pro-line (Pro S) + gamme AC Alfen",
+        "type": "CPT guide (WordPress natif, editable Gutenberg)",
+        "post_id": 22662,
+        "slug": "alfen-eve-single-pro-line",
+        "url": "https://staging.ozecar.fr/guides/alfen-eve-single-pro-line/",
         "outil_config": "ACE Service Installer (Windows, RJ45) / MyEve app",
-        "fichier": "wp-content/uploads/ozecar/guides/ozecar-guide-alfen-eve-single-pro-line.html",
-        "url_staging": "https://staging.ozecar.fr/wp-content/uploads/ozecar/guides/ozecar-guide-alfen-eve-single-pro-line.html",
-        "http": "200",
-        "ocpp": "wss://ocpp.ozecar.app/ · OCPP 1.6J · Identifier=numero de serie · owner password FW5.0+",
+        "ocpp": "wss://ocpp.ozecar.app · OCPP 1.6J · Identifier/ChargeBoxId=n serie · owner password FW5.0+",
+        "structure": "Repris du CPT EVlink (22588) : nav dans bloc wp:html + footer theme + hero + sidebar TOC + 6 guide-step + creds-box",
+        "lien_borne": "Mapping 'Alfen' => 'alfen-eve-single-pro-line' ajoute dans inc/borne-helpers.php (backup .bak conserve local). Bouton visible onglet OCPP de toutes les fiches borne marque Alfen (dont borne 21490).",
+        "marque_blanche": "OK (0 Monta dans le guide)",
         "cree": "2026-07-03",
-        "marque_blanche": "OK (0 Monta, 0 imgix)",
-        "todo": "Creer la page WP au slug /guides/alfen-eve-single-pro-line (ou rediriger l'entree d'index) — actuellement fichier preview statique seul"
+        "preview_statique_supprimee": "ozecar-guide-alfen-eve-single-pro-line.html (uploads) supprimee, remplacee par la page WP"
       }
     }
   },
