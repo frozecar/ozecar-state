@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.277",
+    "version": "1.278",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.277",
+        "version_to": "1.278",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Volet intervention - planification LIVREE: bouton 'Planifier l'intervention' apres escalade -> modal date/heure/adresse/notes -> ticket Intervention planifiee + note + carte #support avec bouton 'Ajouter a mon Google Agenda' (lien render pre-rempli, 1 clic). Verifie (stage + lien).",
+          "Reste volet intervention: endpoint fiche-intervention.php (Fred -> ticket + PDF), option auto calendrier via Make."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.276",
@@ -10792,5 +10802,14 @@
     "statut": "NE PLUS JAMAIS REVENIR DESSUS. Appliquer a toute nouvelle page/grille tarifaire.",
     "applique": "staging supervision-3 (page_id 22463): 54,49€ -> 'Sur devis' (verifie live).",
     "autres_forfaits_publics": "Essential/Pro/Pro Plus peuvent afficher un prix; Transit = jamais."
+  },
+  "intervention_flow_2026_07_03": {
+    "planification": {
+      "statut": "LIVRE 2026-07-03. Apres 'Escalader -> intervention' (ticket -> Maintenance & Intervention / Intervention a prevoir 5625047277), le message #support garde un bouton 'Planifier l'intervention' (oz_plan).",
+      "modal": "oz_plan -> modal Slack (datepicker + timepicker + adresse + notes). Submit (oz_plan_modal) -> ticket -> Intervention planifiee (5625047278) + note (date/heure/adresse/notes) + post #support carte 'Intervention planifiee' avec bouton 'Ajouter a mon Google Agenda'.",
+      "calendrier": "Lien Google Calendar render (action=TEMPLATE, dates start/+2h, location=adresse, ctz=Europe/Paris) — 1 clic, zero auth, zero creds serveur. Pas d'automatisation Make pour l'instant (option future si 100% auto souhaite).",
+      "verifie": "stage move 5625047278 OK + format lien calendrier OK. Modal non cliquable en test mais meme pattern que oz_edit (fonctionnel).",
+      "reste": "1) Fiche d'intervention Fred -> endpoint /api/fiche-intervention.php (recoit bornes[]+photos -> ecrit sur le ticket -> avance stage Rapport/Terminee -> PDF client). 2) Option: automatisation calendrier via Make (webhook -> Google Calendar create event) si besoin de 100% auto (au lieu du lien 1-clic)."
+    }
   }
 }
