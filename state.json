@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.263",
+    "version": "1.264",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.263",
+        "version_to": "1.264",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Support flow pro: reference OZS-{base36} partout (sujet ticket, objet+corps mail, Slack, notes). Question+reponse loggees en notes sur le ticket. Reponses envoyees depuis support@ozecar.fr 'OZECAR Support'. Ticket assigne a Dominique. Bouton 'Escalader -> intervention'. Stages Support renommes FR. Verifie E2E.",
+          "Reste: support-sweep.php (relance J+3/cloture J+7 + cron), evenement calendrier a Intervention planifiee, intake reponses client (Conversations)."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.262",
@@ -10566,6 +10576,20 @@
       "ozecar_one": "App logue: consentement separe",
       "politique": "Completer /politique-de-confidentialite/ cookies+retrait (sans nommer Monta)",
       "footer_link": "Lien 'Gerer mes cookies' footer id oz-cookies-link (fab couvre deja acces permanent)"
+    }
+  },
+  "support_flow_2026_07_03": {
+    "pipeline": "Support (HubSpot id 0). Stages FR: Nouveau(1) / En cours(3) / En attente client(2) / Resolu-Ferme(4). Escalade = bascule MEME ticket vers Maintenance & Intervention (3935127798) / Intervention a prevoir (5625047277).",
+    "reference_ticket": "OZS-{base36(hs_object_id)} (ex OZS-5E6XBE1M). Deterministe (pas de compteur). Inscrite dans: sujet du ticket, objet des mails, corps mail (footer), notif Slack, notes. Recalculable partout depuis l'id.",
+    "logging_ticket": "Question du conducteur loggee en NOTE a l'ouverture; chaque reponse envoyee loggee en NOTE (visible dans le fil du ticket). Fix du bug 'je ne vois pas la reponse/question'.",
+    "expediteur_mail": "Reponses envoyees depuis support@ozecar.fr, nom 'OZECAR Support' (send-mail.php etendu: params from/from_name restreints au domaine @ozecar.fr; MailerSend accepte, verifie).",
+    "proprietaire": "Ticket assigne a Dominique (owner 1714568940) a l'ouverture.",
+    "boutons_slack": "Envoyer (email+note+stage->En attente client) / Editer (modal->email+note) / Escalader -> intervention (bascule pipeline + note) / Ignorer. Tout dans #support, rien envoye sans clic. Gere dans slack-bot.php handle_interaction (URL Slack deja = slack-bot.php).",
+    "verifie": "ref OZS dans sujet, owner, note question, 4 boutons Slack, expediteur support@ = OK (test E2E, artefacts supprimes).",
+    "RESTE_A_CONSTRUIRE": {
+      "sweep_relance_cloture": "support-sweep.php (cron quotidien): tickets en 'En attente client' sans activite depuis J+3 -> email relance; J+7 -> email cloture + ticket -> Resolu/Ferme. Heuristique inactivite = hs_lastmodifieddate (car intake email client pas encore branche). Necessite cron Hostinger.",
+      "calendrier_intervention": "A 'Intervention planifiee' (pipeline Maintenance) avec une date -> creer evenement Google Calendar sur le calendrier du proprietaire du ticket (via MCP Google Calendar ou Make). Necessite une saisie de date (propriete ticket date_intervention ou via fiche d'intervention).",
+      "intake_reponses_client": "Reponses email du conducteur -> re-attachees au ticket: necessite HubSpot Conversations sur support@ (ou watch IMAP). Sans ca, on ne detecte pas automatiquement un follow-up client (le sweep se base sur le temps depuis notre reponse)."
     }
   }
 }
