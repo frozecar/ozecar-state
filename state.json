@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.278",
+    "version": "1.279",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.278",
+        "version_to": "1.279",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Deck Client Final v2 LIVRE (13 slides pptx->Google Slides, charte verrouillee, zero Monta)",
+          "Section presentations_v2_2026_07_03 creee: 4 cibles, deck1 livre, 2-4 a produire",
+          "Cas client en placeholder: attente chiffres valides Dominique (liste dans data_demandee_a_dominique)"
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.277",
@@ -10811,5 +10822,32 @@
       "verifie": "stage move 5625047278 OK + format lien calendrier OK. Modal non cliquable en test mais meme pattern que oz_edit (fonctionnel).",
       "reste": "1) Fiche d'intervention Fred -> endpoint /api/fiche-intervention.php (recoit bornes[]+photos -> ecrit sur le ticket -> avance stage Rapport/Terminee -> PDF client). 2) Option: automatisation calendrier via Make (webhook -> Google Calendar create event) si besoin de 100% auto (au lieu du lien 1-clic)."
     }
+  },
+  "presentations_v2_2026_07_03": {
+    "_note": "Refonte presentations OZECAR v2, scindees par cible (audience). Demande Dominique 2026-07-03.",
+    "date": "2026-07-03",
+    "format": "pptx (pptxgenjs) -> import Google Slides editable. Charte verrouillee Ink/Yellow/Violet/Cream, DM Sans/Instrument Serif/Space Mono, zero or, zero barre d'accent.",
+    "regle_honnete": "Aucun chiffre/cas invente. Seuls chiffres reels: Avere + grille canonique + reprise. Cas clients = placeholder tant que Dominique n'a pas fourni les chiffres valides.",
+    "assets": "logo officiel transparent recolore (ink/cream), mascotte croppee (ink/yellow/cream), mockups app ozecarmock1/2. Zero fuite Monta verifiee.",
+    "cible_1_client_final": {
+      "statut": "LIVRE v1 (13 slides) = template maitre",
+      "chiffres_reels": "Avere 194996 PDC publics FR / +17-20%/an / 9% HS +7j / 90% dispo. Tarifs 5,90 Essential / 14,90 Pro / sur devis Pro+. Reprise: audit gratuit, 0e frais, bascule 48h, neutralite.",
+      "placeholder_a_valider": "Slide 9 cas client: 3 stats (PDC supervises, % dispo, delai bascule) + enseigne/secteur/N sites. EN ATTENTE chiffres Dominique.",
+      "trusted_by_noms": "Renault, Carrefour Market, E.Leclerc, Weldom, SPAR, Europcar, Urssaf, Mairie de Bonifacio (noms en texte, repris du deck public actuel)."
+    },
+    "cible_2_demo": {
+      "statut": "A PRODUIRE - meme template, version courte tremplin avant demo live hub, finit sur slide handoff tableau de bord"
+    },
+    "cible_3_installateur": {
+      "statut": "A PRODUIRE - angle pose + marge kit paliers 25-33% + OZECAR garde mandat supervision (pas de SAV chez l'electricien) + recurrent/prime"
+    },
+    "cible_4_revendeur": {
+      "statut": "A PRODUIRE - angle hardware se banalise + couche recurrente marque blanche. NB: volet distributeur du partner_program encore a cadrer (models_planned_later)"
+    },
+    "variantes_sectorielles": "Option: swap slides secteurs+cas pour focus sectoriel (distribution/hotellerie/flottes/transport) des chiffres valides -> 2 slides a changer par secteur.",
+    "data_demandee_a_dominique": [
+      "Pour >=1 cas client reel: enseigne, secteur, nb PDC supervises, % dispo mesuree, delai de bascule. Ideal: 1 cas par secteur cible.",
+      "Logos officiels PNG si mur logos graphique souhaite (sinon noms en texte, deja en place)."
+    ]
   }
 }
