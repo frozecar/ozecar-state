@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.275",
+    "version": "1.276",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.275",
+        "version_to": "1.276",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "support-intake.php: AJOUT accuse de reception immediat au conducteur (from support@ozecar.fr, ref OZS en objet).",
+          "Diagnostic test Dominique: reponse conducteur non remontee = routing Google support@ -> inbound MailerSend pas encore actif (webhook valide par ailleurs). Reste = regle 'Also deliver to'."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.274",
@@ -10735,8 +10745,11 @@
       "boucle_complete": "conducteur repond -> inbound -> ticket En cours + brouillon Slack -> agent clique Envoyer -> mail + ticket En attente client -> (reponse -> boucle) ou relance J+3 / cloture J+7.",
       "acheminement": "MailerSend Inbound Routing ACTIF: adresse frdobsw0sy7zzsg18die@inbound.mailersend.net (catch all, match all) -> webhook support-inbound.php. Route VALIDEE en reel (mail -> ~10s -> ticket En cours + note + Slack).",
       "DERNIER_PAS_dominique": "Router support@ -> frdobsw0sy7zzsg18die@inbound.mailersend.net via GOOGLE WORKSPACE. RECO: Admin console -> Apps -> Google Workspace -> Gmail -> Routing -> Add setting -> envelope recipient support@ozecar.fr -> action 'Also deliver to' l'adresse inbound (garde la copie dominique@). ALT: filtre Gmail dans dominique@ (transfert vers l'adresse inbound; code de verif Google arrivera dans #support). reply-to reste support@ozecar.fr.",
-      "support_alias": "support@ozecar.fr = ALIAS de dominique@ozecar.fr (Google Workspace). Les mails vers support@ arrivent dans dominique@."
-    }
+      "support_alias": "support@ozecar.fr = ALIAS de dominique@ozecar.fr (Google Workspace). Les mails vers support@ arrivent dans dominique@.",
+      "diagnostic_2026_07_03": "Test Dominique: reponse conducteur recue sur support@ (dominique@) mais RIEN sur Slack/HubSpot (ticket reste en attente client) = NORMAL tant que le routing Google 'Also deliver to inbound' n'est pas actif. Le webhook est valide (test direct OK). Donc: la reponse arrive dans la boite mais n'est pas forwardee vers frdobsw0...@inbound.mailersend.net -> webhook jamais appele. FIX = regle routing Gmail admin."
+    },
+    "cablage": "",
+    "accuse_reception": "AJOUTE 2026-07-03: support-intake.php envoie un accuse de reception immediat au conducteur (from support@ozecar.fr 'OZECAR Support', objet [OZS-xxx] Nous avons bien recu votre demande, reply-to support@). Corrige le 'pas de mail de confirmation'."
   },
   "infra": {
     "messagerie": "@ozecar.fr = Google Workspace (MX -> aspmx.l.google.com). Domaine registrar Namecheap, DNS geres sur Namecheap. SPF autorise: google, mailersend, mailjet, hubspotemail. Outbound transac = MailerSend SMTP."
