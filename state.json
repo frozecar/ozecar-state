@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.267",
+    "version": "1.268",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.267",
+        "version_to": "1.268",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Boucle ENTRANTE support construite: api/support-inbound.php (reponse conducteur -> ref OZS -> note + ticket 'En cours' + brouillon de suite + boutons #support). Teste E2E.",
+          "MANQUE: acheminement des mails entrants vers le webhook (MailerSend Inbound reco, ou Make IMAP). Sans ca la reponse client reste dans la boite support@."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.266",
@@ -10643,6 +10653,13 @@
       "expediteur": "support@ozecar.fr 'OZECAR Support', reference OZS en objet + corps.",
       "verifie": "E2E OK: 2 tickets antidates (J+4->relance, J+8->cloture stage 4), pas de double relance (skip apres), vrai ticket recent ignore. Artefacts supprimes.",
       "cron": "ACTIF depuis 2026-07-03 (cron Hostinger ajoute par Dominique). Endpoint confirme HTTP 200. Flow support 100% operationnel."
+    },
+    "boucle_entrante": {
+      "fichier": "api/support-inbound.php (?key=SECRET). Recoit une reponse conducteur (JSON simple OU payload MailerSend inbound).",
+      "logique": "Retrouve la ref OZS dans l'objet -> decode base36 -> ticket. Logge la reponse en NOTE. Ticket Support -> stage 3 (En cours / Waiting on us), rouvre si ferme. Repost #support: reponse + brouillon de SUITE (IA) + boutons Envoyer/Editer/Escalader/Clore. Sans ref valide -> notif triage manuel #support (pas de ticket auto).",
+      "verifie": "E2E OK: reponse simulee (objet [OZS-xxx]) -> note loggee, ticket stage 3, Slack brouillon+boutons. Artefacts supprimes.",
+      "MANQUE_acheminement": "Il faut router les mails entrants (reponses conducteur) vers ce webhook. Reco = MailerSend Inbound Routing sur un sous-domaine (ex reply.ozecar.fr) -> webhook; sinon Make 'Watch emails' IMAP sur dominique@ (support@ alias). Sans ca, la reponse client n'arrive pas au systeme (elle reste dans la boite).",
+      "boucle_complete": "conducteur repond -> inbound -> ticket En cours + brouillon Slack -> agent clique Envoyer -> mail + ticket En attente client -> (reponse -> boucle) ou relance J+3 / cloture J+7."
     }
   }
 }
