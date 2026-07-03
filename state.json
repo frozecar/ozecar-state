@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.266",
+    "version": "1.267",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.266",
+        "version_to": "1.267",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Cron support-sweep ACTIF (Dominique). Flow support complet et operationnel: ouverture -> reponse (mode B) -> relance J+3 -> cloture J+7, ou escalade intervention. Ref OZS partout, logging notes, envoi support@ozecar.fr."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.265",
@@ -10633,7 +10642,7 @@
       "logique": "Etat suivi via NOTES (stable): J+3 sans retour depuis la reponse -> email de relance + note 'Relance auto envoyee' (une seule fois). J+7 -> email de cloture + ticket -> Resolu/Ferme (stage 4) + note. Delais RELANCE_DAYS=3 / CLOSE_DAYS=7 (valides par Dominique).",
       "expediteur": "support@ozecar.fr 'OZECAR Support', reference OZS en objet + corps.",
       "verifie": "E2E OK: 2 tickets antidates (J+4->relance, J+8->cloture stage 4), pas de double relance (skip apres), vrai ticket recent ignore. Artefacts supprimes.",
-      "CRON_A_AJOUTER_dominique": "Cron Hostinger quotidien (ligne fournie a Dominique en chat, secret non stocke ici). Ex 07:00: curl support-sweep.php?key=... ."
+      "cron": "ACTIF depuis 2026-07-03 (cron Hostinger ajoute par Dominique). Endpoint confirme HTTP 200. Flow support 100% operationnel."
     }
   }
 }
