@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.270",
+    "version": "1.271",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.270",
+        "version_to": "1.271",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "support@ozecar.fr confirme = alias de dominique@ (Google Workspace). Methode retenue pour la boucle entrante: Routing admin Gmail 'Also deliver to' l'adresse inbound MailerSend (ou filtre Gmail en alternative)."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.269",
@@ -10679,7 +10688,8 @@
       "verifie": "E2E OK: reponse simulee (objet [OZS-xxx]) -> note loggee, ticket stage 3, Slack brouillon+boutons. Artefacts supprimes.",
       "boucle_complete": "conducteur repond -> inbound -> ticket En cours + brouillon Slack -> agent clique Envoyer -> mail + ticket En attente client -> (reponse -> boucle) ou relance J+3 / cloture J+7.",
       "acheminement": "MailerSend Inbound Routing ACTIF: adresse frdobsw0sy7zzsg18die@inbound.mailersend.net (catch all, match all) -> webhook support-inbound.php. Route VALIDEE en reel (mail -> ~10s -> ticket En cours + note + Slack).",
-      "DERNIER_PAS_dominique": "Router support@ozecar.fr -> frdobsw0sy7zzsg18die@inbound.mailersend.net DANS GOOGLE WORKSPACE (pas Hostinger; MX=Google). Si support@ est un Google Groupe: ajouter l'adresse inbound comme MEMBRE (le plus simple). Sinon: Admin console -> Apps -> Gmail -> Routing (regle 'also deliver to' l'adresse inbound pour le destinataire support@), OU filtre Gmail 'to:support@' -> forward (code de verif Google arrivera dans #support comme 'e-mail sans reference'). Reply-to reste support@ozecar.fr (branding propre)."
+      "DERNIER_PAS_dominique": "Router support@ -> frdobsw0sy7zzsg18die@inbound.mailersend.net via GOOGLE WORKSPACE. RECO: Admin console -> Apps -> Google Workspace -> Gmail -> Routing -> Add setting -> envelope recipient support@ozecar.fr -> action 'Also deliver to' l'adresse inbound (garde la copie dominique@). ALT: filtre Gmail dans dominique@ (transfert vers l'adresse inbound; code de verif Google arrivera dans #support). reply-to reste support@ozecar.fr.",
+      "support_alias": "support@ozecar.fr = ALIAS de dominique@ozecar.fr (Google Workspace). Les mails vers support@ arrivent dans dominique@."
     }
   },
   "infra": {
