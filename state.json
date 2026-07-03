@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.264",
+    "version": "1.265",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.264",
+        "version_to": "1.265",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "support-sweep.php LIVRE + teste: relance J+3 / cloture J+7 (email + ticket->Resolu/Ferme), etat via notes (pas de double relance). Delais valides. Reste: cron Hostinger (Dominique).",
+          "Rappel HubSpot: escalade/cloture manuelle = selecteur Pipeline/Etape sur le ticket ou vue Board (pas de bouton dedie)."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.263",
@@ -10587,9 +10597,15 @@
     "boutons_slack": "Envoyer (email+note+stage->En attente client) / Editer (modal->email+note) / Escalader -> intervention (bascule pipeline + note) / Ignorer. Tout dans #support, rien envoye sans clic. Gere dans slack-bot.php handle_interaction (URL Slack deja = slack-bot.php).",
     "verifie": "ref OZS dans sujet, owner, note question, 4 boutons Slack, expediteur support@ = OK (test E2E, artefacts supprimes).",
     "RESTE_A_CONSTRUIRE": {
-      "sweep_relance_cloture": "support-sweep.php (cron quotidien): tickets en 'En attente client' sans activite depuis J+3 -> email relance; J+7 -> email cloture + ticket -> Resolu/Ferme. Heuristique inactivite = hs_lastmodifieddate (car intake email client pas encore branche). Necessite cron Hostinger.",
       "calendrier_intervention": "A 'Intervention planifiee' (pipeline Maintenance) avec une date -> creer evenement Google Calendar sur le calendrier du proprietaire du ticket (via MCP Google Calendar ou Make). Necessite une saisie de date (propriete ticket date_intervention ou via fiche d'intervention).",
       "intake_reponses_client": "Reponses email du conducteur -> re-attachees au ticket: necessite HubSpot Conversations sur support@ (ou watch IMAP). Sans ca, on ne detecte pas automatiquement un follow-up client (le sweep se base sur le temps depuis notre reponse)."
+    },
+    "sweep_relance_cloture": {
+      "fichier": "api/support-sweep.php (?key=SECRET [+&dry=1]). Balaye les tickets Support (pipeline 0) en 'En attente client' (stage 2).",
+      "logique": "Etat suivi via NOTES (stable): J+3 sans retour depuis la reponse -> email de relance + note 'Relance auto envoyee' (une seule fois). J+7 -> email de cloture + ticket -> Resolu/Ferme (stage 4) + note. Delais RELANCE_DAYS=3 / CLOSE_DAYS=7 (valides par Dominique).",
+      "expediteur": "support@ozecar.fr 'OZECAR Support', reference OZS en objet + corps.",
+      "verifie": "E2E OK: 2 tickets antidates (J+4->relance, J+8->cloture stage 4), pas de double relance (skip apres), vrai ticket recent ignore. Artefacts supprimes.",
+      "CRON_A_AJOUTER_dominique": "Cron Hostinger quotidien (ligne fournie a Dominique en chat, secret non stocke ici). Ex 07:00: curl support-sweep.php?key=... ."
     }
   }
 }
