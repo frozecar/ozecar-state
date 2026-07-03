@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.265",
+    "version": "1.266",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.265",
+        "version_to": "1.266",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "cookies_consent: audit ozecar.one + Shopify",
+          "ozecar.one NON CONFORME: CookieYes Lite n'bloque pas GA4 (_ga avant clic) -> fix admin Dominique (Google Consent Mode)",
+          "Shopify OK (0 fuite) -> activer banniere native par securite",
+          "Design staging valide par Dominique"
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.264",
@@ -10586,6 +10598,22 @@
       "ozecar_one": "App logue: consentement separe",
       "politique": "Completer /politique-de-confidentialite/ cookies+retrait (sans nommer Monta)",
       "footer_link": "Lien 'Gerer mes cookies' footer id oz-cookies-link (fab couvre deja acces permanent)"
+    },
+    "ozecar_one": {
+      "status": "NON_CONFORME_A_CORRIGER",
+      "plateforme": "WordPress 6.7.5 + WooCommerce + Woodmart + Elementor (LiteSpeed). PAS l'app Monta hebergee ailleurs.",
+      "cmp_existante": "CookieYes Lite 3.3.1 (plugin cookie-law-info). Bandeau visible (Tout refuser/Tout accepter) MAIS ne bloque pas les scripts.",
+      "probleme": "Playwright 2026-07-03: _ga + _ga_SHQLJV8HJ5 deposes AVANT clic. gtag('config','G-SHQLJV8HJ5') injecte en dur sans consent default denied. Bandeau cosmetique = non conforme CNIL.",
+      "GA4": "G-SHQLJV8HJ5 (propriete distincte de ozecar.fr)",
+      "bundle_monta": "fr.ozecar.monta.ozecarone dans lien Play Store = AUTORISE (regle MB #2, identifiant technique)",
+      "acces_claude": "wp-deploy present mais allowlist = uploads/ozecar + api uniquement. PAS d'acces hooks PHP -> correction = action admin Dominique.",
+      "fix": "Action Dominique: activer Google Consent Mode dans CookieYes (default denied). Fallback: coller snippet GCM default-denied en header (WPCode/Woodmart custom code) AVANT gtag."
+    },
+    "shopify": {
+      "status": "OK_A_SECURISER",
+      "constat": "Playwright 2026-07-03: 0 cookie tracking avant clic (Shopify respecte sa Consent Tracking API). Analytics natif Trekkie/monorail. Aucune banniere affichee.",
+      "fix": "Action Dominique: Settings > Customer privacy > activer Cookie banner + region UE/France. Zero code. A faire avant de poser GA4/pixels sur le store.",
+      "claude_code_necessaire": false
     }
   },
   "support_flow_2026_07_03": {
