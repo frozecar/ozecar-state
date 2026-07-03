@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.261",
+    "version": "1.262",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.261",
+        "version_to": "1.262",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CORRECTION: mode B autoresponder PAS abandonne (mauvaise lecture). LIVRE: brouillon IA (Haiku, marque blanche) + 3 boutons Envoyer/Editer/Ignorer dans #support via support-intake.php + endpoint api/slack-interact.php (signature verifiee, envoi/edit-modal/ignore + maj ticket stage 2). Teste, artefacts supprimes.",
+          "DEPENDANCE Dominique: activer Interactivity Request URL = ozecar.fr/api/slack-interact.php dans l'app Slack pour que les clics marchent."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.260",
@@ -10352,9 +10362,11 @@
       "slack": "#support cree (C0BEHTP0RQF), bot ozecarbot (U0BDB9M3GG5) invite. Post via bot token (lu depuis slack-bot-config.php).",
       "secrets": "support-intake.php protege par secret serveur (non versionne). Tokens HubSpot/Slack lus depuis proxies voisins (hubspot.php/slack-bot-config.php).",
       "verifie": "E2E OK 2 fois (via support-intake direct + via contact.php): contact+ticket crees, association 200, Slack poste. Artefacts test supprimes.",
-      "reste": "1) Repliquer le cablage sur le form staging (handleSubmit placeholder). 2) Optionnel: ne pas creer de ticket pour type=presse. 3) Renommer en FR les stages du Support Pipeline (New/Waiting on contact/Waiting on us/Closed -> Nouveau/En attente client/En attente de nous/Ferme) — via UI HubSpot (metadata ticketState requise, prudence).",
+      "reste": "1) [Dominique] activer Interactivity Request URL (ci-dessus). 2) Repliquer cablage sur form staging. 3) Optionnel: pas de ticket pour type=presse. 4) Renommer stages Support Pipeline en FR.",
       "CORRECTION_pipeline": "Tickets conducteur -> SUPPORT PIPELINE (id 0), stage New (id 1). PAS le pipeline Maintenance & Intervention (3935127798 = interventions terrain Fred). Corrige + verifie (pipeline 0/stage 1) le 2026-07-03.",
-      "autoresponder": "ABANDONNE les boutons Envoyer/Editer/Ignorer (mode B) — Dominique n'en veut pas. Le flux = ticket Support Pipeline + notif Slack #support, point. Pas d'autoresponder interactif."
+      "autoresponder": "MODE B LIVRE (correction: PAS abandonne — Dominique le veut). support-intake.php genere un BROUILLON de reponse (Claude Haiku, marque blanche stricte, FR) et poste dans #support avec 3 boutons Block Kit: Envoyer / Editer / Ignorer. Rien n'est envoye au conducteur sans clic humain.",
+      "slack_interact": "api/slack-interact.php cree: verifie signature Slack (SLACK_SIGNING_SECRET), puis Envoyer (email au conducteur via send-mail + ticket -> stage 2 'Waiting on contact' + maj message '(envoye par @user)') / Editer (modal Slack pre-rempli du brouillon -> envoi apres validation) / Ignorer (message marque ignore, rien envoye). Teste: brouillon+boutons s'affichent bien dans #support (verifie), artefacts test supprimes.",
+      "DEPENDANCE_dominique": "ACTIVER l'Interactivity dans l'app Slack pour que les CLICS fonctionnent: api.slack.com/apps -> app OZECAR -> 'Interactivity & Shortcuts' -> ON -> Request URL = https://ozecar.fr/api/slack-interact.php -> Save. (Les boutons s'affichent deja; sans ce reglage, un clic renvoie une erreur Slack.)"
     }
   },
   "reprise_supervision_2026_07_02": {
