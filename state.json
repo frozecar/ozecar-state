@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.262",
+    "version": "1.263",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.262",
+        "version_to": "1.263",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Mode B: interactivity integree DANS slack-bot.php (handle_interaction etendu oz_send/oz_edit/oz_ignore + modal). slack-interact.php supprime. AUCUN reglage Slack requis (URL deja slack-bot.php).",
+          "Valide: ticket -> stage 2 (Waiting on contact) OK. Effets Envoyer (email+stage) prets."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.261",
@@ -10362,11 +10372,11 @@
       "slack": "#support cree (C0BEHTP0RQF), bot ozecarbot (U0BDB9M3GG5) invite. Post via bot token (lu depuis slack-bot-config.php).",
       "secrets": "support-intake.php protege par secret serveur (non versionne). Tokens HubSpot/Slack lus depuis proxies voisins (hubspot.php/slack-bot-config.php).",
       "verifie": "E2E OK 2 fois (via support-intake direct + via contact.php): contact+ticket crees, association 200, Slack poste. Artefacts test supprimes.",
-      "reste": "1) [Dominique] activer Interactivity Request URL (ci-dessus). 2) Repliquer cablage sur form staging. 3) Optionnel: pas de ticket pour type=presse. 4) Renommer stages Support Pipeline en FR.",
+      "reste": "1) Repliquer cablage sur form staging. 2) Optionnel: pas de ticket pour type=presse. 3) Renommer stages Support Pipeline en FR. 4) (Envoyer verifie cote effets: ticket->stage 2 OK; dispatch clic = meme pattern que confirm/cancel deja fonctionnels.)",
       "CORRECTION_pipeline": "Tickets conducteur -> SUPPORT PIPELINE (id 0), stage New (id 1). PAS le pipeline Maintenance & Intervention (3935127798 = interventions terrain Fred). Corrige + verifie (pipeline 0/stage 1) le 2026-07-03.",
       "autoresponder": "MODE B LIVRE (correction: PAS abandonne — Dominique le veut). support-intake.php genere un BROUILLON de reponse (Claude Haiku, marque blanche stricte, FR) et poste dans #support avec 3 boutons Block Kit: Envoyer / Editer / Ignorer. Rien n'est envoye au conducteur sans clic humain.",
-      "slack_interact": "api/slack-interact.php cree: verifie signature Slack (SLACK_SIGNING_SECRET), puis Envoyer (email au conducteur via send-mail + ticket -> stage 2 'Waiting on contact' + maj message '(envoye par @user)') / Editer (modal Slack pre-rempli du brouillon -> envoi apres validation) / Ignorer (message marque ignore, rien envoye). Teste: brouillon+boutons s'affichent bien dans #support (verifie), artefacts test supprimes.",
-      "DEPENDANCE_dominique": "ACTIVER l'Interactivity dans l'app Slack pour que les CLICS fonctionnent: api.slack.com/apps -> app OZECAR -> 'Interactivity & Shortcuts' -> ON -> Request URL = https://ozecar.fr/api/slack-interact.php -> Save. (Les boutons s'affichent deja; sans ce reglage, un clic renvoie une erreur Slack.)"
+      "slack_interact": "Interactivity GEREE DANS slack-bot.php (deja Request URL de l'app pour commands+events+interactions). handle_interaction() etendu: oz_send / oz_edit(modal) / oz_ignore + view_submission oz_edit_modal. Helpers oz_* ajoutes (oz_send_customer via send-mail, oz_hs_stage ticket->stage 2, oz_slack_api pour views.open/chat.update). Fichier separe slack-interact.php SUPPRIME (redondant).",
+      "DEPENDANCE_dominique": "AUCUNE. L'Interactivity Request URL est deja slack-bot.php (les boutons Confirmer/Annuler existants marchent deja). Rien a configurer cote Slack."
     }
   },
   "reprise_supervision_2026_07_02": {
