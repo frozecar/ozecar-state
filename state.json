@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.276",
+    "version": "1.277",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.276",
+        "version_to": "1.277",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Boucle entrante support CONFIRMEE operationnelle (filtre Gmail forward -> webhook, verifie via log: reponses dmanfredi recues + traitees).",
+          "Ajout action 'Resoudre & cloturer' (oz_resolve): envoie le message de cloture au conducteur + ticket -> Resolu/Ferme (stage 4). Bouton ajoute sur intake + inbound. Log debug inbound retire. Flow support 100% boucle."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.275",
@@ -10725,7 +10735,7 @@
     "logging_ticket": "Question du conducteur loggee en NOTE a l'ouverture; chaque reponse envoyee loggee en NOTE (visible dans le fil du ticket). Fix du bug 'je ne vois pas la reponse/question'.",
     "expediteur_mail": "Reponses envoyees depuis support@ozecar.fr, nom 'OZECAR Support' (send-mail.php etendu: params from/from_name restreints au domaine @ozecar.fr; MailerSend accepte, verifie).",
     "proprietaire": "Ticket assigne a Dominique (owner 1714568940) a l'ouverture.",
-    "boutons_slack": "Envoyer (email+note+stage->En attente client) / Editer (modal->email+note) / Escalader -> intervention (bascule pipeline + note) / Ignorer. Tout dans #support, rien envoye sans clic. Gere dans slack-bot.php handle_interaction (URL Slack deja = slack-bot.php).",
+    "boutons_slack": "Envoyer (-> En attente client) / Editer / RESOUDRE & CLOTURER (envoi message de cloture + ticket -> Resolu/Ferme stage 4) / Escalader -> intervention / Ignorer. Sur intake ET inbound. Geres dans slack-bot.php handle_interaction (oz_send/oz_edit/oz_resolve/oz_escalate/oz_ignore).",
     "verifie": "ref OZS dans sujet, owner, note question, 4 boutons Slack, expediteur support@ = OK (test E2E, artefacts supprimes).",
     "RESTE_A_CONSTRUIRE": {
       "calendrier_intervention": "A 'Intervention planifiee' (pipeline Maintenance) avec une date -> creer evenement Google Calendar sur le calendrier du proprietaire du ticket (via MCP Google Calendar ou Make). Necessite une saisie de date (propriete ticket date_intervention ou via fiche d'intervention).",
@@ -10743,13 +10753,12 @@
       "logique": "Retrouve la ref OZS dans l'objet -> decode base36 -> ticket. Logge la reponse en NOTE. Ticket Support -> stage 3 (En cours / Waiting on us), rouvre si ferme. Repost #support: reponse + brouillon de SUITE (IA) + boutons Envoyer/Editer/Escalader/Clore. Sans ref valide -> notif triage manuel #support (pas de ticket auto).",
       "verifie": "E2E OK: reponse simulee (objet [OZS-xxx]) -> note loggee, ticket stage 3, Slack brouillon+boutons. Artefacts supprimes.",
       "boucle_complete": "conducteur repond -> inbound -> ticket En cours + brouillon Slack -> agent clique Envoyer -> mail + ticket En attente client -> (reponse -> boucle) ou relance J+3 / cloture J+7.",
-      "acheminement": "MailerSend Inbound Routing ACTIF: adresse frdobsw0sy7zzsg18die@inbound.mailersend.net (catch all, match all) -> webhook support-inbound.php. Route VALIDEE en reel (mail -> ~10s -> ticket En cours + note + Slack).",
-      "DERNIER_PAS_dominique": "Router support@ -> frdobsw0sy7zzsg18die@inbound.mailersend.net via GOOGLE WORKSPACE. RECO: Admin console -> Apps -> Google Workspace -> Gmail -> Routing -> Add setting -> envelope recipient support@ozecar.fr -> action 'Also deliver to' l'adresse inbound (garde la copie dominique@). ALT: filtre Gmail dans dominique@ (transfert vers l'adresse inbound; code de verif Google arrivera dans #support). reply-to reste support@ozecar.fr.",
-      "support_alias": "support@ozecar.fr = ALIAS de dominique@ozecar.fr (Google Workspace). Les mails vers support@ arrivent dans dominique@.",
-      "diagnostic_2026_07_03": "Test Dominique: reponse conducteur recue sur support@ (dominique@) mais RIEN sur Slack/HubSpot (ticket reste en attente client) = NORMAL tant que le routing Google 'Also deliver to inbound' n'est pas actif. Le webhook est valide (test direct OK). Donc: la reponse arrive dans la boite mais n'est pas forwardee vers frdobsw0...@inbound.mailersend.net -> webhook jamais appele. FIX = regle routing Gmail admin."
+      "acheminement": "OPERATIONNEL: Dominique a mis un filtre Gmail (dominique@) 'to:support@' -> transfert vers frdobsw0sy7zzsg18die@inbound.mailersend.net (confirmation Google validee via #support). Reponses conducteur -> webhook confirme (log): reponse loggee + ticket En cours + Slack brouillon+boutons. Boucle entrante FERMEE.",
+      "support_alias": "support@ozecar.fr = ALIAS de dominique@ozecar.fr (Google Workspace). Les mails vers support@ arrivent dans dominique@."
     },
     "cablage": "",
-    "accuse_reception": "AJOUTE 2026-07-03: support-intake.php envoie un accuse de reception immediat au conducteur (from support@ozecar.fr 'OZECAR Support', objet [OZS-xxx] Nous avons bien recu votre demande, reply-to support@). Corrige le 'pas de mail de confirmation'."
+    "accuse_reception": "AJOUTE 2026-07-03: support-intake.php envoie un accuse de reception immediat au conducteur (from support@ozecar.fr 'OZECAR Support', objet [OZS-xxx] Nous avons bien recu votre demande, reply-to support@). Corrige le 'pas de mail de confirmation'.",
+    "statut": "FLOW SUPPORT 100% BOUCLE (entrant + sortant + relance/cloture + resolution). Ouverture (+accuse reception) -> reponse -> En attente client -> reponse conducteur -> En cours -> ... -> Resoudre&Cloturer (mail cloture + Ferme) OU relance J+3/cloture J+7 OU Escalade intervention."
   },
   "infra": {
     "messagerie": "@ozecar.fr = Google Workspace (MX -> aspmx.l.google.com). Domaine registrar Namecheap, DNS geres sur Namecheap. SPF autorise: google, mailersend, mailjet, hubspotemail. Outbound transac = MailerSend SMTP."
