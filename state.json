@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.269",
+    "version": "1.270",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.269",
+        "version_to": "1.270",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Correction: messagerie @ozecar.fr = Google Workspace (MX Google), pas Hostinger. Forward support@ -> adresse inbound MailerSend a regler dans Google Workspace (groupe: ajouter membre; sinon routing admin ou filtre Gmail). DNS restent sur Namecheap, aucun changement DNS requis (route en adresse dediee)."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.268",
@@ -10670,7 +10679,10 @@
       "verifie": "E2E OK: reponse simulee (objet [OZS-xxx]) -> note loggee, ticket stage 3, Slack brouillon+boutons. Artefacts supprimes.",
       "boucle_complete": "conducteur repond -> inbound -> ticket En cours + brouillon Slack -> agent clique Envoyer -> mail + ticket En attente client -> (reponse -> boucle) ou relance J+3 / cloture J+7.",
       "acheminement": "MailerSend Inbound Routing ACTIF: adresse frdobsw0sy7zzsg18die@inbound.mailersend.net (catch all, match all) -> webhook support-inbound.php. Route VALIDEE en reel (mail -> ~10s -> ticket En cours + note + Slack).",
-      "DERNIER_PAS_dominique": "Ajouter un FORWARD Hostinger email: support@ozecar.fr -> frdobsw0sy7zzsg18die@inbound.mailersend.net. Ainsi les reponses des conducteurs (reply-to reste support@ozecar.fr, propre) sont forwardees vers la route -> webhook. Reply-to garde le branding ozecar.fr (pas d'adresse mailersend visible cote client)."
+      "DERNIER_PAS_dominique": "Router support@ozecar.fr -> frdobsw0sy7zzsg18die@inbound.mailersend.net DANS GOOGLE WORKSPACE (pas Hostinger; MX=Google). Si support@ est un Google Groupe: ajouter l'adresse inbound comme MEMBRE (le plus simple). Sinon: Admin console -> Apps -> Gmail -> Routing (regle 'also deliver to' l'adresse inbound pour le destinataire support@), OU filtre Gmail 'to:support@' -> forward (code de verif Google arrivera dans #support comme 'e-mail sans reference'). Reply-to reste support@ozecar.fr (branding propre)."
     }
+  },
+  "infra": {
+    "messagerie": "@ozecar.fr = Google Workspace (MX -> aspmx.l.google.com). Domaine registrar Namecheap, DNS geres sur Namecheap. SPF autorise: google, mailersend, mailjet, hubspotemail. Outbound transac = MailerSend SMTP."
   }
 }
