@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.274",
+    "version": "1.275",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.274",
+        "version_to": "1.275",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "FIX page guide Alfen cassee: KSES avait strippe <style>/<link>/<script> (insert via script sans unfiltered_html). Reinjecte contenu complet via wpdb->update direct. Page OK (body cream, CSS applique).",
+          "Learning KSES documente dans guides_bornes._learnings"
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.273",
@@ -10748,7 +10758,10 @@
         "cree": "2026-07-03",
         "preview_statique_supprimee": "ozecar-guide-alfen-eve-single-pro-line.html (uploads) supprimee, remplacee par la page WP"
       }
-    }
+    },
+    "_learnings": [
+      "PIEGE KSES: creer un post via wp_insert_post en script PHP front (sans user unfiltered_html) FAIT SAUTER les balises <style>/<link>/<script> du contenu -> page cassee (CSS en texte brut). FIX: ecrire post_content en direct via wpdb->update + clean_post_cache (contourne KSES). Vaut pour tout guide/page avec bloc wp:html."
+    ]
   },
   "REGLE_ABSOLUE_tarif_transit": {
     "regle": "Le forfait TRANSIT ne doit JAMAIS afficher de prix en public. Toujours 'Sur devis'. La carte reste visible mais le prix est remplace par 'Sur devis'. CTA = 'Nous contacter'.",
