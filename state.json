@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.259",
+    "version": "1.260",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.259",
+        "version_to": "1.260",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Ajout cookies_consent",
+          "Bandeau natif + Consent Mode v2 sur staging (conforme CNIL, valide Playwright)",
+          "Audit trackers GTM-M593SGD+GA4",
+          "Reste: valid Dominique, prod, Shopify, ozecar.one, page confidentialite"
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.258",
@@ -10483,6 +10495,43 @@
       "audit_double": "L audit est livre a SA propre etape (Audit realise, avant le devis) comme document de confiance, ET repris en annexe/synthese dans le pack devis. Ne pas le reserver au seul moment du devis.",
       "mecanisme": "Ajouter au configurateur-devis (le 'devis a telecharger') un toggle 'Reprise de supervision' qui, ON, appende lettre + plan bascule + checklist au PDF. Auto-coche si tag HubSpot deal = Reprise; sinon coche manuel commercial.",
       "next": "Cabler le toggle 'Reprise' dans le configurateur-devis + finaliser wording lettre (draft reprise-lettre-resiliation.html) + version editable (docx) pour le client."
+    }
+  },
+  "cookies_consent": {
+    "status": "LIVE_STAGING_ONLY",
+    "approach": "Bandeau OZECAR natif self-hosted charté pilotant Google Consent Mode v2. CMP tierce (tarteaucitron/Axeptio) écartée: surdimensionnée car 100% du tracking passe par un seul container GTM.",
+    "why_consent_mode": "GTM-M593SGD injecté par plugin tiers hors allowlist wp-deploy. Consent Mode v2 default=denied en wp_head prio -999 (avant le container) bloque le depot cookies GA avant clic.",
+    "trackers_audited_2026_07_03": {
+      "GTM": "GTM-M593SGD",
+      "GA4": "G-15HETB1C73 via GTM",
+      "linkedin_meta": "absents (prevus rentree)",
+      "hubspot": "non detecte au rendu"
+    },
+    "files_staging": [
+      "inc/consent-mode.php",
+      "assets/js/ozecar-consent.js",
+      "assets/css/ozecar-consent.css",
+      "functions.php require_once (backup auto)"
+    ],
+    "categories": [
+      "Necessaires (toujours actifs)",
+      "Mesure audience->analytics_storage",
+      "Publicite->ad_storage+ad_user_data+ad_personalization"
+    ],
+    "conformite_cnil": {
+      "accepter_refuser_meme_niveau": true,
+      "rien_avant_consentement": "Playwright 2026-07-03: 0 cookie _ga avant clic",
+      "acces_permanent": "fab cookie bas-gauche + hooks lien footer",
+      "preuve": "cookie oz_consent horodate + localStorage, 1 an"
+    },
+    "validation_playwright_2026_07_03": "OK avant:0 tracker / apres accept:_ga+_ga_15HETB1C73+_gcl_au+oz_consent, bandeau off fab on",
+    "reste_a_faire": {
+      "dominique": "Valider visuel staging + confirmer plugin GTM (si Site Kit: ne pas activer sa banniere native)",
+      "prod": "EXPO LIVE: prod tire GA sans bandeau. Theme prod ozecarv2 hors allowlist + regle prod-no-touch -> go explicite requis",
+      "shopify": "Banniere native Shopify Customer privacy -> brief Claude Code + admin Dominique",
+      "ozecar_one": "App logue: consentement separe",
+      "politique": "Completer /politique-de-confidentialite/ cookies+retrait (sans nommer Monta)",
+      "footer_link": "Lien 'Gerer mes cookies' footer id oz-cookies-link (fab couvre deja acces permanent)"
     }
   }
 }
