@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.280",
+    "version": "1.281",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.280",
+        "version_to": "1.281",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Board Monday 'OZECAR — Sites / Parc' CREE (id 18420503504, workspace 8567866). Colonnes: Client, Ville, Ref parc, Niveau (N0-N4), Mainteneur, Email mainteneur, SLA. = registre par-site (niveau + mainteneur), source de verite du gate maintenance. A peupler."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.279",
@@ -10848,7 +10857,24 @@
         "N3": "Curatif SLA48h 18e - N2 + 2 visites/an + curatif inclus (deplacement+MO, pieces hors garantie au coutant) + hotline; exclusions sur devis",
         "N4": "Curatif SLA24h 24e - curatif inclus sous 24h; memes exclusions"
       },
-      "next": "1) Creer board Monday Sites/Parc. 2) Cabler le gate (lookup site -> niveau -> inclus/devis) dans la creation d'intervention. 3) Reprendre la feature 'note channel -> intervention' (direction 2) avec check-360 + gate integres."
+      "next": "Board Sites cree. Prochain: cabler le gate (lookup board -> niveau -> route ticket) + reprendre 'note channel -> intervention' avec check-360. Phase 2 (dispatch externe) plus tard.",
+      "board_sites": {
+        "board_id": "18420503504",
+        "nom": "OZECAR — Sites / Parc",
+        "workspace": 8567866,
+        "colonnes": {
+          "client": "text_mm4xcx4c",
+          "ville": "text_mm4xcchn",
+          "ref_parc": "text_mm4x8y43",
+          "niveau": "text_mm4x9amd",
+          "mainteneur": "text_mm4xhjw0",
+          "email_mainteneur": "email_mm4xb5x4",
+          "sla": "text_mm4xqrnw"
+        },
+        "item_name": "= nom du site",
+        "statut": "CREE (vide). A peupler par Dominique/Marie-Estelle au fil de l'onboarding (niveau depuis le contrat, mainteneur = Interne (Fred) par defaut en Phase 1). Interrogeable par le bot via proxy monday.php.",
+        "next": "Cabler le gate: a la creation d'intervention, lookup du site dans ce board -> niveau -> route (inclus N3/N4 curatif -> Intervention a prevoir ; sinon -> Devis a faire) + remplit ozecar_niveau_maintenance + affiche check-360 (niveau/SLA/inclus-devis/mainteneur)."
+      }
     }
   },
   "presentations_v2_2026_07_03": {
