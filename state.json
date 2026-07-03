@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.260",
+    "version": "1.261",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.260",
+        "version_to": "1.261",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CORRECTION: tickets conducteur -> Support Pipeline (id 0/New) et non Maintenance & Intervention. Verifie.",
+          "Autoresponder mode B (boutons) ABANDONNE (Dominique n'en veut pas). Flux = ticket support + notif Slack simple."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.259",
@@ -10342,7 +10352,9 @@
       "slack": "#support cree (C0BEHTP0RQF), bot ozecarbot (U0BDB9M3GG5) invite. Post via bot token (lu depuis slack-bot-config.php).",
       "secrets": "support-intake.php protege par secret serveur (non versionne). Tokens HubSpot/Slack lus depuis proxies voisins (hubspot.php/slack-bot-config.php).",
       "verifie": "E2E OK 2 fois (via support-intake direct + via contact.php): contact+ticket crees, association 200, Slack poste. Artefacts test supprimes.",
-      "reste": "1) Autoresponder mode B (brouillon reponse FAQ poste dans #support avec boutons Envoyer/Editer/Ignorer via slack-bot.php). 2) Repliquer sur le form staging (handleSubmit placeholder). 3) Optionnel: ne pas creer de ticket pour type=presse (rediriger). 4) Passer le ticket a un stage/niveau selon categorie."
+      "reste": "1) Repliquer le cablage sur le form staging (handleSubmit placeholder). 2) Optionnel: ne pas creer de ticket pour type=presse. 3) Renommer en FR les stages du Support Pipeline (New/Waiting on contact/Waiting on us/Closed -> Nouveau/En attente client/En attente de nous/Ferme) — via UI HubSpot (metadata ticketState requise, prudence).",
+      "CORRECTION_pipeline": "Tickets conducteur -> SUPPORT PIPELINE (id 0), stage New (id 1). PAS le pipeline Maintenance & Intervention (3935127798 = interventions terrain Fred). Corrige + verifie (pipeline 0/stage 1) le 2026-07-03.",
+      "autoresponder": "ABANDONNE les boutons Envoyer/Editer/Ignorer (mode B) — Dominique n'en veut pas. Le flux = ticket Support Pipeline + notif Slack #support, point. Pas d'autoresponder interactif."
     }
   },
   "reprise_supervision_2026_07_02": {
