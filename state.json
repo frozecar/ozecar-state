@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.268",
+    "version": "1.269",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.268",
+        "version_to": "1.269",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "MailerSend Inbound route ACTIVE + VALIDEE en reel (mail -> webhook ~10s -> ticket En cours + note + Slack brouillon+boutons). Reply-to garde support@ozecar.fr.",
+          "Dernier pas Dominique: forward Hostinger support@ozecar.fr -> frdobsw0...@inbound.mailersend.net pour connecter les vraies reponses conducteur a la route."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.267",
@@ -10658,8 +10668,9 @@
       "fichier": "api/support-inbound.php (?key=SECRET). Recoit une reponse conducteur (JSON simple OU payload MailerSend inbound).",
       "logique": "Retrouve la ref OZS dans l'objet -> decode base36 -> ticket. Logge la reponse en NOTE. Ticket Support -> stage 3 (En cours / Waiting on us), rouvre si ferme. Repost #support: reponse + brouillon de SUITE (IA) + boutons Envoyer/Editer/Escalader/Clore. Sans ref valide -> notif triage manuel #support (pas de ticket auto).",
       "verifie": "E2E OK: reponse simulee (objet [OZS-xxx]) -> note loggee, ticket stage 3, Slack brouillon+boutons. Artefacts supprimes.",
-      "MANQUE_acheminement": "Il faut router les mails entrants (reponses conducteur) vers ce webhook. Reco = MailerSend Inbound Routing sur un sous-domaine (ex reply.ozecar.fr) -> webhook; sinon Make 'Watch emails' IMAP sur dominique@ (support@ alias). Sans ca, la reponse client n'arrive pas au systeme (elle reste dans la boite).",
-      "boucle_complete": "conducteur repond -> inbound -> ticket En cours + brouillon Slack -> agent clique Envoyer -> mail + ticket En attente client -> (reponse -> boucle) ou relance J+3 / cloture J+7."
+      "boucle_complete": "conducteur repond -> inbound -> ticket En cours + brouillon Slack -> agent clique Envoyer -> mail + ticket En attente client -> (reponse -> boucle) ou relance J+3 / cloture J+7.",
+      "acheminement": "MailerSend Inbound Routing ACTIF: adresse frdobsw0sy7zzsg18die@inbound.mailersend.net (catch all, match all) -> webhook support-inbound.php. Route VALIDEE en reel (mail -> ~10s -> ticket En cours + note + Slack).",
+      "DERNIER_PAS_dominique": "Ajouter un FORWARD Hostinger email: support@ozecar.fr -> frdobsw0sy7zzsg18die@inbound.mailersend.net. Ainsi les reponses des conducteurs (reply-to reste support@ozecar.fr, propre) sont forwardees vers la route -> webhook. Reply-to garde le branding ozecar.fr (pas d'adresse mailersend visible cote client)."
     }
   }
 }
