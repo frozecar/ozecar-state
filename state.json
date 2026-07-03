@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.271",
+    "version": "1.272",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.271",
+        "version_to": "1.272",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Guide config Alfen Eve Single Pro-line (Pro S) cree sur staging — clone template EVlink, mocks ACE Service Installer",
+          "OCPP wss://ocpp.ozecar.app · OCPP 1.6J · Identifier=n serie · marque blanche OK (0 Monta)",
+          "TODO: page WP au slug /guides/alfen-eve-single-pro-line pour resoudre l'entree d'index"
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.270",
@@ -10694,5 +10705,21 @@
   },
   "infra": {
     "messagerie": "@ozecar.fr = Google Workspace (MX -> aspmx.l.google.com). Domaine registrar Namecheap, DNS geres sur Namecheap. SPF autorise: google, mailersend, mailjet, hubspotemail. Outbound transac = MailerSend SMTP."
+  },
+  "guides_bornes": {
+    "_note": "Guides de configuration par borne (fichiers HTML statiques deployes sous wp-content/uploads/ozecar/guides/). Cloner le template EVlink pour la charte.",
+    "guides": {
+      "alfen_eve_single_pro_line": {
+        "borne": "Alfen Eve Single Pro-line (Pro S) + Double Pro-line",
+        "outil_config": "ACE Service Installer (Windows, RJ45) / MyEve app",
+        "fichier": "wp-content/uploads/ozecar/guides/ozecar-guide-alfen-eve-single-pro-line.html",
+        "url_staging": "https://staging.ozecar.fr/wp-content/uploads/ozecar/guides/ozecar-guide-alfen-eve-single-pro-line.html",
+        "http": "200",
+        "ocpp": "wss://ocpp.ozecar.app/ · OCPP 1.6J · Identifier=numero de serie · owner password FW5.0+",
+        "cree": "2026-07-03",
+        "marque_blanche": "OK (0 Monta, 0 imgix)",
+        "todo": "Creer la page WP au slug /guides/alfen-eve-single-pro-line (ou rediriger l'entree d'index) — actuellement fichier preview statique seul"
+      }
+    }
   }
 }
