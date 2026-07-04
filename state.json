@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.302",
+    "version": "1.303",
     "updated": "2026-07-04",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-04",
+        "version_from": "1.302",
+        "version_to": "1.303",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "REGLE ABSOLUE: frais operateur/roaming = couts internes, JAMAIS publics. Retire de home + supervision-3 (Operator fees -2% / Roaming fees -4%). Verifie DOM: 0 mention.",
+          "Cartes Pro+/Transit gardent leurs vraies features."
+        ]
+      },
       {
         "date": "2026-07-04",
         "version_from": "1.301",
@@ -9456,7 +9466,8 @@
       },
       "module_flotte_50": "globale (payante tous forfaits)"
     },
-    "transit_regle": "JAMAIS de prix public — toujours Sur devis (decision Dominique 2026-07-02)"
+    "transit_regle": "JAMAIS de prix public — toujours Sur devis (decision Dominique 2026-07-02)",
+    "_fees_internes_JAMAIS_PUBLIC": "frais_operateur_pct et frais_itinerance_pct = couts internes, NE JAMAIS afficher en public (decision Dominique 2026-07-04)."
   },
   "devis_configurateur_2026_06_18": {
     "_note": "Flux devis post-visio: configurateur HTML -> HubSpot (deal) -> PandaDoc (clic 'Create Document' natif) -> signature. Decide 2026-06-18.",
@@ -11372,5 +11383,13 @@
     ],
     "impl": "data-oz-annuel/data-oz-mensuel sur chaque prix (.oz-price-val) + assets/js/pricing-toggle.js (enqueue prio 90). Verifie navigateur: bascule OK, 0 erreur.",
     "note_seule_2_surfaces": "Seules home et supervision-3 affichent des prix forfait sur le staging (scan complet)."
+  },
+  "REGLE_ABSOLUE_fees_internes": {
+    "regle": "Les 'frais operateur' (frais_operateur_pct) et 'frais d'itinerance/roaming' (frais_itinerance_pct) sont nos COUTS INTERNES / marges. JAMAIS affiches en public (site, devis client public, cartes tarifs). Ne jamais republier 'Operator fees -X%' / 'Roaming fees -X%'.",
+    "decision_par": "Dominique",
+    "date": "2026-07-04",
+    "statut": "NE JAMAIS AFFICHER. Jamais discute ni autorise pour publication.",
+    "action": "Retire de staging home (page 22462) et supervision-3 (page 22463) le 2026-07-04 (verifie DOM, 0 mention).",
+    "note": "Ces champs existent dans pricing_canonical_2026_06_17 a titre INTERNE uniquement."
   }
 }
