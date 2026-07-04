@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.281",
+    "version": "1.282",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.281",
+        "version_to": "1.282",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Decision archi donnees compte: FEDERATION pas duplication. Monta = verite technique/compte (teams/sites/charge-points/team-members: mise en service=activeAt, admins, etc.). HubSpot = commercial (forfait/niveau). Pennylane/Stripe = facturation. Monday Sites = SEULEMENT orphelins maintenance (niveau/mainteneur/visites preventives/SLA) + cle jointure teamId Monta.",
+          "Bot = interface unique 'fiche compte 360' qui fedère les sources en live (a construire Phase 1). Cle jointure = Monta partnerExternalId <-> company HubSpot."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.280",
@@ -10874,6 +10884,15 @@
         "item_name": "= nom du site",
         "statut": "CREE (vide). A peupler par Dominique/Marie-Estelle au fil de l'onboarding (niveau depuis le contrat, mainteneur = Interne (Fred) par defaut en Phase 1). Interrogeable par le bot via proxy monday.php.",
         "next": "Cabler le gate: a la creation d'intervention, lookup du site dans ce board -> niveau -> route (inclus N3/N4 curatif -> Intervention a prevoir ; sinon -> Devis a faire) + remplit ozecar_niveau_maintenance + affiche check-360 (niveau/SLA/inclus-devis/mainteneur)."
+      },
+      "modele_donnees_compte_360": {
+        "principe": "FEDERATION, pas duplication. Chaque donnee reste dans son systeme de verite; le bot Slack fedère en une 'fiche compte 360' a la demande. Monday NE clone PAS Monta/HubSpot.",
+        "monta_source_de_verite": "teams (societe, email, VAT, joinCode, createdAt) ; sites (nom, createdAt) ; charge-points (activeAt=mise en service, createdAt, serial, modele, firmware, state, location, priceGroupId, simCard) ; team-members (utilisateurs admin: displayName, email, userId). Endpoints via monta.php: /teams, /sites, /charge-points, /team-members?teamId=X.",
+        "hubspot": "Abonnement supervision (forfait) = deal + line items ; niveau maintenance contrat ; deals/pricing.",
+        "pennylane_stripe": "Facturation / impayes / abonnement Stripe.",
+        "monday_sites_ROLE": "UNIQUEMENT les orphelins (pas d'autre maison): niveau de maintenance (miroir/contrat), mainteneur + email, visites preventives (prochaine/derniere), SLA + CLE DE JOINTURE (teamId/siteId Monta). PAS un clone du compte.",
+        "cle_jointure": "Monta partnerExternalId / partnerCustomPayload (controles par nous) -> stamper l'ID company HubSpot ; stocker teamId Monta sur la company HubSpot. Fil Monta<->HubSpot<->Monday.",
+        "livrable_bot": "Commande Slack 'fiche compte <nom>' / 'fiche site <nom>' -> carte consolidee (identite+mise en service+bornes/statut+admins depuis Monta ; forfait+niveau depuis HubSpot ; impayes Pennylane ; visite preventive+mainteneur Monday). A construire (Phase 1)."
       }
     }
   },
