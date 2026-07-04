@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.303",
+    "version": "1.304",
     "updated": "2026-07-04",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-04",
+        "version_from": "1.303",
+        "version_to": "1.304",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Precision regle fees: frais operateur/itinerance = UNIQUEMENT dans les devis PandaDoc, jamais public. (Clarification Dominique.)"
+        ]
+      },
       {
         "date": "2026-07-04",
         "version_from": "1.302",
@@ -9467,7 +9476,7 @@
       "module_flotte_50": "globale (payante tous forfaits)"
     },
     "transit_regle": "JAMAIS de prix public — toujours Sur devis (decision Dominique 2026-07-02)",
-    "_fees_internes_JAMAIS_PUBLIC": "frais_operateur_pct et frais_itinerance_pct = couts internes, NE JAMAIS afficher en public (decision Dominique 2026-07-04)."
+    "_fees_internes_JAMAIS_PUBLIC": "frais_operateur_pct / frais_itinerance_pct = uniquement dans les DEVIS (PandaDoc), jamais public (Dominique 2026-07-04)."
   },
   "devis_configurateur_2026_06_18": {
     "_note": "Flux devis post-visio: configurateur HTML -> HubSpot (deal) -> PandaDoc (clic 'Create Document' natif) -> signature. Decide 2026-06-18.",
@@ -11385,11 +11394,12 @@
     "note_seule_2_surfaces": "Seules home et supervision-3 affichent des prix forfait sur le staging (scan complet)."
   },
   "REGLE_ABSOLUE_fees_internes": {
-    "regle": "Les 'frais operateur' (frais_operateur_pct) et 'frais d'itinerance/roaming' (frais_itinerance_pct) sont nos COUTS INTERNES / marges. JAMAIS affiches en public (site, devis client public, cartes tarifs). Ne jamais republier 'Operator fees -X%' / 'Roaming fees -X%'.",
+    "regle": "Les frais operateur et frais d'itinerance (roaming) figurent UNIQUEMENT dans les DEVIS (PandaDoc). Ils y restent exclusivement. JAMAIS affiches sur aucune surface publique (site, cartes tarifs, pages marketing).",
+    "clarification_dominique_2026_07_04": "Ce ne sont pas des couts a cacher: ce sont de vrais frais, mais leur place est le devis client, pas le site public.",
     "decision_par": "Dominique",
     "date": "2026-07-04",
-    "statut": "NE JAMAIS AFFICHER. Jamais discute ni autorise pour publication.",
-    "action": "Retire de staging home (page 22462) et supervision-3 (page 22463) le 2026-07-04 (verifie DOM, 0 mention).",
-    "note": "Ces champs existent dans pricing_canonical_2026_06_17 a titre INTERNE uniquement."
+    "statut": "Public = JAMAIS. Devis = OK (leur seule place).",
+    "action_faite": "Retire de staging home (22462) et supervision-3 (22463) le 2026-07-04 (Operator fees -2% / Roaming fees -4%), verifie DOM = 0 mention.",
+    "reference_valeurs": "pricing_canonical_2026_06_17 (frais_operateur_pct / frais_itinerance_pct) = source pour les DEVIS uniquement."
   }
 }
