@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.285",
-    "updated": "2026-07-03",
+    "version": "1.286",
+    "updated": "2026-07-04",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-04",
+        "version_from": "1.285",
+        "version_to": "1.286",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "NOUVEAU flux demo->devis (granola_demo_devis_flow_2026_07_04): Granola folder->Slack #demos auto-post + bot OZECAR enrichit (match deal L&Q, extraction PDC/stations/bornes, note fiche HubSpot, carte boutons Creer devis / Envoyer, transitions de phase). Forme enrichie validee Dominique.",
+          "Verifie capacites Granola: auto-post = regle folder->channel (Business 14$/user + email Google Workspace requis).",
+          "Flag contradiction stages L&Q dans le state: map 5215721688=Demo realisee PERIMEE; confirme operationnel 5215721688=Demo planifiee, 5215721690=Devis envoye; 5215721689=Demo realisee a confirmer live."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.284",
@@ -10978,5 +10989,49 @@
       "N4": "Maintenance N4 — Curatif SLA 24h | 24 € HT (28,80 TTC) | Inclus: curatif inclus sous 24h | Memes exclusions N3",
       "config": "applicableFor=charge-point, priceModel=per-charge-point, pas de frais operateur/transaction (forfait maintenance flat), prix stocke TTC (=HT x1,20). supportEmail hello@ozecar.fr."
     }
+  },
+  "granola_demo_devis_flow_2026_07_04": {
+    "objectif": "Chaque demo realisee -> resume Granola dans #demos -> carte bot OZECAR (resume + quantites PDC/stations/bornes extraites + lien deal HubSpot) -> boutons 'Creer devis' (configurateur pre-rempli) + 'Envoyer' -> deal change de phase. Tous les membres du channel peuvent creer un devis depuis une demo.",
+    "forme_validee": "ENRICHI (Pipe A) - valide Dominique 2026-07-04.",
+    "architecture": {
+      "trigger": "Granola native folder->Slack auto-post rule: folder partage 'Demos OZECAR' -> channel #demos. Chaque commercial met sa note de demo dans ce folder -> post auto. Requiert Granola Business (14$/user/mois) + compte email Google Workspace (pas Gmail perso) par employe.",
+      "enrichissement_bot": "slack-bot.php ecoute message.channels sur #demos, detecte le post Granola (app bot), lit resume + attendees, matche le deal L&Q (email attendee -> contact -> deal au stage Demo planifiee 5215721688), extrait PDC/stations/bornes via Claude, ecrit une note structuree sur la fiche deal, poste une carte en thread avec 2 boutons.",
+      "boutons": {
+        "creer_devis": "oz_devis_create -> lien configurateur staging ?sales&deal_id=X + quantites pre-remplies (POST scenario 08 pour persister) ; deal -> stage preparation devis",
+        "envoyer": "oz_devis_send -> scenario 09 (6301518, email client 'Ouvrir mon devis') ou PandaDoc ; deal -> Devis envoye 5215721690"
+      },
+      "reutilise": [
+        "configurateur-devis.html (deal_id via URL + scenario 08 updateDeal actif)",
+        "scenario 09 id 6301518 (INACTIF, a activer apres test)",
+        "slack-bot.php handle_interaction (pattern oz_* eprouve sur support/intervention)"
+      ]
+    },
+    "stages_LQ": {
+      "confirmes_operationnel": {
+        "5215721688": "Demo planifiee",
+        "5215721690": "Devis envoye"
+      },
+      "a_confirmer_live_avant_cablage": "Demo realisee = 5215721689 (probable). ATTENTION: la map '5215721688=Demo realisee / 5215721690=Kit envoye' presente ailleurs dans le state est PERIMEE/contradictoire - ne pas s'y fier. Confirmer via API HubSpot avant de hardcoder les transitions.",
+      "pipeline": "Leads et Qualification 3747862733"
+    },
+    "deps_dominique": [
+      "PLAN: passer les commerciaux qui font des demos en Granola Business (14$/user/mois). Confirmer que les emails equipe sont bien Google Workspace @ozecar.fr (requis pour l'integration Slack native).",
+      "SETUP par employe: connecter Granola<->Slack (meme email), rejoindre le folder partage 'Demos OZECAR', activer la regle folder->#demos.",
+      "SLACK APP: ajouter scopes channels:history + channels:read, souscrire event message.channels, reinstaller l'app, inviter ozecar-bot dans #demos. (Claude fournit la liste exacte, Dominique valide/reinstalle.)",
+      "CHANNEL: creer #demos (Claude fournit le nom; Dominique cree pendant la passe Slack)."
+    ],
+    "build_claude": [
+      "Confirmer stages L&Q live (5215721689?).",
+      "Handlers slack-bot.php: listener message.channels #demos + detection post Granola + match deal + extraction Claude PDC/stations/bornes + write note deal + post carte boutons.",
+      "handle_interaction: oz_devis_create (URL configurateur pre-rempli + move stage) + oz_devis_send (scenario 09 + move Devis envoye).",
+      "Configurateur: accepter quantites pre-remplies via params URL (pdc/stations/bornes).",
+      "Fallback carte 'deal non trouve' avec selecteur manuel."
+    ],
+    "risques": [
+      "Matching note Granola -> deal (via attendees/nom societe) = point fragile. Mitigation: convention titre note 'Demo OZECAR - {Societe}' + match sur deal au stage Demo planifiee ; fallback selecteur manuel dans la carte.",
+      "Extraction des quantites depend de la prise de note du commercial. Mitigation: configurateur reste entierement editable cote commercial."
+    ],
+    "marque_blanche": "Resume Granola = interne (Slack = backend) -> Monta peut y apparaitre, OK. Le devis envoye au client (configurateur/PandaDoc) reste white-label, deja propre.",
+    "status": "Architecture VERROUILLEE 2026-07-04. Build Claude demarrable en parallele; activation bout-en-bout conditionnee aux deps Granola/Slack Dominique."
   }
 }
