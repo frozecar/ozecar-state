@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.299",
+    "version": "1.300",
     "updated": "2026-07-04",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-04",
+        "version_from": "1.299",
+        "version_to": "1.300",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Toggle tarifs Annuel/Mensuel deploye (home + supervision-3), annuel preselectionne -15%, pas de biannuel. Prix = canonical. Verifie navigateur.",
+          "Corrige prix faux supervision-3: Pro 14,49->14,90, Pro+ 24,49->24,90. Transit reste Sur devis."
+        ]
+      },
       {
         "date": "2026-07-04",
         "version_from": "1.298",
@@ -11301,5 +11311,31 @@
     "principe_valide": "Webhook-first: tout scenario dont la source supporte un webhook (HubSpot, Calendly, monday, Shopify) doit etre event-driven, jamais polling 15min. Chaque polling actif = ~2880 ops/mois de cout fixe.",
     "a_surveiller": "05 et 05b (booking demo) sont en polling 15min - actuellement inactifs. Si reactivation pour vrais bookings, les passer en webhook Calendly/HubSpot avant, sinon +2880 ops/scenario.",
     "cout_par_evenement_reel": "commande Shopify ~10 ops, devis configurateur ~2-3 ops, booking ~4 ops, relance quotidienne 07 ~3 ops. La vraie data est bon marche; le risque etait le polling, pas le volume."
+  },
+  "pricing_toggle_2026_07_04": {
+    "quoi": "Toggle Annuel/Mensuel sur les pages tarifs. Annuel PRESELECTIONNE (badge -15%). Mensuel selectionnable. PAS de biannuel affiche.",
+    "prix_source": "pricing_canonical_2026_06_17 (annuel/mensuel par forfait).",
+    "grille_affichee": {
+      "essential": {
+        "annuel": "5,90",
+        "mensuel": "6,90"
+      },
+      "pro": {
+        "annuel": "14,90",
+        "mensuel": "17,50"
+      },
+      "pro_plus": {
+        "annuel": "24,90",
+        "mensuel": "29,90"
+      },
+      "transit": "Sur devis (jamais de prix - REGLE ABSOLUE)"
+    },
+    "corrections": "supervision-3: Pro 14,49->14,90 et Pro+ 24,49->24,90 (etaient faux).",
+    "pages": [
+      "home (22462): Essential+Pro",
+      "supervision-3 (22463): Essential+Pro+ProPlus, Transit=Sur devis"
+    ],
+    "impl": "data-oz-annuel/data-oz-mensuel sur chaque prix (.oz-price-val) + assets/js/pricing-toggle.js (enqueue prio 90). Verifie navigateur: bascule OK, 0 erreur.",
+    "note_seule_2_surfaces": "Seules home et supervision-3 affichent des prix forfait sur le staging (scan complet)."
   }
 }
