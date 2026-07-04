@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.296",
+    "version": "1.297",
     "updated": "2026-07-04",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-04",
+        "version_from": "1.296",
+        "version_to": "1.297",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Captcha AUTO-HEBERGE ajoute au form contact (protege aussi la reputation MailerSend): api/captcha.php (image GD + jeton signe HMAC, cle dans api/oz-captcha-key.php) + verif dans contact-intake.php (403 si absent/invalide) + widget dans contact-routing.js. Zero tiers/compte/cout/tracker/cookie. Teste (403 sans, ok avec), contact test archive.",
+          "Defense en profondeur complete: captcha + honeypot + timing + rate-limit IP + heuristiques + emails jetables."
+        ]
+      },
       {
         "date": "2026-07-04",
         "version_from": "1.295",
@@ -6309,7 +6319,7 @@
     "files_deployed": {
       "https://ozecar.fr/api/qr-redirect.php": {
         "deployed_at": "2026-05-15T16:50:51Z",
-        "sha256": "51e35b6439d5f8dc02ac2b646ada1b34fa059c881d6c363a18e57ad4acc09913",
+        "sha256": "<REDACTED_HEX>",
         "size_bytes": 5336
       }
     },
@@ -8265,8 +8275,8 @@
       "method": "wp-deploy.php update_page action",
       "backup_serveur": "wp-content/uploads/ozecar/page-backups/page-22462-20260529-210702.html",
       "backup_local": "api/backups/page22462-home-2026-05-29-2104.html (sur Hostinger)",
-      "commit_sha_avant": "d98c193ebc0be0a5c7c2e00f37c1d6fe2ec37c4d7d413d058d7f632016ed2b92",
-      "commit_sha_apres": "c4648c1c864f5804ff4bb5da331c112107a8dd790c33327b2e9d82e7078ab954",
+      "commit_sha_avant": "<REDACTED_HEX>",
+      "commit_sha_apres": "<REDACTED_HEX>",
       "modifications_appliquees": [
         "Zone 1 - Hero H1 : 'Vos bornes supervisees en 10 minutes. Sans technicien.' -> 'Vos bornes en pilotage automatique.'",
         "Zone 1 - Hero P : 'Portail temps reel...' -> 'Connectivite, supervision, depannage a distance : OZECAR gere, vous encaissez.'",
@@ -11245,7 +11255,16 @@
       "implemente": "Durcissement de contact-intake.php, zero dependance externe: (1) honeypot 'website', (2) timing trap (rejet si soumission <2.5s apres rendu, via ts_render envoye par le JS), (3) rate-limit 5 req / 15 min par IP (fichier temp), (4) heuristiques: HTML/URL dans le nom rejete, >=3 liens dans le message rejete, (5) blocage emails jetables (mailinator/yopmail/guerrillamail/etc.).",
       "teste": "honeypot avale, jetable/URL-nom/trop-rapide rejetes, diag bypass. contact-routing.js envoie ts_render.",
       "escalade_si_besoin": "Si un jour le spam explose, on pourra ajouter un captcha (Turnstile/hCaptcha) sans toucher au routing. Non necessaire aujourd'hui.",
-      "turnstile_retire": "api/oz-turnstile.php supprime, bloc verif retire de contact-intake.php."
+      "turnstile_retire": "api/oz-turnstile.php supprime, bloc verif retire de contact-intake.php.",
+      "note": "Complete par le captcha auto-heberge (voir captcha_self_hosted). Turnstile reste retire."
+    },
+    "captcha_self_hosted": {
+      "decision": "Captcha AJOUTE (validation Dominique): necessaire contre spam ET pour proteger la reputation d'expediteur MailerSend (chaque soumission bot declenche un accuse email). Contrainte: pas de Cloudflare, pas de cout, pas de tracker.",
+      "solution": "Captcha AUTO-HEBERGE. api/captcha.php genere une image GD (code 5 car., charte creme/ink/violet) + jeton signe HMAC (stateless, sans cookie/session/DB). Cle HMAC dans api/oz-captcha-key.php (serveur only, jamais dans state). Fallback texte si GD absent (GD present sur le serveur, confirme).",
+      "verif": "contact-intake.php verifie captcha_token+captcha_code via HMAC (hash_equals) + expiry 600s. Rejet 403 si absent/invalide/expire. Diag bypass.",
+      "front": "contact-routing.js injecte le widget (image cliquable pour recharger + champ code) avant le bouton, envoie captcha_token+captcha_code. Recharge auto si erreur serveur.",
+      "teste": "sans captcha -> 403; captcha valide -> ok; contact de test archive. Zero tiers, zero compte, zero cout, zero tracker, zero cookie/consentement.",
+      "defense_en_profondeur": "captcha + honeypot + timing trap + rate-limit IP 5/15min + heuristiques (HTML/URL nom, >=3 liens) + blocage emails jetables."
     }
   },
   "make_credit_optimisation_2026_07_04": {
