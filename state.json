@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.304",
+    "version": "1.305",
     "updated": "2026-07-04",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-04",
+        "version_from": "1.304",
+        "version_to": "1.305",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Portail OZECAR (footer) repointe vers /se-connecter/ (page de redirection) au lieu de hub.ozecar.app direct, coherent avec le bouton Se connecter. Verifie live."
+        ]
+      },
       {
         "date": "2026-07-04",
         "version_from": "1.303",
@@ -11401,5 +11410,11 @@
     "statut": "Public = JAMAIS. Devis = OK (leur seule place).",
     "action_faite": "Retire de staging home (22462) et supervision-3 (22463) le 2026-07-04 (Operator fees -2% / Roaming fees -4%), verifie DOM = 0 mention.",
     "reference_valeurs": "pricing_canonical_2026_06_17 (frais_operateur_pct / frais_itinerance_pct) = source pour les DEVIS uniquement."
+  },
+  "portail_redirection_2026_07_04": {
+    "decision": "Le lien 'Portail OZECAR' (footer) doit passer par la page de redirection /se-connecter/, comme le bouton 'Se connecter' du header — pas de lien direct vers hub.ozecar.app.",
+    "raison": "/se-connecter/ est l'entree white-label propre (propose portail web + app mobile avec badges stores). Coherence + controle du parcours.",
+    "action_faite": "footer.php (ozecar-theme): 'Portail OZECAR' href https://hub.ozecar.app (target=_blank) -> /se-connecter/ (meme onglet). Verifie live.",
+    "reference": "Bouton 'Se connecter' header = nav-cta-portal -> /se-connecter/ (deja en place)."
   }
 }
