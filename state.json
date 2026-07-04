@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.301",
-    "updated": "2026-07-03",
+    "version": "1.302",
+    "updated": "2026-07-04",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-04",
+        "version_from": "1.301",
+        "version_to": "1.302",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Captcha v3: UX 'Je ne suis pas un robot' (case familiere a la charte OZECAR + accent ⚡) avec le Proof-of-Work auto-heberge DERRIERE (pre-calcule au chargement -> clic instantane). Backend PoW inchange."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.300",
@@ -11313,10 +11322,10 @@
       "note": "Complete par le captcha auto-heberge (voir captcha_self_hosted). Turnstile reste retire."
     },
     "captcha_self_hosted": {
-      "version": "v2 = Proof-of-Work invisible (remplace l'image GD jugee illisible/oldschool par Dominique).",
+      "version": "v3 = case 'Je ne suis pas un robot' (UX familiere) avec Proof-of-Work auto-heberge DERRIERE.",
       "principe": "captcha.php GET -> challenge {salt, difficulty=4, token} ; token signe HMAC(salt|exp|diff). Le navigateur cherche un nonce tel que sha256(salt:nonce) commence par 'difficulty' zeros hex (~<1s). contact-intake.php verifie: HMAC du token intact + non expire (600s) + sha256(salt:nonce) satisfait la difficulte. Stateless, zero cookie/tiers/compte/cout/tracker.",
-      "ux": "Pastille a la charte (creme #F5F0EB, violet #5F2DFF, DM Sans, border-radius 100px): spinner 'Verification anti-robot...' -> checkmark 'Verifie'. Aucune enigme a lire. Moderne, invisible.",
-      "front": "contact-routing.js: sha256 JS compact + solveur chunke (yield UI) + fetch challenge au chargement + pastille. Envoie pow_token/pow_salt/pow_nonce. Recharge un challenge si erreur.",
+      "ux": "Case a la charte OZECAR (carte blanche, border-radius 14, DM Sans, case violet #5F2DFF au check, accent '⚡ OZECAR' a droite). Le PoW est pre-calcule en fond au chargement -> le clic coche quasi instantanement (petit delai 350ms pour le ressenti). Familier (comme reCAPTCHA) mais 100% auto-heberge, zero tiers/tracker/cookie.",
+      "front": "contact-routing.js: pre-solve PoW au load; clic sur la case -> spinner bref -> check violet; submit exige verified=true. sha256 JS + solveur chunke conserves. Backend inchange.",
       "teste": "sans PoW -> 403; challenge reel resolu (nonce 3522, <1s) -> ok; mauvais nonce -> 403. Contact de test archive.",
       "defense_en_profondeur": "PoW + honeypot + timing trap + rate-limit IP 5/15min + heuristiques (HTML/URL nom, >=3 liens) + emails jetables.",
       "image_gd_retiree": "L'ancienne image GD (imagestring) est remplacee; captcha.php ne genere plus d'image."
