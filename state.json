@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.288",
+    "version": "1.289",
     "updated": "2026-07-04",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-04",
+        "version_from": "1.288",
+        "version_to": "1.289",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Email presentation a froid (chemin info-form) = PDF joint en cours dans un autre chat. Dependance notee: brancher la version finale quand actee dans le state.",
+          "Sequencement build info-form: attendre le PDF, puis build en un seul pass (transport form -> deal Lead qualifie + scenario email + PDF joint + refinement 05b anti-doublon) pour ne pas editer 05b deux fois."
+        ]
+      },
       {
         "date": "2026-07-04",
         "version_from": "1.287",
@@ -11101,8 +11111,13 @@
       "chemin_booking": "User booke une demo (widget HubSpot Meetings ozecar-demo) -> 05b (6400488) -> Deal L&Q stage Demo planifiee 5215721688 + email confirmation + (a brancher) post #rdv-demo.",
       "chemin_info_form": "User remplit le formulaire demande d'info/supervision -> Deal L&Q stage Lead qualifie 5215721687 -> email presentation 'a froid' avec CTA booking demo -> s'il booke -> bascule Demo planifiee (via 05b).",
       "a_construire": "Le chemin info-form n'existe pas encore (form staging /contact-3/ = handleSubmit PLACEHOLDER). A cabler: form -> Deal L&Q Lead qualifie 5215721687 + declenche email presentation a froid + CTA demo.",
-      "dependance_contenu": "Email 'presentation a froid' = contenu a sourcer (NE PAS inventer). Asset a definir avec Dominique (lien page supervision / PDF deck client / one-pager Canva).",
-      "refinement_anti_doublon": "05b fait createDeal (cree toujours). Si un contact vient d'abord par info-form (deal Lead qualifie deja cree) puis booke, 05b cree un 2e deal = DOUBLON. Pour respecter le principe 'un seul deal_id par dossier': 05b doit SearchDeals L&Q associe au contact -> si existe: updateDeal stage->Demo planifiee, sinon createDeal. Edit Make a faire."
+      "dependance_contenu": "Email 'presentation a froid' = PDF JOINT, en cours de creation dans un AUTRE chat. Attendre qu'il soit finalise + acte dans le state, puis brancher la version finale en piece jointe du scenario email. NE PAS inventer.",
+      "refinement_anti_doublon": "05b fait createDeal (cree toujours). Si un contact vient d'abord par info-form (deal Lead qualifie deja cree) puis booke, 05b cree un 2e deal = DOUBLON. Pour respecter le principe 'un seul deal_id par dossier': 05b doit SearchDeals L&Q associe au contact -> si existe: updateDeal stage->Demo planifiee, sinon createDeal. Edit Make a faire.",
+      "sequencement_build": [
+        "GATE = PDF presentation acte dans le state (autre chat).",
+        "Quand PDF pret: build en UN pass -> (a) transport form staging /contact-3/ -> HubSpot create/update Contact + createDeal L&Q Lead qualifie 5215721687 ; (b) scenario Make email presentation a froid + CTA booking + PDF joint ; (c) refinement 05b anti-doublon (search-then-update-or-create) EN MEME TEMPS pour ne pas toucher 05b deux fois.",
+        "Independant du PDF mais couple (fait dans le meme pass): le refinement 05b + le branchement post #rdv-demo sur 05b (necessite OAuth Slack dans Make)."
+      ]
     }
   }
 }
