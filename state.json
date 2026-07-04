@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.295",
+    "version": "1.296",
     "updated": "2026-07-04",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-04",
+        "version_from": "1.295",
+        "version_to": "1.296",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Optimisation credits Make: 09 desactive (polling 15min, 6544 ops/mois a vide), logique email devis repliee dans 08 en event-driven.",
+          "08 enrichi: envoi email devis (template devis-pret) depuis payload webhook + flag ozecar_devis_email_sent. Blueprint valide, hook 3270135 conserve.",
+          "04 LinkedIn laisse de cote (refonte future). Principe webhook-first acte dans make_credit_optimisation_2026_07_04."
+        ]
+      },
       {
         "date": "2026-07-04",
         "version_from": "1.294",
@@ -3904,15 +3915,23 @@
     },
     "08": {
       "id": 6276646,
-      "name": "08 - Configurateur devis → MAJ deal HubSpot",
+      "name": "08 - Configurateur devis -> MAJ deal HubSpot + email devis",
       "status": "ACTIVE",
       "role": "Étape 2 du flux devis custom : à l'acceptation du devis (configurateur), MAJ du deal HubSpot.",
-      "trigger": "gateway:CustomWebHook (hookId 3270135) — URL https://hook.eu1.make.com/tyrqua16txbcc3u5ighy5bi63jvxjwt3",
+      "trigger": "webhook instant (hook 3270135)",
       "flow": "webhook → garde-fou (filter deal_id exist) → hubspotcrm:updateDeal v2 (conn 6538723) : ozecar_forfait/maintenance/mode_paiement/nb_stations/total_recurrent_ht/total_unique_ht/devis_json",
       "tested": "2026-06-22 VALIDÉ E2E: configurateur (navigateur) produit le bon payload (deal_id lu de l'URL, forfait/maintenance/totaux corrects), CORS préflight OK (Make renvoie access-control-allow-origin:*), webhook→updateDeal écrit les valeurs exactes sur 2 deals TEST (507612143808 puis 507510492380: ess/n2/annual/59.6/136). Seul le clic physique 'Accepter' non rejoué (navigateur MCP a planté) mais tous les maillons prouvés.",
       "piege_resolu": "Le module gateway:CustomWebHook attend parameters.hook (PAS __IMTHOOK__). Et un webhook créé par API reste isinvalid tant que la structure de données n'a pas été apprise via l'UI (Redéterminer la structure → POST). Fait par Dominique le 21/06.",
       "next_2b": "Line items détaillés : ajouter Iterator({{1.totals.items}}) → hubspotcrm:createALineItem (recurring vs oneshot, associer au deal). Les items[] sont DÉJÀ envoyés dans le payload (totals.items), il ne reste qu'à les consommer.",
-      "cors": "OK — fetch cross-origin staging.ozecar.fr → hook.eu1.make.com autorisé (préflight OPTIONS 200, allow-origin *, allow-headers content-type)."
+      "cors": "OK — fetch cross-origin staging.ozecar.fr → hook.eu1.make.com autorisé (préflight OPTIONS 200, allow-origin *, allow-headers content-type).",
+      "active": true,
+      "note_2026_07_04": "Envoi email devis (send-mail.php template devis-pret) greffe directement dans 08 a partir du payload webhook (client.email/firstname/devis_url, totals.oneTimeHT/recurringHT). Zero appel HubSpot supplementaire. Flag ozecar_devis_email_sent=true pose dans le meme updateDeal."
+    },
+    "09": {
+      "id": 6301518,
+      "name": "09 - Devis envoye -> email client",
+      "active": false,
+      "status_2026_07_04": "DESACTIVE - logique repliee dans 08 (event-driven). Ancien trigger = searchDeals polling 15min qui re-scannait tous les deals du stage 'Devis envoye' + re-GET chacun => ~6544 ops/mois a vide. Conserve pour rollback, ne pas reactiver."
     }
   },
   "hubspot": {
@@ -11228,5 +11247,20 @@
       "escalade_si_besoin": "Si un jour le spam explose, on pourra ajouter un captcha (Turnstile/hCaptcha) sans toucher au routing. Non necessaire aujourd'hui.",
       "turnstile_retire": "api/oz-turnstile.php supprime, bloc verif retire de contact-intake.php."
     }
+  },
+  "make_credit_optimisation_2026_07_04": {
+    "date": "2026-07-04",
+    "constat": "~9,5k/10k ops sur le plan Core avant tout go-live, uniquement du polling a vide (aucune vraie data).",
+    "top_consommateurs": {
+      "09_devis_polling": "6544 ops/mois (searchDeals 15min + re-GET deals du stage)",
+      "04_linkedin_polling": "2880 ops/mois (WatchBoardItems monday 15min)"
+    },
+    "actions": [
+      "09 desactive, logique email repliee dans 08 (webhook) => ~6544 ops/mois liberees.",
+      "04 LinkedIn: laisse de cote (a refondre, pas de strategie definie) - Dominique."
+    ],
+    "principe_valide": "Webhook-first: tout scenario dont la source supporte un webhook (HubSpot, Calendly, monday, Shopify) doit etre event-driven, jamais polling 15min. Chaque polling actif = ~2880 ops/mois de cout fixe.",
+    "a_surveiller": "05 et 05b (booking demo) sont en polling 15min - actuellement inactifs. Si reactivation pour vrais bookings, les passer en webhook Calendly/HubSpot avant, sinon +2880 ops/scenario.",
+    "cout_par_evenement_reel": "commande Shopify ~10 ops, devis configurateur ~2-3 ops, booking ~4 ops, relance quotidienne 07 ~3 ops. La vraie data est bon marche; le risque etait le polling, pas le volume."
   }
 }
