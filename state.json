@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.297",
+    "version": "1.298",
     "updated": "2026-07-04",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-04",
+        "version_from": "1.297",
+        "version_to": "1.298",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "FIX captcha 'impossible': cause = CORS (staging appelle ozecar.fr cross-origin). Ajoute headers CORS + preflight OPTIONS sur captcha.php et contact-intake.php. Verifie."
+        ]
+      },
       {
         "date": "2026-07-04",
         "version_from": "1.296",
@@ -11265,7 +11274,8 @@
       "front": "contact-routing.js injecte le widget (image cliquable pour recharger + champ code) avant le bouton, envoie captcha_token+captcha_code. Recharge auto si erreur serveur.",
       "teste": "sans captcha -> 403; captcha valide -> ok; contact de test archive. Zero tiers, zero compte, zero cout, zero tracker, zero cookie/consentement.",
       "defense_en_profondeur": "captcha + honeypot + timing trap + rate-limit IP 5/15min + heuristiques (HTML/URL nom, >=3 liens) + blocage emails jetables."
-    }
+    },
+    "fix_cors_2026_07_04": "Bug 'captcha impossible' = CORS. La page staging.ozecar.fr appelle les endpoints sur ozecar.fr (cross-origin) sans Access-Control-Allow-Origin -> navigateur bloque la lecture du captcha ET le POST. FIX: ajoute CORS (Allow-Origin *, Methods POST/GET/OPTIONS, Headers Content-Type) + gestion preflight OPTIONS (204) sur api/captcha.php ET api/contact-intake.php. Verifie (captcha 200+CORS, OPTIONS intake 204+CORS). En prod (meme origine) le CORS est inoffensif."
   },
   "make_credit_optimisation_2026_07_04": {
     "date": "2026-07-04",
