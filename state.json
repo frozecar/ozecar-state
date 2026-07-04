@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.286",
+    "version": "1.287",
     "updated": "2026-07-04",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-04",
+        "version_from": "1.286",
+        "version_to": "1.287",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Flux demo->devis REVISE (retours Dominique): fil conducteur = deal_id L&Q; push Granola->Slack via MCP (moi) SANS Granola Business.",
+          "Stages L&Q FIGES via API live (autoritatif): 686 Formulaire/687 Lead qualifie/688 Demo planifiee/689 Demo realisee/5584432342 Devis a faire/690 Devis envoye/691 Kit envoye. Remplace maps contradictoires.",
+          "BUG flag: Make booking met 'Demo planifiee'=5215721687 (=Lead qualifie en realite, bon ID=5215721688). Digest 07 rate les stages Devis a faire/Kit envoye.",
+          "Channel = #rdv-demo existant (C0BB057AP2S), pas de nouveau channel."
+        ]
+      },
       {
         "date": "2026-07-04",
         "version_from": "1.285",
@@ -11015,10 +11027,10 @@
       "pipeline": "Leads et Qualification 3747862733"
     },
     "deps_dominique": [
-      "PLAN: passer les commerciaux qui font des demos en Granola Business (14$/user/mois). Confirmer que les emails equipe sont bien Google Workspace @ozecar.fr (requis pour l'integration Slack native).",
-      "SETUP par employe: connecter Granola<->Slack (meme email), rejoindre le folder partage 'Demos OZECAR', activer la regle folder->#demos.",
-      "SLACK APP: ajouter scopes channels:history + channels:read, souscrire event message.channels, reinstaller l'app, inviter ozecar-bot dans #demos. (Claude fournit la liste exacte, Dominique valide/reinstalle.)",
-      "CHANNEL: creer #demos (Claude fournit le nom; Dominique cree pendant la passe Slack)."
+      "Aucune dep bloquante pour demarrer (plus besoin de Granola Business, ni Workspace, ni nouveau channel).",
+      "Confirmer le mode de trigger voulu: (a) notif Make auto sur 'Demo realisee' qui me ping, ou (b) tu me dis 'demo X finie'.",
+      "Phase 2 (bridge supervision): creer propriete deal ozecar_ref_lq (creation schema = action Dominique).",
+      "Decision: corriger le bug stage booking 5215721687->5215721688 (je peux le faire si tu me donnes le go make_scenarios)."
     ],
     "build_claude": [
       "Confirmer stages L&Q live (5215721689?).",
@@ -11032,6 +11044,43 @@
       "Extraction des quantites depend de la prise de note du commercial. Mitigation: configurateur reste entierement editable cote commercial."
     ],
     "marque_blanche": "Resume Granola = interne (Slack = backend) -> Monta peut y apparaitre, OK. Le devis envoye au client (configurateur/PandaDoc) reste white-label, deja propre.",
-    "status": "Architecture VERROUILLEE 2026-07-04. Build Claude demarrable en parallele; activation bout-en-bout conditionnee aux deps Granola/Slack Dominique."
+    "status": "Archi v2 VERROUILLEE 2026-07-04 (deal_id thread + push MCP, 0 EUR, #rdv-demo existant). Build handlers boutons demarrable immediatement.",
+    "REVISION_2026_07_04b": "Archi revue suite retours Dominique: (1) fil conducteur = deal_id L&Q (existe deja des le booking), (2) push Granola->Slack SANS Granola Business, via MCP (moi), pas via l'integration native.",
+    "stages_LQ_AUTORITATIF_live_2026_07_04": {
+      "pipeline": "Leads et Qualification 3747862733",
+      "5215721686": "Formulaire recu",
+      "5215721687": "Lead qualifie",
+      "5215721688": "Demo planifiee",
+      "5215721689": "Demo realisee",
+      "5584432342": "Devis a faire",
+      "5215721690": "Devis envoye",
+      "5215721691": "Kit envoye",
+      "source": "GET hubspot.php?path=/crm/v3/pipelines/deals (live). REMPLACE toutes les maps contradictoires anterieures."
+    },
+    "pipeline_supervision_default": {
+      "stages": "appointmentscheduled=Kit commande, qualifiedtobuy=Kit expedie, presentationscheduled=Activation en cours, decisionmakerboughtin=Contrat envoye, contractsent=Contrat signe, closedwon=On-boarding planifie, 5156644039=Ferme gagne, 5156644040=Ferme perdu",
+      "note": "Pipeline SEPARE (kit/activation, ne du Shopify via Make 01). Le deal L&Q et le deal Supervision sont 2 fiches distinctes."
+    },
+    "fil_conducteur_id": {
+      "principe": "Le deal_id L&Q est l'ID unique du dossier de Demo planifiee -> Demo realisee -> Devis a faire -> Devis envoye -> Kit envoye (une seule fiche). Le configurateur (?deal_id), scenarios 08/09 sont deja keyes dessus.",
+      "matching_deterministe": "Au signal 'Demo realisee', 1 deal a ce stade pour ce contact -> son deal_id. Fini le matching flou par nom.",
+      "bridge_supervision_phase2": "Pour tracer jusqu'a la bascule supervision (2e deal, pipeline default), ajouter une propriete de correlation (ex ozecar_ref_lq) sur le deal Supervision, remplie a sa creation. Necessite creation propriete (action Dominique) + que la commande porte la ref L&Q. Phase 2."
+    },
+    "architecture_v2_no_business": {
+      "channel": "#rdv-demo EXISTANT (C0BB057AP2S) - PAS de nouveau channel. Le Make de booking y poste deja.",
+      "trigger_gratuit": "Deal L&Q passe en 'Demo realisee' (5215721689). Watchable par Make -> ping #rdv-demo '@PM demo a traiter' (optionnel).",
+      "granola_fetch": "Via MCP Granola (list_meetings/get_meeting_transcript), execute par Claude PM en session. PAS l'integration native Slack (qui exige Business + email Google Workspace) ni l'API (Enterprise only).",
+      "enrichissement": "Claude extrait PDC/stations/bornes du resume, ecrit une note structuree sur la fiche deal, poste la carte dans #rdv-demo avec 2 boutons.",
+      "boutons": {
+        "creer_devis": "oz_devis_create -> configurateur ?sales&deal_id=X + quantites pre-remplies ; deal -> 'Devis a faire' 5584432342",
+        "envoyer": "oz_devis_send -> scenario 09 (6301518) email client ; deal -> 'Devis envoye' 5215721690"
+      },
+      "cout": "0 EUR. Dispo maintenant. Contrepartie: pas un daemon 24/7 - tourne quand une session tourne (declenchee par Dominique ou notif Make). 100% mains libres = passer Granola Business plus tard si le volume le justifie.",
+      "bot_role": "slack-bot.php gere seulement les clics boutons (handle_interaction oz_devis_*). La carte est postee par Claude via MCP Slack. Pas besoin d'ecoute message.channels ni de scopes supplementaires."
+    },
+    "bugs_stages_a_flagger": [
+      "Le Make de booking place le deal en 'Demo planifiee' avec l'ID 5215721687 -> or 5215721687 = 'Lead qualifie'. Les demos bookees atterrissent au mauvais stade. A corriger (bon ID = 5215721688). [make_scenarios - coordination]",
+      "Digest scenario 07 filtre 5215721688/89/90 -> rate 5584432342 (Devis a faire) et 5215721691 (Kit envoye). Sous-relance possible. [make_scenarios]"
+    ]
   }
 }
