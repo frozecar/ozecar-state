@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.300",
-    "updated": "2026-07-04",
+    "version": "1.301",
+    "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.300",
+        "version_to": "1.301",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Deck DEMO livre (8 slides + notes orateur, tremplin vers demo live hub)",
+          "Client final: reframe supervision-first (carte 'Vos bornes' + bandeau 400+ OCPP)",
+          "Case studies en attente (Marie-Estelle). Learning: faux positif grep binaire monta/DKK sur PNG = bruit de compression, pas une fuite"
+        ]
+      },
       {
         "date": "2026-07-04",
         "version_from": "1.299",
@@ -11115,23 +11126,38 @@
       "chiffres_reels": "Avere 194996 PDC publics FR / +17-20%/an / 9% HS +7j / 90% dispo. Tarifs 5,90 Essential / 14,90 Pro / sur devis Pro+. Reprise: audit gratuit, 0e frais, bascule 48h, neutralite.",
       "placeholder_a_valider": "Slide 9 cas client: 3 stats (PDC supervises, % dispo, delai bascule) + enseigne/secteur/N sites. EN ATTENTE chiffres Dominique.",
       "trusted_by_noms": "Renault, Carrefour Market, E.Leclerc, Weldom, SPAR, Europcar, Urssaf, Mairie de Bonifacio (noms en texte, repris du deck public actuel).",
-      "screenshots_reels": "Extraits du PDF client (Pre_sentation_supervision_2026): app parcours 4 ecrans, app phone recharge, kit ecosysteme lockup, dashboard etats des bornes, dashboard revenus, calculateur tension/courant. Slides ajoutees: OZECAR Kit + Vos revenus."
+      "screenshots_reels": "Extraits du PDF client (Pre_sentation_supervision_2026): app parcours 4 ecrans, app phone recharge, kit ecosysteme lockup, dashboard etats des bornes, dashboard revenus, calculateur tension/courant. Slides ajoutees: OZECAR Kit + Vos revenus.",
+      "reframe_supervision_first": "Slide guichet: carte 'La borne/Zaptec' -> 'Vos bornes' (deja installees supervisees, 400+ OCPP, materiel AC/DC en option). Bandeau: 'Compatible 400+ modeles OCPP'. Repond au client supervision-seule."
     },
     "cible_2_demo": {
-      "statut": "A PRODUIRE - meme template, version courte tremplin avant demo live hub, finit sur slide handoff tableau de bord"
+      "statut": "LIVRE (8 slides) + notes orateur par slide",
+      "format": "Version courte presentateur, tremplin vers demo live du hub. Slide 6 = 'Passons au tableau de bord' (bascule live).",
+      "structure": [
+        "cover",
+        "constat punchy (9% HS / 90% dispo)",
+        "categorie OZECAR (operateur complet, marque blanche)",
+        "cote conducteur (parcours 4 ecrans)",
+        "cote exploitant (etats + revenus)",
+        "TREMPLIN demo live",
+        "pourquoi OZECAR (4 raisons)",
+        "CTA audit gratuit"
+      ],
+      "notes_orateur": "Chaque slide a un addNotes (script de demo, transitions, parcours hub recommande sur slide tremplin)."
     },
     "cible_3_installateur": {
-      "statut": "A PRODUIRE - angle pose + marge kit paliers 25-33% + OZECAR garde mandat supervision (pas de SAV chez l'electricien) + recurrent/prime"
+      "statut": "A PRODUIRE (prochain)"
     },
     "cible_4_revendeur": {
-      "statut": "A PRODUIRE - angle hardware se banalise + couche recurrente marque blanche. NB: volet distributeur du partner_program encore a cadrer (models_planned_later)"
+      "statut": "A PRODUIRE"
     },
     "variantes_sectorielles": "Option: swap slides secteurs+cas pour focus sectoriel (distribution/hotellerie/flottes/transport) des chiffres valides -> 2 slides a changer par secteur.",
     "data_demandee_a_dominique": [
       "Pour >=1 cas client reel: enseigne, secteur, nb PDC supervises, % dispo mesuree, delai de bascule. Ideal: 1 cas par secteur cible.",
       "Logos officiels PNG si mur logos graphique souhaite (sinon noms en texte, deja en place)."
     ],
-    "learning_DKK": "ATTENTION: l'ecran app 'Demarrage de la recharge' du PDF affiche 'Cout cumule 0 DKK' (couronne danoise = tell backend + mauvaise devise FR). NE JAMAIS l'utiliser. Verif OCR systematique DKK/kr/Monta avant d'integrer un screenshot. Ecrans EUR-propres valides: parcours_row, dash_revenue, dash_etats, dash_tension, kit_lockup, phone_kit."
+    "learning_DKK": "ATTENTION: l'ecran app 'Demarrage de la recharge' du PDF affiche 'Cout cumule 0 DKK' (couronne danoise = tell backend + mauvaise devise FR). NE JAMAIS l'utiliser. Verif OCR systematique DKK/kr/Monta avant d'integrer un screenshot. Ecrans EUR-propres valides: parcours_row, dash_revenue, dash_etats, dash_tension, kit_lockup, phone_kit.",
+    "case_studies_statut": "EN ATTENTE - Dominique met Marie-Estelle sur la collecte des chiffres (enseigne/secteur/PDC/%dispo/delai). Emplacements balises dans client (slide 10).",
+    "learning_faux_positif_marque_blanche": "Un grep binaire 'monta|DKK' sur les .png embarques peut matcher des octets aleatoires du flux compresse (ex 'dkk' 3 lettres). Ce N'EST PAS une fuite. Le vrai controle marque blanche = contenu VISIBLE (OCR) + URLs/metadonnees, pas les octets compresses. Verif faite: 0 'monta' reel, OCR EUR-propre."
   },
   "maintenance_plans_monta": {
     "constat_api": "POST /plans = 405 METHOD_NOT_ALLOWED. L'API partenaire supervision est READ-ONLY sur /plans (creation impossible par API). /subscriptions existe (affectation team<->plan, facturation recurrente nextPurchaseAt). Les plans se creent dans le DASHBOARD operateur uniquement.",
