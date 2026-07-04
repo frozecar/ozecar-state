@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.298",
+    "version": "1.299",
     "updated": "2026-07-04",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-04",
+        "version_from": "1.298",
+        "version_to": "1.299",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Captcha v2: remplace l'image GD (illisible/oldschool) par un Proof-of-Work INVISIBLE a la charte (pastille creme/violet, spinner->checkmark). Auto-heberge, zero tiers/compte/cout/tracker/cookie. captcha.php sert un challenge PoW (salt+diff+token HMAC), contact-intake.php verifie sha256(salt:nonce). Teste (403 sans / ok avec / 403 mauvais nonce), contact test archive."
+        ]
+      },
       {
         "date": "2026-07-04",
         "version_from": "1.297",
@@ -11268,12 +11277,13 @@
       "note": "Complete par le captcha auto-heberge (voir captcha_self_hosted). Turnstile reste retire."
     },
     "captcha_self_hosted": {
-      "decision": "Captcha AJOUTE (validation Dominique): necessaire contre spam ET pour proteger la reputation d'expediteur MailerSend (chaque soumission bot declenche un accuse email). Contrainte: pas de Cloudflare, pas de cout, pas de tracker.",
-      "solution": "Captcha AUTO-HEBERGE. api/captcha.php genere une image GD (code 5 car., charte creme/ink/violet) + jeton signe HMAC (stateless, sans cookie/session/DB). Cle HMAC dans api/oz-captcha-key.php (serveur only, jamais dans state). Fallback texte si GD absent (GD present sur le serveur, confirme).",
-      "verif": "contact-intake.php verifie captcha_token+captcha_code via HMAC (hash_equals) + expiry 600s. Rejet 403 si absent/invalide/expire. Diag bypass.",
-      "front": "contact-routing.js injecte le widget (image cliquable pour recharger + champ code) avant le bouton, envoie captcha_token+captcha_code. Recharge auto si erreur serveur.",
-      "teste": "sans captcha -> 403; captcha valide -> ok; contact de test archive. Zero tiers, zero compte, zero cout, zero tracker, zero cookie/consentement.",
-      "defense_en_profondeur": "captcha + honeypot + timing trap + rate-limit IP 5/15min + heuristiques (HTML/URL nom, >=3 liens) + blocage emails jetables."
+      "version": "v2 = Proof-of-Work invisible (remplace l'image GD jugee illisible/oldschool par Dominique).",
+      "principe": "captcha.php GET -> challenge {salt, difficulty=4, token} ; token signe HMAC(salt|exp|diff). Le navigateur cherche un nonce tel que sha256(salt:nonce) commence par 'difficulty' zeros hex (~<1s). contact-intake.php verifie: HMAC du token intact + non expire (600s) + sha256(salt:nonce) satisfait la difficulte. Stateless, zero cookie/tiers/compte/cout/tracker.",
+      "ux": "Pastille a la charte (creme #F5F0EB, violet #5F2DFF, DM Sans, border-radius 100px): spinner 'Verification anti-robot...' -> checkmark 'Verifie'. Aucune enigme a lire. Moderne, invisible.",
+      "front": "contact-routing.js: sha256 JS compact + solveur chunke (yield UI) + fetch challenge au chargement + pastille. Envoie pow_token/pow_salt/pow_nonce. Recharge un challenge si erreur.",
+      "teste": "sans PoW -> 403; challenge reel resolu (nonce 3522, <1s) -> ok; mauvais nonce -> 403. Contact de test archive.",
+      "defense_en_profondeur": "PoW + honeypot + timing trap + rate-limit IP 5/15min + heuristiques (HTML/URL nom, >=3 liens) + emails jetables.",
+      "image_gd_retiree": "L'ancienne image GD (imagestring) est remplacee; captcha.php ne genere plus d'image."
     },
     "fix_cors_2026_07_04": "Bug 'captcha impossible' = CORS. La page staging.ozecar.fr appelle les endpoints sur ozecar.fr (cross-origin) sans Access-Control-Allow-Origin -> navigateur bloque la lecture du captcha ET le POST. FIX: ajoute CORS (Allow-Origin *, Methods POST/GET/OPTIONS, Headers Content-Type) + gestion preflight OPTIONS (204) sur api/captcha.php ET api/contact-intake.php. Verifie (captcha 200+CORS, OPTIONS intake 204+CORS). En prod (meme origine) le CORS est inoffensif."
   },
