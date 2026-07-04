@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.282",
+    "version": "1.283",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.282",
+        "version_to": "1.283",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "PHASE 1 LANCEE. Board Sites complete (colonnes visites preventives + secteur pour tournees Fred). Outil bot 'fiche_compte' LIVRE: fiche 360 par federation live Monta (compte+mise en service+bornes+admins) + board Sites (maintenance). Teste. Dans Slack: '@bot fiche compte X'.",
+          "Reste Phase 1: gate maintenance, federation v2 (HubSpot forfait+Pennylane), vue tournee preventive Fred, note->intervention, cle jointure Monta<->HubSpot."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.281",
@@ -10879,7 +10889,10 @@
           "niveau": "text_mm4x9amd",
           "mainteneur": "text_mm4xhjw0",
           "email_mainteneur": "email_mm4xb5x4",
-          "sla": "text_mm4xqrnw"
+          "sla": "text_mm4xqrnw",
+          "prochaine_visite": "date_mm4yjgaz",
+          "derniere_visite": "date_mm4yap93",
+          "secteur": "text_mm4ysnnx"
         },
         "item_name": "= nom du site",
         "statut": "CREE (vide). A peupler par Dominique/Marie-Estelle au fil de l'onboarding (niveau depuis le contrat, mainteneur = Interne (Fred) par defaut en Phase 1). Interrogeable par le bot via proxy monday.php.",
@@ -10893,6 +10906,17 @@
         "monday_sites_ROLE": "UNIQUEMENT les orphelins (pas d'autre maison): niveau de maintenance (miroir/contrat), mainteneur + email, visites preventives (prochaine/derniere), SLA + CLE DE JOINTURE (teamId/siteId Monta). PAS un clone du compte.",
         "cle_jointure": "Monta partnerExternalId / partnerCustomPayload (controles par nous) -> stamper l'ID company HubSpot ; stocker teamId Monta sur la company HubSpot. Fil Monta<->HubSpot<->Monday.",
         "livrable_bot": "Commande Slack 'fiche compte <nom>' / 'fiche site <nom>' -> carte consolidee (identite+mise en service+bornes/statut+admins depuis Monta ; forfait+niveau depuis HubSpot ; impayes Pennylane ; visite preventive+mainteneur Monday). A construire (Phase 1)."
+      },
+      "phase1_lancee": {
+        "board_sites_complet": "Colonnes ajoutees: Prochaine visite preventive (date_mm4yjgaz), Derniere visite (date_mm4yap93), Secteur/zone (text_mm4ysnnx). Permet a Fred de trier par date+secteur pour grouper ses tournees preventives.",
+        "fiche_compte_LIVRE": "Outil bot 'fiche_compte' (bot-tools.php + declare slack-bot.php, allowlist). Federation LIVE: Monta (compte/team, date creation, mise en service=activeAt, bornes+etat, admins via team-members) + board Sites Monday (niveau/mainteneur/visites). Teste OK (LE GENOVESE: compte+borne+admins). Dans Slack: '@bot fiche compte X'. HubSpot forfait + Pennylane facturation = v2 a fusionner.",
+        "reste_phase1": [
+          "Gate maintenance (lookup site->niveau->route ticket + check-360) dans la creation d'intervention",
+          "Federation v2: ajouter forfait supervision (HubSpot) + impayes (Pennylane) a fiche_compte",
+          "Vue tournee preventive pour Fred (bot: 'preventives a venir' groupees par secteur, OU vue Monday Calendar/Table triee par prochaine_visite)",
+          "Reprendre 'note channel -> intervention' (direction 2) avec check-360+gate",
+          "Cle de jointure: stamper company HubSpot dans Monta partnerExternalId + teamId sur company HubSpot"
+        ]
       }
     }
   },
