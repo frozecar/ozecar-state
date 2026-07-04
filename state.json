@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.283",
+    "version": "1.284",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.283",
+        "version_to": "1.284",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Planif intervention ecrit desormais la date dans la propriete HubSpot ozecar_date_intervention_prevue (deja existante) -> interventions planifiees affichables/triables dans HubSpot. Teste. Vue HubSpot a creer par Dominique (filtre pipeline Maintenance + stage planifiee, tri par date)."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.282",
@@ -10859,7 +10868,8 @@
       "modal": "oz_plan -> modal Slack (datepicker + timepicker + adresse + notes). Submit (oz_plan_modal) -> ticket -> Intervention planifiee (5625047278) + note (date/heure/adresse/notes) + post #support carte 'Intervention planifiee' avec bouton 'Ajouter a mon Google Agenda'.",
       "calendrier": "Lien Google Calendar render (action=TEMPLATE, dates start/+2h, location=adresse, ctz=Europe/Paris) — 1 clic, zero auth, zero creds serveur. Pas d'automatisation Make pour l'instant (option future si 100% auto souhaite).",
       "verifie": "stage move 5625047278 OK + format lien calendrier OK. Modal non cliquable en test mais meme pattern que oz_edit (fonctionnel).",
-      "reste": "1) Fiche d'intervention Fred -> endpoint /api/fiche-intervention.php (recoit bornes[]+photos -> ecrit sur le ticket -> avance stage Rapport/Terminee -> PDF client). 2) Option: automatisation calendrier via Make (webhook -> Google Calendar create event) si besoin de 100% auto (au lieu du lien 1-clic)."
+      "reste": "1) Fiche d'intervention Fred -> endpoint /api/fiche-intervention.php (recoit bornes[]+photos -> ecrit sur le ticket -> avance stage Rapport/Terminee -> PDF client). 2) Option: automatisation calendrier via Make (webhook -> Google Calendar create event) si besoin de 100% auto (au lieu du lien 1-clic).",
+      "affichage_hubspot": "Propriete ticket ozecar_date_intervention_prevue (date, DEJA existante) est desormais REMPLIE a la planif (Slack Planifier -> PATCH ticket). Permet d'afficher/trier les interventions planifiees dans HubSpot. Autres props OZECAR ticket existantes: ozecar_date_realisee, ozecar_technicien, ozecar_montant, ozecar_statut_paiement, ozecar_niveau_maintenance, ozecar_type_demande, ozecar_escalade_le, ozecar_lien_fiche_intervention. Vue a creer par Dominique (UI): Tickets filtre pipeline Maintenance & Intervention + stage Intervention planifiee, tri par Date intervention prevue."
     },
     "architecture_maintenance": {
       "perimetre": "PAR SITE (decision Dominique): un client peut avoir plusieurs sites avec niveaux/mainteneurs differents. Le niveau de maintenance + le mainteneur sont portes par le SITE, pas par le client.",
