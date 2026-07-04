@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.291",
-    "updated": "2026-07-04",
+    "version": "1.292",
+    "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.291",
+        "version_to": "1.292",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Deck Client Final v2: integration vrais screenshots produit (app parcours, kit, dashboards etats/revenus/tension)",
+          "+2 slides: OZECAR Kit + Vos revenus. Total 14 slides",
+          "Learning DKK: ecran app 'recharge en cours' du PDF contient '0 DKK' -> exclu. OCR anti-DKK/Monta avant integration screenshot"
+        ]
+      },
       {
         "date": "2026-07-04",
         "version_from": "1.290",
@@ -11013,10 +11024,11 @@
     "regle_honnete": "Aucun chiffre/cas invente. Seuls chiffres reels: Avere + grille canonique + reprise. Cas clients = placeholder tant que Dominique n'a pas fourni les chiffres valides.",
     "assets": "logo officiel transparent recolore (ink/cream), mascotte croppee (ink/yellow/cream), mockups app ozecarmock1/2. Zero fuite Monta verifiee.",
     "cible_1_client_final": {
-      "statut": "LIVRE v1 (13 slides) = template maitre",
+      "statut": "LIVRE v2 (14 slides) = template maitre. v2 = vrais screenshots produit integres.",
       "chiffres_reels": "Avere 194996 PDC publics FR / +17-20%/an / 9% HS +7j / 90% dispo. Tarifs 5,90 Essential / 14,90 Pro / sur devis Pro+. Reprise: audit gratuit, 0e frais, bascule 48h, neutralite.",
       "placeholder_a_valider": "Slide 9 cas client: 3 stats (PDC supervises, % dispo, delai bascule) + enseigne/secteur/N sites. EN ATTENTE chiffres Dominique.",
-      "trusted_by_noms": "Renault, Carrefour Market, E.Leclerc, Weldom, SPAR, Europcar, Urssaf, Mairie de Bonifacio (noms en texte, repris du deck public actuel)."
+      "trusted_by_noms": "Renault, Carrefour Market, E.Leclerc, Weldom, SPAR, Europcar, Urssaf, Mairie de Bonifacio (noms en texte, repris du deck public actuel).",
+      "screenshots_reels": "Extraits du PDF client (Pre_sentation_supervision_2026): app parcours 4 ecrans, app phone recharge, kit ecosysteme lockup, dashboard etats des bornes, dashboard revenus, calculateur tension/courant. Slides ajoutees: OZECAR Kit + Vos revenus."
     },
     "cible_2_demo": {
       "statut": "A PRODUIRE - meme template, version courte tremplin avant demo live hub, finit sur slide handoff tableau de bord"
@@ -11031,7 +11043,8 @@
     "data_demandee_a_dominique": [
       "Pour >=1 cas client reel: enseigne, secteur, nb PDC supervises, % dispo mesuree, delai de bascule. Ideal: 1 cas par secteur cible.",
       "Logos officiels PNG si mur logos graphique souhaite (sinon noms en texte, deja en place)."
-    ]
+    ],
+    "learning_DKK": "ATTENTION: l'ecran app 'Demarrage de la recharge' du PDF affiche 'Cout cumule 0 DKK' (couronne danoise = tell backend + mauvaise devise FR). NE JAMAIS l'utiliser. Verif OCR systematique DKK/kr/Monta avant d'integrer un screenshot. Ecrans EUR-propres valides: parcours_row, dash_revenue, dash_etats, dash_tension, kit_lockup, phone_kit."
   },
   "maintenance_plans_monta": {
     "constat_api": "POST /plans = 405 METHOD_NOT_ALLOWED. L'API partenaire supervision est READ-ONLY sur /plans (creation impossible par API). /subscriptions existe (affectation team<->plan, facturation recurrente nextPurchaseAt). Les plans se creent dans le DASHBOARD operateur uniquement.",
