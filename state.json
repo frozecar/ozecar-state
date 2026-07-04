@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.289",
+    "version": "1.290",
     "updated": "2026-07-04",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-04",
+        "version_from": "1.289",
+        "version_to": "1.290",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Chemin info-form: email presentation a froid = AUTO-SEND (valide Dominique), pas de gate Slack. Garde-fous: email valide + anti-doublon (flag ozecar_presentation_envoyee) + skip bot + notif non-bloquante #rdv-demo.",
+          "Gate Slack mode B reserve au support + flux demo->devis (devis)."
+        ]
+      },
       {
         "date": "2026-07-04",
         "version_from": "1.288",
@@ -11117,7 +11127,15 @@
         "GATE = PDF presentation acte dans le state (autre chat).",
         "Quand PDF pret: build en UN pass -> (a) transport form staging /contact-3/ -> HubSpot create/update Contact + createDeal L&Q Lead qualifie 5215721687 ; (b) scenario Make email presentation a froid + CTA booking + PDF joint ; (c) refinement 05b anti-doublon (search-then-update-or-create) EN MEME TEMPS pour ne pas toucher 05b deux fois.",
         "Independant du PDF mais couple (fait dans le meme pass): le refinement 05b + le branchement post #rdv-demo sur 05b (necessite OAuth Slack dans Make)."
-      ]
+      ],
+      "email_froid_mode": "AUTO-SEND (valide Dominique 2026-07-04). Pas de gate Slack pour ce mail: contenu standard (PDF presentation + CTA demo identique pour tous), le prospect attend une reponse immediate.",
+      "garde_fous_email_froid": [
+        "Email valide (HAS_PROPERTY + format).",
+        "Anti-doublon: ne pas renvoyer la presentation si deja envoyee (flag contact type ozecar_presentation_envoyee).",
+        "Skip si bot/spam evident.",
+        "Notif NON-bloquante #rdv-demo: 'nouveau Lead qualifie + presentation envoyee a X' -> l'equipe voit et peut relancer/personnaliser la suite."
+      ],
+      "gate_slack_reserve_a": "Le gate Slack (mode B boutons Envoyer/Editer/Ignorer) reste pour le SUPPORT (reponse variable) et le flux demo->devis (creer/envoyer devis), PAS ce 1er mail auto."
     }
   }
 }
