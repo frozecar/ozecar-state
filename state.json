@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.292",
-    "updated": "2026-07-03",
+    "version": "1.293",
+    "updated": "2026-07-04",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-04",
+        "version_from": "1.292",
+        "version_to": "1.293",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "REPARE le formulaire contact site: cree api/contact-intake.php (routing par sujet lead/ticket/note + dedup deal + honeypot + consentement + accuse email + notif Slack routee) et rebranche contact-routing.js dessus (staging).",
+          "Teste bout-en-bout: contact+deal L&Q Lead qualifie+note+slack #rdv-demo+mail OK; dedup valide (2e demande = pas de 2e deal); records de test archives.",
+          "Reste: auto-email presentation (PDF autre chat), refinement 05b + Make 01 dedup + propriete ozecar_ref_lq (Dominique), vraie propriete consentement (Dominique), click-test staging."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.291",
@@ -11181,6 +11192,15 @@
       "Auto-email selon intention (supervision/kit/demo = presentation a froid, une fois le PDF acte).",
       "Notif routee par canal: sales -> #rdv-demo, support -> #support, partenariat -> #general, presse/autre -> Dominique."
     ],
-    "lien_chemin_info_form": "Ce fix EST le build 'chemin info-form' deja planifie: meme chantier. Le regrouper avec le refinement 05b + Make 01 dedup + correlation ozecar_ref_lq."
+    "lien_chemin_info_form": "Ce fix EST le build 'chemin info-form' deja planifie: meme chantier. Le regrouper avec le refinement 05b + Make 01 dedup + correlation ozecar_ref_lq.",
+    "STATUT": "REPARE 2026-07-04. Endpoint api/contact-intake.php deploye (prod) + contact-routing.js rebranche dessus (staging) + consentement RGPD capte. Teste bout-en-bout (contact+deal+note+slack+mail OK) + dedup valide (2e demande meme email = pas de 2e deal). Records de test archives.",
+    "endpoint": "ozecar.fr/api/contact-intake.php (POST JSON). Honeypot 'website', mode diag 'oz_diag_2026_pm' (sans ecriture). Route: SUPPORT->ticket Support Pipeline+Slack #support (brouillon IA+boutons); SALES_DEMO/SUPERVISION/KIT->Deal L&Q Lead qualifie 5215721687 (dedup deal ouvert du contact) + accuse email + notif #rdv-demo; PARTNER->Deal L&Q '[Partenariat]'+notif #general; PRESS/OTHER->contact+note+notif #general. Details/nb_bornes/consentement logges en Note associee (pas de propriete custom => zero dependance schema).",
+    "reste": [
+      "AUTO-EMAIL presentation a froid: aujourd'hui = simple accuse de reception. Brancher le PDF presentation (auto-send) quand acte dans le state (autre chat).",
+      "Refinement 05b (search-then-update-or-create) + Make 01 (5265036) dedup + correlation ozecar_ref_lq: encore a faire (propriete ozecar_ref_lq = action Dominique).",
+      "Consentement RGPD: aujourd'hui logge en Note. Passer sur une vraie propriete contact 'consentement' = action Dominique (schema) si tracabilite formelle voulue.",
+      "Verif finale: click-test du form sur staging /contact-3/ (hard refresh cache JS)."
+    ],
+    "monday_item": "12446733986 (CRITIQUE) = livre (endpoint+JS). Reste = auto-email PDF + dedup 05b/Make01."
   }
 }
