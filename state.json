@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.290",
+    "version": "1.291",
     "updated": "2026-07-04",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-04",
+        "version_from": "1.290",
+        "version_to": "1.291",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CRITIQUE: formulaire contact SITE casse (contact-routing.js POST support-intake.php sans secret + mauvais schema -> 401 systematique). Aucune des 7 demandes ne cree lead/ticket/note. Verifie par test.",
+          "support-intake.php = intake support CONDUCTEUR uniquement (ticket + Slack #support draft IA). Aucun routing par sujet.",
+          "Matrice routing CIBLE par sujet definie (demo/supervision/kit -> Lead L&Q + email; support -> ticket; partenariat -> deal tag; presse/autre -> note). Fix = endpoint contact-intake.php dedie, a grouper avec chemin info-form + 05b + Make 01 dedup."
+        ]
+      },
       {
         "date": "2026-07-04",
         "version_from": "1.289",
@@ -11137,5 +11148,26 @@
       ],
       "gate_slack_reserve_a": "Le gate Slack (mode B boutons Envoyer/Editer/Ignorer) reste pour le SUPPORT (reponse variable) et le flux demo->devis (creer/envoyer devis), PAS ce 1er mail auto."
     }
+  },
+  "contact_form_routing_2026_07_04": {
+    "CRITIQUE_form_casse": "Le formulaire de contact du SITE (contact-routing.js -> POST support-intake.php) est CASSE: il n'envoie pas le 'secret' (SUPP_SECRET) requis et utilise un schema different (sujet/firstname/lastname/company/nb_bornes) alors que support-intake.php attend type/nom/borne/secret. Resultat: HTTP 401 systematique -> AUCUNE des 7 demandes ne cree lead/ticket/note. Verifie par test curl 2026-07-04.",
+    "support_intake_reel": "support-intake.php = intake du SUPPORT CONDUCTEUR (form ozecar.one /aide-conducteur qui envoie secret+type+nom+borne). Cree TOUJOURS un ticket Support Pipeline (0/New) + accuse email support@ + Slack #support (C0BEHTP0RQF) avec brouillon IA (Haiku) + boutons Envoyer/Editer/Resoudre/Escalader/Ignorer. Aucun routing par sujet. Ne traite PAS le form du site.",
+    "routing_par_sujet_CIBLE": {
+      "Demande de demo": "Rediriger vers booking HubSpot Meetings. Si form soumis quand meme -> Deal L&Q Lead qualifie 5215721687 + email 'reservez votre demo' (CTA booking) + notif #rdv-demo.",
+      "Question sur la supervision": "Deal L&Q Lead qualifie 5215721687 + email presentation a froid AUTO + notif #rdv-demo (chemin info-form deja specifie).",
+      "Question sur le Kit OZECAR": "Dedup: nouveau contact -> Deal L&Q Lead qualifie + email (variante kit) + notif #rdv-demo. Contact avec deal L&Q ouvert -> avancer/logguer (buying signal), pas de 2e deal.",
+      "Support technique": "Ticket Support Pipeline (0/New) + accuse email + Slack #support draft IA + boutons (flux existant, a alimenter avec le bon schema/secret).",
+      "Partenariat / Revendeur": "Deal L&Q tague 'Partenariat' (ou propriete dediee) + email one-pager partenaire + notif Slack (#general ou #partenariats). Pas de ticket support.",
+      "Presse / Medias": "Contact + Note + notif Dominique + accuse email. Ni ticket ni deal.",
+      "Autre": "Contact + Note + notif Slack pour triage humain."
+    },
+    "optimisations": [
+      "FIX transport: endpoint dedie contact-intake.php qui branche par sujet (lead/ticket/note), reutilise upsert contact + helpers Slack. OU etendre support-intake.php + passer secret & mapper champs cote JS. Reco: contact-intake.php dedie (separation propre form site vs support conducteur).",
+      "Capturer le CONSENTEMENT RGPD (checkbox du form) + nb_bornes (sur le deal, aide au devis) + honeypot 'website' (anti-spam, deja present cote JS).",
+      "Dedup contact (email) + deal (searchDeals) partout.",
+      "Auto-email selon intention (supervision/kit/demo = presentation a froid, une fois le PDF acte).",
+      "Notif routee par canal: sales -> #rdv-demo, support -> #support, partenariat -> #general, presse/autre -> Dominique."
+    ],
+    "lien_chemin_info_form": "Ce fix EST le build 'chemin info-form' deja planifie: meme chantier. Le regrouper avec le refinement 05b + Make 01 dedup + correlation ozecar_ref_lq."
   }
 }
