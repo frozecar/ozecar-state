@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.293",
+    "version": "1.294",
     "updated": "2026-07-04",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-04",
+        "version_from": "1.293",
+        "version_to": "1.294",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Captcha form contact: choix Cloudflare Turnstile (sans cookie/consentement). Socle deploye: api/oz-turnstile.php + verif serveur fail-open dans contact-intake.php. Attente cles Dominique (site key + secret) pour activer + brancher le widget dans contact-routing.js."
+        ]
+      },
       {
         "date": "2026-07-04",
         "version_from": "1.292",
@@ -11201,6 +11210,12 @@
       "Consentement RGPD: aujourd'hui logge en Note. Passer sur une vraie propriete contact 'consentement' = action Dominique (schema) si tracabilite formelle voulue.",
       "Verif finale: click-test du form sur staging /contact-3/ (hard refresh cache JS)."
     ],
-    "monday_item": "12446733986 (CRITIQUE) = livre (endpoint+JS). Reste = auto-email PDF + dedup 05b/Make01."
+    "monday_item": "12446733986 (CRITIQUE) = livre (endpoint+JS). Reste = auto-email PDF + dedup 05b/Make01.",
+    "captcha_turnstile": {
+      "choix": "Cloudflare Turnstile (pas reCAPTCHA): gratuit, invisible, sans cookie/consentement -> compatible posture CNIL. Fonctionne sur Hostinger sans que le domaine soit sur Cloudflare.",
+      "socle_deploye": "api/oz-turnstile.php (config cles, vides) + verif serveur dans contact-intake.php (siteverify Cloudflare). FAIL-OPEN tant que TURNSTILE_SECRET vide => form non casse. Diag inchange.",
+      "reste_dominique": "Creer un widget Turnstile (dash.cloudflare.com -> Turnstile -> Add widget; domaines ozecar.fr + staging.ozecar.fr; mode Managed) et me donner SITE KEY (publique) + SECRET KEY (privee).",
+      "reste_claude": "A reception des cles: SECRET -> api/oz-turnstile.php ; SITE KEY -> contact-routing.js (injecte le widget + envoie cf_turnstile dans le POST). ~15 min, un pass. Puis verif fail-closed active."
+    }
   }
 }
