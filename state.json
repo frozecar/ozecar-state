@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.284",
+    "version": "1.285",
     "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.284",
+        "version_to": "1.285",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Plans maintenance Monta: creation par API IMPOSSIBLE (POST /plans = 405, API read-only sur plans). A creer dans le dashboard operateur. Definitions N0-N4 pretes fournies (prix HT/TTC + inclus/devis).",
+          "Insight: Monta /plans+/subscriptions = facturation recurrente par team(=site); les plans maintenance peuvent y vivre et servir de source de verite du niveau (au lieu de dupliquer dans Monday)."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.283",
@@ -10956,5 +10966,17 @@
       "Pour >=1 cas client reel: enseigne, secteur, nb PDC supervises, % dispo mesuree, delai de bascule. Ideal: 1 cas par secteur cible.",
       "Logos officiels PNG si mur logos graphique souhaite (sinon noms en texte, deja en place)."
     ]
+  },
+  "maintenance_plans_monta": {
+    "constat_api": "POST /plans = 405 METHOD_NOT_ALLOWED. L'API partenaire supervision est READ-ONLY sur /plans (creation impossible par API). /subscriptions existe (affectation team<->plan, facturation recurrente nextPurchaseAt). Les plans se creent dans le DASHBOARD operateur uniquement.",
+    "insight": "Monta /plans + /subscriptions = moteur de facturation recurrente par team (=par site). Les plans maintenance peuvent y vivre comme plans facturables per-charge-point (comme les forfaits supervision Zero/Standard). Une team peut cumuler plusieurs subscriptions (supervision + maintenance). Le niveau de maintenance pourrait alors etre LU depuis la subscription Monta (source de verite) au lieu d'etre duplique dans Monday. Aligne avec decision par-site.",
+    "a_creer_dashboard_par_dominique": {
+      "N0": "Maintenance N0 — Sans maintenance | 0 € HT (0 TTC) /PDC/mois | Inclus: rien | Tout sur devis",
+      "N1": "Maintenance N1 — Monitoring | 4 € HT (4,80 TTC) | Inclus: teledigagnostic a distance | Intervention physique sur devis",
+      "N2": "Maintenance N2 — Preventif | 9 € HT (10,80 TTC) | Inclus: monitoring + 1 visite preventive/an | Curatif sur devis",
+      "N3": "Maintenance N3 — Curatif SLA 48h | 18 € HT (21,60 TTC) | Inclus: N2 + 2 visites/an + curatif inclus (deplacement+MO, pieces hors garantie au coutant) + hotline + SLA<48h | Exclusions sur devis",
+      "N4": "Maintenance N4 — Curatif SLA 24h | 24 € HT (28,80 TTC) | Inclus: curatif inclus sous 24h | Memes exclusions N3",
+      "config": "applicableFor=charge-point, priceModel=per-charge-point, pas de frais operateur/transaction (forfait maintenance flat), prix stocke TTC (=HT x1,20). supportEmail hello@ozecar.fr."
+    }
   }
 }
