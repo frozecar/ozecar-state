@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.294",
+    "version": "1.295",
     "updated": "2026-07-04",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-04",
+        "version_from": "1.294",
+        "version_to": "1.295",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Captcha: retour arriere sur Turnstile (choix lean Dominique). Le captcha HubSpot n'est dispo que sur les forms natifs embed et bloque les soumissions API -> incompatible avec notre form custom sans tout re-architecturer.",
+          "A la place: durcissement lean de contact-intake.php (honeypot + timing trap ts_render + rate-limit IP 5/15min + heuristiques HTML/URL/liens + blocage emails jetables). Zero compte/tracker/budget. Teste. Turnstile retire (oz-turnstile.php supprime)."
+        ]
+      },
       {
         "date": "2026-07-04",
         "version_from": "1.293",
@@ -11211,11 +11221,12 @@
       "Verif finale: click-test du form sur staging /contact-3/ (hard refresh cache JS)."
     ],
     "monday_item": "12446733986 (CRITIQUE) = livre (endpoint+JS). Reste = auto-email PDF + dedup 05b/Make01.",
-    "captcha_turnstile": {
-      "choix": "Cloudflare Turnstile (pas reCAPTCHA): gratuit, invisible, sans cookie/consentement -> compatible posture CNIL. Fonctionne sur Hostinger sans que le domaine soit sur Cloudflare.",
-      "socle_deploye": "api/oz-turnstile.php (config cles, vides) + verif serveur dans contact-intake.php (siteverify Cloudflare). FAIL-OPEN tant que TURNSTILE_SECRET vide => form non casse. Diag inchange.",
-      "reste_dominique": "Creer un widget Turnstile (dash.cloudflare.com -> Turnstile -> Add widget; domaines ozecar.fr + staging.ozecar.fr; mode Managed) et me donner SITE KEY (publique) + SECRET KEY (privee).",
-      "reste_claude": "A reception des cles: SECRET -> api/oz-turnstile.php ; SITE KEY -> contact-routing.js (injecte le widget + envoie cf_turnstile dans le POST). ~15 min, un pass. Puis verif fail-closed active."
+    "antispam_lean": {
+      "decision": "PAS de captcha tiers (retour arriere sur Turnstile). Raison Dominique: keep it lean, pas de nouveau compte/tracker/budget. Le captcha HubSpot n'est dispo que sur les forms HubSpot natifs (embed) et refuse les soumissions API si active -> l'utiliser voudrait dire remplacer notre form custom (perte du routing/dedup/Slack) + charger Google reCAPTCHA. Donc plus de travail ET moins lean.",
+      "implemente": "Durcissement de contact-intake.php, zero dependance externe: (1) honeypot 'website', (2) timing trap (rejet si soumission <2.5s apres rendu, via ts_render envoye par le JS), (3) rate-limit 5 req / 15 min par IP (fichier temp), (4) heuristiques: HTML/URL dans le nom rejete, >=3 liens dans le message rejete, (5) blocage emails jetables (mailinator/yopmail/guerrillamail/etc.).",
+      "teste": "honeypot avale, jetable/URL-nom/trop-rapide rejetes, diag bypass. contact-routing.js envoie ts_render.",
+      "escalade_si_besoin": "Si un jour le spam explose, on pourra ajouter un captcha (Turnstile/hCaptcha) sans toucher au routing. Non necessaire aujourd'hui.",
+      "turnstile_retire": "api/oz-turnstile.php supprime, bloc verif retire de contact-intake.php."
     }
   }
 }
