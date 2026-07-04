@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.287",
+    "version": "1.288",
     "updated": "2026-07-04",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-04",
+        "version_from": "1.287",
+        "version_to": "1.288",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CORRECTION du 'bug flag' v1.287: le blueprint LIVE de 05b (6400488) utilise deja dealstage=5215721688 (Demo planifiee). Pas de bug de stage. Note anterieure = state perime.",
+          "05b (6400488) etait invalid/inactif (flux booking DOWN) -> REACTIVE via scenarios_activate (isinvalid:false, isActive:true). Garde-fou => 0 risque envoi de masse.",
+          "Funnel entree fige (regle Dominique): booking->Demo planifiee 5215721688 (05b); info-form->Lead qualifie 5215721687 + email presentation a froid + CTA demo (A CONSTRUIRE, form staging = placeholder).",
+          "Refinement anti-doublon 05b: passer createDeal -> search-then-update-or-create pour 1 seul deal_id par dossier."
+        ]
+      },
       {
         "date": "2026-07-04",
         "version_from": "1.286",
@@ -11081,6 +11093,16 @@
     "bugs_stages_a_flagger": [
       "Le Make de booking place le deal en 'Demo planifiee' avec l'ID 5215721687 -> or 5215721687 = 'Lead qualifie'. Les demos bookees atterrissent au mauvais stade. A corriger (bon ID = 5215721688). [make_scenarios - coordination]",
       "Digest scenario 07 filtre 5215721688/89/90 -> rate 5584432342 (Devis a faire) et 5215721691 (Kit envoye). Sous-relance possible. [make_scenarios]"
-    ]
+    ],
+    "CORRECTION_bug_stage_2026_07_04": "FAUSSE ALERTE: le blueprint LIVE de 05b (6400488) module createDeal utilise DEJA dealstage=5215721688 (Demo planifiee). Le 'bug 5215721687' venait d'une note state perimee, PAS du scenario reel. Aucun correctif de stage necessaire.",
+    "05b_reactive_2026_07_04": "05b (6400488) etait isinvalid:true / isActive:false = flux booking DOWN. Reactive via scenarios_activate -> isinvalid:false, islinked:true, isActive:true, nextExec planifiee. Garde-fou (engagements_last_meeting_booked GTE now + ozecar_demo_confirme NEQ true) => aucun envoi de masse sur le passif.",
+    "funnel_entree_2026_07_04": {
+      "regle_dominique": "2 chemins d'entree distincts.",
+      "chemin_booking": "User booke une demo (widget HubSpot Meetings ozecar-demo) -> 05b (6400488) -> Deal L&Q stage Demo planifiee 5215721688 + email confirmation + (a brancher) post #rdv-demo.",
+      "chemin_info_form": "User remplit le formulaire demande d'info/supervision -> Deal L&Q stage Lead qualifie 5215721687 -> email presentation 'a froid' avec CTA booking demo -> s'il booke -> bascule Demo planifiee (via 05b).",
+      "a_construire": "Le chemin info-form n'existe pas encore (form staging /contact-3/ = handleSubmit PLACEHOLDER). A cabler: form -> Deal L&Q Lead qualifie 5215721687 + declenche email presentation a froid + CTA demo.",
+      "dependance_contenu": "Email 'presentation a froid' = contenu a sourcer (NE PAS inventer). Asset a definir avec Dominique (lien page supervision / PDF deck client / one-pager Canva).",
+      "refinement_anti_doublon": "05b fait createDeal (cree toujours). Si un contact vient d'abord par info-form (deal Lead qualifie deja cree) puis booke, 05b cree un 2e deal = DOUBLON. Pour respecter le principe 'un seul deal_id par dossier': 05b doit SearchDeals L&Q associe au contact -> si existe: updateDeal stage->Demo planifiee, sinon createDeal. Edit Make a faire."
+    }
   }
 }
