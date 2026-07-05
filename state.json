@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.330",
+    "version": "1.331",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.330",
+        "version_to": "1.331",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Transfert installateur->client LIVRE + teste: vue installateur du configurateur (?installer_view=1) avec bouton 'Transferer a mon client' + form -> api/devis-transfer.php (cree/rattache Contact client au deal + societe cliente + envoie email devis au client charte OZECAR + note + notif #devis). Reste: auto-envoi email installateur (cablage flux prep) + PandaDoc + signature->Pennylane."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.329",
@@ -11801,6 +11810,12 @@
       "client_transfere": "email-client-transfere.html: 'Votre offre de supervision' + 'preparee avec votre installateur SOLECO' (OZECAR visible, installateur credite, pas de Monta) + recap + prix + bouton 'Voir & signer mon devis' -> vue client (?client&deal_id&c). Charte OZECAR.",
       "statut": "Templates construits (charte, exemple SOLECO/Veterinaire BFC/4 PDC/Pro). A cabler dans devis-transfer.php (envoi client) + le flux d'envoi initial a l'installateur.",
       "reste_pour_boucler": "vue installateur (bouton Transferer) + devis-transfer.php (create Contact client + assoc + send email client + notif) + signature PandaDoc (embed) + signature->Stripe Subscription + handoff Gagne->Livraison."
+    },
+    "transfert_LIVRE": {
+      "vue_installateur": "configurateur ?client&installer_view=1 -> masque 'Accepter & signer', affiche bloc 'Transferer a votre client' (prenom/nom/email client) + bouton -> POST devis-transfer.php.",
+      "endpoint": "api/devis-transfer.php: find-or-create Contact client -> rattache au deal (Contact client default) + a la societe cliente + envoie l'email devis au client (charte OZECAR, sans Monta, lien vue client) + note deal + notif Slack #devis. Teste OK (contact cree+rattache, email envoye, notif).",
+      "note_email_valide": "HubSpot rejette les emails en .invalid (validation) -> tester avec un domaine valide.",
+      "reste": "Auto-envoi de l'email INSTALLATEUR (email-installateur.html) a cabler dans le flux de prep devis (quand le devis est envoye a l'installateur) - pour l'instant le commercial envoie le lien vue installateur. Puis PandaDoc (signature) + signature->Pennylane+activation."
     }
   },
   "n1_notification_routing_2026_07_05": {
