@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.327",
+    "version": "1.328",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.327",
+        "version_to": "1.328",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Emails transfert construits (charte OZECAR, sans Monta): email installateur ('devis pret' + Ouvrir le devis -> vue installateur) + email client transfere ('offre preparee avec votre installateur SOLECO' + Voir & signer). Templates prets, a cabler (devis-transfer.php + vue installateur)."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.326",
@@ -11768,6 +11777,12 @@
         ],
         "statut": "Design valide. A construire."
       }
+    },
+    "emails_transfert": {
+      "installateur": "email-installateur.html: 'Votre devis est pret' + recap (client/PDC/forfait/N1) + bouton 'Ouvrir le devis' -> vue installateur (?client&installer_view=1&deal_id&installer). Charte OZECAR, sans Monta.",
+      "client_transfere": "email-client-transfere.html: 'Votre offre de supervision' + 'preparee avec votre installateur SOLECO' (OZECAR visible, installateur credite, pas de Monta) + recap + prix + bouton 'Voir & signer mon devis' -> vue client (?client&deal_id&c). Charte OZECAR.",
+      "statut": "Templates construits (charte, exemple SOLECO/Veterinaire BFC/4 PDC/Pro). A cabler dans devis-transfer.php (envoi client) + le flux d'envoi initial a l'installateur.",
+      "reste_pour_boucler": "vue installateur (bouton Transferer) + devis-transfer.php (create Contact client + assoc + send email client + notif) + signature PandaDoc (embed) + signature->Stripe Subscription + handoff Gagne->Livraison."
     }
   },
   "n1_notification_routing_2026_07_05": {
