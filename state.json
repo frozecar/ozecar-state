@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.311",
+    "version": "1.312",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.311",
+        "version_to": "1.312",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "FIX flux #devis: oz_create_devis associe maintenant la societe cliente (find-or-create) au deal + au contact, et remplit les proprietes stade devis (nombre_pdc, ozecar_forfait, ozecar_maintenance). Installateur reste en assoc labellisee 'Installateur referent'. Deal test balesi backfille (societe associee). Lint+smoke OK."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.310",
@@ -11534,6 +11543,14 @@
       "lint": "php -l OK, handshake OK, bot support intact.",
       "dep_dominique_scope": "Le bot n'a PAS channels:history -> il ne recoit pas les messages de #devis. Dominique doit, dans la config de l'app Slack: (1) ajouter le scope OAuth 'channels:history', (2) souscrire a l'event 'message.channels', (3) REINSTALLER l'app. Sans ca, seul le BOUTON marche (le bouton, lui, ne demande aucun scope supplementaire).",
       "note_cout": "Chaque message humain dans #devis declenche un appel Haiku de classification. OK a faible trafic; sinon ajouter un pre-filtre."
+    },
+    "fix_associations_2026_07_05": {
+      "bug": "oz_create_devis creait le deal SANS associer la societe cliente (seul le contact si email l'etait) et SANS remplir les proprietes. Deal test balesi 509487653050: companies=[], contacts=[], nombre_pdc vide.",
+      "corrige": "oz_create_devis: (1) societe cliente find-or-create par nom (EQ) -> assoc default au deal + assoc contact->societe; (2) proprietes remplies au stade devis: nombre_pdc (int), ozecar_forfait (Essential/Pro/Pro+), ozecar_maintenance ('N1 inclus' si mode partenaire). Installateur = societe assoc labellisee 'Installateur referent' typeId 2 (inchange).",
+      "associations_deal": "client Company (association default/primaire) + client Contact + installateur Company (label 'Installateur referent' typeId 2).",
+      "proprietes_stade": "Devis: nombre_pdc, ozecar_forfait, ozecar_maintenance, ozecar_nb_stations(si dispo). Stade kit/expedition (PAS au devis): type_kit, nombre_de_sim, qr_code_commande, sim_iccid, tracking_number.",
+      "backfill": "Deal test balesi 509487653050 associe a la societe 'balesi automobile' 435760889060.",
+      "lint": "php -l OK, smoke-test OK."
     }
   }
 }
