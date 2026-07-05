@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.309",
+    "version": "1.310",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.309",
+        "version_to": "1.310",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Mode partenaire du configurateur LIVRE (gate ?installer): installateur cite dans l'entete, N1 maintenance inclus 0€ (notifications a l'installateur), grille maintenance masquee. Porte dans l'URL client + payload. Additif (hors mode partenaire = inchange). Branche dans le bot #devis (URL edit porte &installer). Mention Monta ApS CGV reversement non touchee (exception documentee)."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.308",
@@ -11499,6 +11508,14 @@
       "smoke_test": "handshake url_verification OK (pas d'erreur PHP, bot support intact). ACK modal via fastcgi_finish_request (ferme le modal <3s puis traite).",
       "configurateur_url": "https://staging.ozecar.fr/wp-content/uploads/ozecar/configurateur-devis.html?sales&deal_id=X"
     },
-    "blocage": "Bot ozecarbot (U0BDB9M3GG5) n'a PAS le scope channels:join -> ne peut pas s'auto-ajouter a #devis. Scopes actuels: app_mentions:read, chat:write, commands, users:read(.email), im:*, mpim:write. Sans chat:write.public non plus. => Dominique doit AJOUTER le bot a #devis (/invite @ozecarbot). Ensuite je poste la carte lanceur et le flux est live."
+    "blocage": "Bot ozecarbot (U0BDB9M3GG5) n'a PAS le scope channels:join -> ne peut pas s'auto-ajouter a #devis. Scopes actuels: app_mentions:read, chat:write, commands, users:read(.email), im:*, mpim:write. Sans chat:write.public non plus. => Dominique doit AJOUTER le bot a #devis (/invite @ozecarbot). Ensuite je poste la carte lanceur et le flux est live.",
+    "mode_partenaire": {
+      "objectif": "Devis en mode partenaire: installateur cite + N1 maintenance gratuit (0€, notifications a l'installateur) + grille des niveaux de maintenance masquee. Respecte le mandat supervision OZECAR<->client final.",
+      "declencheur": "Param URL ?installer=<nom> (porte aussi dans l'URL client generee + le payload). Ajoute automatiquement par le bot #devis quand le champ Installateur est rempli.",
+      "implemente_configurateur": "configurateur-devis.html (staging): (1) INSTALLER lu depuis l'URL; (2) MNT N1 price force a 0 + sub 'Monitoring 24/7 · inclus'; (3) state.mnt force 'n1'; (4) grille maintenance (#mntGridWrap) masquee, tot_mnt conserve (0€); (5) note 'N1 inclus, notifications a {installer}' injectee; (6) 'Partenaire installateur: {nom}' dans l'entete du devis (fillDocHead); (7) installer porte dans l'URL client + buildPayload. Additif, gate par ?installer -> hors mode partenaire le configurateur est INCHANGE.",
+      "monta_cgv": "La mention 'Monta ApS' dans la clause CGV reversement (art 2.1.1) est l'exception documentee (virements reels au client) - NON touchee, conforme.",
+      "verif": "Page 200, marqueurs presents. Rendu visuel a valider par Dominique (staging ?sales&deal_id=X&installer=SOLECO).",
+      "statut": "Livre cote configurateur + branche dans le bot #devis (URL edit porte &installer)."
+    }
   }
 }
