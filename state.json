@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.326",
+    "version": "1.327",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.326",
+        "version_to": "1.327",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Solution transfert retenue (idee Dominique): vue INSTALLATEUR du devis avec bouton 'Transferer a mon client' -> l'installateur renseigne son client -> devis-transfer.php cree/rattache le Contact client au deal + envoie le devis au client (a son nom) + notif Slack. Corrige le mail adresse comme si l'installateur etait le client + capte le client au transfert. A construire (vue installateur + devis-transfer.php + flag installer_view)."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.325",
@@ -11747,7 +11756,18 @@
       "cle": "Parce que le deal_id voyage dans le lien transfere, tout engagement du client (signature PandaDoc OU saisie email) se rattache au DEAL EXISTANT (pas de doublon). Le client final apparait enfin sur le dossier (assoc Contact client).",
       "voie_A_pandadoc": "Vue client a deja une zone 'Accepter & signer' + bouton acceptBtn + emplacement pandadocEmbed (PLACEHOLDER: 'code d'embed sera colle ici'). Cible: client remplit PandaDoc + signe -> integration PandaDoc<->HubSpot ecrit Contact client + signature -> deal Gagne. Manque: coller le code embed PandaDoc (setup template PandaDoc).",
       "voie_B_capture_legere": "Constructible MAINTENANT sans PandaDoc: mini-form 'recevez votre devis / validez' (nom+email) dans la vue client -> endpoint api/devis-client-capture.php ecrit Contact client sur le deal (deal_id URL) + notif commercial Slack. Des que le client saisit son email, le deal se remplit.",
-      "reco": "Voie B en interim (immediate, je peux la construire) + Voie A PandaDoc en cible (necessite setup PandaDoc + embed par Dominique)."
+      "reco": "Voie B en interim (immediate, je peux la construire) + Voie A PandaDoc en cible (necessite setup PandaDoc + embed par Dominique).",
+      "SOLUTION_RETENUE_bouton_transferer": {
+        "idee_dominique": "Au lieu que l'installateur forwarde un mail adresse comme s'il etait le client, lui donner une VUE INSTALLATEUR avec un bouton 'Transferer a mon client' ou il renseigne les infos client -> OZECAR envoie au client + remplit le deal.",
+        "pourquoi_meilleur": "Corrige le mail 'adresse comme si l'installateur etait le client' + capte le client au transfert (l'installateur renseigne son client -> deal se remplit a coup sur, client recoit un devis a SON nom). Supersede la 'Voie B capture' (ou le client saisissait lui-meme).",
+        "flux": "1. Installateur recoit mail 'Votre devis est pret' + bouton 'Ouvrir le devis'. 2. Vue installateur (flag ?installer_view=1). 3. Bouton 'Transferer a mon client' + mini-form (nom, email client). 4. Validation -> devis-transfer.php: cree Contact client + rattache au deal (deal_id connu) + envoie mail devis au client (lien vue client) + notif commercial Slack. Installateur reste Contact installateur. 5. Client ouvre SON lien -> Accepter & signer.",
+        "a_construire": [
+          "Vue installateur dans le configurateur (extension mode partenaire): bouton 'Transferer a mon client' + form, au lieu de 'Accepter & signer'",
+          "api/devis-transfer.php (create Contact client + assoc deal + send mail client + notif Slack)",
+          "Flag &installer_view=1 dans le lien envoye a l'installateur"
+        ],
+        "statut": "Design valide. A construire."
+      }
     }
   },
   "n1_notification_routing_2026_07_05": {
