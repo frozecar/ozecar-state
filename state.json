@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.335",
+    "version": "1.336",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.335",
+        "version_to": "1.336",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Carte demo->devis LIVREE: scenario Make 10 (id 6452570, poll 15min, actif) searchDeals Devis a faire + flag=false -> demo-devis-card.php (carte #devis + URL configurateur + set flag=true). Propriete ozecar_devis_card_sent creee, #devis-direct pose true, demo-booking pose false. Filtre EQ false (evite piege null). Pipeline Vente pret pour test Marie-Estelle demain."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.334",
@@ -12005,6 +12014,30 @@
       "demo_booking_php": "Cree deal '{Client} — Démo' (Vente 3747862733, stade Demo planifiee 5215721688, deal_type=supervision) + associe contact (+societe si connue) + set ozecar_demo_confirme=true + email confirmation charte. Idempotent (reutilise deal existant si deja en Demo planifiee). Teste OK.",
       "statut": "05b REACTIVE. 0 contact en attente (aucun traitement perime). Booking demo -> deal restaure.",
       "pattern_etabli": "Make = poll fin -> appel HTTP a un endpoint PHP OZECAR qui fait tout le CRM (robuste, testable). A appliquer aux autres triggers (demo->devis card, handoff Gagne->Livraison)."
+    },
+    "demo_devis_card_LIVRE": {
+      "scenario": "Make '10 - Demo->Devis carte #devis' (id 6452570, poll 15min, ACTIF). searchDeals dealstage=5584432342 (Devis a faire) AND ozecar_devis_card_sent EQ 'false' -> HTTP demo-devis-card.php.",
+      "endpoint": "api/demo-devis-card.php: poste carte dans #devis (C0BF8UB8457, bot membre - #rdv-demo refuse car bot pas membre, manque channels:join) avec URL edit-mode configurateur (?sales&deal_id+pdc+tier+installer) + bouton Voir le deal + set ozecar_devis_card_sent=true. Idempotent. Teste OK (posted:true).",
+      "flag": "Propriete ozecar_devis_card_sent (booleancheckbox) creee. #devis-direct (oz_create_devis) pose 'true' (carte propre deja postee). demo-booking.php pose 'false' a la creation -> chemin demo carte au passage en Devis a faire. Filtre EQ 'false' (pas NEQ) pour eviter le piege HubSpot null.",
+      "anti_doublon": "Les anciens deals (flag null) ne sont PAS cartes (EQ 'false' exclut null). Seuls les NOUVEAUX deals demo (flag='false') sont cartes. 0 deal perime au lancement.",
+      "delai": "Carte apparait jusqu'a 15min apres le drag en Devis a faire (poll). Pour le test, prevenir Marie-Estelle de ce delai.",
+      "option_rdv_demo": "Si Dominique veut la carte dans #rdv-demo plutot que #devis: inviter le bot ozecarbot dans #rdv-demo (/invite @ozecarbot), puis rebasculer le canal."
     }
+  },
+  "test_pipeline_vente_2026_07_06": {
+    "date": "Demain avec Marie-Estelle",
+    "automatise": [
+      "Booking demo -> deal 'Demo planifiee' (05b via demo-booking.php)",
+      "Demo -> drag en 'Devis a faire' -> carte #devis avec lien configurateur (scenario 10)",
+      "Configurateur -> MAJ deal (scenario 08 webhook)",
+      "Transfert installateur->client (devis-transfer.php + vue installateur)",
+      "deal_type=supervision par defaut (#devis)"
+    ],
+    "manuel_pour_le_test": [
+      "Drag Devis a faire -> Devis-contrat envoye",
+      "Drag -> Gagne",
+      "Signature PandaDoc (embed pas encore colle)"
+    ],
+    "delai_carte": "~15min apres le drag (poll Make)"
   }
 }
