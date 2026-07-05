@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.318",
+    "version": "1.319",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.318",
+        "version_to": "1.319",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Clarif contrat (Dominique): devis pre-rempli + contrat = UN SEUL doc PandaDoc. Fusion des phases 'Devis envoye' + 'Contrat' -> 'Devis-contrat envoye (PandaDoc a signer)' dans le pipeline Vente. Signature client final -> Stripe + Livraison."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.317",
@@ -11664,13 +11673,12 @@
     "pipeline_1_vente": [
       "Nouveau (=Formulaire recu)",
       "Qualifie (=Lead qualifie)",
-      "Devis a faire",
-      "Devis envoye",
-      "Contrat (envoye/a signer)",
+      "Devis a faire (preparation configurateur)",
+      "Devis-contrat envoye (PandaDoc a signer)",
       "Gagne",
       "Perdu"
     ],
-    "etape_contrat": "Contrat = contrat de supervision OZECAR <-> CLIENT FINAL (mandat, non negociable). 2 cas meme flux: (a) le client final signe lui-meme (l'installateur lui transfere le lien PandaDoc); (b) l'installateur indique le contact du client final -> OZECAR lui envoie (= assoc 'Contact client' du deal). Signature PandaDoc. Sur la vente ASSISTEE uniquement (le webshop declenche l'abo direct a l'activation, sans etape contrat).",
+    "etape_contrat": "CLARIFICATION Dominique: le 'contrat' = LE MEME document que le devis pre-rempli. Un seul PandaDoc genere depuis le deal HubSpot = devis (quantites/prix/niveau, sorti du configurateur) + termes contractuels (CGV, engagement supervision). Donc 'Devis envoye' et 'Contrat' FUSIONNENT en 1 phase 'Devis-contrat envoye (PandaDoc a signer)'. Signature par le client final (lui-meme, ou via le contact indique par l'installateur = assoc Contact client). Contrat = OZECAR <-> client final (mandat). Signature -> Stripe Subscription + bascule Livraison. Vente assistee uniquement (webshop = abo direct a l'activation, sans PandaDoc).",
     "demo": "Sortie du chemin bloquant -> propriete/sous-statut (majorite des deal_types la sautent).",
     "pipeline_2_livraison": [
       "Kit a preparer (=Kit commande)",
