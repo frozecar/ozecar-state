@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.305",
-    "updated": "2026-07-04",
+    "version": "1.306",
+    "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.305",
+        "version_to": "1.306",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CLARIF positionnement: la marque blanche est celle d'OZECAR sur Monta, PAS offerte au client. Client + conducteurs voient TOUJOURS OZECAR.",
+          "Purge 'marque blanche/votre marque/invisible' des decks client + demo (contresens corrige)",
+          "Nouvelle section positioning_marque_blanche_CLARIF_2026_07_03 (a respecter par tous les chats)"
+        ]
+      },
       {
         "date": "2026-07-04",
         "version_from": "1.304",
@@ -11195,7 +11206,8 @@
     ],
     "learning_DKK": "ATTENTION: l'ecran app 'Demarrage de la recharge' du PDF affiche 'Cout cumule 0 DKK' (couronne danoise = tell backend + mauvaise devise FR). NE JAMAIS l'utiliser. Verif OCR systematique DKK/kr/Monta avant d'integrer un screenshot. Ecrans EUR-propres valides: parcours_row, dash_revenue, dash_etats, dash_tension, kit_lockup, phone_kit.",
     "case_studies_statut": "EN ATTENTE - Dominique met Marie-Estelle sur la collecte des chiffres (enseigne/secteur/PDC/%dispo/delai). Emplacements balises dans client (slide 10).",
-    "learning_faux_positif_marque_blanche": "Un grep binaire 'monta|DKK' sur les .png embarques peut matcher des octets aleatoires du flux compresse (ex 'dkk' 3 lettres). Ce N'EST PAS une fuite. Le vrai controle marque blanche = contenu VISIBLE (OCR) + URLs/metadonnees, pas les octets compresses. Verif faite: 0 'monta' reel, OCR EUR-propre."
+    "learning_faux_positif_marque_blanche": "Un grep binaire 'monta|DKK' sur les .png embarques peut matcher des octets aleatoires du flux compresse (ex 'dkk' 3 lettres). Ce N'EST PAS une fuite. Le vrai controle marque blanche = contenu VISIBLE (OCR) + URLs/metadonnees, pas les octets compresses. Verif faite: 0 'monta' reel, OCR EUR-propre.",
+    "correction_marque_blanche": "Purge de toute mention 'marque blanche/votre marque/invisible' des decks client + demo (etaient un contresens). Client voit OZECAR partout. Voir positioning_marque_blanche_CLARIF_2026_07_03."
   },
   "maintenance_plans_monta": {
     "constat_api": "POST /plans = 405 METHOD_NOT_ALLOWED. L'API partenaire supervision est READ-ONLY sur /plans (creation impossible par API). /subscriptions existe (affectation team<->plan, facturation recurrente nextPurchaseAt). Les plans se creent dans le DASHBOARD operateur uniquement.",
@@ -11416,5 +11428,12 @@
     "raison": "/se-connecter/ est l'entree white-label propre (propose portail web + app mobile avec badges stores). Coherence + controle du parcours.",
     "action_faite": "footer.php (ozecar-theme): 'Portail OZECAR' href https://hub.ozecar.app (target=_blank) -> /se-connecter/ (meme onglet). Verifie live.",
     "reference": "Bouton 'Se connecter' header = nav-cta-portal -> /se-connecter/ (deja en place)."
+  },
+  "positioning_marque_blanche_CLARIF_2026_07_03": {
+    "regle": "La marque blanche est celle d'OZECAR SUR SON MOTEUR TECHNIQUE (Monta reste cache DERRIERE la marque OZECAR). Elle n'est PAS offerte au client final.",
+    "consequence_client_facing": "Le client B2B ET ses conducteurs voient TOUJOURS OZECAR : app OZECAR One, portail OZECAR, 'Fourni par OZECAR'. Le client n'a PAS sa propre marque sur l'app/le portail.",
+    "interdit_pitch": "NE JAMAIS vendre au client 'votre marque en facade', 'OZECAR reste invisible', 'marque blanche pour vous'. C'est FAUX. Remplacer par: cle-en-main, un seul interlocuteur, service opere de bout en bout, experience pro OZECAR One.",
+    "reste_valide": "Regle Monta cache (backend/surfaces client) inchangee: aucun 'Monta' visible nulle part cote client.",
+    "source": "Clarification explicite Dominique 2026-07-03."
   }
 }
