@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.317",
+    "version": "1.318",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.317",
+        "version_to": "1.318",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Proposition refonte 2 pipelines (Vente/Livraison par fonction + deal_type qui branche + demo->propriete + webshop=entree directe Livraison). Etape CONTRAT confirmee par Dominique: contrat supervision OZECAR<->client final, client signe lui-meme OU installateur indique le contact client final (assoc Contact client), PandaDoc, vente assistee seulement. Placee Vente: Devis envoye -> Contrat -> Gagne. Migration a planifier avant execution (IDs hardcodes)."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.316",
@@ -11648,5 +11657,37 @@
     "applique": "Bot #devis oz_create_devis aligne ('{Client} — Devis Supervision {Tier}'). 2 deals de test renommes (Balesi Automobile / Garage Machin — Devis Supervision).",
     "a_aligner_coordination": "Make scenarios: 05b nomme 'Demo OZECAR — {nom}' -> recommander '{Client ou nom} — Demo'. Make 01 (Kit commande) -> verifier le nom. [make_scenarios - coordination].",
     "usage_equipe_constate": "Marie-Estelle utilise deja de fait '{Client} - {Objet}' (ex 'Comepa - Proposition Supervision', 'NOVA Zaptec - Devis Materiel'). La convention formalise cet usage."
+  },
+  "pipelines_refonte_proposal_2026_07_05": {
+    "statut": "PROPOSITION - direction validee point par point avec Dominique. Migration a executer apres go global + plan detaille. NE PAS toucher aux IDs de phases sans go (hardcodes partout).",
+    "principe": "Decouper les 2 pipelines par FONCTION (Vente assiste / Livraison fulfillment), brancher l'auto sur la propriete deal_type (existe deja: Supervision / Reprise / Installation / Accessoires / Maintenance / Vente B2B).",
+    "pipeline_1_vente": [
+      "Nouveau (=Formulaire recu)",
+      "Qualifie (=Lead qualifie)",
+      "Devis a faire",
+      "Devis envoye",
+      "Contrat (envoye/a signer)",
+      "Gagne",
+      "Perdu"
+    ],
+    "etape_contrat": "Contrat = contrat de supervision OZECAR <-> CLIENT FINAL (mandat, non negociable). 2 cas meme flux: (a) le client final signe lui-meme (l'installateur lui transfere le lien PandaDoc); (b) l'installateur indique le contact du client final -> OZECAR lui envoie (= assoc 'Contact client' du deal). Signature PandaDoc. Sur la vente ASSISTEE uniquement (le webshop declenche l'abo direct a l'activation, sans etape contrat).",
+    "demo": "Sortie du chemin bloquant -> propriete/sous-statut (majorite des deal_types la sautent).",
+    "pipeline_2_livraison": [
+      "Kit a preparer (=Kit commande)",
+      "Kit expedie",
+      "Activation en cours",
+      "Supervision active (gagne)",
+      "Sans suite"
+    ],
+    "handoff": "Gagne (Vente) -> bascule le deal en Livraison 'Kit a preparer' (un seul deal, plus de doublon). Webshop = 2e porte d'entree directe en Livraison (deja paye, Make 01 cree deja le deal a 'Kit commande').",
+    "branche_deal_type": {
+      "Supervision / Installation": "Vente -> Contrat -> Gagne -> Livraison (kit->activation->supervision)",
+      "Vente B2B (materiel installateur)": "Vente -> Gagne -> expedition materiel; supervision = deal Supervision separe du client final, lie",
+      "Reprise": "Vente -> Gagne -> Livraison Activation direct (pas de kit)",
+      "Accessoires": "Vente -> Gagne -> expedition (pas d'activation)",
+      "Maintenance": "Vente (Diagnostic=Qualifie -> Devis -> Gagne/facture) ou tickets Support"
+    },
+    "impact_migration": "IDs de phases hardcodes dans Make (05b/01/07), configurateur, #devis (oz_create_devis 5584432342/5215721690), n1-notify, devis-attr + tous les deals existants mappes. Migration coordonnee, ordonnee, a planifier avant execution.",
+    "monta_confirme": "partner-api.monta.com/api/v1 cable dans monta.php (ID+token) -> webhook enregistrable. monta-webhook.php a construire (independant de la refonte)."
   }
 }
