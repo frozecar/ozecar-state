@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.324",
+    "version": "1.325",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.324",
+        "version_to": "1.325",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Destinataire du devis: suit ce qui est vendu (deal_type). Supervision -> CLIENT FINAL recoit+signe le PandaDoc (mandat), installateur en CC. Vente B2B materiel -> l'installateur (acheteur) signe, supervision = devis separe au client final. Avant rattachement client: devis partage avec l'installateur; PandaDoc a signer -> client final une fois Contact client rattache. Signataire PandaDoc = Contact client, Contact installateur = CC."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.323",
@@ -11714,7 +11723,15 @@
       "lint": "php -l OK, smoke-test OK."
     },
     "moteur_v2_4acteurs": "oz_create_devis reconstruit: capture client (societe+contact) ET installateur (societe+contact) separement, associe chacun avec le bon label. Modal #devis restructure en 3 blocs (Client / Installateur / Devis). Free-text: Claude distingue client vs installateur. Teste scenario 2 (labels societe+contact OK).",
-    "configurateur_champ_installateur": "Barre 'Installateur / partenaire' ajoutee en vue commerciale (?sales). Bouton 'Enregistrer sur le deal' -> POST api/devis-attr.php (find-or-create societe installateur + assoc 'Installateur referent' typeId 1 + deal_for_partner + ozecar_maintenance) -> reload avec ?installer= (mode partenaire actif). Teste OK. => attribution possible depuis 3 entrees: #devis, configurateur, manuel HubSpot."
+    "configurateur_champ_installateur": "Barre 'Installateur / partenaire' ajoutee en vue commerciale (?sales). Bouton 'Enregistrer sur le deal' -> POST api/devis-attr.php (find-or-create societe installateur + assoc 'Installateur referent' typeId 1 + deal_for_partner + ozecar_maintenance) -> reload avec ?installer= (mode partenaire actif). Teste OK. => attribution possible depuis 3 entrees: #devis, configurateur, manuel HubSpot.",
+    "destinataire_devis_2026_07_05": {
+      "regle": "Le destinataire/signataire du devis-contrat PandaDoc suit CE QUI EST VENDU (deal_type), pas qui a demande le devis.",
+      "supervision": "Contrat OZECAR <-> CLIENT FINAL (mandat). Le CLIENT FINAL recoit le PandaDoc et SIGNE (via l'assoc 'Contact client'). Installateur = CC ('Contact installateur'), ne signe pas. 2 canaux de livraison: (1) l'installateur transfere le lien a son client; (2) l'installateur indique le contact client -> OZECAR envoie direct.",
+      "materiel_vente_b2b": "OZECAR = fournisseur, l'installateur ACHETE le materiel -> l'INSTALLATEUR recoit et signe le devis materiel. La supervision fera l'objet d'un devis SEPARE au client final.",
+      "materiel_plus_supervision": "2 volets: materiel -> installateur; supervision -> client final.",
+      "avant_rattachement_client": "Tant que le client final n'est pas rattache, le devis (proposition) est partage avec l'INSTALLATEUR (requester/intermediaire). Le PandaDoc a signer part au client final une fois le Contact client rattache.",
+      "hubspot_pandadoc": "Signataire PandaDoc = Contact client (assoc default). Contact installateur = CC."
+    }
   },
   "n1_notification_routing_2026_07_05": {
     "objectif": "N1 = monitoring 24/7 + notifications d'alerte site routees vers l'installateur reference (donne corps au 'N1 inclus, notifications a l'installateur' du devis partenaire).",
