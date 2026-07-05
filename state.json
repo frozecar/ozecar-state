@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.323",
+    "version": "1.324",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.323",
+        "version_to": "1.324",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Cas demo APRES devis (installateur->devis direct, puis client final demande une demo): demo = meeting sur le deal existant, PAS de regression de phase, pas de re-declenchement (deal cree direct en Devis a faire, aucune transition). Capter Contact client + dedup (rattacher au deal existant, pas de doublon). La demo est decouplee du gating lineaire -> marche avant ou apres le devis."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.322",
@@ -11493,7 +11502,20 @@
       "lien_refonte": "La demo reste en PHASES (Demo planifiee/realisee gardees). Trigger = deal entre en phase 'Demo realisee' (5215721689), pilote par un Make qui watch hs_meeting_outcome=Completed.",
       "MECANISME_FINAL": "Le commercial fait GLISSER le deal sur 'Devis a faire' une fois la demo terminee. Ce glissement = la confirmation 'demo faite' (un no-show n'est pas glisse -> pas de faux positif, pas besoin de hs_meeting_outcome). Make watch la TRANSITION vers 'Devis a faire' -> poste la carte #rdv-demo (resume Granola + URL configurateur pre-rempli).",
       "simplification": "Phase 'Demo realisee' (5215721689) SUPPRIMEE (inutile). Vente: Nouveau -> Qualifie -> Demo planifiee -> Devis a faire -> Devis-contrat envoye -> Gagne/Perdu. Demo planifiee = demo a venir; glissement en Devis a faire = demo faite.",
-      "anti_clash": "Le chemin #devis DIRECT cree des deals DIRECTEMENT en 'Devis a faire' (5584432342). Donc le Make du flux demo doit se declencher sur la TRANSITION (Demo planifiee -> Devis a faire), PAS sur 'cree en Devis a faire'. Sinon double carte."
+      "anti_clash": "Le chemin #devis DIRECT cree des deals DIRECTEMENT en 'Devis a faire' (5584432342). Donc le Make du flux demo doit se declencher sur la TRANSITION (Demo planifiee -> Devis a faire), PAS sur 'cree en Devis a faire'. Sinon double carte.",
+      "cas_demo_apres_devis": {
+        "situation": "Installateur (connait deja OZECAR) demande un devis pour SON client inconnu -> devis fait direct (chemin #devis, sans demo). PUIS le client final demande une demo malgre le devis deja fait.",
+        "principe": "La demo = un EVENEMENT (meeting), pas une phase imposee. 'Demo planifiee' ne sert qu'au chemin standard entrant (demo avant devis). Une demo hors-sequence ne fait PAS regresser le deal.",
+        "traitement": [
+          "Ne PAS faire reculer le deal (reste a Devis a faire / Devis-contrat envoye).",
+          "Booker la demo comme MEETING sur le deal EXISTANT (timeline + hs_meeting_outcome). Demo de reassurance/closing, pas de qualification.",
+          "Pas de re-declenchement: le deal a ete cree directement en Devis a faire (#devis) -> aucune transition Demo planifiee->Devis a faire -> le Make ne re-poste pas de carte. Gere tout seul par le trigger sur transition.",
+          "Capter le contact client final a ce moment (assoc Contact client).",
+          "Post-demo -> signature PandaDoc -> Gagne."
+        ],
+        "dedup": "Si le client final contacte OZECAR lui-meme pour la demo (formulaire), RATTACHER au deal existant (match societe/installateur), PAS creer un 2e deal. Etendre la regle find-or-create: 'si un deal L&Q ouvert existe pour cette societe, booker la demo dessus'.",
+        "conclusion": "La demo marche dans les 2 sens (avant OU apres le devis) car decouplee du gating lineaire. Seul le chemin standard la met en phase."
+      }
     }
   },
   "contact_form_routing_2026_07_04": {
