@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.329",
+    "version": "1.330",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.329",
+        "version_to": "1.330",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "DECISION billing recurrent: Pennylane abonnement + SEPA via COMPTE PRO (ICS propre, PAS GoCardless pour eviter fees). Stripe garde pour Shopify webshop. Activation DECOUPLEE du paiement (B2B: on active des la signature, 1er prelevement SEPA ~14j apres = OK). Remplace 'signature->Stripe Subscription' par 'signature->Pennylane abonnement+SEPA' pour le recurrent. Gagne=signature; activation suit; paiement differe reconcilie auto."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.328",
@@ -11886,6 +11895,14 @@
     "limites": "Pas de checkout self-service instantane (back-office ou API Pennylane). Delai mandat SEPA ~14j avant 1er prelevement. Donc webshop kit self-service RESTE Shopify/Stripe carte.",
     "archi_cible": "Supervision recurrente (vente assistee) -> Pennylane abonnement + SEPA (apres signature PandaDoc, creation abo via API ou Marie-Estelle + mandat). Webshop kit -> Shopify/Stripe carte. Remplace 'signature->Stripe Subscription' POUR LE RECURRENT uniquement.",
     "dependance_decision": "Dominique deja sur Pennylane (plan Essentiel+)? A un ICS (sinon GoCardless sans ICS)? Reponse tranche le design du recurrent.",
-    "statut": "Option surfacee, decision Dominique en attente."
+    "statut": "DECIDE. Pennylane+SEPA Compte Pro pour recurrent, Stripe pour webshop, activation decouplee du paiement.",
+    "DECISION": {
+      "recurrent_supervision": "Pennylane abonnement + prelevement SEPA via COMPTE PRO (ICS propre). PAS GoCardless (eviter les fees). Cout quasi nul par prelevement + compta lettree auto + Factur-X.",
+      "webshop": "Stripe/Shopify carte (self-service kit). Inchange.",
+      "activation_decouplee_du_paiement": "B2B: on ACTIVE / met en service les bornes des la signature, sans attendre le paiement. 1er prelevement SEPA ~14j apres (regle SEPA) = OK, pas un blocage. Confirme par Dominique.",
+      "flux_signature": "Signature PandaDoc -> creer abonnement Pennylane + envoyer mandat SEPA (Compte Pro) + LANCER l'activation (Livraison: kit->activation->supervision active), sans attendre le 1er prelevement. Au lancement: manuel (Marie-Estelle) declenche par notif Slack sur signature. Plus tard: automatiser via API Pennylane / Make.",
+      "infra_note": "Pas de MCP Pennylane connecte. Automatisation future = API Pennylane via proxy custom ou module Make (a verifier). Stripe reste pour Shopify.",
+      "impact_design": "Remplace 'signature -> Stripe Subscription' par 'signature -> Pennylane abonnement + SEPA Compte Pro' POUR LE RECURRENT. Le 'Gagne' = signature (pas paiement); activation suit immediatement; paiement SEPA en differe, reconcilie auto dans Pennylane."
+    }
   }
 }
