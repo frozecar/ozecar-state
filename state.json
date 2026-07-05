@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.332",
+    "version": "1.333",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.332",
+        "version_to": "1.333",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "PHASE 1 refonte pipelines EXECUTEE via API (Claude PM, plus besoin de Dominique). Vente: renommee + Nouveau/Qualifie/Devis-contrat envoye/Gagne + Perdu (id 5653384416). Livraison & Activation: renommee + Kit a preparer/Supervision active. IDs preserves = code intact.",
+          "Propriete deal activation_mode (Visio/Sur site) creee via API.",
+          "CORRECTION: le schema write HubSpot (proprietes + pipelines) FONCTIONNE via API directe. L'ancienne note 'bloque, action Dominique' etait fausse/perimee. Claude PM fait ces actions lui-meme desormais."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.331",
@@ -11923,7 +11934,17 @@
     "risque_rollback": "Renommer est reversible. Ne rien SUPPRIMER tant que les deals ne sont pas migres hors des phases obsoletes.",
     "statut": "PLAN pret, attente go Dominique pour lancer la Phase 1 (ses renames HubSpot).",
     "REVISION_demo": "REVISE v2: 'Demo realisee' SUPPRIMEE. Trigger devis = glissement manuel du deal Demo planifiee -> Devis a faire (= demo faite). Vente: Nouveau/Qualifie/Demo planifiee/Devis a faire/Devis-contrat envoye/Gagne/Perdu.",
-    "comment_demo_visible": "Meeting booke -> deal en Demo planifiee (05b). Commercial marque meeting Completed -> Make deplace le deal en Demo realisee (visible kanban + declenche le flux devis). No Show/Rescheduled -> reste en Demo planifiee."
+    "comment_demo_visible": "Meeting booke -> deal en Demo planifiee (05b). Commercial marque meeting Completed -> Make deplace le deal en Demo realisee (visible kanban + declenche le flux devis). No Show/Rescheduled -> reste en Demo planifiee.",
+    "PHASE_1_EXECUTEE": {
+      "date": "2026-07-05 via API (Claude PM)",
+      "vente_3747862733": "Formulaire recu->Nouveau, Lead qualifie->Qualifie, Devis envoye->Devis-contrat envoye, Kit envoye->Gagne (conclue gagnee). AJOUTE Perdu (id 5653384416, conclue perdue). Pipeline renomme 'Vente'. Demo planifiee/realisee + Devis a faire inchanges (IDs stables).",
+      "livraison_default": "Kit commande->Kit a preparer, On-boarding planifie->Supervision active. Pipeline renomme 'Livraison & Activation'. Contrat envoye/signe encore presents (obsoletes, a retirer Phase 3).",
+      "nouveaux_ids": {
+        "Perdu_vente": "5653384416"
+      },
+      "reste": "Phase 2 (Make: transition Demo planifiee->Devis a faire -> carte devis; handoff Gagne->Livraison branche deal_type; set deal_type). Phase 3 nettoyage: supprimer Demo realisee (5215721689) + Contrat envoye (decisionmakerboughtin) + Contrat signe (contractsent) apres deplacement des deals."
+    },
+    "activation_mode_cree": "Propriete deal activation_mode (radio: Visio / Sur site) creee via API."
   },
   "billing_recurrent_option_2026_07_05": {
     "question": "Passer le recurrent supervision par Pennylane abonnement + SEPA plutot que Stripe Subscriptions?",
@@ -11941,5 +11962,10 @@
       "infra_note": "Pas de MCP Pennylane connecte. Automatisation future = API Pennylane via proxy custom ou module Make (a verifier). Stripe reste pour Shopify.",
       "impact_design": "Remplace 'signature -> Stripe Subscription' par 'signature -> Pennylane abonnement + SEPA Compte Pro' POUR LE RECURRENT. Le 'Gagne' = signature (pas paiement); activation suit immediatement; paiement SEPA en differe, reconcilie auto dans Pennylane."
     }
+  },
+  "hubspot_schema_write_2026_07_05": {
+    "correction": "L'ancienne note 'creation de propriete/schema HubSpot bloquee (PAT sans crm.schemas.deals.write)' est PERIMEE/FAUSSE. Le token (via api/hubspot.php, API directe api.hubapi.com) A le scope schema write.",
+    "prouve": "Cree propriete deal activation_mode (201) + renomme phases + pipelines + ajoute phase Perdu (200/201) via API directe.",
+    "consequence": "Claude PM peut creer proprietes deals + editer pipelines/phases LUI-MEME. Plus besoin de deleguer ces actions a Dominique."
   }
 }
