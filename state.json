@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.310",
+    "version": "1.311",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.310",
+        "version_to": "1.311",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Flux #devis: ajout du mode TEXTE LIBRE (en + du bouton). Bot ecoute les messages #devis -> Claude classe+extrait -> oz_create_devis (moteur partage). Bavardage ignore. Refactor moteur commun. Lint+handshake OK.",
+          "Dep Dominique: ajouter scope channels:history + event message.channels + reinstaller l'app Slack pour activer le texte libre (le bouton marche deja sans)."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.309",
@@ -11516,6 +11526,14 @@
       "monta_cgv": "La mention 'Monta ApS' dans la clause CGV reversement (art 2.1.1) est l'exception documentee (virements reels au client) - NON touchee, conforme.",
       "verif": "Page 200, marqueurs presents. Rendu visuel a valider par Dominique (staging ?sales&deal_id=X&installer=SOLECO).",
       "statut": "Livre cote configurateur + branche dans le bot #devis (URL edit porte &installer)."
+    },
+    "texte_libre": {
+      "objectif": "En + du bouton: Fred tape un message libre dans #devis ('Vincensini, 4 PDC 7.4kW, installateur SOLECO') -> le bot cree le deal automatiquement.",
+      "implemente": "slack-bot.php: branche event message sur #devis (C0BF8UB8457, hors messages bot) -> oz_handle_devis_message: Claude (Haiku) classe (is_devis?) + extrait {firstname,lastname,email,company,pdc,power,tier,installer,notes} -> si is_devis, appelle oz_create_devis (moteur partage avec le bouton). Le bavardage/questions/remerciements sont ignores (is_devis=false).",
+      "refactor": "Moteur commun oz_create_devis($d) appele par le bouton (oz_handle_devis_submit) ET le texte libre (oz_handle_devis_message).",
+      "lint": "php -l OK, handshake OK, bot support intact.",
+      "dep_dominique_scope": "Le bot n'a PAS channels:history -> il ne recoit pas les messages de #devis. Dominique doit, dans la config de l'app Slack: (1) ajouter le scope OAuth 'channels:history', (2) souscrire a l'event 'message.channels', (3) REINSTALLER l'app. Sans ca, seul le BOUTON marche (le bouton, lui, ne demande aucun scope supplementaire).",
+      "note_cout": "Chaque message humain dans #devis declenche un appel Haiku de classification. OK a faible trafic; sinon ajouter un pre-filtre."
     }
   }
 }
