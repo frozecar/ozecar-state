@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.328",
+    "version": "1.329",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.328",
+        "version_to": "1.329",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Option billing recurrent: Pennylane abonnement + SEPA (vs Stripe Subscriptions). Analyse: moins cher (~0-0,80 vs 1,56 EUR), compta lettree auto, SEPA=pas d'expiration carte, Factur-X 2026. Limite: pas de checkout instantane (webshop reste Stripe/Shopify carte). Archi cible: Pennylane+SEPA pour recurrent assiste, Stripe pour webshop. Decision en attente: Dominique deja sur Pennylane + ICS/GoCardless?"
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.327",
@@ -11869,5 +11878,14 @@
     "statut": "PLAN pret, attente go Dominique pour lancer la Phase 1 (ses renames HubSpot).",
     "REVISION_demo": "REVISE v2: 'Demo realisee' SUPPRIMEE. Trigger devis = glissement manuel du deal Demo planifiee -> Devis a faire (= demo faite). Vente: Nouveau/Qualifie/Demo planifiee/Devis a faire/Devis-contrat envoye/Gagne/Perdu.",
     "comment_demo_visible": "Meeting booke -> deal en Demo planifiee (05b). Commercial marque meeting Completed -> Make deplace le deal en Demo realisee (visible kanban + declenche le flux devis). No Show/Rescheduled -> reste en Demo planifiee."
+  },
+  "billing_recurrent_option_2026_07_05": {
+    "question": "Passer le recurrent supervision par Pennylane abonnement + SEPA plutot que Stripe Subscriptions?",
+    "pennylane_capacites": "Abonnements/facturation recurrente = plans Essentiel/Premium. SEPA 3 voies: XML avec ICS propre (inclus des Basique), integration GoCardless (pas d'ICS, mandat montant variable, prelevement auto), Compte Pro (Swan). Lettrage automatique -> compta faite auto. Factur-X 2026 natif.",
+    "avantages_vs_stripe": "Cout ~0 a ~0,80 EUR/mensualite (SEPA XML quasi gratuit, GoCardless ~1%) vs ~1,56 EUR carte Stripe. Compta integree/lettree auto. SEPA = pas d'expiration carte (churn involontaire quasi nul). Factur-X conforme. Norme B2B FR (facture+prelevement).",
+    "limites": "Pas de checkout self-service instantane (back-office ou API Pennylane). Delai mandat SEPA ~14j avant 1er prelevement. Donc webshop kit self-service RESTE Shopify/Stripe carte.",
+    "archi_cible": "Supervision recurrente (vente assistee) -> Pennylane abonnement + SEPA (apres signature PandaDoc, creation abo via API ou Marie-Estelle + mandat). Webshop kit -> Shopify/Stripe carte. Remplace 'signature->Stripe Subscription' POUR LE RECURRENT uniquement.",
+    "dependance_decision": "Dominique deja sur Pennylane (plan Essentiel+)? A un ICS (sinon GoCardless sans ICS)? Reponse tranche le design du recurrent.",
+    "statut": "Option surfacee, decision Dominique en attente."
   }
 }
