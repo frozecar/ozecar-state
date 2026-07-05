@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.314",
+    "version": "1.315",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.314",
+        "version_to": "1.315",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Niveau supplementaire: FOURNISSEUR/constructeur (Sungrow) peut envoyer un lead. Chaine fournisseur->installateur->client. Cree label deal<->societe 'Fournisseur referent' typeId 5. Cable dans #devis (modal+free-text), configurateur (select role), devis-attr.php (param role). Teste."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.313",
@@ -11541,6 +11550,17 @@
         "installateur nom seul type SOLECO (societe installateur seule)"
       ],
       "note_label_contact": "'Installateur referent' est un label deal<->SOCIETE -> n'apparait PAS quand on ajoute un CONTACT. Pour tagger la personne de l'installateur, utiliser le label deal<->contact 'Contact installateur'."
+    },
+    "modele_chaine_referral": {
+      "chaine": "Fournisseur/constructeur (Sungrow) -> Installateur (SOLECO) -> Client final. Chaque maillon peut envoyer le lead.",
+      "acteurs_deal": {
+        "societe_cliente": "association primaire",
+        "contact_client": "association default",
+        "societe_installateur": "label 'Installateur referent' typeId 1",
+        "contact_installateur": "label 'Contact installateur' typeId 3",
+        "societe_fournisseur": "label 'Fournisseur referent' typeId 5 (Sungrow etc., cree 2026-07-05)"
+      },
+      "cable_dans": "#devis (modal 'Source du lead' + free-text Claude 3 niveaux) + configurateur (barre avec select Installateur/Fournisseur) + devis-attr.php (param role). Manuel HubSpot possible (labels existent)."
     }
   },
   "devis_sur_demande_2026_07_05": {
