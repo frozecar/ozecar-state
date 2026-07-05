@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.333",
+    "version": "1.334",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.333",
+        "version_to": "1.334",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Phase 2 audit Make: deal_type='supervision' pose par defaut dans #devis. FINDINGS: 05/05b (booking demo) INACTIFS+EN ERREUR -> demos ne creent rien (funnel casse, a traiter). 09 (devis->email 'Ouvrir devis') = ancien flux du probleme installateur, INACTIF, remplace par notre transfert. Workflows HubSpot non accessibles (PAT sans scope automation). Decision trigger phase2: scope automation (workflows natifs) vs Make polling (couteux)."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.332",
@@ -11967,5 +11976,19 @@
     "correction": "L'ancienne note 'creation de propriete/schema HubSpot bloquee (PAT sans crm.schemas.deals.write)' est PERIMEE/FAUSSE. Le token (via api/hubspot.php, API directe api.hubapi.com) A le scope schema write.",
     "prouve": "Cree propriete deal activation_mode (201) + renomme phases + pipelines + ajoute phase Perdu (200/201) via API directe.",
     "consequence": "Claude PM peut creer proprietes deals + editer pipelines/phases LUI-MEME. Plus besoin de deleguer ces actions a Dominique."
+  },
+  "phase2_make_audit_2026_07_05": {
+    "deal_type_set": "oz_create_devis (#devis) pose desormais deal_type='supervision' par defaut a la creation. Valeurs deal_type: supervision/reprise/installation/accessoires/maintenance/vente_b2b.",
+    "audit_scenarios_make": {
+      "05_05b_booking_demo": "INACTIFS + EN ERREUR (05: 36 erreurs, 05b: 6 erreurs, polling 15min). => les demos bookees ne creent RIEN actuellement. Funnel demo->deal CASSE. A traiter.",
+      "09_devis_email_ouvrir_devis": "INACTIF. C'est l'ANCIEN flux qui emailait 'Ouvrir devis' comme si l'installateur etait le client (le probleme signale par Dominique). Notre flux transfert (devis-transfer.php + vue installateur) le REMPLACE. Doit rester OFF.",
+      "08_configurateur_maj_deal": "ACTIF (webhook 3270135). Le configurateur poste dessus pour MAJ le deal.",
+      "01_shopify_hubspot": "ACTIF (webhook). Webshop -> deal Livraison.",
+      "07_relances_LQ": "ACTIF (poll quotidien).",
+      "02_03_04exp": "INACTIFS/invalides (anciens flux activation/expedition)."
+    },
+    "workflows_hubspot": "NON accessibles: le PAT n'a pas le scope 'automation' (403 requires automation-access). Tier compte = payant. Workflows natifs = besoin (a) scope automation sur le PAT + (b) plan qui inclut les workflows (Pro+). A confirmer.",
+    "decision_trigger_phase2": "Pour demo->devis card (transition Demo planifiee->Devis a faire) + handoff Gagne->Livraison: 2 options. A) Ajouter scope 'automation' au PAT -> workflows HubSpot natifs (instant, zero cout polling) - le plus propre. B) Make (polling = couteux, cf 09 qui a brule 6562 ops/13.8M transfer; ou trigger instant Make HubSpot). Reco: A si le plan inclut les workflows.",
+    "reste": "1. Trancher A/B pour les triggers. 2. Traiter 05/05b (booking demo casse). 3. Construire demo->devis card + handoff."
   }
 }
