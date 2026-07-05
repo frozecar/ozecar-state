@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.307",
+    "version": "1.308",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.307",
+        "version_to": "1.308",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Part 1 attribution installateur LIVREE: association labellisee 'Installateur referent' (typeId 2, deal->company) + SOLECO cree en societe (436497600726). Lie le deal client a son installateur, natif/filtrable, sans toucher au schema proprietes partenaire.",
+          "Part 2 devis-sur-demande cadre: workflow message Slack -> find-or-create contact client -> deal L&Q Devis a faire (deal_for_partner) -> assoc installateur -> URL edit-mode configurateur -> pipeline. Trigger lean decide: mini-form interne Marie-Estelle (pre-portail). A construire."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.306",
@@ -11453,5 +11463,25 @@
     "autonomie": "L'email de SOLECO = le point de douleur manuel que pro.ozecar.fr doit tuer. Le portail a deja en scope un 'createur de contrat / generateur de devis' (PandaDoc + Stripe). Prioriser un module 'generateur de devis supervision' self-service = version partenaire du configurateur devis deja construit. SOLECO se connecte, saisit client+site, genere le devis, plus d'email a Marie-Estelle.",
     "decision_attendue_dominique": "A (reco): supervision directe OZECAR + SOLECO installateur (bounty) + revente services (maintenance). B: vrai revendeur wholesale supervision (OZECAR invisible, grille wholesale a creer + accord revendeur).",
     "immediat_SOLECO": "Marie-Estelle peut sortir le devis maintenant via le configurateur/PandaDoc (4 PDC: Essential 4x5,90=23,60/mois ou Pro 4x14,90=59,60/mois). Reste a trancher qui figure sur le devis selon A/B."
+  },
+  "attribution_installateur_2026_07_05": {
+    "besoin": "Savoir de quel installateur/partenaire vient chaque client, et lier le deal client a l'installateur dans HubSpot.",
+    "schema_existant": "deal_for_partner (bool), deal_partner_canal, deal_partner_attribution_method, deal_partner_bounty_amount_eur, hs_partner_tech_win (deals); partner_status/tier/canal/uuid/iban/volume_ytd/type (companies). Gere par le chat partenaires - NE PAS toucher.",
+    "mecanisme_ajoute": "Association labellisee 'Installateur referent' entre DEAL client et SOCIETE installateur. typeId=2 (deal->company). Cliquable + filtrable, sans polluer le schema de proprietes partenaire.",
+    "usage": "A la creation d'un deal client refere: PUT crm/v4/objects/deals/{dealId}/associations/companies/{installerCoId} body [{associationCategory:USER_DEFINED, associationTypeId:2}] + set deal_for_partner=true. Le client reste la company primaire; l'installateur = association 'Installateur referent'.",
+    "soleco": "Societe SOLECO creee: id 436497600726 (domain soleco.fr). A qualifier partenaire (type/partner_status) cote chat partenaires."
+  },
+  "devis_sur_demande_2026_07_05": {
+    "objectif": "Quand un partenaire (ou toute demande) demande un devis: message Slack + preparer le devis, lier a une fiche contact client (find-or-create), lier a la fiche installateur (assoc 'Installateur referent'), fournir une URL edit-mode du devis, et laisser le process suivre le pipeline (L&Q -> Devis -> Supervision Kit commande/expedie).",
+    "reutilise": [
+      "configurateur devis (vue ?sales&deal_id=X = l'URL edit-mode)",
+      "attribution installateur (assoc typeId 2)",
+      "contact-intake (find-or-create contact + Slack)",
+      "mode partenaire du devis (SOLECO cite + N1 gratuit + grille maintenance masquee - decide 2026-07-05)",
+      "pipeline L&Q stages (Devis a faire 5584432342 / Devis envoye 5215721690) puis Supervision"
+    ],
+    "trigger_decide": "Lean pre-portail: mini-form interne 'Nouveau devis' que Marie-Estelle remplit a reception d'une demande partenaire (client nom/email/societe, nb PDC, puissance, tier, installateur). Genere: find-or-create contact+company client -> deal L&Q 'Devis a faire' (deal_for_partner=true) -> assoc installateur -> carte Slack #rdv-demo avec URL edit-mode configurateur -> Marie-Estelle finalise en mode partenaire -> envoi -> pipeline. Le portail pro.ozecar.fr self-service viendra ensuite (meme moteur).",
+    "a_construire": "devis-intake.php (find-or-create + deal + attribution + Slack card + edit URL) + mini-form interne. Mode partenaire du devis dans le configurateur (flag installateur + N1 gratuit + grille masquee).",
+    "statut": "Part 1 (attribution) LIVREE. Part 2 (workflow) a construire."
   }
 }
