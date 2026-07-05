@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.308",
+    "version": "1.309",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.308",
+        "version_to": "1.309",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Flux devis-sur-demande Slack-natif CONSTRUIT: channel #devis (C0BF8UB8457) + bot etendu (modal 'Nouveau devis' -> find-or-create contact -> deal L&Q Devis a faire -> assoc installateur 'Installateur referent' typeId 2 -> carte avec URL edit-mode configurateur). Smoke-test handshake OK (bot support intact).",
+          "Blocage: ozecarbot manque channels:join -> Dominique doit /invite @ozecarbot dans #devis pour activer (ensuite je poste la carte lanceur)."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.307",
@@ -11480,8 +11490,15 @@
       "mode partenaire du devis (SOLECO cite + N1 gratuit + grille maintenance masquee - decide 2026-07-05)",
       "pipeline L&Q stages (Devis a faire 5584432342 / Devis envoye 5215721690) puis Supervision"
     ],
-    "trigger_decide": "Lean pre-portail: mini-form interne 'Nouveau devis' que Marie-Estelle remplit a reception d'une demande partenaire (client nom/email/societe, nb PDC, puissance, tier, installateur). Genere: find-or-create contact+company client -> deal L&Q 'Devis a faire' (deal_for_partner=true) -> assoc installateur -> carte Slack #rdv-demo avec URL edit-mode configurateur -> Marie-Estelle finalise en mode partenaire -> envoi -> pipeline. Le portail pro.ozecar.fr self-service viendra ensuite (meme moteur).",
+    "trigger_decide": "Slack-natif (decide par Dominique 2026-07-05): channel #devis (C0BF8UB8457) avec bouton lanceur '➕ Nouveau devis' -> modal -> deal + attribution -> carte. N'importe qui avec acces (Fred inclus) saisit un prospect, Marie-Estelle reprend la main depuis le channel.",
     "a_construire": "devis-intake.php (find-or-create + deal + attribution + Slack card + edit URL) + mini-form interne. Mode partenaire du devis dans le configurateur (flag installateur + N1 gratuit + grille masquee).",
-    "statut": "Part 1 (attribution) LIVREE. Part 2 (workflow) a construire."
+    "statut": "Flux CONSTRUIT + deploye + smoke-teste. Live des que Dominique ajoute le bot a #devis.",
+    "build_livre": {
+      "channel": "#devis cree (C0BF8UB8457).",
+      "bot": "slack-bot.php etendu: dispatch view_submission 'oz_devis_modal' + block_action 'oz_devis_new'; fonctions oz_open_devis_modal (modal prenom/nom/email/societe/nbPDC/puissance/tier/installateur/notes) + oz_handle_devis_submit (find-or-create contact -> deal L&Q 'Devis a faire' 5584432342 -> assoc contact + installateur 'Installateur referent' typeId 2 + deal_for_partner si installateur -> note recap -> carte #devis avec bouton 'Ouvrir/editer le devis' = configurateur ?sales&deal_id=X + lien deal HubSpot).",
+      "smoke_test": "handshake url_verification OK (pas d'erreur PHP, bot support intact). ACK modal via fastcgi_finish_request (ferme le modal <3s puis traite).",
+      "configurateur_url": "https://staging.ozecar.fr/wp-content/uploads/ozecar/configurateur-devis.html?sales&deal_id=X"
+    },
+    "blocage": "Bot ozecarbot (U0BDB9M3GG5) n'a PAS le scope channels:join -> ne peut pas s'auto-ajouter a #devis. Scopes actuels: app_mentions:read, chat:write, commands, users:read(.email), im:*, mpim:write. Sans chat:write.public non plus. => Dominique doit AJOUTER le bot a #devis (/invite @ozecarbot). Ensuite je poste la carte lanceur et le flux est live."
   }
 }
