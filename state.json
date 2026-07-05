@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.331",
+    "version": "1.332",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.331",
+        "version_to": "1.332",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Onboarding/activation modelise dans 'Activation en cours' (pas de nouvelle phase): propriete activation_mode (Visio/Sur site); onboarding=evenement (visio=meeting, sur site=intervention); setup tarifs/RFID/users=checklist taches; PV de reception (template PandaDoc) pour config sur site + installation, signature=signal -> Supervision active. A creer: propriete activation_mode + template PV (Dominique), checklist (Claude)."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.330",
@@ -11867,7 +11876,20 @@
       "Maintenance": "Vente (Diagnostic=Qualifie -> Devis -> Gagne/facture) ou tickets Support"
     },
     "impact_migration": "IDs de phases hardcodes dans Make (05b/01/07), configurateur, #devis (oz_create_devis 5584432342/5215721690), n1-notify, devis-attr + tous les deals existants mappes. Migration coordonnee, ordonnee, a planifier avant execution.",
-    "monta_confirme": "partner-api.monta.com/api/v1 cable dans monta.php (ID+token) -> webhook enregistrable. monta-webhook.php a construire (independant de la refonte)."
+    "monta_confirme": "partner-api.monta.com/api/v1 cable dans monta.php (ID+token) -> webhook enregistrable. monta-webhook.php a construire (independant de la refonte).",
+    "onboarding_activation": {
+      "principe": "'Activation en cours' EST la phase d'onboarding - pas de nouvelle phase. On structure ce qui se passe dedans par propriete + evenements (comme la demo).",
+      "mode": "Propriete deal activation_mode: Visio | Sur site.",
+      "onboarding_evenement": "Visio -> meeting HubSpot (re-montre fonctions, tarifs, cartes RFID, invitation users). Sur site -> intervention (tache/evenement Fred ou installateur).",
+      "setup_checklist": "Tarifs + RFID + invitations users = checklist de taches HubSpot sur le deal (rien d'oublie + visibilite avancement).",
+      "pv_reception": "Document (template PandaDoc 'PV de reception') pour config SUR SITE et INSTALLATION (reception/acceptation du materiel pose). Client signe -> signal pour passer en Supervision active.",
+      "passage_supervision_active": "Visio: onboarding realise (meeting Completed) + checklist setup -> glisser. Sur site/installation: PV de reception signe -> glisser. Supervision active = abonnement Pennylane cree + bornes activees (paiement SEPA suit, decouple).",
+      "a_creer": [
+        "Propriete deal activation_mode (Visio/Sur site) - Dominique HubSpot",
+        "Template PandaDoc 'PV de reception' - Dominique",
+        "Checklist onboarding (taches HubSpot) - Claude peut preparer le modele"
+      ]
+    }
   },
   "pipelines_migration_plan_2026_07_05": {
     "cle": "Les IDs de phases HubSpot sont STABLES -> renommer une phase ne casse AUCUN code (Make/configurateur/#devis/n1-notify pointent sur les IDs). Migration = renommage + ajouts, pas reecriture. Schema HubSpot (rename/add stages, proprietes) = action Dominique (PAT sans crm.schemas.deals.write).",
