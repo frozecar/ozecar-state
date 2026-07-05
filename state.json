@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.306",
-    "updated": "2026-07-03",
+    "version": "1.307",
+    "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.306",
+        "version_to": "1.307",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Question partenaire revendeur (cas SOLECO): un installateur demande un devis supervision au nom de son client, OZECAR invisible, il gere la maintenance. Analyse: tension avec le mandat supervision OZECAR<->client final. Reco = garder supervision directe + revente services (Stripe Connect deja prevu); vrai wholesale revendeur = decision assumee (grille wholesale a creer). Autonomie = generateur de devis self-service dans pro.ozecar.fr. Note en section separee (partner_program non touche, coordination)."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.305",
@@ -11435,5 +11444,14 @@
     "interdit_pitch": "NE JAMAIS vendre au client 'votre marque en facade', 'OZECAR reste invisible', 'marque blanche pour vous'. C'est FAUX. Remplacer par: cle-en-main, un seul interlocuteur, service opere de bout en bout, experience pro OZECAR One.",
     "reste_valide": "Regle Monta cache (backend/surfaces client) inchangee: aucun 'Monta' visible nulle part cote client.",
     "source": "Clarification explicite Dominique 2026-07-03."
+  },
+  "partner_reseller_question_2026_07_05": {
+    "trigger": "Email SOLECO (Frederic Adroher) a Marie-Estelle: demande un devis de supervision 'au nom de leur client' (4 PDC 7.4kW AC, site Paul Vincensini/Lycee Vincensini), l'installateur jamais cite, SOLECO s'occupe du contrat de maintenance.",
+    "tension": "SOLECO veut etre le revendeur-de-facade sur la SUPERVISION (OZECAR invisible, SOLECO owns le contrat). Contredit ozecar_keeps_supervision_mandate=true (supervision = OZECAR <-> client final).",
+    "lecture_modele": "2 couches distinctes: (1) supervision core (Essential/Pro/Pro+) = mandat OZECAR, installateur = apporteur + bounty one-shot (essential 30, pro/pro+ 130); (2) Services Revendus (maintenance/SLA/garantie) = l'installateur vend a son client, client paie l'installateur via Stripe Connect, OZECAR prend une com (10-15%). 'Ils s'occupent de la maintenance + encaissent' = deja couvert par la couche services.",
+    "reco_PM": "Garder la supervision en DIRECT OZECAR (moat: recurrent, churn control, upsell tiers). Donner a SOLECO la valeur revendeur sur les SERVICES. Ne passer en vrai wholesale/revendeur supervision (OZECAR invisible) que comme decision assumee du tier 'Revendeur/Distributeur' (models_planned_later) -> necessite une grille wholesale supervision qui N'EXISTE PAS encore. Pas au coup par coup par email.",
+    "autonomie": "L'email de SOLECO = le point de douleur manuel que pro.ozecar.fr doit tuer. Le portail a deja en scope un 'createur de contrat / generateur de devis' (PandaDoc + Stripe). Prioriser un module 'generateur de devis supervision' self-service = version partenaire du configurateur devis deja construit. SOLECO se connecte, saisit client+site, genere le devis, plus d'email a Marie-Estelle.",
+    "decision_attendue_dominique": "A (reco): supervision directe OZECAR + SOLECO installateur (bounty) + revente services (maintenance). B: vrai revendeur wholesale supervision (OZECAR invisible, grille wholesale a creer + accord revendeur).",
+    "immediat_SOLECO": "Marie-Estelle peut sortir le devis maintenant via le configurateur/PandaDoc (4 PDC: Essential 4x5,90=23,60/mois ou Pro 4x14,90=59,60/mois). Reste a trancher qui figure sur le devis selon A/B."
   }
 }
