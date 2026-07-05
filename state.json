@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.325",
+    "version": "1.326",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.325",
+        "version_to": "1.326",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Transfert installateur->client + remplissage deal: l'installateur forwarde le lien vue client (?client&deal_id=X). Le deal_id embarque route l'engagement client vers le deal existant (pas de doublon). Voie A: embed PandaDoc (scaffoldé, placeholder) -> signature remplit via PandaDoc<->HubSpot. Voie B (constructible now): mini-form capture -> devis-client-capture.php ecrit Contact client + Slack. Reco: B interim + A cible."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.324",
@@ -11731,6 +11740,14 @@
       "materiel_plus_supervision": "2 volets: materiel -> installateur; supervision -> client final.",
       "avant_rattachement_client": "Tant que le client final n'est pas rattache, le devis (proposition) est partage avec l'INSTALLATEUR (requester/intermediaire). Le PandaDoc a signer part au client final une fois le Contact client rattache.",
       "hubspot_pandadoc": "Signataire PandaDoc = Contact client (assoc default). Contact installateur = CC."
+    },
+    "transfert_installateur_capture_client": {
+      "question": "L'installateur demande un devis pour son client (inconnu). Comment transfere-t-il, et le deal HubSpot peut-il se remplir au transfert?",
+      "transfert": "L'installateur forwarde le LIEN vue client du configurateur (?client&deal_id=X&c=...). Le deal_id est embarque dans le lien -> route tout vers le bon deal.",
+      "cle": "Parce que le deal_id voyage dans le lien transfere, tout engagement du client (signature PandaDoc OU saisie email) se rattache au DEAL EXISTANT (pas de doublon). Le client final apparait enfin sur le dossier (assoc Contact client).",
+      "voie_A_pandadoc": "Vue client a deja une zone 'Accepter & signer' + bouton acceptBtn + emplacement pandadocEmbed (PLACEHOLDER: 'code d'embed sera colle ici'). Cible: client remplit PandaDoc + signe -> integration PandaDoc<->HubSpot ecrit Contact client + signature -> deal Gagne. Manque: coller le code embed PandaDoc (setup template PandaDoc).",
+      "voie_B_capture_legere": "Constructible MAINTENANT sans PandaDoc: mini-form 'recevez votre devis / validez' (nom+email) dans la vue client -> endpoint api/devis-client-capture.php ecrit Contact client sur le deal (deal_id URL) + notif commercial Slack. Des que le client saisit son email, le deal se remplit.",
+      "reco": "Voie B en interim (immediate, je peux la construire) + Voie A PandaDoc en cible (necessite setup PandaDoc + embed par Dominique)."
     }
   },
   "n1_notification_routing_2026_07_05": {
