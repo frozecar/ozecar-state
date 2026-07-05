@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.319",
+    "version": "1.320",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.319",
+        "version_to": "1.320",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Plan de migration pipelines pret (pipelines_migration_plan_2026_07_05). Cle: IDs de phases stables -> renommer ne casse pas le code. Mapping L&Q->Vente + Supervision->Livraison, handoff branche deal_type, ordre d'execution (Dominique renomme/ajoute stages+propriete, Claude fait le Make+deal_type). Attente go Dominique."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.318",
@@ -11697,5 +11706,37 @@
     },
     "impact_migration": "IDs de phases hardcodes dans Make (05b/01/07), configurateur, #devis (oz_create_devis 5584432342/5215721690), n1-notify, devis-attr + tous les deals existants mappes. Migration coordonnee, ordonnee, a planifier avant execution.",
     "monta_confirme": "partner-api.monta.com/api/v1 cable dans monta.php (ID+token) -> webhook enregistrable. monta-webhook.php a construire (independant de la refonte)."
+  },
+  "pipelines_migration_plan_2026_07_05": {
+    "cle": "Les IDs de phases HubSpot sont STABLES -> renommer une phase ne casse AUCUN code (Make/configurateur/#devis/n1-notify pointent sur les IDs). Migration = renommage + ajouts, pas reecriture. Schema HubSpot (rename/add stages, proprietes) = action Dominique (PAT sans crm.schemas.deals.write).",
+    "mapping_LQ_vers_Vente": {
+      "5215721686": "Formulaire recu -> Nouveau (renommer)",
+      "5215721687": "Lead qualifie -> Qualifie (renommer)",
+      "5215721688": "Demo planifiee -> sortir du flux (propriete demo_statut)",
+      "5215721689": "Demo realisee -> sortir du flux (propriete demo_statut)",
+      "5584432342": "Devis a faire -> GARDER",
+      "5215721690": "Devis envoye -> Devis-contrat envoye (renommer)",
+      "5215721691": "Kit envoye -> retirer du flux Vente (le kit vit en Livraison)",
+      "AJOUTER": "Gagne + Perdu (L&Q n'en a pas)"
+    },
+    "mapping_Supervision_vers_Livraison": {
+      "appointmentscheduled": "Kit commande -> Kit a preparer (renommer)",
+      "qualifiedtobuy": "Kit expedie -> GARDER",
+      "presentationscheduled": "Activation en cours -> GARDER",
+      "decisionmakerboughtin": "Contrat envoye -> OBSOLETE (contrat est en Vente maintenant)",
+      "contractsent": "Contrat signe -> OBSOLETE",
+      "closedwon": "On-boarding planifie -> Supervision active (renommer)",
+      "5156644039": "Ferme gagne -> GARDER",
+      "5156644040": "Ferme perdu -> GARDER"
+    },
+    "handoff": "deal Vente signe (PandaDoc) -> bascule pipeline Livraison 'Kit a preparer'. Branche sur deal_type: Supervision/Installation -> kit+activation; Vente B2B/Accessoires -> expedition sans activation (ferment 'Gagne' en Vente); Reprise -> Activation directe (pas de kit); Maintenance -> reste en Vente ou tickets.",
+    "ordre_execution": [
+      "1. [Dominique HubSpot Settings] Renommer les phases (IDs inchanges) + ajouter Gagne/Perdu a Vente + creer propriete demo_statut (valeurs: Non concerne/A planifier/Planifiee/Realisee). AUCUN impact code.",
+      "2. [Claude Make] Scenario handoff Vente->Livraison branche deal_type + set deal_type a la creation (#devis/configurateur) + ajuster labels des scenarios existants (05b/01/07 - IDs inchanges).",
+      "3. [Dominique+Claude] Migrer les deals coinces (Kit envoye L&Q, Contrat Supervision) vers les bons stages, PUIS archiver les phases obsoletes une fois vides.",
+      "4. [Claude verif] configurateur/#devis/n1-notify/devis-attr: IDs inchanges (5584432342, 5215721690) -> zero changement de code, juste labels."
+    ],
+    "risque_rollback": "Renommer est reversible. Ne rien SUPPRIMER tant que les deals ne sont pas migres hors des phases obsoletes.",
+    "statut": "PLAN pret, attente go Dominique pour lancer la Phase 1 (ses renames HubSpot)."
   }
 }
