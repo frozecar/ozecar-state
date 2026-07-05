@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.336",
+    "version": "1.337",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.336",
+        "version_to": "1.337",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Runbook test pipeline Vente prepare (emails plus-addresses pour simuler roles: marieestelle+clientA/B, dominique+installateur). 2 parcours A (prospect->demo->devis->gagne) + B (installateur->transfert->client). Points de controle Slack/email/HubSpot/Granola/marque blanche."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.335",
@@ -12038,6 +12047,7 @@
       "Drag -> Gagne",
       "Signature PandaDoc (embed pas encore colle)"
     ],
-    "delai_carte": "~15min apres le drag (poll Make)"
+    "delai_carte": "~15min apres le drag (poll Make)",
+    "runbook": "Runbook pas-a-pas prepare (OZECAR-test-pipeline-vente.md). Emails plus-addresses: marieestelle+clientA/clientB@ozecar.fr (clients finaux), dominique+installateur@ozecar.fr (installateur SOLECO). 2 parcours: A prospect direct (demo->devis->gagne), B installateur->transfert->client. Points de controle: emails, Slack #devis, HubSpot Vente, Granola, marque blanche. Delai poll 15min signale."
   }
 }
