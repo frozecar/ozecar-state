@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.316",
+    "version": "1.317",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.316",
+        "version_to": "1.317",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Nomenclature deals TRANCHEE: '{Client} — {Objet}', sans prefixe 'OZECAR —' (aligne sur l'usage equipe). hs_object_id = ID technique interne; OZD-{code} = ref humaine optionnelle sur le document. Bot #devis aligne + 2 deals test renommes.",
+          "A aligner (coordination make_scenarios): 05b 'Demo OZECAR — X', Make 01."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.315",
@@ -11630,5 +11640,13 @@
     ],
     "quand_source_prete": "monta-webhook.php (ou poller) detecte offline -> mappe CP->deal -> appelle n1-notify.php avec deal_id (+ installer_email optionnel). Le routage/livraison est deja pret.",
     "marque_blanche": "Email installateur = 100% OZECAR, aucun Monta. Interne/B2B."
+  },
+  "conventions_nomenclature_2026_07_05": {
+    "deal_name": "Format: '{Client} — {Objet}'. Client d'abord, JAMAIS de prefixe 'OZECAR —' (redondant). Objet = nature: Supervision / Materiel + Supervision / Reparation / Reprise / Intervention. Separateur unifie: — (tiret cadratin). Client inconnu (lead installateur): '{Installateur} (client a preciser) — Supervision'.",
+    "deal_id": "hs_object_id (numerique HubSpot) genere a la creation = ID technique utilise partout en interne (URL ?deal_id=, associations, n1-notify, configurateur). Jamais dans le nom du deal.",
+    "reference_humaine": "Optionnel sur le DOCUMENT devis (PandaDoc/email client): OZD-{base36(id)} (comme OZS- pour tickets). Pas sur le nom du deal.",
+    "applique": "Bot #devis oz_create_devis aligne ('{Client} — Devis Supervision {Tier}'). 2 deals de test renommes (Balesi Automobile / Garage Machin — Devis Supervision).",
+    "a_aligner_coordination": "Make scenarios: 05b nomme 'Demo OZECAR — {nom}' -> recommander '{Client ou nom} — Demo'. Make 01 (Kit commande) -> verifier le nom. [make_scenarios - coordination].",
+    "usage_equipe_constate": "Marie-Estelle utilise deja de fait '{Client} - {Objet}' (ex 'Comepa - Proposition Supervision', 'NOVA Zaptec - Devis Materiel'). La convention formalise cet usage."
   }
 }
