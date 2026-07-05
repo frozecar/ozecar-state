@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.321",
+    "version": "1.322",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.321",
+        "version_to": "1.322",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "REVISION (question Dominique): la demo RESTE en PHASES kanban (pas de propriete demo_statut) - le commercial a besoin du signal visuel dans le board. Plus simple. Deals sans demo sautent les 2 phases. Trigger flux devis = deal deplace en 'Demo realisee' par Make sur hs_meeting_outcome=Completed."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.320",
@@ -11470,9 +11479,9 @@
       "question": "Comment savoir qu'une demo a ete faite (necessaire pour declencher le devis via Granola/Slack)?",
       "signal_retenu": "hs_meeting_outcome = 'Completed' sur le meeting HubSpot de demo (booke via ozecar-demo). Le commercial le clique en 1 geste apres la demo. DISTINGUE Completed vs No Show / Rescheduled -> un meeting booke != une demo faite. Natif HubSpot, gratuit, watchable par Make.",
       "rejete": "(a) 'heure du meeting passee' = non fiable (no-shows). (b) 'note Granola existe' = confirme mais detection auto necessite Granola Business ou MCP -> c'est la SOURCE DE CONTENU du devis, pas le declencheur fiable.",
-      "chaine": "Commercial marque le meeting 'Completed' -> Make met demo_statut='Realisee' sur le deal -> declenche le flux Granola->devis (carte #rdv-demo + URL edit-mode configurateur, resume Granola recupere pour pre-remplir). No Show/Rescheduled -> pas de declenchement.",
+      "chaine": "Commercial marque le meeting 'Completed' -> Make DEPLACE le deal en phase 'Demo realisee' (5215721689) [visible kanban] -> declenche le flux Granola->devis (carte #rdv-demo + URL edit-mode configurateur). No Show/Rescheduled -> reste en Demo planifiee. NB: la demo reste une PHASE (pas une propriete) - decision revisee 2026-07-05.",
       "nuance": "Le gate 'demo requise' ne concerne QUE le tunnel de vente standard (prospect -> demo -> devis). Le chemin #devis DIRECT (installateur/Fred depose un prospect) cree un devis SANS demo.",
-      "lien_refonte": "demo_statut (propriete de la refonte) est derive de hs_meeting_outcome. Remplace l'ancien trigger 'stage Demo realisee 5215721689' par 'demo_statut=Realisee' (property change, watchable Make)."
+      "lien_refonte": "La demo reste en PHASES (Demo planifiee/realisee gardees). Trigger = deal entre en phase 'Demo realisee' (5215721689), pilote par un Make qui watch hs_meeting_outcome=Completed."
     }
   },
   "contact_form_routing_2026_07_04": {
@@ -11729,8 +11738,8 @@
     "mapping_LQ_vers_Vente": {
       "5215721686": "Formulaire recu -> Nouveau (renommer)",
       "5215721687": "Lead qualifie -> Qualifie (renommer)",
-      "5215721688": "Demo planifiee -> sortir du flux (propriete demo_statut)",
-      "5215721689": "Demo realisee -> sortir du flux (propriete demo_statut)",
+      "5215721688": "Demo planifiee -> GARDER (phase, saut possible pour non-demo)",
+      "5215721689": "Demo realisee -> GARDER (phase). Deal deplace ici par Make quand hs_meeting_outcome=Completed",
       "5584432342": "Devis a faire -> GARDER",
       "5215721690": "Devis envoye -> Devis-contrat envoye (renommer)",
       "5215721691": "Kit envoye -> retirer du flux Vente (le kit vit en Livraison)",
@@ -11748,12 +11757,14 @@
     },
     "handoff": "deal Vente signe (PandaDoc) -> bascule pipeline Livraison 'Kit a preparer'. Branche sur deal_type: Supervision/Installation -> kit+activation; Vente B2B/Accessoires -> expedition sans activation (ferment 'Gagne' en Vente); Reprise -> Activation directe (pas de kit); Maintenance -> reste en Vente ou tickets.",
     "ordre_execution": [
-      "1. [Dominique HubSpot Settings] Renommer les phases (IDs inchanges) + ajouter Gagne/Perdu a Vente + creer propriete demo_statut (valeurs: Non concerne/A planifier/Planifiee/Realisee). AUCUN impact code.",
+      "1. [Dominique HubSpot Settings] Renommer Formulaire recu->Nouveau, Lead qualifie->Qualifie, Devis envoye->Devis-contrat envoye + AJOUTER Gagne/Perdu a Vente. GARDER Demo planifiee/realisee. PAS de propriete demo_statut. Aucun impact code (IDs inchanges).",
       "2. [Claude Make] Scenario handoff Vente->Livraison branche deal_type + set deal_type a la creation (#devis/configurateur) + ajuster labels des scenarios existants (05b/01/07 - IDs inchanges).",
       "3. [Dominique+Claude] Migrer les deals coinces (Kit envoye L&Q, Contrat Supervision) vers les bons stages, PUIS archiver les phases obsoletes une fois vides.",
       "4. [Claude verif] configurateur/#devis/n1-notify/devis-attr: IDs inchanges (5584432342, 5215721690) -> zero changement de code, juste labels."
     ],
     "risque_rollback": "Renommer est reversible. Ne rien SUPPRIMER tant que les deals ne sont pas migres hors des phases obsoletes.",
-    "statut": "PLAN pret, attente go Dominique pour lancer la Phase 1 (ses renames HubSpot)."
+    "statut": "PLAN pret, attente go Dominique pour lancer la Phase 1 (ses renames HubSpot).",
+    "REVISION_demo": "REVISE (question Dominique): la demo RESTE en PHASES (pas de propriete demo_statut). Raison: la colonne kanban = le signal visuel pour le commercial; en propriete il perd le coup d'oeil. Plus simple aussi (rien a creer). Vente: Nouveau -> Qualifie -> Demo planifiee (5215721688) -> Demo realisee (5215721689) -> Devis a faire -> Devis-contrat envoye -> Gagne/Perdu. Les deals sans demo (deal_type Vente B2B/Accessoires/Maintenance) SAUTENT les 2 phases demo (HubSpot autorise le saut).",
+    "comment_demo_visible": "Meeting booke -> deal en Demo planifiee (05b). Commercial marque meeting Completed -> Make deplace le deal en Demo realisee (visible kanban + declenche le flux devis). No Show/Rescheduled -> reste en Demo planifiee."
   }
 }
