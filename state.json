@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.315",
+    "version": "1.316",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.315",
+        "version_to": "1.316",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "N1 routage notifications: brique LIVREE api/n1-notify.php (resout l'installateur via attribution HubSpot 'Contact/Installateur referent' ou override installer_email -> email installateur charte OZECAR + Slack #support-alertes + note deal). Teste.",
+          "Dependances flaggees pour boucler le N1 auto: source d'alerte (monta-webhook.php a construire, scope Monta requis) + mapping charge point -> deal (manquant)."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.314",
@@ -11608,5 +11618,17 @@
     },
     "moteur_v2_4acteurs": "oz_create_devis reconstruit: capture client (societe+contact) ET installateur (societe+contact) separement, associe chacun avec le bon label. Modal #devis restructure en 3 blocs (Client / Installateur / Devis). Free-text: Claude distingue client vs installateur. Teste scenario 2 (labels societe+contact OK).",
     "configurateur_champ_installateur": "Barre 'Installateur / partenaire' ajoutee en vue commerciale (?sales). Bouton 'Enregistrer sur le deal' -> POST api/devis-attr.php (find-or-create societe installateur + assoc 'Installateur referent' typeId 1 + deal_for_partner + ozecar_maintenance) -> reload avec ?installer= (mode partenaire actif). Teste OK. => attribution possible depuis 3 entrees: #devis, configurateur, manuel HubSpot."
+  },
+  "n1_notification_routing_2026_07_05": {
+    "objectif": "N1 = monitoring 24/7 + notifications d'alerte site routees vers l'installateur reference (donne corps au 'N1 inclus, notifications a l'installateur' du devis partenaire).",
+    "brique_livree_routage": "api/n1-notify.php (secret oz-n1-key.php). POST {secret, deal_id, cp?, status?, message?, installer_email?}. Resout l'installateur via HubSpot: contact 'Contact installateur' (typeId 3) sinon 1er contact de la societe 'Installateur referent' (typeId 1); OU override installer_email direct. Notifie: email installateur (charte OZECAR, AUCUN Monta) + Slack #support-alertes (C0BF00352AC) + note sur le deal. Retry sur lecture assoc (consistance HubSpot). Teste (chemin envoi OK).",
+    "resolution_source": "L'attribution 'Installateur referent' / 'Contact installateur' (construite 2026-07-05) EST la source de verite site->installateur, HubSpot-centric (coherent avec support_maintenance_architecture).",
+    "DEPENDANCES_source_alerte": [
+      "PAS de source temps reel: monta-webhook.php N'EXISTE PAS. A construire: receiver Monta 'charger.state_changed -> offline' (necessite scope/credentials webhook Monta cote Monta - deja flague pending dans le state). Alternative: poller Make/cron sur monta-chargers.php (offline CPs).",
+      "MAPPING charge point -> deal MANQUANT: il faut un lien CP Monta -> deal HubSpot (propriete deal ex monta_charge_point_ids, ou Sites/Parc Ref parc -> deal). Sans ce lien, la source ne sait pas quel deal/installateur notifier.",
+      "Board Sites/Parc (18420503504) quasi vide (1 site) - a peupler si on veut la 2e source de mapping."
+    ],
+    "quand_source_prete": "monta-webhook.php (ou poller) detecte offline -> mappe CP->deal -> appelle n1-notify.php avec deal_id (+ installer_email optionnel). Le routage/livraison est deja pret.",
+    "marque_blanche": "Email installateur = 100% OZECAR, aucun Monta. Interne/B2B."
   }
 }
