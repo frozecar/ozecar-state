@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.313",
+    "version": "1.314",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.313",
+        "version_to": "1.314",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Modele 4 acteurs sur un deal (client societe/contact + installateur societe/contact), tous optionnels. Cree label deal<->contact 'Contact installateur' (typeId 3).",
+          "Moteur #devis reconstruit (oz_create_devis v2): client ET installateur separes, bons labels; modal 3 blocs; free-text distingue client/installateur. Gere les 3 cas (client contacte / installateur contacte pour client inconnu / installateur nom seul).",
+          "Configurateur: barre 'Installateur / partenaire' (vue commerciale) + endpoint api/devis-attr.php (write-back assoc 'Installateur referent'). Attribution possible depuis 3 entrees. Teste."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.312",
@@ -11517,7 +11528,20 @@
     "mecanisme_ajoute": "Association labellisee 'Installateur referent' entre DEAL client et SOCIETE installateur. typeId=2 (deal->company). Cliquable + filtrable, sans polluer le schema de proprietes partenaire.",
     "usage": "A la creation d'un deal client refere: PUT crm/v4/objects/deals/{dealId}/associations/companies/{installerCoId} body [{associationCategory:USER_DEFINED, associationTypeId:2}] + set deal_for_partner=true. Le client reste la company primaire; l'installateur = association 'Installateur referent'.",
     "soleco": "Societe SOLECO creee: id 436497600726 (domain soleco.fr). A qualifier partenaire (type/partner_status) cote chat partenaires.",
-    "CORRECTION_typeId": "typeId=1 (PAS 2). Le typeId 2 = direction inverse (company->deal) -> le PUT deal->company renvoyait 400 'invalid' et l'association ne se creait PAS (bug: installateur absent des fiches). Le bon deal->company pour 'Installateur referent' = USER_DEFINED typeId 1 (verifie: PUT 201, la societe apparait avec le label + l'assoc entreprise standard 341). Corrige dans oz_create_devis."
+    "CORRECTION_typeId": "typeId=1 (PAS 2). Le typeId 2 = direction inverse (company->deal) -> le PUT deal->company renvoyait 400 'invalid' et l'association ne se creait PAS (bug: installateur absent des fiches). Le bon deal->company pour 'Installateur referent' = USER_DEFINED typeId 1 (verifie: PUT 201, la societe apparait avec le label + l'assoc entreprise standard 341). Corrige dans oz_create_devis.",
+    "modele_4_acteurs": {
+      "principe": "Un deal peut impliquer 4 acteurs, tous optionnels, renseignables progressivement: societe cliente (assoc primaire), contact client (assoc default), societe installateur (label 'Installateur referent' typeId 1), contact installateur (label 'Contact installateur' typeId 3).",
+      "labels": {
+        "installateur_societe": "deal<->company USER_DEFINED typeId 1 'Installateur referent'",
+        "installateur_contact": "deal<->contact USER_DEFINED typeId 3 'Contact installateur' (cree 2026-07-05)"
+      },
+      "cas_couverts": [
+        "client final nous contacte (installateur inconnu, ajoute plus tard)",
+        "installateur nous contacte pour client inconnu (societe installateur + contact installateur Frederic; societe cliente=site si donne, contact client vide)",
+        "installateur nom seul type SOLECO (societe installateur seule)"
+      ],
+      "note_label_contact": "'Installateur referent' est un label deal<->SOCIETE -> n'apparait PAS quand on ajoute un CONTACT. Pour tagger la personne de l'installateur, utiliser le label deal<->contact 'Contact installateur'."
+    }
   },
   "devis_sur_demande_2026_07_05": {
     "objectif": "Quand un partenaire (ou toute demande) demande un devis: message Slack + preparer le devis, lier a une fiche contact client (find-or-create), lier a la fiche installateur (assoc 'Installateur referent'), fournir une URL edit-mode du devis, et laisser le process suivre le pipeline (L&Q -> Devis -> Supervision Kit commande/expedie).",
@@ -11561,6 +11585,8 @@
       "proprietes_stade": "Devis: nombre_pdc, ozecar_forfait, ozecar_maintenance, ozecar_nb_stations(si dispo). Stade kit/expedition (PAS au devis): type_kit, nombre_de_sim, qr_code_commande, sim_iccid, tracking_number.",
       "backfill": "Deal test balesi 509487653050 associe a la societe 'balesi automobile' 435760889060.",
       "lint": "php -l OK, smoke-test OK."
-    }
+    },
+    "moteur_v2_4acteurs": "oz_create_devis reconstruit: capture client (societe+contact) ET installateur (societe+contact) separement, associe chacun avec le bon label. Modal #devis restructure en 3 blocs (Client / Installateur / Devis). Free-text: Claude distingue client vs installateur. Teste scenario 2 (labels societe+contact OK).",
+    "configurateur_champ_installateur": "Barre 'Installateur / partenaire' ajoutee en vue commerciale (?sales). Bouton 'Enregistrer sur le deal' -> POST api/devis-attr.php (find-or-create societe installateur + assoc 'Installateur referent' typeId 1 + deal_for_partner + ozecar_maintenance) -> reload avec ?installer= (mode partenaire actif). Teste OK. => attribution possible depuis 3 entrees: #devis, configurateur, manuel HubSpot."
   }
 }
