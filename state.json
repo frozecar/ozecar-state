@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.334",
+    "version": "1.335",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.334",
+        "version_to": "1.335",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "05b (booking demo) REPARE + REACTIVE. Cause: modules HubSpot Make (CreateAssociation [405], SearchContacts properties-string [400], HTTP 503). Fix: logique CRM sortie vers api/demo-booking.php (robuste, teste) - deal '{Client} — Démo' Demo planifiee + assoc + flag + email. Blueprint 05b = SearchContacts poll -> HTTP demo-booking.php (modules buggés supprimés). 0 contact perime. Pattern etabli: Make poll fin -> endpoint PHP."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.333",
@@ -11989,6 +11998,13 @@
     },
     "workflows_hubspot": "NON accessibles: le PAT n'a pas le scope 'automation' (403 requires automation-access). Tier compte = payant. Workflows natifs = besoin (a) scope automation sur le PAT + (b) plan qui inclut les workflows (Pro+). A confirmer.",
     "decision_trigger_phase2": "Pour demo->devis card (transition Demo planifiee->Devis a faire) + handoff Gagne->Livraison: 2 options. A) Ajouter scope 'automation' au PAT -> workflows HubSpot natifs (instant, zero cout polling) - le plus propre. B) Make (polling = couteux, cf 09 qui a brule 6562 ops/13.8M transfer; ou trigger instant Make HubSpot). Reco: A si le plan inclut les workflows.",
-    "reste": "1. Trancher A/B pour les triggers. 2. Traiter 05/05b (booking demo casse). 3. Construire demo->devis card + handoff."
+    "reste": "Phase 2 restante: demo->devis card (transition Demo planifiee->Devis a faire -> carte #rdv-demo) + handoff Gagne->Livraison branche deal_type. Meme pattern (Make poll -> endpoint PHP).",
+    "05b_REPARE": {
+      "cause": "Modules HubSpot natifs de Make: CreateAssociation -> [405] (endpoint deal<->contact KO), SearchContacts properties en chaine -> [400] (corrige dans 05b), + 503 intermittents sur HTTP email.",
+      "fix": "Sortie de toute la logique CRM fragile de Make vers api/demo-booking.php (API directe, robuste). Blueprint 05b simplifie: SearchContacts (poll 15min, filtre demo bookee future + ozecar_demo_confirme!=true) -> 1 appel HTTP demo-booking.php. Modules createDeal/CreateAssociation/updateContact supprimes.",
+      "demo_booking_php": "Cree deal '{Client} — Démo' (Vente 3747862733, stade Demo planifiee 5215721688, deal_type=supervision) + associe contact (+societe si connue) + set ozecar_demo_confirme=true + email confirmation charte. Idempotent (reutilise deal existant si deja en Demo planifiee). Teste OK.",
+      "statut": "05b REACTIVE. 0 contact en attente (aucun traitement perime). Booking demo -> deal restaure.",
+      "pattern_etabli": "Make = poll fin -> appel HTTP a un endpoint PHP OZECAR qui fait tout le CRM (robuste, testable). A appliquer aux autres triggers (demo->devis card, handoff Gagne->Livraison)."
+    }
   }
 }
