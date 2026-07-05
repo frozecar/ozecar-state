@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.312",
+    "version": "1.313",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.312",
+        "version_to": "1.313",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "FIX association installateur: le typeId etait 2 (direction inverse company->deal) -> PUT 400, association jamais creee (installateur absent des fiches HubSpot). Bon typeId deal->company = 1. Corrige dans oz_create_devis (verifie PUT 201, label 'Installateur referent' visible)."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.311",
@@ -11507,7 +11516,8 @@
     "schema_existant": "deal_for_partner (bool), deal_partner_canal, deal_partner_attribution_method, deal_partner_bounty_amount_eur, hs_partner_tech_win (deals); partner_status/tier/canal/uuid/iban/volume_ytd/type (companies). Gere par le chat partenaires - NE PAS toucher.",
     "mecanisme_ajoute": "Association labellisee 'Installateur referent' entre DEAL client et SOCIETE installateur. typeId=2 (deal->company). Cliquable + filtrable, sans polluer le schema de proprietes partenaire.",
     "usage": "A la creation d'un deal client refere: PUT crm/v4/objects/deals/{dealId}/associations/companies/{installerCoId} body [{associationCategory:USER_DEFINED, associationTypeId:2}] + set deal_for_partner=true. Le client reste la company primaire; l'installateur = association 'Installateur referent'.",
-    "soleco": "Societe SOLECO creee: id 436497600726 (domain soleco.fr). A qualifier partenaire (type/partner_status) cote chat partenaires."
+    "soleco": "Societe SOLECO creee: id 436497600726 (domain soleco.fr). A qualifier partenaire (type/partner_status) cote chat partenaires.",
+    "CORRECTION_typeId": "typeId=1 (PAS 2). Le typeId 2 = direction inverse (company->deal) -> le PUT deal->company renvoyait 400 'invalid' et l'association ne se creait PAS (bug: installateur absent des fiches). Le bon deal->company pour 'Installateur referent' = USER_DEFINED typeId 1 (verifie: PUT 201, la societe apparait avec le label + l'assoc entreprise standard 341). Corrige dans oz_create_devis."
   },
   "devis_sur_demande_2026_07_05": {
     "objectif": "Quand un partenaire (ou toute demande) demande un devis: message Slack + preparer le devis, lier a une fiche contact client (find-or-create), lier a la fiche installateur (assoc 'Installateur referent'), fournir une URL edit-mode du devis, et laisser le process suivre le pipeline (L&Q -> Devis -> Supervision Kit commande/expedie).",
