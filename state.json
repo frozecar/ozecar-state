@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.348",
+    "version": "1.349",
     "updated": "2026-07-06",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-06",
+        "version_from": "1.348",
+        "version_to": "1.349",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Liens fiche cliquables RESOLU: HubSpot rend cliquable le type text (pas textarea). 2 proprietes text: ozecar_devis_edit_url (Éditer, ?sales) + ozecar_devis_url (Voir le devis client, ?client). Textarea supprimee, note supprimee, endpoints repointes sur ozecar_devis_url. 25 deals nettoyes (?sales errone dans devis_url vide). Julien pose les 2. Note pas retenue."
+        ]
+      },
       {
         "date": "2026-07-06",
         "version_from": "1.347",
@@ -12225,10 +12234,10 @@
     },
     "reste": "Ajouter les 2 boutons au 'À propos' de la fiche (Dominique, comme le reste). Note 'apercu client' optionnelle. Reouverture haute-fidelite (payload complet) deja couverte via ozecar_devis_client_url (contient c=).",
     "affichage_liens_fiche": {
-      "constat": "Valeurs OK: ozecar_devis_edit_url rempli sur tous les deals (verifie Julien + 6). ozecar_devis_client_url VIDE tant que le devis n'est pas genere (normal, rempli a la generation via devis-save-link.php).",
-      "probleme": "HubSpot affiche souvent les proprietes texte-URL en texte brut (pas cliquable) dans le 'À propos' (limite Starter, pas de CRM card).",
-      "solution_note_epinglee": "Note HubSpot avec liens <a> cliquables, epinglee en haut de la fiche (hs_pinned_engagement_id). Pose sur Julien (note 502255978702): 'Éditer le devis' cliquable + 'Voir le devis client' (a generer). A AUTOMATISER si Dominique valide: creation note a la creation du deal + MAJ a la generation.",
-      "reste": "Dominique verifie la note sur Julien -> si OK, automatiser la note epinglee sur chaque deal (creation + MAJ generation)."
+      "resolu": "HubSpot rend cliquables les proprietes type STRING/TEXT (pas textarea). Consolidation sur 2 proprietes text: ozecar_devis_edit_url ('Éditer le devis', ?sales) + ozecar_devis_url ('Voir le devis client', ?client, son usage d'origine). Propriete textarea ozecar_devis_client_url SUPPRIMEE. Note epinglee supprimee.",
+      "endpoints": "devis-save-link.php + devis-send-client.php repointes sur ozecar_devis_url (au lieu du textarea).",
+      "nettoyage": "25 deals avaient un ?sales errone dans ozecar_devis_url (backfill precedent) -> vides. 'Voir le devis client' se remplit a la generation. 'Éditer le devis' rempli partout. Julien: les 2 poses (edit ?sales + client ?client) pour demo.",
+      "a_faire_dominique": "Epingler 'Éditer le devis' + 'Voir le devis client' dans le 'À propos' -> liens cliquables."
     }
   }
 }
