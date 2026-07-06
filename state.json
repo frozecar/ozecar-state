@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.346",
+    "version": "1.347",
     "updated": "2026-07-06",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-06",
+        "version_from": "1.346",
+        "version_to": "1.347",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "2 boutons devis: 'Éditer le devis' (edit_url ?sales) + 'Voir le devis client' (client_url ?client&c=) + overlay client. Envoi AUTO client CABLE (ferme Q2): genClientLink->devis-save-link.php (stocke url+flag pending) -> scenario Make 11 (poll Devis-contrat envoye + pending) -> devis-send-client.php (email client charte + flag sent, idempotent). devis-transfer pose flag sent (anti-doublon). Teste OK. Scenario 11 (6458109) a remettre a 900s apres test."
+        ]
+      },
       {
         "date": "2026-07-06",
         "version_from": "1.345",
@@ -12137,7 +12146,7 @@
       "Deal Julien (marieestelle+clientA) n'apparaissait pas car 05b n'avait pas encore polle (15min). Le signal etait bon (engagements_last_meeting_booked=07/07, ozecar_demo_confirme=null -> matche le filtre). Deal cree manuellement via demo-booking.php: 509672888556 'Julien Nom de famille — Démo' (Demo planifiee) + email envoye.",
       "Dominique a glisse le deal en 'Demo realisee' (5215721689) au lieu de 'Devis a faire' -> carte pas declenchee (trigger = Devis a faire). Cause racine: la phase 'Demo realisee' redondante pretait a confusion. FIX applique: deal deplace en Devis a faire + carte declenchee manuellement + PHASE 'Demo realisee' (5215721689) SUPPRIMEE (Phase 3 cleanup avancee). Tunnel Vente: Nouveau->Qualifie->Demo planifiee->Devis a faire->Devis-contrat envoye->Gagne->Perdu."
     ],
-    "poll_abaisse_test": "05b (6400488) et 10 (6452570) passes a 120s (2min) pour la session de test. A REMETTRE a 900s (15min) apres le test pour eviter le cout ops.",
+    "poll_abaisse_test": "05b (6400488), 10 (6452570), 11 (6458109) a 120s pour le test. A REMETTRE a 900s apres.",
     "demo_realisee_supprimee": "Phase 5215721689 supprimee (204). Vieux deal 504572664045 deplace en Devis a faire. Scenario 07 referencait 5215721689 dans un groupe de filtre -> desormais ce groupe ne matche rien (inoffensif, 07 tourne sur les autres stades). Nettoyer 07 au prochain passage si besoin."
   },
   "prefill_configurateur_2026_07_06": {
@@ -12195,5 +12204,16 @@
     "Q2_email_client": "Chemin INSTALLATEUR: email envoye au clic 'Transferer a mon client' (devis-transfer.php). Chemin DIRECT commercial: PAS d'auto-envoi aujourd'hui. L'ancien scenario 09 envoyait sur changement de stade mais il est deprecated/inactif. Deplacer la carte en 'Devis-contrat envoye' N'ENVOIE RIEN actuellement. A CABLER: Make poll deals 'Devis-contrat envoye' sans flag -> endpoint envoie email client (necessite email client + lien/payload sur le deal).",
     "Q3_materiel_masque": "FAIT. Vue client: si aucun materiel (aucun item qty>0), l'etape Materiel (onglet + wstep data-w=1) est masquee, le wizard demarre sur Supervision. Deploye.",
     "Q4_rebascule_overlay": "RESOLU. devis-status.php cree (prod, a le token; staging n'a pas hubspot.php -> fetch pointe vers URL absolue ozecar.fr). Retourne 'sent' si stade Devis-contrat envoye (5215721690)/Gagne (5215721691)/pipeline Livraison, sinon 'draft'. Le configurateur (checkEditLock) affiche l'overlay 'en cours de modification' si !=sent. Donc rebascule en 'Devis a faire' -> client voit l'overlay, PAS le devis actif. Retour en 'Devis-contrat envoye' -> devis reapparait. Teste Julien (Devis a faire -> draft)."
+  },
+  "devis_deux_boutons_et_envoi_auto_2026_07_06": {
+    "decision_2_boutons": "Vue commerciale = 2 boutons distincts sur la fiche: 'Éditer le devis' (ozecar_devis_edit_url, ?sales&deal_id, pre-rempli, editable) + 'Voir le devis client' (ozecar_devis_client_url, ?client&deal_id&c=, vue exacte envoyee). L'overlay devis-status.php protege: si deal pas en Devis-contrat envoye -> client voit 'en cours de modification'. Labels HubSpot mis a jour.",
+    "envoi_auto_client_CABLE": {
+      "generation": "configurateur genClientLink() POST -> devis-save-link.php: stocke ozecar_devis_client_url + ozecar_devis_client_sent='pending' (si pas deja 'sent').",
+      "declenchement": "Scenario Make 11 (id 6458109, poll 120s, ACTIF): searchDeals dealstage=5215721690 (Devis-contrat envoye) AND ozecar_devis_client_sent EQ 'pending' -> HTTP devis-send-client.php.",
+      "envoi": "devis-send-client.php: lit ozecar_devis_client_url + email contact client (exclut installateur t3) -> email charte OZECAR 'Votre devis est pret' + lien -> flag='sent' + note + notif #devis. Idempotent (skip si sent). Si pas d'email client -> notif #devis, pas marque envoye.",
+      "anti_doublon": "devis-transfer.php (chemin installateur) pose aussi flag='sent' apres envoi -> le scenario 11 ne renvoie pas. Filtre EQ 'pending' (evite piege null).",
+      "teste": "deal temp Devis-contrat envoye + pending + contact client -> envoi OK, flag->sent, 2e appel skip."
+    },
+    "reste": "Ajouter les 2 boutons au 'À propos' de la fiche (Dominique, comme le reste). Note 'apercu client' optionnelle. Reouverture haute-fidelite (payload complet) deja couverte via ozecar_devis_client_url (contient c=)."
   }
 }
