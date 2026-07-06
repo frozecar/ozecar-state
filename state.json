@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.344",
+    "version": "1.345",
     "updated": "2026-07-06",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-06",
+        "version_from": "1.344",
+        "version_to": "1.345",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Curation fiche HubSpot (option 1): labels nettoyes (PDC/stations/options/forfait). Propriete ozecar_devis_edit_url creee (bouton reouverture, endpoints repointes). ERREUR corrigee: ozecar_devis_url (existait, usage client) backfille par erreur avec lien sales sur ~25 deals -> a verifier via property history si besoin. Liste 'À propos' curee definie (garder essentiel business+resume+lien, retirer champs kit). Application = UI (Starter)."
+        ]
+      },
       {
         "date": "2026-07-06",
         "version_from": "1.343",
@@ -12139,5 +12148,36 @@
     "endpoints_maj": "demo-booking.php + oz_create_devis (slack-bot.php): nom = '{who} — {AAAA-MM}' (plus de 'Démo'/'Devis Supervision Tier') + pose ozecar_devis_url a la creation.",
     "julien_renomme": "'Julien Nom de famille — Démo' -> 'Julien Nom de famille — 2026-07' (test, pas d'entreprise -> nom contact).",
     "reste": "Renommer les deals existants vers la nouvelle convention (25 deals ont l'ancien format) - a faire au fil de l'eau ou en batch. Remplir ozecar_ref_site pendant l'enrichissement Granola/devis. Payload complet pour reouverture haute-fidelite (v2)."
+  },
+  "fiche_hubspot_curation_2026_07_06": {
+    "labels_nettoyes": "nombre_pdc->'Points de charge (PDC)', ozecar_nb_stations->'Nombre de stations', ozecar_options->'Options du devis', ozecar_forfait->'Forfait supervision'.",
+    "resume": "Propriete ozecar_resume ('Résumé (dernier échange)') creee + resume Granola ecrit sur Julien. A ecrire a chaque demo (voie A Granola).",
+    "bouton_edition": "Propriete ozecar_devis_edit_url ('Ouvrir le devis (édition)') creee = lien configurateur ?sales&deal_id (reouverture pre-remplie). Endpoints (demo-booking, oz_create_devis) repointes dessus. Julien pose. Backfill vieux deals A FAIRE (search POST 500 sur one-shots - a rebackfiller autrement).",
+    "ATTENTION_devis_url": "ERREUR corrigee: j'ai d'abord backfille ozecar_devis_url (qui existait deja, label 'OZECAR — URL devis client', destine au lien CLIENT) avec le lien sales sur ~25 deals. Peut avoir ecrase des liens client. Projet pre-launch -> probablement vides, mais A VERIFIER (property history) si Dominique en a besoin. Desormais le lien edition va dans ozecar_devis_edit_url, ozecar_devis_url laisse a son usage client.",
+    "curation_a_propos": {
+      "garder_ordonne": [
+        "ozecar_resume (Résumé)",
+        "ozecar_forfait (Forfait supervision)",
+        "nombre_pdc (Points de charge)",
+        "ozecar_nb_stations (Nombre de stations)",
+        "ozecar_options (Options du devis)",
+        "ozecar_ref_site (Réf chantier/site)",
+        "ozecar_devis_edit_url (Ouvrir le devis)",
+        "amount (Montant)",
+        "dealstage (Phase)",
+        "hubspot_owner_id (Propriétaire)",
+        "createdate (Date de création)",
+        "notes_last_updated (Dernière activité)"
+      ],
+      "retirer": [
+        "type_kit",
+        "qr_code_commande (QR Code commandé)",
+        "nombre_de_sim (Nombre de SIM)",
+        "sim_iccid",
+        "tracking",
+        "hs_priority (Niveau de priorité si inutilise)"
+      ],
+      "note": "Entreprise + Contact = cartes d'association (colonne droite), pas des proprietes du 'À propos'. Application = UI (Starter, pas d'API pour le 'À propos' par defaut): ⚙️ section 'À propos' -> Modifier les proprietes -> retirer kit + ajouter garder -> Enregistrer -> Appliquer a toutes les fiches."
+    }
   }
 }
