@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.341",
+    "version": "1.342",
     "updated": "2026-07-06",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-06",
+        "version_from": "1.341",
+        "version_to": "1.342",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Granola->deal->configurateur pre-fill COMPLET (test Julien). Granola Basic -> voie A (Claude lit via MCP, ecrit le deal). Resume 'devis deux stations' -> 8 PDC + 2 stations + option Data 4G/5G ecrits sur deal 509672888556. Propriete ozecar_options creee. deal-prefill.php + configurateur etendus aux options. Configurateur pre-remplit client+pdc+stations+options (pas forfait)."
+        ]
+      },
       {
         "date": "2026-07-06",
         "version_from": "1.340",
@@ -12098,6 +12107,9 @@
     "brique_1_client_HubSpot_LIVREE": "api/deal-prefill.php (GET ?deal_id) renvoie la fiche client depuis HubSpot (societe cliente default + contact client default, exclut installateur t1/t3 et fournisseur t5) + config {pdc, stations}. Le configurateur (vue commerciale, deal_id present) fetch cet endpoint et pre-remplit: company/prenom/nom/email/tel/adresse/cp/ville/siret/activite + PDC + stations. PAS le forfait (choix commercial). Teste sur Julien (prenom/nom/email remontent). Ne surcharge pas un champ deja saisi.",
     "brique_2_granola": "PDC/stations/options viennent du resume Granola. Un endpoint PHP ne peut PAS appeler le MCP Granola -> c'est Claude PM (moi) qui lit Granola + ecrit sur le deal (nombre_pdc, ozecar_nb_stations, options). 2 voies: A) on-demand (Dominique: 'prepare le devis de X depuis la demo' -> je lis Granola + ecris le deal -> configurateur pre-rempli). B) automatisation: proxy api/granola.php (necessite cle API Granola) appele par demo-devis-card.php -> extraction LLM -> ecrit le deal. A trancher.",
     "options_v2": "Pre-remplissage des OPTIONS = v2: necessite de stocker les options sur le deal (propriete texte liste d'ids) + deal-prefill les renvoie + le configurateur les applique (state.opts). Pour l'instant deal-prefill fait client + pdc + stations.",
-    "reste": "Trancher voie A/B pour Granola. Ajouter le stockage+prefill des options (v2). Verifier la sauvegarde retour (scenario 08 ecrit pdc/forfait sur le deal a la generation)."
+    "reste": "Automatisation Granola impossible (Basic) -> restera on-demand (Claude lit Granola + ecrit le deal). Verifier la sauvegarde retour (scenario 08) a la generation du devis.",
+    "granola_voie_A_actee": "Granola BASIC (pas d'API) -> voie A definitive: Claude PM lit le resume Granola via MCP + ecrit sur le deal. Pas de proxy granola.php.",
+    "test_julien_granola": "Resume Granola '41dd1178... devis deux stations' lu: 8 PDC (Station 1: 3, Station 2: 5), 2 stations, internet requis -> option Data 4G/5G (8 data). Ecrit sur deal 509672888556: nombre_pdc=8, ozecar_nb_stations=2, ozecar_options='data'. Propriete ozecar_options creee (string, ids separes par virgule).",
+    "options_LIVREES": "deal-prefill.php renvoie config.options (parse ozecar_options). Configurateur applique cf.options -> state.opts + render. Verifie: deal-prefill Julien renvoie client + pdc=8 + stations=2 + options=[data]. Le configurateur pre-remplit tout (sauf forfait, choix commercial)."
   }
 }
