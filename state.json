@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.351",
+    "version": "1.352",
     "updated": "2026-07-06",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-06",
+        "version_from": "1.351",
+        "version_to": "1.352",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Cycle de vie post-devis 1+2+3 LIVRE: (1) renvoi sur MAJ (devis-save-link toujours pending -> scenario 11 renvoie). (2) expiration: ozecar_devis_expire_le J+30 + bascule 'Expiré' via devis-lifecycle. (3) relances J-7/J-2 via devis-lifecycle.php + Make 12 quotidien (6459838, actif). Props expire_le+relances creees. Teste OK. Item 4 (signe->Gagne->Livraison) reste, depend embed PandaDoc."
+        ]
+      },
       {
         "date": "2026-07-06",
         "version_from": "1.350",
@@ -12277,6 +12286,13 @@
       "relance_J7_J2": "NON construit. Pas de relance client avant expiration. A construire (poll quotidien type scenario 07 sur deals en 'Devis-contrat envoye' approchant expiration -> email relance J-7 / J-2).",
       "signe_gagne_pipeline": "NON. Signature = PandaDoc (embed pas encore pose par Dominique). 'Accepter et signer' -> sendToMake 'devis_accepte' -> scenario 08 (qui ne fait QUE MAJ deal, pas de bascule). Aucun passage auto en Gagne ni changement de pipeline vers Livraison. A construire (handoff Gagne->Livraison etait deja pending [Claude])."
     },
-    "chantier_propose": "'Cycle de vie post-devis': (1) renvoi sur MAJ, (2) date d'expiration + bascule, (3) relances J-7/J-2, (4) signature PandaDoc -> Gagne -> creation deal Livraison (deal_type). Depend en partie de l'embed PandaDoc (Dominique)."
+    "chantier_propose": "'Cycle de vie post-devis': (1) renvoi sur MAJ, (2) date d'expiration + bascule, (3) relances J-7/J-2, (4) signature PandaDoc -> Gagne -> creation deal Livraison (deal_type). Depend en partie de l'embed PandaDoc (Dominique).",
+    "items_1_2_3_LIVRES": {
+      "1_renvoi_sur_MAJ": "devis-save-link.php met TOUJOURS flag='pending' (+ reset relances) a chaque (re)generation -> si le deal est en 'Devis-contrat envoye', scenario 11 renvoie le devis a jour. Une MAJ = un renvoi.",
+      "2_expiration": "Propriete ozecar_devis_expire_le (date) posee = J+30 a la generation. devis-lifecycle.php bascule ozecar_devis_statut='Expiré' + notif #devis quand la date est passee (1 fois). Pas de passage auto en Perdu (le commercial decide).",
+      "3_relances": "devis-lifecycle.php (GET, quotidien via Make 12 id 6459838, actif, 86400s): parcourt les deals en 'Devis-contrat envoye' envoyes -> relance client J-7 (<=7j >2j) et J-2 (<=2j >=0j), 1 fois chacune (anti-doublon ozecar_devis_relances csv j7,j2,exp). Email relance = charte OZECAR inline (nouveau type, pas de conflit avec devis-pret). Teste: J-5->j7, J-1->j2, expire->Expiré.",
+      "proprietes_creees": "ozecar_devis_expire_le (date), ozecar_devis_relances (text).",
+      "reste_item_4": "Signature PandaDoc -> Gagne -> creation deal Livraison: PAS fait, depend de l'embed PandaDoc (Dominique)."
+    }
   }
 }
