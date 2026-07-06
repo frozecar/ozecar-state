@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.339",
+    "version": "1.340",
     "updated": "2026-07-06",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-06",
+        "version_from": "1.339",
+        "version_to": "1.340",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Test: deal glisse en 'Demo realisee' au lieu de 'Devis a faire' (confusion phase redondante). Fix: deal deplace en Devis a faire + carte postee #devis. PHASE 'Demo realisee' (5215721689) SUPPRIMEE (204) pour eviter la confusion (test Marie-Estelle demain). Vieux deal 504572664045 deplace. Tunnel Vente limpide."
+        ]
+      },
       {
         "date": "2026-07-06",
         "version_from": "1.338",
@@ -11996,7 +12005,8 @@
       "nouveaux_ids": {
         "Perdu_vente": "5653384416"
       },
-      "reste": "Phase 2 (Make: transition Demo planifiee->Devis a faire -> carte devis; handoff Gagne->Livraison branche deal_type; set deal_type). Phase 3 nettoyage: supprimer Demo realisee (5215721689) + Contrat envoye (decisionmakerboughtin) + Contrat signe (contractsent) apres deplacement des deals."
+      "reste": "Phase 2 (Make: transition Demo planifiee->Devis a faire -> carte devis; handoff Gagne->Livraison branche deal_type; set deal_type). Phase 3 nettoyage: supprimer Demo realisee (5215721689) + Contrat envoye (decisionmakerboughtin) + Contrat signe (contractsent) apres deplacement des deals.",
+      "demo_realisee_supprimee": "FAIT 2026-07-06 (204). Reste Phase 3: Contrat envoye (decisionmakerboughtin) + Contrat signe (contractsent) dans Livraison."
     },
     "activation_mode_cree": "Propriete deal activation_mode (radio: Visio / Sur site) creee via API."
   },
@@ -12069,8 +12079,10 @@
     "runbook": "Runbook pas-a-pas prepare (OZECAR-test-pipeline-vente.md). Emails plus-addresses: marieestelle+clientA/clientB@ozecar.fr (clients finaux), dominique+installateur@ozecar.fr (installateur SOLECO). 2 parcours: A prospect direct (demo->devis->gagne), B installateur->transfert->client. Points de controle: emails, Slack #devis, HubSpot Vente, Granola, marque blanche. Delai poll 15min signale.",
     "findings_test": [
       "Booking demo = nom + prenom + email uniquement (pas de champ societe). Normal: la societe se renseigne en aval (demo/devis). demo-booking.php gere l'absence de societe -> deal nomme '{Prenom Nom} — Démo'. Si societe voulue au booking, ajouter un champ au formulaire (Calendly/HubSpot Meetings).",
-      "Deal Julien (marieestelle+clientA) n'apparaissait pas car 05b n'avait pas encore polle (15min). Le signal etait bon (engagements_last_meeting_booked=07/07, ozecar_demo_confirme=null -> matche le filtre). Deal cree manuellement via demo-booking.php: 509672888556 'Julien Nom de famille — Démo' (Demo planifiee) + email envoye."
+      "Deal Julien (marieestelle+clientA) n'apparaissait pas car 05b n'avait pas encore polle (15min). Le signal etait bon (engagements_last_meeting_booked=07/07, ozecar_demo_confirme=null -> matche le filtre). Deal cree manuellement via demo-booking.php: 509672888556 'Julien Nom de famille — Démo' (Demo planifiee) + email envoye.",
+      "Dominique a glisse le deal en 'Demo realisee' (5215721689) au lieu de 'Devis a faire' -> carte pas declenchee (trigger = Devis a faire). Cause racine: la phase 'Demo realisee' redondante pretait a confusion. FIX applique: deal deplace en Devis a faire + carte declenchee manuellement + PHASE 'Demo realisee' (5215721689) SUPPRIMEE (Phase 3 cleanup avancee). Tunnel Vente: Nouveau->Qualifie->Demo planifiee->Devis a faire->Devis-contrat envoye->Gagne->Perdu."
     ],
-    "poll_abaisse_test": "05b (6400488) et 10 (6452570) passes a 120s (2min) pour la session de test. A REMETTRE a 900s (15min) apres le test pour eviter le cout ops."
+    "poll_abaisse_test": "05b (6400488) et 10 (6452570) passes a 120s (2min) pour la session de test. A REMETTRE a 900s (15min) apres le test pour eviter le cout ops.",
+    "demo_realisee_supprimee": "Phase 5215721689 supprimee (204). Vieux deal 504572664045 deplace en Devis a faire. Scenario 07 referencait 5215721689 dans un groupe de filtre -> desormais ce groupe ne matche rien (inoffensif, 07 tourne sur les autres stades). Nettoyer 07 au prochain passage si besoin."
   }
 }
