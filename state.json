@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.352",
+    "version": "1.353",
     "updated": "2026-07-06",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-06",
+        "version_from": "1.352",
+        "version_to": "1.353",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Decision meeting-notes: on reste sur Granola (Starter). Notetaker HubSpot = Sales Hub Pro (~90-100$/siege+1500$ onboarding), indispo Starter. Declencheur bascule Pro = embauche 1er commercial (Notetaker natif + workflows + pipelines + sequences)."
+        ]
+      },
       {
         "date": "2026-07-06",
         "version_from": "1.351",
@@ -12294,5 +12303,11 @@
       "proprietes_creees": "ozecar_devis_expire_le (date), ozecar_devis_relances (text).",
       "reste_item_4": "Signature PandaDoc -> Gagne -> creation deal Livraison: PAS fait, depend de l'embed PandaDoc (Dominique)."
     }
+  },
+  "decision_meeting_notes_granola_vs_hubspot_2026_07_06": {
+    "decision": "ON RESTE SUR GRANOLA (HubSpot Starter). Pas de bascule maintenant.",
+    "fait_verifie": "Le Notetaker HubSpot (enregistrement+transcription+resume natif sur la fiche) exige Sales Hub Pro/Enterprise + 1 siege Sales par commercial (bêta). Indispo en Starter. Cout Pro: ~90-100$/siege/mois + ~1500$ onboarding unique. Starter actuel ~15-20$/siege sans onboarding. (Sources: hubspot.com/pricing/sales, blog.hubspot, cargas, spendbase - avril 2026.)",
+    "declencheur_bascule": "Embauche du 1er commercial. A ce moment -> Sales Hub Pro: Notetaker remplace Granola (natif, auto-join demos, resume sur le deal, zero sync manuel) ET debloque workflows + pipelines multiples + sequences (murs Starter qu'on contourne aujourd'hui via Make/PHP).",
+    "en_attendant": "Granola BASIC = pont pas cher. Claude pousse les resumes sur les deals (voie A, manuel). Plan de bascule Starter->Pro (migration Make->workflows natifs, pipelines, cout par N reps) a preparer le jour venu si Dominique le demande."
   }
 }
