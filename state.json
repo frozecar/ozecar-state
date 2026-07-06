@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.350",
+    "version": "1.351",
     "updated": "2026-07-06",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-06",
+        "version_from": "1.350",
+        "version_to": "1.351",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Impression PDF devis client CORRIGEE: bouton Imprimer force render+showStep(3)+affiche tous les wstep avant print (restaure apres) + CSS print renforce (break-inside, @page, chrome masque).",
+          "Questions post-devis documentees comme NON construites: renvoi sur MAJ (non), expiration (aucune), relances J-7/J-2 (non), signe->Gagne->Livraison (non). Chantier 'cycle de vie post-devis' propose."
+        ]
+      },
       {
         "date": "2026-07-06",
         "version_from": "1.349",
@@ -12258,5 +12268,15 @@
       "proprietes": "ozecar_devis_statut (text) = 'Envoyé' -> 'Envoyé · vu N fois'. ozecar_devis_views (number). Teste: 2 pings -> 'Envoyé · vu 2 fois', draft non compte.",
       "a_faire_dominique": "Epingler 'Statut du devis' (ozecar_devis_statut) dans le 'À propos' pour voir 'Envoyé · vu N fois'."
     }
+  },
+  "cycle_de_vie_post_devis_2026_07_06": {
+    "impression_pdf_CORRIGE": "Bug: le devis client s'imprimait vide/tronque sauf sur la derniere etape (le rendu ne se fige qu'a l'etape 3). FIX: bouton Imprimer force render() + showStep(3) + affiche tous les .wstep avant window.print() (puis restaure l'etape). CSS print renforce: break-inside:avoid sur cards/recap/lignes, @page margins, chrome (wnav/prev/next/hints) masque. Deploye.",
+    "questions_ouvertes_NON_construites": {
+      "renvoi_si_maj": "NON. devis-save-link.php garde flag='sent' si deja envoye -> une MAJ du devis ne renvoie PAS d'email (et le client garde son ancien lien c=). A decider: sur re-generation d'un devis deja envoye, remettre flag='pending' -> scenario 11 renvoie le devis a jour.",
+      "expiration": "AUCUNE gestion. La date de validite (issued +30j) est un affichage client-side uniquement. Pas de propriete date d'expiration, pas de bascule a l'expiration. A construire.",
+      "relance_J7_J2": "NON construit. Pas de relance client avant expiration. A construire (poll quotidien type scenario 07 sur deals en 'Devis-contrat envoye' approchant expiration -> email relance J-7 / J-2).",
+      "signe_gagne_pipeline": "NON. Signature = PandaDoc (embed pas encore pose par Dominique). 'Accepter et signer' -> sendToMake 'devis_accepte' -> scenario 08 (qui ne fait QUE MAJ deal, pas de bascule). Aucun passage auto en Gagne ni changement de pipeline vers Livraison. A construire (handoff Gagne->Livraison etait deja pending [Claude])."
+    },
+    "chantier_propose": "'Cycle de vie post-devis': (1) renvoi sur MAJ, (2) date d'expiration + bascule, (3) relances J-7/J-2, (4) signature PandaDoc -> Gagne -> creation deal Livraison (deal_type). Depend en partie de l'embed PandaDoc (Dominique)."
   }
 }
