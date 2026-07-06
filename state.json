@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.347",
+    "version": "1.348",
     "updated": "2026-07-06",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-06",
+        "version_from": "1.347",
+        "version_to": "1.348",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Liens fiche: edit_url rempli partout, client_url vide jusqu'a generation (normal). HubSpot n'affiche pas les texte-URL en cliquable (Starter). Solution: note epinglee avec liens <a> cliquables (pose sur Julien, note 502255978702). A automatiser si Dominique valide."
+        ]
+      },
       {
         "date": "2026-07-06",
         "version_from": "1.346",
@@ -12214,6 +12223,12 @@
       "anti_doublon": "devis-transfer.php (chemin installateur) pose aussi flag='sent' apres envoi -> le scenario 11 ne renvoie pas. Filtre EQ 'pending' (evite piege null).",
       "teste": "deal temp Devis-contrat envoye + pending + contact client -> envoi OK, flag->sent, 2e appel skip."
     },
-    "reste": "Ajouter les 2 boutons au 'À propos' de la fiche (Dominique, comme le reste). Note 'apercu client' optionnelle. Reouverture haute-fidelite (payload complet) deja couverte via ozecar_devis_client_url (contient c=)."
+    "reste": "Ajouter les 2 boutons au 'À propos' de la fiche (Dominique, comme le reste). Note 'apercu client' optionnelle. Reouverture haute-fidelite (payload complet) deja couverte via ozecar_devis_client_url (contient c=).",
+    "affichage_liens_fiche": {
+      "constat": "Valeurs OK: ozecar_devis_edit_url rempli sur tous les deals (verifie Julien + 6). ozecar_devis_client_url VIDE tant que le devis n'est pas genere (normal, rempli a la generation via devis-save-link.php).",
+      "probleme": "HubSpot affiche souvent les proprietes texte-URL en texte brut (pas cliquable) dans le 'À propos' (limite Starter, pas de CRM card).",
+      "solution_note_epinglee": "Note HubSpot avec liens <a> cliquables, epinglee en haut de la fiche (hs_pinned_engagement_id). Pose sur Julien (note 502255978702): 'Éditer le devis' cliquable + 'Voir le devis client' (a generer). A AUTOMATISER si Dominique valide: creation note a la creation du deal + MAJ a la generation.",
+      "reste": "Dominique verifie la note sur Julien -> si OK, automatiser la note epinglee sur chaque deal (creation + MAJ generation)."
+    }
   }
 }
