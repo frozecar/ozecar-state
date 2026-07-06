@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.342",
+    "version": "1.343",
     "updated": "2026-07-06",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-06",
+        "version_from": "1.342",
+        "version_to": "1.343",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Pre-remplissage Granola->deal->configurateur VALIDE par Dominique (test Julien)."
+        ]
+      },
       {
         "date": "2026-07-06",
         "version_from": "1.341",
@@ -12110,6 +12119,7 @@
     "reste": "Automatisation Granola impossible (Basic) -> restera on-demand (Claude lit Granola + ecrit le deal). Verifier la sauvegarde retour (scenario 08) a la generation du devis.",
     "granola_voie_A_actee": "Granola BASIC (pas d'API) -> voie A definitive: Claude PM lit le resume Granola via MCP + ecrit sur le deal. Pas de proxy granola.php.",
     "test_julien_granola": "Resume Granola '41dd1178... devis deux stations' lu: 8 PDC (Station 1: 3, Station 2: 5), 2 stations, internet requis -> option Data 4G/5G (8 data). Ecrit sur deal 509672888556: nombre_pdc=8, ozecar_nb_stations=2, ozecar_options='data'. Propriete ozecar_options creee (string, ids separes par virgule).",
-    "options_LIVREES": "deal-prefill.php renvoie config.options (parse ozecar_options). Configurateur applique cf.options -> state.opts + render. Verifie: deal-prefill Julien renvoie client + pdc=8 + stations=2 + options=[data]. Le configurateur pre-remplit tout (sauf forfait, choix commercial)."
+    "options_LIVREES": "deal-prefill.php renvoie config.options (parse ozecar_options). Configurateur applique cf.options -> state.opts + render. Verifie: deal-prefill Julien renvoie client + pdc=8 + stations=2 + options=[data]. Le configurateur pre-remplit tout (sauf forfait, choix commercial).",
+    "VALIDE_par_Dominique": "Pre-remplissage configurateur depuis Granola+HubSpot VALIDE par Dominique (test Julien: client + 8 PDC + 2 stations + option Data cochee, forfait libre)."
   }
 }
