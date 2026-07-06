@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.340",
+    "version": "1.341",
     "updated": "2026-07-06",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-06",
+        "version_from": "1.340",
+        "version_to": "1.341",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Pre-remplissage configurateur depuis le deal: api/deal-prefill.php (fiche client HubSpot + pdc + stations) + fetch dans le configurateur vue commerciale. La data client reprend la fiche HubSpot (teste Julien). Granola (pdc/stations/options): Claude PM lit Granola + ecrit le deal (backend PHP ne peut pas appeler le MCP Granola) - voie A on-demand ou B proxy granola.php a trancher. Options = v2 (stockage sur deal)."
+        ]
+      },
       {
         "date": "2026-07-06",
         "version_from": "1.339",
@@ -12084,5 +12093,11 @@
     ],
     "poll_abaisse_test": "05b (6400488) et 10 (6452570) passes a 120s (2min) pour la session de test. A REMETTRE a 900s (15min) apres le test pour eviter le cout ops.",
     "demo_realisee_supprimee": "Phase 5215721689 supprimee (204). Vieux deal 504572664045 deplace en Devis a faire. Scenario 07 referencait 5215721689 dans un groupe de filtre -> desormais ce groupe ne matche rien (inoffensif, 07 tourne sur les autres stades). Nettoyer 07 au prochain passage si besoin."
+  },
+  "prefill_configurateur_2026_07_06": {
+    "brique_1_client_HubSpot_LIVREE": "api/deal-prefill.php (GET ?deal_id) renvoie la fiche client depuis HubSpot (societe cliente default + contact client default, exclut installateur t1/t3 et fournisseur t5) + config {pdc, stations}. Le configurateur (vue commerciale, deal_id present) fetch cet endpoint et pre-remplit: company/prenom/nom/email/tel/adresse/cp/ville/siret/activite + PDC + stations. PAS le forfait (choix commercial). Teste sur Julien (prenom/nom/email remontent). Ne surcharge pas un champ deja saisi.",
+    "brique_2_granola": "PDC/stations/options viennent du resume Granola. Un endpoint PHP ne peut PAS appeler le MCP Granola -> c'est Claude PM (moi) qui lit Granola + ecrit sur le deal (nombre_pdc, ozecar_nb_stations, options). 2 voies: A) on-demand (Dominique: 'prepare le devis de X depuis la demo' -> je lis Granola + ecris le deal -> configurateur pre-rempli). B) automatisation: proxy api/granola.php (necessite cle API Granola) appele par demo-devis-card.php -> extraction LLM -> ecrit le deal. A trancher.",
+    "options_v2": "Pre-remplissage des OPTIONS = v2: necessite de stocker les options sur le deal (propriete texte liste d'ids) + deal-prefill les renvoie + le configurateur les applique (state.opts). Pour l'instant deal-prefill fait client + pdc + stations.",
+    "reste": "Trancher voie A/B pour Granola. Ajouter le stockage+prefill des options (v2). Verifier la sauvegarde retour (scenario 08 ecrit pdc/forfait sur le deal a la generation)."
   }
 }
