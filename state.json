@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.345",
+    "version": "1.346",
     "updated": "2026-07-06",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-06",
+        "version_from": "1.345",
+        "version_to": "1.346",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Bouton devis backfille (25 deals). Q3: etape Materiel masquee cote client si aucun materiel (deploye). Q4: devis-status.php cree (prod) + configurateur pointe vers URL absolue -> overlay 'modification en cours' si deal pas en 'Devis-contrat envoye'/Gagne/Livraison. Rebascule en Devis a faire -> client voit l'overlay pas le devis. Q1: 'Accepter et signer'=bouton vue client (apercu). Q2: email direct commercial PAS cable (ancien scenario 09 deprecated) -> a wirer sur 'Devis-contrat envoye'."
+        ]
+      },
       {
         "date": "2026-07-06",
         "version_from": "1.344",
@@ -12179,5 +12188,12 @@
       ],
       "note": "Entreprise + Contact = cartes d'association (colonne droite), pas des proprietes du 'À propos'. Application = UI (Starter, pas d'API pour le 'À propos' par defaut): ⚙️ section 'À propos' -> Modifier les proprietes -> retirer kit + ajouter garder -> Enregistrer -> Appliquer a toutes les fiches."
     }
+  },
+  "devis_etats_et_ux_2026_07_06": {
+    "backfill_bouton": "ozecar_devis_edit_url backfille sur 25 deals (via GET liste, contourne le 500 du search POST).",
+    "Q1_accepter_signer": "'Accepter et signer' = bouton de la VUE CLIENT. Quand le commercial genere le devis, le configurateur bascule en apercu client (enterClientView) -> il voit ce que le client verra, dont son bouton signer. C'est l'action du CLIENT, pas du commercial. Le commercial n'signe pas, il envoie le lien. Amelioration possible: note '(apercu client)' dans la preview commerciale.",
+    "Q2_email_client": "Chemin INSTALLATEUR: email envoye au clic 'Transferer a mon client' (devis-transfer.php). Chemin DIRECT commercial: PAS d'auto-envoi aujourd'hui. L'ancien scenario 09 envoyait sur changement de stade mais il est deprecated/inactif. Deplacer la carte en 'Devis-contrat envoye' N'ENVOIE RIEN actuellement. A CABLER: Make poll deals 'Devis-contrat envoye' sans flag -> endpoint envoie email client (necessite email client + lien/payload sur le deal).",
+    "Q3_materiel_masque": "FAIT. Vue client: si aucun materiel (aucun item qty>0), l'etape Materiel (onglet + wstep data-w=1) est masquee, le wizard demarre sur Supervision. Deploye.",
+    "Q4_rebascule_overlay": "RESOLU. devis-status.php cree (prod, a le token; staging n'a pas hubspot.php -> fetch pointe vers URL absolue ozecar.fr). Retourne 'sent' si stade Devis-contrat envoye (5215721690)/Gagne (5215721691)/pipeline Livraison, sinon 'draft'. Le configurateur (checkEditLock) affiche l'overlay 'en cours de modification' si !=sent. Donc rebascule en 'Devis a faire' -> client voit l'overlay, PAS le devis actif. Retour en 'Devis-contrat envoye' -> devis reapparait. Teste Julien (Devis a faire -> draft)."
   }
 }
