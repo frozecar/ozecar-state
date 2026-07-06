@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.349",
+    "version": "1.350",
     "updated": "2026-07-06",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-06",
+        "version_from": "1.349",
+        "version_to": "1.350",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Doublon email resolu: scenario 08 envoyait devis-pret a la generation + scenario 11 ma version au card-move. Retire l'email du scenario 08 (MAJ deal seule) + devis-send-client.php utilise le template ACTE devis-pret. UN seul email au card-move.",
+          "Tracking vues devis: devis-viewed.php (incremente ozecar_devis_views, set ozecar_devis_statut='Envoyé · vu N fois', ne compte que si sent) + ping dans configurateur checkEditLock (vue client reelle). Proprietes ozecar_devis_statut + ozecar_devis_views creees. Teste OK."
+        ]
+      },
       {
         "date": "2026-07-06",
         "version_from": "1.348",
@@ -12238,6 +12248,15 @@
       "endpoints": "devis-save-link.php + devis-send-client.php repointes sur ozecar_devis_url (au lieu du textarea).",
       "nettoyage": "25 deals avaient un ?sales errone dans ozecar_devis_url (backfill precedent) -> vides. 'Voir le devis client' se remplit a la generation. 'Éditer le devis' rempli partout. Julien: les 2 poses (edit ?sales + client ?client) pour demo.",
       "a_faire_dominique": "Epingler 'Éditer le devis' + 'Voir le devis client' dans le 'À propos' -> liens cliquables."
+    }
+  },
+  "devis_email_unique_et_tracking_vues_2026_07_06": {
+    "doublon_email_resolu": "CAUSE: scenario 08 (Configurateur->MAJ deal) envoyait deja l'email 'devis-pret' (ACTE) a la generation ET mon scenario 11 envoyait ma version au card-move = 2 mails. FIX: scenario 08 module email (3) SUPPRIME -> 08 = MAJ deal seule. devis-send-client.php reecrit pour utiliser le template ACTE 'devis-pret' (au lieu de ma version inline). Resultat: UN seul email (devis-pret) au passage en 'Devis-contrat envoye' (card-move, que Dominique a valide).",
+    "tracking_vues": {
+      "endpoint": "devis-viewed.php (GET ?deal_id): incremente ozecar_devis_views + set ozecar_devis_statut='Envoyé · vu N fois'. Ne compte QUE si ozecar_devis_client_sent='sent' (pas les brouillons/previews).",
+      "ping": "configurateur checkEditLock() (vue CLIENT reelle uniquement, pas SALES/preview): si devis affiche (stage sent) -> fetch devis-viewed.php. Overlay si pas sent.",
+      "proprietes": "ozecar_devis_statut (text) = 'Envoyé' -> 'Envoyé · vu N fois'. ozecar_devis_views (number). Teste: 2 pings -> 'Envoyé · vu 2 fois', draft non compte.",
+      "a_faire_dominique": "Epingler 'Statut du devis' (ozecar_devis_statut) dans le 'À propos' pour voir 'Envoyé · vu N fois'."
     }
   }
 }
