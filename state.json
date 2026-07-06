@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.337",
+    "version": "1.338",
     "updated": "2026-07-05",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-05",
+        "version_from": "1.337",
+        "version_to": "1.338",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Test finding: booking demo capture nom/prenom/email seulement (pas societe). Societe en aval. demo-booking.php gere -> deal '{Prenom Nom} — Démo'."
+        ]
+      },
       {
         "date": "2026-07-05",
         "version_from": "1.336",
@@ -12048,6 +12057,9 @@
       "Signature PandaDoc (embed pas encore colle)"
     ],
     "delai_carte": "~15min apres le drag (poll Make)",
-    "runbook": "Runbook pas-a-pas prepare (OZECAR-test-pipeline-vente.md). Emails plus-addresses: marieestelle+clientA/clientB@ozecar.fr (clients finaux), dominique+installateur@ozecar.fr (installateur SOLECO). 2 parcours: A prospect direct (demo->devis->gagne), B installateur->transfert->client. Points de controle: emails, Slack #devis, HubSpot Vente, Granola, marque blanche. Delai poll 15min signale."
+    "runbook": "Runbook pas-a-pas prepare (OZECAR-test-pipeline-vente.md). Emails plus-addresses: marieestelle+clientA/clientB@ozecar.fr (clients finaux), dominique+installateur@ozecar.fr (installateur SOLECO). 2 parcours: A prospect direct (demo->devis->gagne), B installateur->transfert->client. Points de controle: emails, Slack #devis, HubSpot Vente, Granola, marque blanche. Delai poll 15min signale.",
+    "findings_test": [
+      "Booking demo = nom + prenom + email uniquement (pas de champ societe). Normal: la societe se renseigne en aval (demo/devis). demo-booking.php gere l'absence de societe -> deal nomme '{Prenom Nom} — Démo'. Si societe voulue au booking, ajouter un champ au formulaire (Calendly/HubSpot Meetings)."
+    ]
   }
 }
