@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.363",
+    "version": "1.364",
     "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.363",
+        "version_to": "1.364",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "PandaDoc: CORRECTION cout (2$=Forms, pas documents; documents inclus). Solution retenue = LIEN PUBLIC DE TEMPLATE (document mis en page + signature, sans API, pre-remplissable) au lieu de la Form. Template contrat ERRteELdLVDKGWEffNndBE. Reste Dominique: activer le lien public + donner l'URL + confirmer variables. Claude: recabler le redirect."
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.362",
@@ -12786,5 +12795,17 @@
       "PandaDoc -> Parametres -> Integrations -> Webhooks: ajouter https://ozecar.fr/api/pandadoc-webhook.php?key=ozpd_wh_7Kx9mQ2vL8 sur l'evenement completion (document completed / form completed). Confirmer que le plan inclut les webhooks (sinon repli: redirect de completion cote client).",
       "Optionnel UX: dans la Form, definir une redirection de fin vers une page 'merci' sur ozecar.fr."
     ]
+  },
+  "pandadoc_lien_public_document_2026_07_07": {
+    "correction_cout": "ERREUR Claude corrigee: le '2$/doc' cite etait le tarif des FORMS au-dela de 250/an, PAS les documents. Generer un DOCUMENT depuis un template + variables est INCLUS (deja fait chez OZECAR via CRM Monday, bascule HubSpot). Pas de cout par document.",
+    "mecanisme_retenu": "LIEN PUBLIC DE TEMPLATE PandaDoc (app.pandadoc.com/request-access-via-public-link/templates/{id}) = document mis en page + signature, SANS API, pre-remplissable via params URL. Dominique en a deja un actif (8yufknwVuboy6BDyXuvw3U). C'est l'idee redirection de Dominique, faite avec un DOCUMENT (pas une Form).",
+    "template_contrat": "ERRteELdLVDKGWEffNndBE (nouveau template document que Dominique veut utiliser).",
+    "plan": "acceptBtn du configurateur -> redirige vers le LIEN PUBLIC du template contrat, pre-rempli (deal_id/societe/nom/email/numero_devis). Client signe le document mis en page. Signature -> webhook pandadoc-webhook.php (deja construit) -> pandadoc-signed.php -> Gagné + deal Livraison.",
+    "reste_dominique": [
+      "Activer le LIEN PUBLIC du template ERRteELdLVDKGWEffNndBE (Partager -> lien public) et me donner l'URL exacte (Claude ne l'active pas: rendre un template public = decision Dominique).",
+      "Confirmer les noms des variables/tokens pour le pre-remplissage (deal_id obligatoire + societe/nom/email/numero_devis).",
+      "Verifier que le lien public supporte le pre-remplissage par params URL (a tester ensemble)."
+    ],
+    "reste_claude": "Recabler le redirect du configurateur vers l'URL du lien public (au lieu de la Form) + garder webhook Gagné->Livraison. Test E2E."
   }
 }
