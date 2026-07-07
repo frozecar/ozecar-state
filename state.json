@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.362",
+    "version": "1.363",
     "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.362",
+        "version_to": "1.363",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "PandaDoc signature: solution REDIRECTION plein ecran (idee Dominique). acceptBtn redirige vers la Form PandaDoc pre-remplie (au lieu de l'iframe). Signature detectee par webhook serveur pandadoc-webhook.php (cle en query) -> pandadoc-signed.php (Gagné->Livraison). Teste. Reste Dominique: variables Form + configurer le webhook PandaDoc."
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.361",
@@ -12767,5 +12776,15 @@
     "test_bloque_sur": "cle API (endpoint renvoie 503 tant qu'absente). Une fois la cle en place: Claude teste une session pour Julien + verifie l'iframe.",
     "REVERT_2026_07_07": "API embedded signing ABANDONNEE: facture ~2€/document des le 1er -> non viable. Retour a la Form PandaDoc (form.pandadoc.com/form/mBdjr3GPsXNgGBxAkheood) = INCLUSE dans le plan (250 docs/an puis $2/reponse). Endpoints pandadoc-create-session.php + pandadoc-config.php SUPPRIMES. Propriete ozecar_pandadoc_doc laissee (inoffensive).",
     "solution_retenue": "Form PandaDoc embarquee (no API). Configurateur: mountPandaDoc affiche l'iframe form.pandadoc.com avec pre-remplissage via params URL (ozPandaData: deal_id/numero_devis/societe/nom/email). Evenement 'embed.form.completed' -> ozSigned() -> pandadoc-signed.php (Gagné->Livraison, teste). La Form fait la signature. Le pre-remplissage saute l'etape 'champs' -> document + signature."
+  },
+  "pandadoc_redirection_signature_2026_07_07": {
+    "solution_finale": "Redirection plein ecran (pas d'iframe, pas d'API). Client clique 'Accepter et signer' -> redirige vers la page PandaDoc de la Form (form.pandadoc.com/form/mBdjr3GPsXNgGBxAkheood) PRE-REMPLIE via params URL (deal_id/numero_devis/societe/nom/email) -> voit le contrat mis en page + signe. Signature detectee par WEBHOOK serveur -> handoff.",
+    "configurateur": "acceptBtn: sendToMake() puis window.location.href vers l'URL Form pre-remplie (ozPandaData). Fini l'iframe/mountPandaDoc (code mort laisse, inoffensif).",
+    "webhook": "api/pandadoc-webhook.php?key=ozpd_wh_7Kx9mQ2vL8 : recoit le webhook PandaDoc, trouve le deal_id (recherche recursive metadata/tokens/fields), sur status 'completed' -> POST pandadoc-signed.php {deal_id} -> Vente en Gagné + creation deal Livraison (deja teste). Protege par cle en query (403 sinon). Teste: mauvaise cle=403, event completed simule -> deal_id extrait + route.",
+    "reste_dominique": [
+      "Form PandaDoc: creer les variables deal_id (obligatoire) + numero_devis/societe/nom/email en pre-remplissables ET les inserer dans le document (modele).",
+      "PandaDoc -> Parametres -> Integrations -> Webhooks: ajouter https://ozecar.fr/api/pandadoc-webhook.php?key=ozpd_wh_7Kx9mQ2vL8 sur l'evenement completion (document completed / form completed). Confirmer que le plan inclut les webhooks (sinon repli: redirect de completion cote client).",
+      "Optionnel UX: dans la Form, definir une redirection de fin vers une page 'merci' sur ozecar.fr."
+    ]
   }
 }
