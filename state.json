@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.355",
+    "version": "1.356",
     "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.355",
+        "version_to": "1.356",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Parcours client migration Forfait Zero: 3 portes (continuer/arreter/silence=arret)",
+          "Page bascule white-label mockee (2 portes cliquables)",
+          "Email annonce redige (2 tons: Relationnel / Direct)",
+          "Sequence annonce+relances+sunset definie",
+          "A lock: date butoir, ton email, liste nominative"
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.354",
@@ -12404,6 +12417,22 @@
       "bleed_estime": "~119 PDC x 5 EUR cout = ~595 EUR/mois de cout backend couvert uniquement par 15% commission -> perte quand faible volume. ~7k EUR/an d'exposition.",
       "customer_resolution": "PENDING. subscription.customerId (3.4-4.8M) = entite 'customer' distincte des teams (5xx-8xx). Non resolu via /customers/{id} ni /teams/{id} au proxy. Etape suivante: trouver le bon endpoint OU export dashboard operateur Monta (Dominique) filtre par plan Forfait Zero.",
       "custom_hors_scope": "Plans 0e NON Forfait Zero a NE PAS inclure sauf mot de Dominique: Ozecar 50/50 (op48%), Tiers invest 10 (op86%, montage investisseur), Deltagame (op0%). Migrer ces montages casserait des arrangements financiers."
+    },
+    "parcours_client_2026_07_07": {
+      "principe_cle": "L'annonce fixe une date butoir. ABSENCE DE REPONSE = ARRET DU SERVICE a cette date (resiliation par defaut). Pas besoin que chaque client agisse: le silence stoppe le bleed. Legalement propre: aucun contrat n'oblige OZECAR au gratuit.",
+      "trois_portes": {
+        "continuer": "Client accepte Pro -50% (7,45e, 12 mois) -> devis PandaDoc/Pennylane + mandat SEPA -> ME valide -> plan Monta Zero->Pro (op 15%->8%) + abonnement Pennylane cree -> supervision maintenue sans coupure.",
+        "arreter": "Client resilie -> accuse + checklist offboarding (export historique avant date, badges/acces, invitation reprise future) -> ticket interne -> subscription Monta annulee a la date -> supervision coupee.",
+        "silence": "Aucune action avant date butoir = arret automatique (= porte 'arreter')."
+      },
+      "surface": "Page bascule white-label: /mnt/user-data/outputs/ozecar-bascule-forfait-zero.html (mockup valide). 2 portes cliquables: Continuer Pro -50% (estimatif live) / Arreter (checklist + case a cocher + accuse). A brancher: submit -> HubSpot deal + Slack ME + devis pour 'continuer', ticket offboarding pour 'arreter'.",
+      "email_annonce": "2 variantes redigees (Relationnel fondateur / Direct cash). Sujet + corps + 2 CTA (continuer/arreter) + mention 'sans reponse = arret'. Date exemple 31/08/2026. A envoyer via MailerSend une fois liste nominative + date butoir + ton valides.",
+      "sequence": "J0 annonce -> relances Make J+7/J+14/J+21 aux non-repondants -> date butoir: couper supervision des non-migres (via annulation subscription Monta).",
+      "a_lock_dominique": [
+        "Date butoir reelle (30/60/90j)",
+        "Ton email (Relationnel vs Direct)",
+        "Liste nominative des 119 (export dashboard Monta vs resolution API)"
+      ]
     }
   }
 }
