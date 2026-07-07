@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.364",
+    "version": "1.365",
     "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.364",
+        "version_to": "1.365",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "PandaDoc: nouveau lien public form.pandadoc.com/form/ruLyyyjADRrNiUpntm63ie branche dans le redirect du configurateur. C'est un lien FORM -> etape formulaire structurelle, pre-remplie (pas de re-saisie). Zero etape formulaire = API (ecartee). A tester: auto-skip si tout pre-rempli."
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.363",
@@ -12806,6 +12815,8 @@
       "Confirmer les noms des variables/tokens pour le pre-remplissage (deal_id obligatoire + societe/nom/email/numero_devis).",
       "Verifier que le lien public supporte le pre-remplissage par params URL (a tester ensemble)."
     ],
-    "reste_claude": "Recabler le redirect du configurateur vers l'URL du lien public (au lieu de la Form) + garder webhook Gagné->Livraison. Test E2E."
+    "reste_claude": "Recabler le redirect du configurateur vers l'URL du lien public (au lieu de la Form) + garder webhook Gagné->Livraison. Test E2E.",
+    "lien_public_fourni": "https://form.pandadoc.com/form/ruLyyyjADRrNiUpntm63ie (template contrat ERRteELd). NOTE: c'est un lien form.pandadoc.com/form/ -> structurellement une etape 'formulaire guide' precede le document. Redirect configurateur repointe dessus.",
+    "question_form_vs_doc": "Un lien public form.pandadoc.com/form/ a TOUJOURS une etape formulaire. Avec pre-remplissage complet (deal_id/societe/nom/email/numero_devis via params URL) le client ne RE-tape rien, mais il y a possiblement un ecran 'formulaire pre-rempli + Continuer' avant le document mis en page + signature. ZERO etape formulaire (direct dans le document) = uniquement l'embedded signing API (ecarte). A verifier: est-ce que le form auto-skip quand tout est pre-rempli (test a faire, form.pandadoc.com bloque dans l'extension Chrome)."
   }
 }
