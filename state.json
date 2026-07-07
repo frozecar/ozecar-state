@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.360",
+    "version": "1.361",
     "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.360",
+        "version_to": "1.361",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "PandaDoc: bascule Form -> EMBEDDED SIGNING (API) suite lien Dominique. Construit pandadoc-config.php (cle a remplir), pandadoc-create-session.php (doc depuis template + session), configurateur charge l'iframe app.pandadoc.com/s/{session_id}/ au clic signer, evenement completed -> pandadoc-signed.php. Propriete ozecar_pandadoc_doc. Gate sur cle API (503 sinon). Reste Dominique: creer cle API + confirmer role/tokens du template."
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.359",
@@ -12736,5 +12745,20 @@
     "declencheur_signature": "Evenement 'completed' de la Form (postMessage embed.form.completed) -> ozSigned() -> POST pandadoc-signed.php {deal_id}. Message de confirmation affiche au client.",
     "handoff_endpoint": "pandadoc-signed.php: passe le deal Vente en Gagné (5215721691) + ozecar_devis_statut='Signé' + ozecar_livraison_cree='true' (idempotent) -> cree le deal Livraison & Activation (pipeline default, stage appointmentscheduled 'Kit a preparer') avec props copiees (deal_type, pdc, forfait, stations, ref_site, options, amount) + ozecar_deal_source=deal Vente + associations societe+contacts + note + notif #devis. Proprietes creees: ozecar_livraison_cree, ozecar_deal_source. Teste OK (Vente->Gagné, Livraison cree, idempotent).",
     "reste_dominique": "Creer les variables dans la Form PandaDoc (deal_id obligatoire + numero_devis/societe/nom/email en pre-remplissables). Optionnel: ajouter un webhook serveur PandaDoc -> pandadoc-signed.php en filet de secours si le client ferme l'onglet avant l'evenement 'completed' (le declencheur client-side reste le principal)."
+  },
+  "pandadoc_embedded_signing_2026_07_07": {
+    "decision": "Bascule Form embed -> EMBEDDED SIGNING (API), suite au lien Dominique (embedded-signing-legacy). C'est la seule voie pour un DOCUMENT mis en page signe en place (iframe app.pandadoc.com/s/{session_id}/). La Form fait signer mais 'form-first'.",
+    "construit": {
+      "pandadoc-config.php": "Secret serveur: PANDADOC_API_KEY (vide, a remplir Dominique), PANDADOC_TEMPLATE_UUID=jRNqmMzF3c5eNDcYTQZooY, PANDADOC_ROLE=Client. wp-deploy ne l'ecrase pas s'il existe deja.",
+      "pandadoc-create-session.php": "POST {deal_id} -> cree document depuis le template (recipients=contact client, tokens societe/nom/email/numero_devis/deal_id, metadata deal_id) -> attend document.draft -> cree session -> retourne {session_id, document_id}. Stocke ozecar_pandadoc_doc sur le deal. 503 si cle absente.",
+      "configurateur": "mountPandaDoc bascule: au clic 'Accepter et signer' -> fetch pandadoc-create-session.php -> iframe app.pandadoc.com/s/{session_id}/. Evenement postMessage 'session_view.document.completed' -> ozSigned() -> pandadoc-signed.php (Gagné->Livraison, deja teste).",
+      "propriete": "ozecar_pandadoc_doc creee."
+    },
+    "reste_dominique": [
+      "Creer une cle API PandaDoc (Dev Center: app.pandadoc.com/a/#/api-dashboard/configuration -> Create API key) et la coller dans api/pandadoc-config.php (PANDADOC_API_KEY). NE PAS coller en clair dans le chat.",
+      "Confirmer que le plan PandaDoc inclut l'acces API (sinon add-on requis; repli = Form option B).",
+      "Confirmer le nom EXACT du role destinataire du template (defaut 'Client') + les noms de variables/tokens (societe/nom/email/numero_devis/deal_id) -> ajuster PANDADOC_ROLE / tokens si differents."
+    ],
+    "test_bloque_sur": "cle API (endpoint renvoie 503 tant qu'absente). Une fois la cle en place: Claude teste une session pour Julien + verifie l'iframe."
   }
 }
