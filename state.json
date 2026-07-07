@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.361",
+    "version": "1.362",
     "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.361",
+        "version_to": "1.362",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "PandaDoc: API embedded signing ABANDONNEE (~2€/doc, non viable). Retour a la Form (incluse plan, no API). Configurateur revenu au Form embed + prefill URL. Endpoints pandadoc-create-session.php/pandadoc-config.php supprimes. Handoff pandadoc-signed.php conserve (declenche par embed.form.completed). Reste Dominique: creer+lier les variables dans la Form."
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.360",
@@ -12754,11 +12763,9 @@
       "configurateur": "mountPandaDoc bascule: au clic 'Accepter et signer' -> fetch pandadoc-create-session.php -> iframe app.pandadoc.com/s/{session_id}/. Evenement postMessage 'session_view.document.completed' -> ozSigned() -> pandadoc-signed.php (Gagné->Livraison, deja teste).",
       "propriete": "ozecar_pandadoc_doc creee."
     },
-    "reste_dominique": [
-      "Creer une cle API PandaDoc (Dev Center: app.pandadoc.com/a/#/api-dashboard/configuration -> Create API key) et la coller dans api/pandadoc-config.php (PANDADOC_API_KEY). NE PAS coller en clair dans le chat.",
-      "Confirmer que le plan PandaDoc inclut l'acces API (sinon add-on requis; repli = Form option B).",
-      "Confirmer le nom EXACT du role destinataire du template (defaut 'Client') + les noms de variables/tokens (societe/nom/email/numero_devis/deal_id) -> ajuster PANDADOC_ROLE / tokens si differents."
-    ],
-    "test_bloque_sur": "cle API (endpoint renvoie 503 tant qu'absente). Une fois la cle en place: Claude teste une session pour Julien + verifie l'iframe."
+    "reste_dominique": "Creer les variables dans la Form (deal_id obligatoire masque + numero_devis/societe/nom/email pre-remplissables) et les LIER au document (avertissement PandaDoc: les reponses n'apparaissent pas tant que les variables ne sont pas inserees dans le modele). Si le rendu reste trop 'formulaire', ajuster la mise en page de la Form cote PandaDoc.",
+    "test_bloque_sur": "cle API (endpoint renvoie 503 tant qu'absente). Une fois la cle en place: Claude teste une session pour Julien + verifie l'iframe.",
+    "REVERT_2026_07_07": "API embedded signing ABANDONNEE: facture ~2€/document des le 1er -> non viable. Retour a la Form PandaDoc (form.pandadoc.com/form/mBdjr3GPsXNgGBxAkheood) = INCLUSE dans le plan (250 docs/an puis $2/reponse). Endpoints pandadoc-create-session.php + pandadoc-config.php SUPPRIMES. Propriete ozecar_pandadoc_doc laissee (inoffensive).",
+    "solution_retenue": "Form PandaDoc embarquee (no API). Configurateur: mountPandaDoc affiche l'iframe form.pandadoc.com avec pre-remplissage via params URL (ozPandaData: deal_id/numero_devis/societe/nom/email). Evenement 'embed.form.completed' -> ozSigned() -> pandadoc-signed.php (Gagné->Livraison, teste). La Form fait la signature. Le pre-remplissage saute l'etape 'champs' -> document + signature."
   }
 }
