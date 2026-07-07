@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.365",
+    "version": "1.366",
     "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.365",
+        "version_to": "1.366",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "PandaDoc FLUX FINAL verrouille: clic 'Accepter' -> redirection vers le DOCUMENT mis en page (app.pandadoc.com/s/{session_id}) -> signe -> Gagné/Livraison auto, zero manuel. = API (seule voie). Recree pandadoc-config.php + pandadoc-create-session.php (template ERRteELd, tokens depuis deal, metadata deal_id). Configurateur redirige vers la session. Cout corrige (2€=Forms; documents inclus). Reste Dominique: cle API + role template + webhook."
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.364",
@@ -12818,5 +12827,18 @@
     "reste_claude": "Recabler le redirect du configurateur vers l'URL du lien public (au lieu de la Form) + garder webhook Gagné->Livraison. Test E2E.",
     "lien_public_fourni": "https://form.pandadoc.com/form/ruLyyyjADRrNiUpntm63ie (template contrat ERRteELd). NOTE: c'est un lien form.pandadoc.com/form/ -> structurellement une etape 'formulaire guide' precede le document. Redirect configurateur repointe dessus.",
     "question_form_vs_doc": "Un lien public form.pandadoc.com/form/ a TOUJOURS une etape formulaire. Avec pre-remplissage complet (deal_id/societe/nom/email/numero_devis via params URL) le client ne RE-tape rien, mais il y a possiblement un ecran 'formulaire pre-rempli + Continuer' avant le document mis en page + signature. ZERO etape formulaire (direct dans le document) = uniquement l'embedded signing API (ecarte). A verifier: est-ce que le form auto-skip quand tout est pre-rempli (test a faire, form.pandadoc.com bloque dans l'extension Chrome)."
+  },
+  "pandadoc_flux_final_2026_07_07": {
+    "UX_verrouillee": "Client clique 'Accepter et signer' -> redirection plein ecran vers le DOCUMENT PandaDoc mis en page (app.pandadoc.com/s/{session_id}/) -> signe -> fini. AUCUN manuel. Non negociable (Dominique).",
+    "mecanisme": "API PandaDoc (seule voie pour ce flux fluide: la Form impose son etape, le lien public impose un login). pandadoc-create-session.php cree le document depuis le template ERRteELdLVDKGWEffNndBE (tokens societe/nom/Email/numero_devis remplis depuis le deal, metadata deal_id) + une session -> retourne session_id -> le configurateur redirige vers app.pandadoc.com/s/{session_id}/.",
+    "correction_cout_definitive": "Les ~2€ = tarif des FORMS au-dela de 250/an. Les DOCUMENTS crees par API sont inclus dans le quota du plan. L'API demande un ACCES API (creer une cle), pas un cout par document. VIABLE.",
+    "handoff": "Signature -> webhook pandadoc-webhook.php?key=ozpd_wh_7Kx9mQ2vL8 (trouve deal_id dans metadata) -> pandadoc-signed.php -> Vente en Gagné + creation deal Livraison. Deja teste.",
+    "propriete_numero_devis": "ozecar_numero_devis creee + configurateur la stocke sur le deal a la generation (genClientLink -> devis-save-link).",
+    "gate": "pandadoc-create-session.php renvoie 503 tant que PANDADOC_API_KEY absente dans api/pandadoc-config.php.",
+    "reste_dominique": [
+      "Creer une cle API PandaDoc (Dev Center) et la coller dans api/pandadoc-config.php (PANDADOC_API_KEY). Confirmer que le plan inclut l'acces API.",
+      "Confirmer le nom EXACT du role destinataire du template ERRteELd (defaut 'Client') -> PANDADOC_ROLE.",
+      "Configurer le webhook PandaDoc -> https://ozecar.fr/api/pandadoc-webhook.php?key=ozpd_wh_7Kx9mQ2vL8 sur l'evenement completion."
+    ]
   }
 }
