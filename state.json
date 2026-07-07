@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.359",
+    "version": "1.360",
     "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.359",
+        "version_to": "1.360",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Item 4 LIVRE: embed Form PandaDoc integre au configurateur (pre-remplissage deal_id/numero_devis/societe/nom/email, monte au clic 'Accepter et signer'). Evenement 'completed' -> pandadoc-signed.php: Vente->Gagné + statut Signé + creation deal Livraison & Activation (Kit a preparer, props+assoc copiees, lien source). Idempotent. Proprietes ozecar_livraison_cree+ozecar_deal_source. Teste OK. Reste: creer les variables dans la Form PandaDoc (Dominique)."
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.358",
@@ -12721,5 +12730,11 @@
         "regle": "Comparatif migration = fixe uniquement (abo + services). Ne pas reintroduire la comparaison basee sur les frais d'itinerance ni de calculateur."
       }
     }
+  },
+  "pandadoc_signature_handoff_2026_07_07": {
+    "embed_integre": "Form PandaDoc (form.pandadoc.com/form/mBdjr3GPsXNgGBxAkheood) integree dans le configurateur (#pandadocEmbed), montee au clic 'Accepter et signer' (mountPandaDoc). Pre-remplissage via l'objet data (params URL JSON.stringify): deal_id, numero_devis (docnum), societe (f_company), nom (f_first+f_last), email (f_email). Variables a creer cote Form PandaDoc: deal_id (obligatoire, mapping), numero_devis, societe, nom, email.",
+    "declencheur_signature": "Evenement 'completed' de la Form (postMessage embed.form.completed) -> ozSigned() -> POST pandadoc-signed.php {deal_id}. Message de confirmation affiche au client.",
+    "handoff_endpoint": "pandadoc-signed.php: passe le deal Vente en Gagné (5215721691) + ozecar_devis_statut='Signé' + ozecar_livraison_cree='true' (idempotent) -> cree le deal Livraison & Activation (pipeline default, stage appointmentscheduled 'Kit a preparer') avec props copiees (deal_type, pdc, forfait, stations, ref_site, options, amount) + ozecar_deal_source=deal Vente + associations societe+contacts + note + notif #devis. Proprietes creees: ozecar_livraison_cree, ozecar_deal_source. Teste OK (Vente->Gagné, Livraison cree, idempotent).",
+    "reste_dominique": "Creer les variables dans la Form PandaDoc (deal_id obligatoire + numero_devis/societe/nom/email en pre-remplissables). Optionnel: ajouter un webhook serveur PandaDoc -> pandadoc-signed.php en filet de secours si le client ferme l'onglet avant l'evenement 'completed' (le declencheur client-side reste le principal)."
   }
 }
