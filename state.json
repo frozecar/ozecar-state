@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.358",
+    "version": "1.359",
     "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.358",
+        "version_to": "1.359",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Comparatif migration: version interactive abandonnee (clientele non adaptee UI)",
+          "Version retenue = comparatif STATIQUE base sur le fixe uniquement (abo + services)",
+          "Regle: pas de simulation itinerance ni calculateur dans le comparatif migration"
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.357",
@@ -12705,11 +12716,9 @@
       "page_bascule": "/mnt/user-data/outputs/ozecar-bascule-forfait-zero.html (date 30/09/2026)",
       "email_annonce": "2 variantes redigees, ton retenu = Relationnel",
       "comparateur": {
-        "fichier": "/mnt/user-data/outputs/ozecar-comparateur-zero-vs-pro.html",
-        "logique": "Forfait Zero (0e, op15%, roam25%) vs Pro -50% (7,45e, op10%, roam20%). 2 curseurs: recette/PDC + part itinerance.",
-        "break_even": "~149e/mois/PDC de recette. Frais baissent de 5 pts (op ET roam) = economie 5% de la recette; abo 7,45e amorti a 149e.",
-        "pitch": "Borne active (>149e) = Pro coute MOINS au client + maintenance/support. Borne dormante (<149e) = fin de l'offre + tarif fondateur. Gagnant-gagnant sur bornes actives (client paie moins ET marge OZECAR >= +2,45e/PDC).",
-        "usage": "Asset campagne migration - a integrer dans la page bascule (porte Continuer) + a joindre aux relances."
+        "SUPERSEDED": "Version interactive (curseurs recette/itinerance) abandonnee sur directive Dominique 2026-07-07: cette clientele (petits operateurs corses) n'est pas adaptee a une UI interactive.",
+        "version_retenue": "/mnt/user-data/outputs/ozecar-comparatif-zero-vs-pro.html — STATIQUE, base uniquement sur le FIXE (abonnement 0e -> 7,45e) + services inclus. Pas de simulation itinerance/recette, pas d'interactivite.",
+        "regle": "Comparatif migration = fixe uniquement (abo + services). Ne pas reintroduire la comparaison basee sur les frais d'itinerance ni de calculateur."
       }
     }
   }
