@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.366",
+    "version": "1.367",
     "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.366",
+        "version_to": "1.367",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "PandaDoc API ABANDONNEE DEFINITIVEMENT (email PandaDoc confirme 2$/document en generation API). Code API supprime. Bouton 'Accepter' neutralise -> devis-accepted.php (marque acceptation + notif #devis). Verite: redirection in-page pre-remplie = API only; sans API = Form (etape formulaire) ou native (document par email). Arbitrage a trancher: email natif vs redirection."
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.365",
@@ -12840,5 +12849,12 @@
       "Confirmer le nom EXACT du role destinataire du template ERRteELd (defaut 'Client') -> PANDADOC_ROLE.",
       "Configurer le webhook PandaDoc -> https://ozecar.fr/api/pandadoc-webhook.php?key=ozpd_wh_7Kx9mQ2vL8 sur l'evenement completion."
     ]
+  },
+  "pandadoc_decision_finale_no_api_2026_07_07": {
+    "API_ABANDONNEE_DEFINITIF": "CONFIRME par email PandaDoc (Fernando Fernandez, Senior AM, 25/06): 'API generation, volume-based pricing starting at $2 per document'. Donc l'API = 2$/doc reel. PAS D'API. Claude s'etait entete a tort sur une mauvaise interpretation (croyait que 2$=Forms). Code API supprime (pandadoc-create-session.php + pandadoc-config.php).",
+    "verite_technique": "La redirection in-page vers un document mis en page PRE-REMPLI = uniquement l'API. Sans API: soit Form (etape formulaire, redirect), soit intégration native HubSpot->PandaDoc (vrai document mais ENVOYE par email, pas de redirect temps reel).",
+    "interim_en_place": "Bouton 'Accepter et signer' neutralise: appelle devis-accepted.php (ozecar_devis_statut='Devis accepté' + notif #devis 'contrat a envoyer') + message client 'votre contrat va vous parvenir'. Pas d'API, pas de Form.",
+    "arbitrage_a_trancher": "Option retenue probable = intégration native HubSpot->PandaDoc (document mis en page, tokens depuis le deal, INCLUS pas 2$, envoye par EMAIL). Declencheur: manuel (Marie-Estelle, Starter, dispo) ou auto (HubSpot Pro workflow). Question a Dominique: accepte-t-il l'envoi par email (au lieu de la redirection in-page)? Si oui -> native. Si redirection in-page absolue -> API (2$/doc) ou Form.",
+    "mapping_tokens": "Deja pret pour la native: [societe]<-company.name, [nom]<-contact firstname+lastname, [Email]<-contact.email, [numero_devis]<-deal.ozecar_numero_devis. Webhook Gagné->Livraison deja teste."
   }
 }
