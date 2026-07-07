@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.354",
+    "version": "1.355",
     "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.354",
+        "version_to": "1.355",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "DIRECTIVE v2: migrer TOUS les Forfait Zero (override segmentation)",
+          "Offre = Pro -50% (7,45e) 12 mois ou arret service",
+          "Enumeration Monta: 119 abonnements Forfait Zero ACTIFS identifies (215 total, 90 annules)",
+          "customerId->client a resoudre (etape suivante)",
+          "Custom deals 50/50 + Tiers invest + Deltagame hors scope"
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.353",
@@ -12375,6 +12388,22 @@
       "note_prix_0_normal": "Essentiel/Pro/Pro Plus a 0e cote Monta = normal (recurrent facture via Pennylane, Monta ne porte que operateur/itinerance). PAS un bug."
     },
     "parc_scale": "100+ teams clientes (pagination /teams a finir pour total exact). /subscriptions endpoint scope au partenaire — enumeration par team requise pour lister les abonnes Forfait Zero.",
-    "next_step": "Sur go Dominique: passe d'enumeration dediee -> pour chaque team, plan courant + recette 12 mois par PDC -> segmenter (sous 400 / 400-700 / sup 700) -> liste cible priorisee par montant de perte mensuelle. Produit le ciblage chiffre de la campagne."
+    "next_step": "1) Resoudre les 119 customerIds -> nom/contact/PDC (endpoint customer OU export dashboard Monta). 2) Cross HubSpot. 3) Liste nominative + notice fin Forfait Zero + devis Pro -50% via flux P0 migration + tag HubSpot migration_legacy + relance Make.",
+    "DIRECTIVE_2026_07_07_v2": {
+      "decision_dominique": "MIGRER TOUS LES FORFAIT ZERO, sans exception (pas de segmentation par rentabilite - override du tri initial).",
+      "offre_unique": "Pro a -50% = 7,45 EUR/PDC/mois, verrouille 12 mois puis Pro plein tarif (14,90). Alternative si refus: ARRET DU SERVICE.",
+      "eco": "Pro -50% = 7,45 - 5 (cout) = +2,45 EUR/PDC de marge. Positif (contrairement a une remise Essential sous cout).",
+      "mecanisme": "Notice fin Forfait Zero a date X + devis Pro -50%. Signature = accord (paiement). Sans accord = arret du service (aucun contrat n'oblige au gratuit). Comptes forte valeur/relation locale traites en direct."
+    },
+    "enumeration_2026_07_07": {
+      "parc_total_teams": 177,
+      "subscriptions_total_recuperes": 410,
+      "forfait_zero_total": 215,
+      "forfait_zero_ACTIFS": 119,
+      "detail": "116 actifs plan 2541 (Forfait Zero) + 3 actifs plan 2839 (Zero+Maintenance AC). 90 annules, 2 pauses.",
+      "bleed_estime": "~119 PDC x 5 EUR cout = ~595 EUR/mois de cout backend couvert uniquement par 15% commission -> perte quand faible volume. ~7k EUR/an d'exposition.",
+      "customer_resolution": "PENDING. subscription.customerId (3.4-4.8M) = entite 'customer' distincte des teams (5xx-8xx). Non resolu via /customers/{id} ni /teams/{id} au proxy. Etape suivante: trouver le bon endpoint OU export dashboard operateur Monta (Dominique) filtre par plan Forfait Zero.",
+      "custom_hors_scope": "Plans 0e NON Forfait Zero a NE PAS inclure sauf mot de Dominique: Ozecar 50/50 (op48%), Tiers invest 10 (op86%, montage investisseur), Deltagame (op0%). Migrer ces montages casserait des arrangements financiers."
+    }
   }
 }
