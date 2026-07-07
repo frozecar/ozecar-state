@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.356",
+    "version": "1.357",
     "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.356",
+        "version_to": "1.357",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Liste migration resolue: 38 clients / 119 PDC Forfait Zero actifs (100% Corse)",
+          "Decisions: butoir 30/09/2026, ton Relationnel, liste via API",
+          "11 PDC sans contact reel a retrouver avant envoi",
+          "Page bascule date -> 30/09/2026"
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.355",
@@ -12433,6 +12445,254 @@
         "Ton email (Relationnel vs Direct)",
         "Liste nominative des 119 (export dashboard Monta vs resolution API)"
       ]
+    },
+    "decisions_lockees_2026_07_07": {
+      "date_butoir": "30 septembre 2026 (90j)",
+      "ton_email": "Relationnel (fondateur)",
+      "liste": "resolue via API (customerId=charge-point -> team -> client)"
+    },
+    "liste_clients_resolue": {
+      "methode": "subscription.customerId (customerType=charge-point) -> /charge-points/{id}.teamId -> /teams/{id}",
+      "clients_distincts": 38,
+      "pdc_total": 119,
+      "top_contacts": "gabriel.callies@gmail.com (19 PDC, 3 residences PV), LA PINEDE camping (18, contact a retrouver), ERBA ROSSA/Homair (12), Hotel Genovese (8), U Capu Biancu (6), Cala di Greco (5), Groupe PVCP (4)",
+      "concentration": "6 premiers contacts ~68 PDC/119 -> traitement direct. Reste = email+page.",
+      "contacts_manquants": "11 PDC avec team email=dominique@ozecar.fr (contact reel a retrouver): LA PINEDE, LA SIGNORIA, Hotel Abartello, Nova, communes Chisa/Ghisonaccia/Ghisonaccia, Ajaccio Automobiles, SCA Mont St Jean. A recuperer (Dominique connait / cross HubSpot) avant envoi.",
+      "geo": "100% Corse (hotels, campings, residences, communes)",
+      "liste_complete": [
+        {
+          "pdc": 11,
+          "cat": "Housing association",
+          "nom": "LES TERRASSES DE PORTO VECCHIO",
+          "email": "gabriel.callies@gmail.com"
+        },
+        {
+          "pdc": 10,
+          "cat": "Company",
+          "nom": "LA PINEDE (CAMPING LA PINEDE)",
+          "email": "dominique@ozecar.fr"
+        },
+        {
+          "pdc": 8,
+          "cat": "Company",
+          "nom": "LA PINEDE (CAMPING LA PINEDE)",
+          "email": "dominique@ozecar.fr"
+        },
+        {
+          "pdc": 8,
+          "cat": "Hotel",
+          "nom": "SOCIETE HOTELIERE DE LA HAUTE VILLE (HOTEL GENOVESE)",
+          "email": "direction@hotel-genovese.com"
+        },
+        {
+          "pdc": 6,
+          "cat": "Company",
+          "nom": "ERBA ROSSA DEVELOPPEMENT",
+          "email": "jeanpaulfranceschi@erbarossa-developpement.com"
+        },
+        {
+          "pdc": 6,
+          "cat": "Hotel",
+          "nom": "U CAPU BIANCU",
+          "email": "direction@ucapubiancu.com"
+        },
+        {
+          "pdc": 5,
+          "cat": "Hotel",
+          "nom": "CALA DI GRECO",
+          "email": "joan-amadei@hotmail.fr"
+        },
+        {
+          "pdc": 4,
+          "cat": "Housing association",
+          "nom": "VESNA ROSSA (VESNA ROSSA)",
+          "email": "gabriel.callies@gmail.com"
+        },
+        {
+          "pdc": 4,
+          "cat": "Housing association",
+          "nom": "SAS LES VILLAS DE PORTO VECCHIO",
+          "email": "gabriel.callies@gmail.com"
+        },
+        {
+          "pdc": 4,
+          "cat": "Housing association",
+          "nom": "PV Exploitation France",
+          "email": "isabelle.lyobard@groupepvcp.com"
+        },
+        {
+          "pdc": 4,
+          "cat": "Hotel",
+          "nom": "Homair Vacances",
+          "email": "jeanpaulfranceschi@erbarossa-developpement.com"
+        },
+        {
+          "pdc": 3,
+          "cat": "Hotel",
+          "nom": "LES JARDINS DE SANTA GIULIA",
+          "email": "mario.ladu@wanadoo.fr"
+        },
+        {
+          "pdc": 3,
+          "cat": "Hotel",
+          "nom": "LA SIGNORIA",
+          "email": "dominique@ozecar.fr"
+        },
+        {
+          "pdc": 2,
+          "cat": "Hotel",
+          "nom": "Hotel Abartello",
+          "email": "dominique@ozecar.fr"
+        },
+        {
+          "pdc": 2,
+          "cat": "Hotel",
+          "nom": "Nova énergie",
+          "email": "dominique@ozecar.fr"
+        },
+        {
+          "pdc": 2,
+          "cat": "Hotel",
+          "nom": "CALIFORNIA DREAM SARL",
+          "email": "dominique@ozecar.fr"
+        },
+        {
+          "pdc": 2,
+          "cat": "Hotel",
+          "nom": "ETS Auberge Col Saint Georges",
+          "email": "dominique@ozecar.fr"
+        },
+        {
+          "pdc": 2,
+          "cat": "Hotel",
+          "nom": "COMMUNE DE CHISA",
+          "email": "dominique@ozecar.fr"
+        },
+        {
+          "pdc": 2,
+          "cat": "Hotel",
+          "nom": "Sas nova énergie",
+          "email": "a.vincent@novaenergie.group"
+        },
+        {
+          "pdc": 2,
+          "cat": "Company",
+          "nom": "COMMUNE D OLMETO",
+          "email": "accueil@olmeto.fr"
+        },
+        {
+          "pdc": 2,
+          "cat": "Company",
+          "nom": "DISTRIBUTION CUISINES ET BAINS",
+          "email": "virginiecanali@gmail.com"
+        },
+        {
+          "pdc": 2,
+          "cat": "Company",
+          "nom": "ERBA ROSSA DEVELOPPEMENT",
+          "email": "jeanpaulfranceschi@erbarossa-developpement.com"
+        },
+        {
+          "pdc": 2,
+          "cat": "Housing association",
+          "nom": "TERRA MARINA",
+          "email": "joan-amadei@hotmail.fr"
+        },
+        {
+          "pdc": 2,
+          "cat": "Housing association",
+          "nom": "LE RELAX",
+          "email": "contact@residencelerelax.com"
+        },
+        {
+          "pdc": 2,
+          "cat": "Company",
+          "nom": "COMMUNE DE SERRA DI FIUMORBO",
+          "email": "mairieserra@wanadoo.fr"
+        },
+        {
+          "pdc": 2,
+          "cat": "Company",
+          "nom": "COMMUNE DE GHISONACCIA",
+          "email": "dominique@ozecar.fr"
+        },
+        {
+          "pdc": 2,
+          "cat": "Company",
+          "nom": "ERBA ROSSA DEVELOPPEMENT",
+          "email": "jeanpaulfranceschi@erbarossa-developpement.com"
+        },
+        {
+          "pdc": 2,
+          "cat": "Company",
+          "nom": "SCA DU MONT ST JEAN",
+          "email": "dominique@ozecar.fr"
+        },
+        {
+          "pdc": 2,
+          "cat": "Company",
+          "nom": "CORSE PISCINE GROUPE",
+          "email": "corsepiscine@gmail.com"
+        },
+        {
+          "pdc": 2,
+          "cat": "Company",
+          "nom": "Erba Rossa Developpement",
+          "email": "jeanpaulfranceschi@erbarossa-developpement.com"
+        },
+        {
+          "pdc": 2,
+          "cat": "Housing association",
+          "nom": "PUNTA PALIAGI",
+          "email": "paolinitheo@gmail.com"
+        },
+        {
+          "pdc": 1,
+          "cat": "Company",
+          "nom": "SUPER SOUK SARL",
+          "email": "supersouk@orange.fr"
+        },
+        {
+          "pdc": 1,
+          "cat": "Company",
+          "nom": "AJACCIO AUTOMOBILES (CONCESSIONNAIRE RENAULT)",
+          "email": "dominique@ozecar.fr"
+        },
+        {
+          "pdc": 1,
+          "cat": "Company",
+          "nom": "Sarl Pbp",
+          "email": "palmbeach20137@hotmail.fr"
+        },
+        {
+          "pdc": 1,
+          "cat": "Hotel",
+          "nom": "CASA ORSU MARIA",
+          "email": "jean-francois.minicucci@orange.fr"
+        },
+        {
+          "pdc": 1,
+          "cat": "Housing association",
+          "nom": "A FIURASCA",
+          "email": "josedigiacomi@gmail.com"
+        },
+        {
+          "pdc": 1,
+          "cat": "Hotel",
+          "nom": "SOCIETE HOTELIERE CALVESE",
+          "email": "calvi-hotel@wanadoo.fr"
+        },
+        {
+          "pdc": 1,
+          "cat": "Company",
+          "nom": "J F C 2b",
+          "email": "jean.napoli@orange.fr"
+        }
+      ]
+    },
+    "artefacts": {
+      "page_bascule": "/mnt/user-data/outputs/ozecar-bascule-forfait-zero.html (date 30/09/2026)",
+      "email_annonce": "2 variantes redigees, ton retenu = Relationnel"
     }
   }
 }
