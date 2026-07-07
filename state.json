@@ -1,12 +1,26 @@
 {
   "_meta": {
-    "version": "1.353",
-    "updated": "2026-07-06",
+    "version": "1.354",
+    "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.353",
+        "version_to": "1.354",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Nouveau chantier migration_legacy_forfait_zero_2026_07_07: diagnostic + strategie",
+          "Trouve clause 700e/an dans conditions Forfait Zero (id 2541) = levier d'application",
+          "Cout backend 5e/PDC confirme par Dominique -> remise recurrent Essential impossible (marge 0,90)",
+          "Contrats legacy: accord client requis, mais clause 700 acceptee a la souscription",
+          "Custom plans (50/50, Tiers invest, Deltagame) isoles de la migration de masse",
+          "Parc 100+ teams; enumeration complete en attente go"
+        ]
+      },
       {
         "date": "2026-07-06",
         "version_from": "1.352",
@@ -12309,5 +12323,58 @@
     "fait_verifie": "Le Notetaker HubSpot (enregistrement+transcription+resume natif sur la fiche) exige Sales Hub Pro/Enterprise + 1 siege Sales par commercial (bêta). Indispo en Starter. Cout Pro: ~90-100$/siege/mois + ~1500$ onboarding unique. Starter actuel ~15-20$/siege sans onboarding. (Sources: hubspot.com/pricing/sales, blog.hubspot, cargas, spendbase - avril 2026.)",
     "declencheur_bascule": "Embauche du 1er commercial. A ce moment -> Sales Hub Pro: Notetaker remplace Granola (natif, auto-join demos, resume sur le deal, zero sync manuel) ET debloque workflows + pipelines multiples + sequences (murs Starter qu'on contourne aujourd'hui via Make/PHP).",
     "en_attendant": "Granola BASIC = pont pas cher. Claude pousse les resumes sur les deals (voie A, manuel). Plan de bascule Starter->Pro (migration Make->workflows natifs, pipelines, cout par N reps) a preparer le jour venu si Dominique le demande."
+  },
+  "migration_legacy_forfait_zero_2026_07_07": {
+    "_note": "Chantier migration des clients legacy Forfait Zero (0e + 15% commission) vers forfaits fixes. Origine: ces comptes perdent de l'argent (cout backend 5e/PDC > commission 15% quand faible volume). Diagnostic + strategie 2026-07-07.",
+    "statut": "DIAGNOSTIC + STRATEGIE cadres. Enumeration complete du parc + execution EN ATTENTE go Dominique.",
+    "inputs_dominique_2026_07_07": {
+      "cout_backend_par_pdc_mois": 5.0,
+      "contrats_legacy": "Pas de contrat signe au lancement du 0e (admis par Dominique). Changement unilateral impossible sans accord client. MAIS clause 700e/an existe dans les conditions du plan Monta Forfait Zero (acceptees a la souscription) = base d'application."
+    },
+    "levier_cle_clause_700": {
+      "source": "Conditions du plan Monta 'Forfait Zero' (id 2541): 'Recette minimale annuelle de 700e HT par point de recharge. Le cas echeant, l'abonnement standard sera mis en place l'annee suivante.'",
+      "implication": "Base contractuelle/CGU acceptee pour migrer les PDC sous 700e/an vers forfait superieur. Pas une remise a negocier: des conditions a appliquer.",
+      "a_confirmer": "Opposabilite juridique des conditions de plan Monta en B2B FR (accepte a la souscription, non signe). A verifier mais base honnete + pre-annoncee."
+    },
+    "economie": {
+      "cout_pdc": "5e/PDC/mois",
+      "essential_marge": "5,90 - 5 = 0,90e/PDC (razor thin -> aucune remise possible sur le recurrent Essential)",
+      "pro_marge": "14,90 - 5 = 9,90e/PDC (vrai gisement -> pousser bornes a transaction vers Pro)",
+      "seuil_break_even": "5e / 15% = 33,33e/PDC/mois = 400e/an de recette (commission = cout)",
+      "seuil_contractuel": "700e/an = 58,33e/mois (clause Forfait Zero)",
+      "segmentation": {
+        "sous_400_an": "OZECAR perd de l'argent -> migration ou churn sans crainte",
+        "400_a_700_an": "legerement positif mais sous seuil contractuel -> clause 700 s'applique",
+        "sup_700_an": "compte rentable -> PAS de bascule aveugle, traitement individuel"
+      }
+    },
+    "strategie": {
+      "1_pas_de_remise_recurrent": "Codt 5e ~= Essential 5,90. Jamais de tarif sous 5e. Carotte = protection tarif 5,90 avant hausse 15/07 + sucre one-shot absorbable (1er mois offert / maintenance N1 offerte 12 mois / option offerte).",
+      "2_pousser_pro": "Bornes a transaction publique -> Pro (marge 9,90) et non Essential.",
+      "3_mecanisme": "Notice fin offre historique a date X + application clause 700 + devis nouveau plan. Sans accord = arret du service a X (aucun contrat n'oblige au gratuit). Comptes forte valeur / relation locale = traites en direct, pas en masse.",
+      "4_ce_qui_stoppe_le_bleed": "Attacher un abonnement Pennylane fixe (5,90/14,90) + passer le plan Monta de Forfait Zero vers Essentiel/Pro (operateur 15%->10%/8%). Le deplacement Monta seul ne cree PAS le revenu fixe: Pennylane le fait.",
+      "5_outil": "La page P0 'faire evoluer mon abonnement' devient le flux migration: Forfait Zero pre-identifie, cible + framing 700 pre-charges, client confirme -> devis. + tag HubSpot migration_legacy + sequence relance Make vers sunset."
+    },
+    "plans_monta_constates_2026_07_07": {
+      "legacy_a_migrer": {
+        "2541": "Forfait Zero — 0e, op 13%, roam 25%, clause 700e/an"
+      },
+      "cibles": {
+        "2593": "Forfait Standard — 9e HT (10,8 TTC), op 8%",
+        "3447": "Essentiel — 0e Monta (recurrent via Pennylane), op 10%",
+        "3448": "Pro — 0e Monta, op 8%",
+        "3449": "Pro Plus — 0e Monta, op 6%"
+      },
+      "custom_a_isoler_NE_PAS_migrer_en_masse": {
+        "2748": "Ozecar 50/50 — 0e, op 48%, roam 60%",
+        "3010": "Tiers invest 10 — 0e, op 86%, roam 90% (montage investisseur)",
+        "3450": "Deltagame — 0e, op 0% (deal specifique)",
+        "2839": "Forfait Zero + Maintenance AC — 12e, op 15%",
+        "2935": "Special Nova Abonnement — 5,88e"
+      },
+      "note_prix_0_normal": "Essentiel/Pro/Pro Plus a 0e cote Monta = normal (recurrent facture via Pennylane, Monta ne porte que operateur/itinerance). PAS un bug."
+    },
+    "parc_scale": "100+ teams clientes (pagination /teams a finir pour total exact). /subscriptions endpoint scope au partenaire — enumeration par team requise pour lister les abonnes Forfait Zero.",
+    "next_step": "Sur go Dominique: passe d'enumeration dediee -> pour chaque team, plan courant + recette 12 mois par PDC -> segmenter (sous 400 / 400-700 / sup 700) -> liste cible priorisee par montant de perte mensuelle. Produit le ciblage chiffre de la campagne."
   }
 }
