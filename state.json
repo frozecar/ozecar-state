@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.369",
+    "version": "1.370",
     "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.369",
+        "version_to": "1.370",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "E-SIGN bascule Subnoto -> eSignatures.com (Subnoto bloque: SDK PHP = extension native impossible sur Hostinger). eSignatures = REST simple + Basic Auth + UE Francfort + embarque. Cree esignatures-config/create/webhook.php (metadata=deal_id, sign_page_url embarque, webhook contract-signed -> Gagné/Livraison, teste). Subnoto supprime du serveur. Reste Dominique: Secret Token + creer template -> ESIG_TEMPLATE_ID."
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.368",
@@ -12901,5 +12910,17 @@
       "Endpoints a creer: subnoto-config.php (cle API serveur), subnoto-create-envelope.php, subnoto-webhook.php."
     ],
     "reste_dominique": "Creer un compte Subnoto (sandbox gratuit) + generer une cle API -> la mettre dans api/subnoto-config.php cote serveur (ne pas coller en clair dans le chat). Optionnel plus tard: domaine d'embed custom pour marque blanche."
+  },
+  "esign_esignatures_com_2026_07_07": {
+    "DECISION": "eSignatures.com retenu (Subnoto ecarte: son SDK PHP exige une extension native oak_client_php.so + tunnel enclave SEV-SNP, impossible sur Hostinger mutualise; proxy = conteneur, idem). eSignatures.com = API REST simple + HTTP Basic Auth + donnees UE Francfort + embarque + paiement a l'usage. S'integre direct sur le PHP OZECAR.",
+    "api": "POST {ESIG_BASE}/contracts, HTTP Basic Auth (token en username, pas de mdp). metadata=deal_id (revient dans le webhook -> mapping direct). Signataire: signature_request_delivery_method=none + embedded_redirect_iframe_only=yes -> on embarque sign_page_url en iframe. placeholder_fields = variables du template (societe/nom/numero_devis). custom_webhook_url par contrat -> notre webhook.",
+    "fichiers": "esignatures-config.php (ESIG_TOKEN + ESIG_TEMPLATE_ID + ESIG_TEST + ESIG_WEBHOOK_KEY=ozesig_wh_Qp7Zt3Rk9m + ESIG_BASE=esignatures.io/api), esignatures-create.php (deal->signataire->contrat->sign_page_url), esignatures-webhook.php (contract-signed -> pandadoc-signed.php Gagné/Livraison). Teste OK.",
+    "subnoto_supprime": "api/subnoto-config.php + api/subnoto-webhook.php supprimes du serveur.",
+    "reste_dominique": [
+      "Coller le Secret Token eSignatures.com dans api/esignatures-config.php (ESIG_TOKEN).",
+      "Creer un TEMPLATE dans l'UI eSignatures (contrat OZECAR + placeholder_fields societe/nom/numero_devis + 1 signataire) -> coller son ID dans ESIG_TEMPLATE_ID.",
+      "Compte de test gratuit possible (test:yes = demo sans credit)."
+    ],
+    "reste_claude": "Une fois token+template en place: tester create -> recuperer sign_page_url -> embarquer l'iframe dans le modal checkout (remplace placeholder). Puis TODO envoi PDF signe (contract_pdf_url) aux parties."
   }
 }
