@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.370",
+    "version": "1.371",
     "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.370",
+        "version_to": "1.371",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "eSignatures: template cree PAR API (id 73094966-...bae726, markdown+placeholders). Endpoints corriges au format v1.3 (esignatures.com/api). Chaine testee end-to-end en demo: create deal Julien -> embed_url (sign?embedded=yes) OK, webhook contract-signed->Gagné/Livraison. Config maj server-side (token non expose). Reste: cabler l'iframe dans le modal + Stripe."
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.369",
@@ -12921,6 +12930,14 @@
       "Creer un TEMPLATE dans l'UI eSignatures (contrat OZECAR + placeholder_fields societe/nom/numero_devis + 1 signataire) -> coller son ID dans ESIG_TEMPLATE_ID.",
       "Compte de test gratuit possible (test:yes = demo sans credit)."
     ],
-    "reste_claude": "Une fois token+template en place: tester create -> recuperer sign_page_url -> embarquer l'iframe dans le modal checkout (remplace placeholder). Puis TODO envoi PDF signe (contract_pdf_url) aux parties."
+    "reste_claude": "Une fois token+template en place: tester create -> recuperer sign_page_url -> embarquer l'iframe dans le modal checkout (remplace placeholder). Puis TODO envoi PDF signe (contract_pdf_url) aux parties.",
+    "avancement_2026_07_07": {
+      "template_cree_par_api": "template_id=73094966-4190-4f19-bb49-6c73aabae726 (Contrat supervision OZECAR, markdown Art.1-6 + placeholders {{societe}}/{{nom}}/{{numero_devis}}, signature auto sur la sign page). Cree via POST /api/templates.",
+      "config": "ESIG_BASE corrige en https://esignatures.com/api (v1.3) + ESIG_TEMPLATE_ID ecrit, cote serveur (token jamais expose).",
+      "endpoints_corriges_v1.3": "create: placeholder_key/replace_with_text, signature_request_delivery_methods:[] (skip email), multi_factor_authentications:[email_verification_code], parse data.contract.signers[].sign_page_url, renvoie embed_url=sign_page_url+?embedded=yes. webhook: status contract-signed + deal_id depuis data.contract.metadata -> pandadoc-signed.php.",
+      "teste": "create sur deal Julien (test:yes/demo) -> sign_page_url + embed_url OK (esignatures.com/sign/{id}?embedded=yes). webhook teste (403 mauvaise cle, contract-signed+metadata -> handoff).",
+      "reste_claude": "Cabler l'iframe embed dans le modal du checkout (remplace le placeholder Yousign): bouton signer -> fetch esignatures-create.php{deal_id} -> <iframe src=embed_url>. Puis test signature reelle -> webhook -> Gagné/Livraison. Puis envoi PDF signe (contract_pdf_url). Puis Stripe (paiement kit+abonnement).",
+      "reste_dominique": "Passer ESIG_TEST a 'no' au lancement (pour l'instant 'yes'=demo sans credit). Verifier le rendu du contrat + ajuster le markdown/CGV si besoin."
+    }
   }
 }
