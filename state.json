@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.373",
-    "updated": "2026-07-07",
+    "version": "1.374",
+    "updated": "2026-07-03",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-03",
+        "version_from": "1.373",
+        "version_to": "1.374",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Creation d'intervention DEPUIS #support LIVREE: @mention note -> propose_intervention (agent) -> Confirmer -> create_intervention (bot-tools) cree ticket Maintenance & Intervention + GATE niveau (N3/N4->a prevoir, sinon Devis a faire) + bouton Planifier. Gate maintenance vivant. Teste (N0->Devis a faire)."
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.372",
@@ -11797,6 +11806,13 @@
           "Cle de jointure: stamper company HubSpot dans Monta partnerExternalId + teamId sur company HubSpot"
         ]
       }
+    },
+    "creation_depuis_channel": {
+      "statut": "LIVRE 2026-07-03. Depuis #support: @mention du bot avec une note (ex appel client) -> l'agent identifie le client (fiche_compte) et propose 'propose_intervention' -> carte Confirmer -> create_intervention cree le ticket + applique le GATE niveau (N3/N4 curatif -> Intervention a prevoir ; sinon -> Devis a faire) -> message avec bouton 'Planifier l'intervention' (oz_plan) -> modal date -> calendrier + ticket planifiee.",
+      "gate_LIVE": "create_intervention lit le niveau du site (board Sites Monday, defaut N0 si absent) -> route pipeline Maintenance & Intervention / stage (5625047277 a prevoir si N3/N4, sinon 5625047275 Devis a faire) + remplit ozecar_niveau_maintenance. Verifie (N0 -> Devis a faire).",
+      "outils": "bot-tools.php: create_intervention (+ci_hs, ci_niveau). slack-bot.php: tool propose_intervention (declare), build_confirm case, run_tool allowlist, confirm_action -> bouton Planifier. NE cite jamais le n de serie borne (regle).",
+      "usage_slack": "@ozecarbot [note: Client X a Ville, probleme] -> Confirmer -> Planifier.",
+      "reste": "Federation v2 fiche_compte (forfait HubSpot + impayes Pennylane) ; lire niveau depuis subscription Monta quand plans crees ; vue tournee preventive Fred."
     }
   },
   "presentations_v2_2026_07_03": {
