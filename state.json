@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.372",
+    "version": "1.373",
     "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.372",
+        "version_to": "1.373",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Signature eSignatures passee en MODAL sur le devis (openEsign/#esignOvl, iframe dans #esignBody) - le client reste sur notre page. Recipient corrige (exclut installateur/fournisseur, prend le client). SES par code email validee par Dominique. Reste: Stripe."
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.371",
@@ -12952,6 +12961,13 @@
       "signature_cablee": "Configurateur: bouton 'Accepter et signer' -> revele #signEmbed + mountEsign() -> fetch esignatures-create.php{deal_id} -> iframe embed_url (esignatures.com/sign/{id}?embedded=yes) = contrat + signature dans la page. Ancien embed PandaDoc (mountPandaDoc/ozSigned/ozPandaData) supprime. Signature detectee par webhook serveur -> Gagné/Livraison.",
       "ux_etapes_corrigee": "Vue client sans materiel: onglet Materiel masque, Supervision renumerote '1', Recap&signature '2', wmin=2 -> bouton 'Precedent' masque sur la 1ere etape visible (plus de '2' orphelin ni Precedent vers le vide).",
       "test": "Ouvrir sales view Julien -> generer le lien client -> ouvrir -> 'Accepter et signer' -> contrat eSignatures (mode demo test:yes) -> signer -> Julien passe Gagné + deal Livraison cree. NOTE: modifie le vrai deal Julien (reversible)."
+    },
+    "modal_et_recipient_2026_07_07": {
+      "signature_en_modal": "Configurateur: 'Accepter et signer' -> openEsign() ouvre un MODAL (.oz-ovl/#esignOvl) par-dessus le devis, charge l'iframe eSignatures (create -> embed_url) dans #esignBody. Fermeture croix/clic-hors/Echap. Le client reste sur notre page (le devis+recap), la signature est un composant en modal. Fini la prise de contrôle plein ecran.",
+      "recipient_corrige": "esignatures-create.php: exclut l'installateur (contact typeId 3) + installateur/fournisseur (company typeId 1/5), prend le CLIENT. (Bug Soleco=installateur signale par Dominique.)",
+      "signature_SES_validee": "Dominique OK: signature par code email (SES eIDAS, legalement valide) suffit — pas de geste de dessin (hors modele eSignatures).",
+      "test": "Tester sur un deal qui a un vrai CONTACT CLIENT (le deal Soleco n'avait que l'installateur). Attendu: modal signature -> code email -> signe -> deal Gagné + Livraison.",
+      "reste": "STRIPE (paiement kit one-time + abonnement recurrent) = prochaine grande brique. Option: toggle mensuel/annuel sur le recap (comme le mockup). Puis envoi PDF signe."
     }
   }
 }
