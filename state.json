@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.374",
-    "updated": "2026-07-03",
+    "version": "1.375",
+    "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.374",
+        "version_to": "1.375",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Configurateur vue client: titre 'Votre offre' (client)/'Configurez' (commercial); LECTURE SEULE en mode guide (verrouille forfait/options/maintenance); bloc 'Et apres votre signature' (5 etapes reassurance). Deux modes client definis: guide=lecture seule, self-service=Pro par defaut (a construire avec le pont QR/activation). Modele installateur (shop) valide + consigne (Izitek/Soleco, proprietaire requis a l'activation)."
+        ]
+      },
       {
         "date": "2026-07-03",
         "version_from": "1.373",
@@ -12985,5 +12994,17 @@
       "test": "Tester sur un deal qui a un vrai CONTACT CLIENT (le deal Soleco n'avait que l'installateur). Attendu: modal signature -> code email -> signe -> deal Gagné + Livraison.",
       "reste": "STRIPE (paiement kit one-time + abonnement recurrent) = prochaine grande brique. Option: toggle mensuel/annuel sur le recap (comme le mockup). Puis envoi PDF signe."
     }
+  },
+  "configurateur_vue_client_2026_07_07": {
+    "titre": "Client: 'Votre offre Supervision, Monétique & Maintenance' (id heroTitle). Commercial: 'Configurez votre offre...' (override JS si SALES).",
+    "lecture_seule_guide": "Vue client guidee (arrivee via lien commercial c=): body.view-locked -> [data-sup]/[data-step]/[data-mnt] pointer-events:none. Le client consulte l'offre figee, ne peut plus la modifier. Corrige le probleme UX (client se perd / defait la config, retour PandaDoc).",
+    "bloc_et_apres": "Sous la zone signature: 'Et apres votre signature?' = 5 etapes (Contrat signe / Kit prepare & expedie / Configuration visio-ou-site / Activation / Supervision active). Reassurance B2B avant de signer + notification des prochaines etapes.",
+    "deux_modes_client": {
+      "guide": "c= present -> lecture seule (offre pre-configuree par le commercial).",
+      "self_service": "arrivee par QR/activation (pas de c=, PDC connu du kit). Forfait recommande PRO PAR DEFAUT + options depliables (affichage progressif = decouverte) + mensuel/annuel. A CONSTRUIRE avec le pont QR/activation (fournit PDC/station). Pro+/Transit 'sur devis' -> bouton bascule vers le guide (lead).",
+      "tarif": "Supervision reste standard (5,90/14,90) dans les deux modes. La remise installateur porte sur le materiel, pas sur l'abonnement client."
+    },
+    "modele_installateur_valide": "Shop = cible INSTALLATEURS (kits/bornes pre-configures, remises, au nom de l'installateur, sans infos client). Pont: installateur pose + scan QR -> active (cree groupe/station/PDC backend) -> invite le client par email (PROPRIETAIRE requis pour activer) -> client arrive sur 'Votre offre' -> saisit infos + choisit forfait (Pro defaut) + signe + s'abonne -> devient proprietaire. Regle: confidentialite installateur respectee (client saisit lui-meme), pas de materiel orphelin (borne inutilisable sans proprietaire+abonnement), devis materiel au nom installateur. A verrouiller: cadrage partenaire (roles/no-poach) + QR encode l'installateur (attribution/commission). Cas reels: Izitek, Soleco.",
+    "reste": "1) Stripe (paiement kit+abonnement). 2) Pont QR/activation + mode self-service Pro. 3) Affichage progressif options cote client. 4) Envoi PDF signe."
   }
 }
