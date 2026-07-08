@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.368",
+    "version": "1.369",
     "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.368",
+        "version_to": "1.369",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "E-SIGN: SUBNOTO retenu (verifie doc: embedded signing via iframe token /embeds/sign, HTML pur, domaine custom marque blanche, heberge France/confidential computing, webhooks, 5-19 EUR/mois). Bat DocuSign/Yousign/PandaDoc sur RGPD+prix. Caveat SES-only aujourd'hui (AES/QES 2026, non bloquant B2B). Plan d'integration defini. Reste Dominique: compte Subnoto + cle API dans api/subnoto-config.php."
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.367",
@@ -12877,5 +12886,20 @@
       "Backend: signe+paye -> HubSpot Gagné + deal Livraison (reutiliser logique pandadoc-signed.php) + Pennylane facture/abonnement.",
       "Capture acceptation CGV (horodatage+IP)."
     ]
+  },
+  "esign_subnoto_2026_07_07": {
+    "DECISION": "SUBNOTO retenu pour la signature embarquee (apres comparatif complet + verification doc). Coche tout: embarque + heberge France (confidential computing/TEE, RGPD top-tier) + API/SDK/webhooks + pas cher (5-19 EUR/mois).",
+    "verifie_dans_la_doc": "Embedded signing CONFIRME: POST /public/authentication/create-iframe-token (envelope UUID + signerEmail) -> token 'sit.' (usage unique, expire 1h) -> URL embed app.subnoto.com/embeds/sign#t={token}. HTML pur OK (pas besoin de framework). Domaine d'embed custom dispo (marque blanche). Token cote serveur uniquement. Signataire doit avoir verificationType email/SMS (2FA) sinon RECIPIENT_VERIFICATION_DISABLED. Webhooks signe/complete OK.",
+    "caveat": "eIDAS: SES aujourd'hui (legalement valide UE, suffit B2B). AES/QES prevues 2026 (GitHub montre dev actif). Non bloquant.",
+    "compare_ecarte": "DocuSign (600$+/an, plafonds), Yousign (1248 EUR/an forfait fixe), PandaDoc API (2$/doc), SignWell/BoldSign (embarque + pas cher mais US-heberges). Subnoto gagne sur RGPD (France) a prix equivalent/inferieur.",
+    "plan_integration": [
+      "1. Creer envelope via API (upload contrat PDF + recipient + blocs signature, distributionMethod:none).",
+      "2. Set recipient verificationType=email.",
+      "3. Creer iframe token -> URL embed.",
+      "4. Charger l'iframe dans le modal checkout (remplace le placeholder Yousign).",
+      "5. Webhook 'signe' -> HubSpot Gagné + deal Livraison (logique pandadoc-signed.php reutilisee) + envoi doc signe aux parties.",
+      "Endpoints a creer: subnoto-config.php (cle API serveur), subnoto-create-envelope.php, subnoto-webhook.php."
+    ],
+    "reste_dominique": "Creer un compte Subnoto (sandbox gratuit) + generer une cle API -> la mettre dans api/subnoto-config.php cote serveur (ne pas coller en clair dans le chat). Optionnel plus tard: domaine d'embed custom pour marque blanche."
   }
 }
