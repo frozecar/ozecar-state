@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.367",
+    "version": "1.368",
     "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.367",
+        "version_to": "1.368",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Checkout OPTION B validee: page maison OZECAR + Stripe + Yousign (signature embarquee meme page), PandaDoc abandonne dans la vente. Page finie livree + deployee staging (checkout.html, HTTP 200). Reste a cabler apres validation design: Stripe, Yousign, backend HubSpot/Pennylane."
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.366",
@@ -12856,5 +12865,17 @@
     "interim_en_place": "Bouton 'Accepter et signer' neutralise: appelle devis-accepted.php (ozecar_devis_statut='Devis accepté' + notif #devis 'contrat a envoyer') + message client 'votre contrat va vous parvenir'. Pas d'API, pas de Form.",
     "arbitrage_a_trancher": "Option retenue probable = intégration native HubSpot->PandaDoc (document mis en page, tokens depuis le deal, INCLUS pas 2$, envoye par EMAIL). Declencheur: manuel (Marie-Estelle, Starter, dispo) ou auto (HubSpot Pro workflow). Question a Dominique: accepte-t-il l'envoi par email (au lieu de la redirection in-page)? Si oui -> native. Si redirection in-page absolue -> API (2$/doc) ou Form.",
     "mapping_tokens": "Deja pret pour la native: [societe]<-company.name, [nom]<-contact firstname+lastname, [Email]<-contact.email, [numero_devis]<-deal.ozecar_numero_devis. Webhook Gagné->Livraison deja teste."
+  },
+  "checkout_option_b_2026_07_07": {
+    "DECISION": "OPTION B validee: page checkout OZECAR maison (notre ecran, pas PandaDoc) + Stripe direct. PandaDoc ABANDONNE dans le parcours de vente. Fini les blocages de creation de document.",
+    "engagement": "2 crans: LEGER = acceptation CGV (case + horodatage + IP) + paiement Stripe (contraignant B2B, 0€ e-sign). FORT = + signature Yousign embarquee sur la meme page (iframe, eIDAS, forfait Yousign pas 2€/doc).",
+    "signature_meme_page": "Oui - Yousign embedded signature (iframe) s'affiche dans la page, le client signe sans partir.",
+    "page_finie": "Livree: /mnt/user-data/outputs/ozecar-checkout.html, deployee staging https://staging.ozecar.fr/wp-content/uploads/ozecar/checkout.html (HTTP 200). Brand OZECAR (Ink/Yellow/Violet/Cream, DM Sans + Space Mono, pill 100px, logo officiel). Un seul ecran: recap devis (kit+options one-time + supervision recurrente), toggle mensuel/annuel (annuel=2 mois offerts), zone signature Yousign, case CGV+SEPA, choix SEPA/carte, CTA 'Signer et payer' (actif si signe+CGV). JS toggle/paiement/cgv OK. Zones Stripe+Yousign = placeholders styles, PAS encore cablees.",
+    "reste_a_cabler_apres_validation": [
+      "Stripe: kit one-time + abonnement recurrent (SEPA ou carte), Stripe Elements/Checkout.",
+      "Yousign: creer la demande de signature (API) -> iframe embarquee -> event 'signed'.",
+      "Backend: signe+paye -> HubSpot Gagné + deal Livraison (reutiliser logique pandadoc-signed.php) + Pennylane facture/abonnement.",
+      "Capture acceptation CGV (horodatage+IP)."
+    ]
   }
 }
