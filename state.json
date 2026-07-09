@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.382",
+    "version": "1.383",
     "updated": "2026-07-09",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-09",
+        "version_from": "1.382",
+        "version_to": "1.383",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "'Et apres' corrige: delai reel = KIT EXPEDIE SOUS 48H (valide Dominique). Deux versions selon parcours: guide (kit prepare/expedie/config/actif) vs self-service QR (contrat signe/compte cree/borne rattachee/actif) - le kit est deja chez le client. Auto-critique affichage progressif consignee (a reformuler en benefices, sortir les prix, Pro seul en self-service)."
+        ]
+      },
       {
         "date": "2026-07-09",
         "version_from": "1.381",
@@ -13093,7 +13102,9 @@
     "a_verrouiller_plus_tard": "(1) QR du kit doit encoder l'INSTALLATEUR -> attribution/commission + deal supervision rattache a l'installateur referent. (2) Programme partenaire: roles (OZECAR supervise, installateur garde la relation) + no-poach ecrit. (3) Pro+/Transit restent 'sur devis' -> bouton 'besoin sur-mesure' bascule vers le guide (cree un lead). (4) Tarif supervision standard dans les 2 canaux; la remise installateur porte sur le MATERIEL.",
     "reste": "Affichage progressif des options (offre reco visible, options depliables) cote client. Puis STRIPE (kit one-time + abonnement recurrent). Puis notifications d'etapes (kit expedie...). URL propre (ozecar.fr/mon-offre/) via rewrite WP au passage en prod.",
     "bugfix_page_blanche": "BUG (page ne chargeait pas / vide en vue client): enterClientView() forcait showStep(1) -> affichait l'etape Materiel (masquee en dur) => contenu vide. FIX: enterClientView ne force plus showStep; le bloc de masquage materiel decide (showStep(1) si materiel, sinon masque l'etape 1 + wmin=2 + showStep(2)). Verifie en Playwright headless: self-service (Pro pre-selectionne, pdc=4, onglets 1/2, prev masque, 3660px de contenu) + guide (devis Julien, 8 PDC Essential) -> 0 erreur JS.",
-    "affichage_progressif": "LIVRE. Vue client: l'etape Supervision montre le FORFAIT seul (Pro pre-selectionne en self-service), puis un bouton depliable 'Decouvrez ce que la supervision permet' (#discloseBtn/#discloseBody) qui revele Options PDC + Options compte + Maintenance + Mise en service. Replie par defaut. Deplie AUTO si l'offre pre-configuree contient deja des options (state.opts.size>0 || qty>0 || mes) -> on ne cache jamais ce que le commercial a mis. Vue commerciale: bouton masque (#discloseWrap display:none), tout deplie. Verifie Playwright: self-service replie+clic deplie OK; sales bouton masque+deplie OK; 0 erreur JS."
+    "affichage_progressif": "LIVRE. Vue client: l'etape Supervision montre le FORFAIT seul (Pro pre-selectionne en self-service), puis un bouton depliable 'Decouvrez ce que la supervision permet' (#discloseBtn/#discloseBody) qui revele Options PDC + Options compte + Maintenance + Mise en service. Replie par defaut. Deplie AUTO si l'offre pre-configuree contient deja des options (state.opts.size>0 || qty>0 || mes) -> on ne cache jamais ce que le commercial a mis. Vue commerciale: bouton masque (#discloseWrap display:none), tout deplie. Verifie Playwright: self-service replie+clic deplie OK; sales bouton masque+deplie OK; 0 erreur JS.",
+    "et_apres_corrige": "Delais corriges (fait valide par Dominique: KIT EXPEDIE SOUS 48H, pas 'prepare sous 48h'). Deux versions selon le parcours: GUIDE = 01 Kit prepare (des la signature) / 02 Kit expedie (sous 48h, suivi email) / 03 Configuration (visio ou sur site) / 04 Supervision active. SELF-SERVICE (QR, borne deja posee) = 01 Contrat signe / 02 Compte cree (acces par email) / 03 Borne rattachee (proprietaire) / 04 Supervision active. Switch via CLIENT && !q.get('c'). Verifie Playwright, 0 erreur.",
+    "critique_affichage_progressif": "Auto-critique Claude (partagee avec Dominique): l'affichage progressif est cosmetique. (1) Le libelle 'Decouvrez ce que la supervision permet' promet de la pedagogie mais revele des cases a cocher avec prix = tiroir de tarification. (2) Vocabulaire interne ('Options liees au PDC/compte') au lieu de benefices client ('vos utilisateurs paient par carte', 'intervention sous 24h'). (3) Contradiction self-service: on dit 'Pro recommande' mais on affiche un comparatif 4 colonnes x 15 lignes (vente assistee, pas auto-service). A FAIRE: reformuler la decouverte en benefices, sortir les prix de la 'decouverte', et en self-service afficher Pro seul + lien discret 'comparer les formules'."
   },
   "connectivity_emnify_2026_07_09": {
     "date": "2026-07-09",
