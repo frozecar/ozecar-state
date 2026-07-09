@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.384",
+    "version": "1.385",
     "updated": "2026-07-09",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-09",
+        "version_from": "1.384",
+        "version_to": "1.385",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Configurateur MIGRE sur la nouvelle offre: Essential/Business/Enterprise (3 plans, dernier sur devis) + selecteur AC/DC. Prix affiches = annuels (6,90/9,90 AC · 9,90/15,90 DC); mensuel derive au-dessus (7,90/10,90 · 10,90/17,90). Remises: annuel -10%, biannuel -15%, Essential exclu du biannuel. Tableau comparatif refait (itinerance incluse en Business, frais 10%/5% et 0,05 €/kWh+4%). Pro/Pro+/Transit supprimes. Teste Playwright, 0 erreur."
+        ]
+      },
       {
         "date": "2026-07-09",
         "version_from": "1.383",
@@ -13365,6 +13374,23 @@
     },
     "remises_reco": "Cout socket = 65% du prix d'Essential -> une remise % attaque directement la marge (pas un coussin comme en SaaS ou le COGS est ~20%). Grille actuelle (-15% annuel / -25% biannuel) DETRUIT Essential (contribution 0,68 € en biannuel, -72%). RECO: annuel -10%, biannuel -15%, Essential exclu du biannuel (annuel -5% max). A VALIDER.",
     "alerte_forfait_zero": "L'offre de migration Forfait Zero est 'Pro a -50%' calee sur Pro=14,90 -> 7,45 €. Avec Business a 9,90, '-50%' donnerait 4,95 € = SOUS le cout socket (4,50). REECRIRE en PRIX FIXE 7,45 €, jamais en pourcentage.",
-    "a_repercuter": "Configurateur (forfaits+prix+DC), page tarifs publique (3 plans, dernier sur devis), devis, CGV, deck. Ancienne grille (Essential 5,90 / Pro 14,90 / Pro+ 24,90 / Transit 54,90) OBSOLETE."
+    "a_repercuter": "Configurateur (forfaits+prix+DC), page tarifs publique (3 plans, dernier sur devis), devis, CGV, deck. Ancienne grille (Essential 5,90 / Pro 14,90 / Pro+ 24,90 / Transit 54,90) OBSOLETE.",
+    "prix_definitifs": {
+      "principe": "Les prix valides (6,90 / 9,90 / 15,90) sont les prix ANNUELS. Le mensuel est derive AU-DESSUS.",
+      "Essential": {
+        "AC": "mensuel 7,90 · annuel 6,90 · biannuel 6,90 (pas de remise biannuelle)",
+        "DC": "mensuel 10,90 · annuel 9,90 · biannuel 9,90"
+      },
+      "Business": {
+        "AC": "mensuel 10,90 · annuel 9,90 · biannuel 9,30",
+        "DC": "mensuel 17,90 · annuel 15,90 · biannuel 15,20",
+        "recommande": true
+      },
+      "Enterprise": "Sur devis (3e plan, regle des 3 plans respectee)",
+      "remises": "Annuel -10% · Biannuel -15% (calcule sur le mensuel). ESSENTIAL EXCLU du biannuel (cout socket = 65% du prix -> contribution tomberait a 0,68 €).",
+      "raison": "Une remise % attaque directement la marge car le COGS est 65% du prix (vs ~20% en SaaS classique). L'ancienne grille (-15%/-25%) detruisait Essential."
+    },
+    "configurateur_applique": "LIVRE staging. SUP = 3 forfaits (ess/biz/ent). Selecteur AC/DC (#kind) ajoute a cote du selecteur de frequence. supPrice gere kind+mode+quote. Enterprise affiche 'Sur devis'. SUP_ROWS refait en 3 colonnes (itinerance entrante&sortante incluse en Business; assistance conducteurs 24/7 'avec ouverture publique'; API/multi-sites/CSM en Enterprise; frais d'operateur 10%/5%; itinerance 0,05 €/kWh+4% / 0,025+4%). Options remappees: wallet inclus biz/ent + masque en Essential (pas de transaction), data option partout, csm/flotte inclus Enterprise, loadbal inclus partout. Self-service pre-selectionne Business. Mention legale remises maj. Verifie Playwright: 3 colonnes, 6 combinaisons de prix exactes, 0 erreur JS.",
+    "reste_a_repercuter": "Page tarifs publique, CGV, deck, emails. Migration Forfait Zero -> reecrire en PRIX FIXE 7,45 € (pas -50%). Itinerance sortante: prix a definir (cout Monta inconnu)."
   }
 }
