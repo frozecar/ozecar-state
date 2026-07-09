@@ -1,12 +1,26 @@
 {
   "_meta": {
-    "version": "1.381",
+    "version": "1.382",
     "updated": "2026-07-09",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-09",
+        "version_from": "1.381",
+        "version_to": "1.382",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "connectivity_emnify_2026_07_09.devis_recu_2026_07_09 : plans pooled 50MB/0,57 € - 1GB/2,22 € - 2GB/4,21 € par SIM active",
+          "BLOCKER : le devis ecrit dit NON-STEERED, contredit la promesse orale d'Enver (steering endpoint, blocage SFR). Le non-steered est la cause racine des decrochages.",
+          "Ecart prix call vs devis : 0,210-0,220 €/GB annonce vs 2,105-2,22 €/GB reel (facteur 10)",
+          "Palier 450 MB promis remplace par 50 MB, qui ne couvre pas la conso AC reelle (100 MB)",
+          "Gratuite 2-3 mois non formalisee, remplacee par 1 000 € de credits de test (valeur reelle ~15 € sur 3 SIMs)",
+          "Simulation fleet : emnify 467 à 1 209 €/mois selon palier AC vs Simbase 381 €/mois avec abo"
+        ]
+      },
       {
         "date": "2026-07-09",
         "version_from": "1.380",
@@ -13084,7 +13098,7 @@
   "connectivity_emnify_2026_07_09": {
     "date": "2026-07-09",
     "auteur": "Claude PM (claude.ai)",
-    "statut": "EN ATTENTE du devis (Daria/Enver). Rien à décider avant réception.",
+    "statut": "Devis reçu 2026-07-09. BLOCKER : le devis annonce 'non-steered' alors que le steering endpoint était l'unique justification du changement de provider.",
     "contexte": "Call emnify du 2026-07-09 (Daria = AM, Enver = VP Sales EMEA). Objectif : remplacer Simbase (non-steered) qui est la cause racine documentée des décrochages sur bornes à modem intégré (KEBA) — cf connectivity.diagnostic_decrochages_integres_2026_06_11.",
     "parc_reference_call": {
       "bornes_total": 2000,
@@ -13217,6 +13231,55 @@
         "ACTION IMMÉDIATE indépendante du choix : souscrire l'abonnement Simbase 50 €/mois (break-even largement dépassé).",
         "Le vrai arbitrage n'est pas prix vs prix, mais : ~2 500 €/an pour supprimer la cause racine des décrochages + gagner l'API/eSIM/automation. C'est bon marché."
       ]
+    },
+    "devis_recu_2026_07_09": {
+      "source": "Mail Daria (emnify), 2026-07-09",
+      "plans_pooled_par_sim_active_par_mois": {
+        "50 MB": "0,57 €",
+        "1 GB": "2,22 €",
+        "2 GB": "4,21 €"
+      },
+      "inclus_annonce": "multi-opérateur NON-STEERED, APIs, Management Portal, support technique standard",
+      "geste": "1 000 € de crédits de test sur le compte pour la période d'essai",
+      "cout_effectif_par_gb": {
+        "50 MB": "11,40 €/GB",
+        "1 GB": "2,22 €/GB",
+        "2 GB": "2,105 €/GB"
+      },
+      "BLOCKER_CRITIQUE": "Le devis écrit dit 'NON-STEERED'. Or Enver a promis oralement du steering au niveau endpoint (blocage opérateur, ex. SFR ; lock mono-réseau). Le non-steered est PRÉCISÉMENT la cause racine des décrochages Simbase sur modem intégré (cf diagnostic_decrochages_integres_2026_06_11). Si emnify est non-steered, le devis n'a AUCUN intérêt technique : on paie plus cher pour le même problème. À faire trancher par écrit avant toute suite.",
+      "ecarts_vs_call": [
+        "Paliers annoncés au call : 450 MB / 1 GB / 2 GB. Paliers reçus : 50 MB / 1 GB / 2 GB. Le 450 MB a disparu et le 50 MB ne couvre pas la conso AC réelle (100 MB).",
+        "Prix annoncé au call : 0,210–0,220 €/GB. Prix réel : 2,105–2,22 €/GB. Facteur 10. Le chiffre oral était faux (ou mal entendu).",
+        "Gratuité 2–3 mois promise par Enver : NON formalisée. Remplacée par 1 000 € de crédits de test — qui ne s'appliquent qu'aux 3 SIMs d'essai (coût réel du POC ≈ 15 €). Geste sans valeur économique.",
+        "IPsec : pas de prix.",
+        "Service package : pas de seuil de dépense indiqué. 'Support technique standard' = webform, réponse ~7 jours ouvrés (relevé en juin) → inacceptable pour un CPO en production."
+      ],
+      "manquants_dans_le_devis": [
+        "Prix de l'overage (dépassement de pool)",
+        "Frais d'activation / one-off par SIM",
+        "Durée d'engagement et préavis",
+        "Prix IPsec",
+        "Seuil d'inclusion du service package + SLA associé",
+        "Conditions de la gratuité 2-3 mois",
+        "Modalités de migration des 500 SIMs",
+        "Périmètre exact du pooling (pool unique fleet-wide ou pool par palier ?)"
+      ],
+      "simulation_fleet": {
+        "_hypothese": "450 SIM AC (0,1 GB) + 50 SIM HPC (1,75 GB) = 132,5 GB/mois. À confirmer avec les vrais chiffres Simbase.",
+        "emnify_mix_50MB_AC_2GB_HPC": "467 €/mois — MAIS pool = 122,5 GB pour un besoin de 132,5 GB → overage, prix inconnu",
+        "emnify_mix_1GB_AC_2GB_HPC": "1 209 €/mois — confortable mais consomme quasi tout le budget absorbé (1 250 €)",
+        "simbase_avec_abo_50e": "381 €/mois",
+        "simbase_sans_abo": "662 €/mois",
+        "lecture": "emnify est dans le même ordre de grandeur que Simbase, pas 13-17x comme estimé en juin. Mais l'écart se joue entièrement sur le palier choisi pour les AC et sur le prix de l'overage. Le palier 50 MB est un piège : 11,40 €/GB effectif, et il ne couvre pas les 100 MB réels."
+      },
+      "position_de_negociation": [
+        "Ne rien signer avant clarification écrite sur le steering. C'est la seule raison de quitter Simbase.",
+        "Exiger la réintroduction d'un palier ~150-200 MB (les AC consomment 100 MB : le 50 MB est sous-dimensionné, le 1 GB est 10x surdimensionné à 2,22 €).",
+        "Les 1 000 € de crédits ne coûtent rien à emnify (3 SIMs, ~15 € de conso réelle sur un mois). Ne pas les compter comme une concession. Redemander la gratuité 2-3 mois SUR LE PARC MIGRÉ, comme promise oralement.",
+        "Le support 'standard' à 7 jours est un no-go. Le service package doit être inclus dès la signature, pas au-dessus d'un seuil de dépense.",
+        "Rappeler l'écart 0,21 vs 2,21 €/GB : établit qu'on vérifie tout, et légitime d'exiger l'écrit sur le reste."
+      ],
+      "statut": "DEVIS REÇU — BLOQUÉ sur la contradiction steering. Relance à envoyer."
     }
   },
   "methode_vente_duo_am_vp_2026_07_09": {
