@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.375",
+    "version": "1.376",
     "updated": "2026-07-07",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-07",
+        "version_from": "1.375",
+        "version_to": "1.376",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Configurateur: 2 modes client. GUIDE (avec 'c') = lecture seule. SELF-SERVICE (QR installateur, sans 'c') = Pro pre-selectionne + PDC pre-rempli + selecteurs actifs. Ajoute bloc 'Et apres ?' (kit prepare/expedie/config/actif + support). Titre client 'Votre offre...'. Modele installateur documente (materiel->installateur, supervision->client final, pont = kit QR + invitation proprietaire)."
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.374",
@@ -13006,5 +13015,14 @@
     },
     "modele_installateur_valide": "Shop = cible INSTALLATEURS (kits/bornes pre-configures, remises, au nom de l'installateur, sans infos client). Pont: installateur pose + scan QR -> active (cree groupe/station/PDC backend) -> invite le client par email (PROPRIETAIRE requis pour activer) -> client arrive sur 'Votre offre' -> saisit infos + choisit forfait (Pro defaut) + signe + s'abonne -> devient proprietaire. Regle: confidentialite installateur respectee (client saisit lui-meme), pas de materiel orphelin (borne inutilisable sans proprietaire+abonnement), devis materiel au nom installateur. A verrouiller: cadrage partenaire (roles/no-poach) + QR encode l'installateur (attribution/commission). Cas reels: Izitek, Soleco.",
     "reste": "1) Stripe (paiement kit+abonnement). 2) Pont QR/activation + mode self-service Pro. 3) Affichage progressif options cote client. 4) Envoi PDF signe."
+  },
+  "configurateur_deux_modes_client_2026_07_07": {
+    "modele_valide": "Deux canaux convergent sur la meme page 'Votre offre': (1) GUIDE = commercial pre-configure -> client en lecture seule (view-locked) signe. (2) SELF-SERVICE / INSTALLATEUR = client arrive via QR d'activation (pas de config 'c') -> il choisit son forfait.",
+    "self_service_implemente": "CLIENT sans param 'c' -> mode self-service: forfait PRO pre-selectionne (recommande, decision Dominique), PDC/stations pre-remplis depuis l'URL (kit active), selecteurs ACTIFS (pas de view-locked) pour ajuster + decouvrir les options, sous-titre 'Votre borne est installee. Choisissez votre formule de supervision, puis signez pour l'activer.'",
+    "bloc_et_apres": "Ajoute sous le CTA (les 2 modes): 01 Kit prepare (48h) -> 02 Kit expedie (suivi email) -> 03 Configuration (visio ou sur site) -> 04 Supervision active + contact support@ozecar.fr. Reassurance post-signature demandee par Dominique.",
+    "titre": "Client: 'Votre offre Supervision, Monetique & Maintenance'. Commercial: 'Configurez votre offre...' (override JS si SALES).",
+    "modele_installateur": "Materiel: OZECAR -> installateur (shop, remises, kits pre-configures). Supervision: OZECAR -> client final (abonnement, SEPA). Pont = kit QR: installateur pose + scanne (cree groupe/station/PDC) puis invite le client par email (un proprietaire du groupe est REQUIS) -> client arrive sur 'Votre offre' -> signe + s'abonne -> devient proprietaire. Verrouille: pas de vente sans abonnement (borne inutilisable sans proprietaire abonne). Respecte la confidentialite Izitek/Soleco (le client saisit lui-meme ses infos).",
+    "a_verrouiller_plus_tard": "(1) QR du kit doit encoder l'INSTALLATEUR -> attribution/commission + deal supervision rattache a l'installateur referent. (2) Programme partenaire: roles (OZECAR supervise, installateur garde la relation) + no-poach ecrit. (3) Pro+/Transit restent 'sur devis' -> bouton 'besoin sur-mesure' bascule vers le guide (cree un lead). (4) Tarif supervision standard dans les 2 canaux; la remise installateur porte sur le MATERIEL.",
+    "reste": "Affichage progressif des options (offre reco visible, options depliables) cote client. Puis STRIPE (kit one-time + abonnement recurrent). Puis notifications d'etapes (kit expedie...). URL propre (ozecar.fr/mon-offre/) via rewrite WP au passage en prod."
   }
 }
