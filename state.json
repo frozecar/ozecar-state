@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.376",
-    "updated": "2026-07-07",
+    "version": "1.377",
+    "updated": "2026-07-09",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-09",
+        "version_from": "1.376",
+        "version_to": "1.377",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "FIX page blanche vue client: enterClientView ne force plus showStep(1) (affichait l'etape Materiel masquee). Masquage materiel gere l'etape. Verifie Playwright: self-service + guide OK, 0 erreur."
+        ]
+      },
       {
         "date": "2026-07-07",
         "version_from": "1.375",
@@ -13023,6 +13032,7 @@
     "titre": "Client: 'Votre offre Supervision, Monetique & Maintenance'. Commercial: 'Configurez votre offre...' (override JS si SALES).",
     "modele_installateur": "Materiel: OZECAR -> installateur (shop, remises, kits pre-configures). Supervision: OZECAR -> client final (abonnement, SEPA). Pont = kit QR: installateur pose + scanne (cree groupe/station/PDC) puis invite le client par email (un proprietaire du groupe est REQUIS) -> client arrive sur 'Votre offre' -> signe + s'abonne -> devient proprietaire. Verrouille: pas de vente sans abonnement (borne inutilisable sans proprietaire abonne). Respecte la confidentialite Izitek/Soleco (le client saisit lui-meme ses infos).",
     "a_verrouiller_plus_tard": "(1) QR du kit doit encoder l'INSTALLATEUR -> attribution/commission + deal supervision rattache a l'installateur referent. (2) Programme partenaire: roles (OZECAR supervise, installateur garde la relation) + no-poach ecrit. (3) Pro+/Transit restent 'sur devis' -> bouton 'besoin sur-mesure' bascule vers le guide (cree un lead). (4) Tarif supervision standard dans les 2 canaux; la remise installateur porte sur le MATERIEL.",
-    "reste": "Affichage progressif des options (offre reco visible, options depliables) cote client. Puis STRIPE (kit one-time + abonnement recurrent). Puis notifications d'etapes (kit expedie...). URL propre (ozecar.fr/mon-offre/) via rewrite WP au passage en prod."
+    "reste": "Affichage progressif des options (offre reco visible, options depliables) cote client. Puis STRIPE (kit one-time + abonnement recurrent). Puis notifications d'etapes (kit expedie...). URL propre (ozecar.fr/mon-offre/) via rewrite WP au passage en prod.",
+    "bugfix_page_blanche": "BUG (page ne chargeait pas / vide en vue client): enterClientView() forcait showStep(1) -> affichait l'etape Materiel (masquee en dur) => contenu vide. FIX: enterClientView ne force plus showStep; le bloc de masquage materiel decide (showStep(1) si materiel, sinon masque l'etape 1 + wmin=2 + showStep(2)). Verifie en Playwright headless: self-service (Pro pre-selectionne, pdc=4, onglets 1/2, prev masque, 3660px de contenu) + guide (devis Julien, 8 PDC Essential) -> 0 erreur JS."
   }
 }
