@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.378",
+    "version": "1.379",
     "updated": "2026-07-09",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-09",
+        "version_from": "1.378",
+        "version_to": "1.379",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "connectivity_emnify_2026_07_09.historique_evaluation_providers : consolidation Simbase / Soracom / Vodafone / Onomondo (écarté) / Eseye / emnify",
+          "connectivity_emnify_2026_07_09.recalcul_economique_2026_07_09 : le verdict prix de juin (emnify 13-17x) reposait sur 30 MB/SIM/mois ; les vraies consos (100 MB AC / 1,5-2 GB HPC) l'invalident",
+          "Constat : Simbase à 5 €/GB fait perdre de l'argent sur chaque borne HPC (~9 €/mois vs 2,50 € absorbés)",
+          "ACTION : souscrire abo Simbase 50 €/mois (break-even 20 GB/mois largement dépassé)",
+          "methode_vente_duo_am_vp_2026_07_09 : dispositif AM (Marie-Estelle) + VP/Président (Dominique) inspiré de Daria/Enver chez emnify, à intégrer au playbook commercial avant rentrée"
+        ]
+      },
       {
         "date": "2026-07-09",
         "version_from": "1.377",
@@ -13051,7 +13064,7 @@
   "connectivity_emnify_2026_07_09": {
     "date": "2026-07-09",
     "auteur": "Claude PM (claude.ai)",
-    "statut": "POC en préparation — emnify = candidat #1 sur 3 finalistes",
+    "statut": "POC en préparation — emnify candidat #1. Recalcul économique 2026-07-09 invalide le verdict prix de juin.",
     "contexte": "Call emnify du 2026-07-09 (Daria = AM, Enver = VP Sales EMEA). Objectif : remplacer Simbase (non-steered) qui est la cause racine documentée des décrochages sur bornes à modem intégré (KEBA) — cf connectivity.diagnostic_decrochages_integres_2026_06_11.",
     "parc_reference_call": {
       "bornes_total": 2000,
@@ -13128,6 +13141,82 @@
         "Rédiger la grille de critères de succès du POC",
         "Comparer devis emnify vs 2 autres finalistes à réception"
       ]
+    },
+    "historique_evaluation_providers": {
+      "_note": "Consolidation des évaluations successives. ATTENTION : le verdict de juin (emnify hors-sujet sur le prix) reposait sur une hypothèse de conso de 30 MB/SIM/mois. Le call du 2026-07-09 révèle 100 MB (AC) et 1,5–2 GB (HPC). Le calcul doit être refait.",
+      "simbase": {
+        "statut": "Fournisseur actuel",
+        "prix": "0,005 €/MB — 0,0025 €/MB avec abonnement 50 €/mois (= 5,00 €/GB ou 2,50 €/GB)",
+        "pas_de_frais_par_sim": true,
+        "point_fort": "Le moins cher au SIM sur faible conso (bornes AC lentes)",
+        "point_faible": "Non-steered multi-IMSI, conçu pour mobiles. Cause racine des décrochages sur modem intégré (KEBA). Simbase a confirmé ne pas pouvoir steerer de façon fiable. Coût au GB très élevé → punitif sur HPC.",
+        "revision_breakeven_abo_50e": "Le break-even de l'abo 50 €/mois est à ~20 GB/mois fleet. Estimé non atteint en juin (hypothèse 15 GB). Avec les vraies consos du call (~130 GB/mois fleet estimé), l'abo est LARGEMENT rentable → à souscrire immédiatement quel que soit le choix de provider."
+      },
+      "soracom": {
+        "statut": "Ancien fournisseur, abandonné",
+        "prix": "~500 €/station/an sur HPC (~41 €/mois)",
+        "commentaire": "Enver qualifie ce prix de 'hors marché'. Steered → moins de décrochages sur le même matériel que Simbase."
+      },
+      "vodafone": {
+        "statut": "Historique",
+        "commentaire": "Steered, bundlé avec l'ancien CPMS."
+      },
+      "onomondo": {
+        "statut": "ÉCARTÉ (2026-06)",
+        "raison": "Avis Google négatifs. Modèle 'l'appareil choisit' = exactement le problème des modems intégrés.",
+        "prix": "~0,45–0,70 €/SIM/mois"
+      },
+      "eseye": {
+        "statut": "Non poursuivi",
+        "raison": "Techniquement le meilleur pour modems intégrés (profil domestique localisé) mais premium ≥ emnify.",
+        "commentaire": "À réexaminer si emnify échoue au POC."
+      },
+      "emnify": {
+        "statut": "Candidat #1 sur 3 finalistes (2026-07-09)",
+        "historique_prix": [
+          "2026-06 : 2,76 €/SIM active/mois, puis révisé à 1,13 €/SIM après clarification conso → jugé 'bien trop cher' par Dominique",
+          "2026-07-09 : 0,210–0,220 €/GB, 3 paliers pooled (450 MB / 1 GB / 2 GB). Le frais par SIM active n'a PAS été redonné oralement."
+        ],
+        "point_de_vigilance_prix": "Le €/GB est un leurre. Le driver de coût est le frais par SIM active. Exiger le prix par SIM active dans le devis écrit, sinon comparaison impossible.",
+        "point_fort": "Steering endpoint (blocage opérateur, lock mono-réseau) = fix structurel du non-steered. API + data streamer + automation engine inclus. eSIM QR."
+      }
+    },
+    "recalcul_economique_2026_07_09": {
+      "_avertissement": "Estimations à confirmer : (a) split réel AC/HPC des 500 SIMs, à extraire de Simbase ; (b) frais par SIM active emnify, absent du call.",
+      "hypothese_split": "≈450 SIM AC (0,1 GB) + ≈50 SIM HPC (1,75 GB) → ~132 GB/mois fleet",
+      "simbase_avec_abo_50e": "~132 GB × 2,50 € + 50 € ≈ 380 €/mois (~4 600 €/an)",
+      "simbase_sans_abo": "~132 GB × 5,00 € ≈ 660 €/mois",
+      "emnify_estime": "data ~132 GB × 0,215 € ≈ 29 € + frais SIM (1,13 € × 500 = 565 €) ≈ 594 €/mois (~7 100 €/an)",
+      "delta": "≈ +215 €/mois vs Simbase optimisé, soit ~2 500 €/an pour obtenir le steering",
+      "budget_disponible": "500 bornes × 2,50 €/mois absorbés = 1 250 €/mois. Les deux options tiennent dans le budget.",
+      "conclusion": [
+        "Le verdict de juin ('emnify 13-17× Simbase') est FAUX sur les vraies consos : il comparait un coût data sous-estimé à un frais par SIM.",
+        "Sur les bornes HPC, Simbase à 5 €/GB coûte ~9 €/mois/SIM (au-dessus des 2,50 € absorbés) → OZECAR perd de l'argent sur chaque HPC.",
+        "emnify à 0,215 €/GB rend la data HPC quasi gratuite. Le pooling fait payer les SIM AC sous-consommatrices pour les HPC.",
+        "ACTION IMMÉDIATE indépendante du choix : souscrire l'abonnement Simbase 50 €/mois (break-even largement dépassé).",
+        "Le vrai arbitrage n'est pas prix vs prix, mais : ~2 500 €/an pour supprimer la cause racine des décrochages + gagner l'API/eSIM/automation. C'est bon marché."
+      ]
     }
+  },
+  "methode_vente_duo_am_vp_2026_07_09": {
+    "date": "2026-07-09",
+    "auteur": "Claude PM (claude.ai)",
+    "origine": "Observation par Dominique du dispositif de vente emnify (Daria = Account Manager, Enver = VP Sales EMEA) lors du call du 2026-07-09. Dominique souhaite le reproduire côté OZECAR.",
+    "mecanique_observee": {
+      "role_am": "Daria ouvre, rappelle l'historique relationnel, montre qu'elle a briefé le VP ('Since I briefed him about our discussions...'), valide les objections sans défensive, puis s'efface. Elle porte la relation, pas la décision.",
+      "role_vp": "Enver arrive avec un capital de crédibilité pré-construit par l'AM. Il fait du discovery avant de pitcher, recadre le problème, élargit la valeur au-delà du prix, puis engage la relation long terme.",
+      "effet": "Le transfert de confiance est fait AVANT que le VP parle. Le VP n'a pas à se légitimer, il peut aller directement au fond. Le prospect se sent traité comme un compte important, pas comme un lead.",
+      "cle": "Le VP n'apparaît qu'une fois, au bon moment. Sa rareté est ce qui lui donne du poids. S'il est sur tous les calls, l'effet disparaît."
+    },
+    "transposition_ozecar": {
+      "am": "Marie-Estelle Ventra — premier contact, qualification, relance, cadrage de la relation. Elle brief Dominique explicitement devant le prospect.",
+      "vp_president": "Dominique Manfredi (Président) — n'intervient que sur les deals stratégiques (gros parcs, revendeurs, installateurs structurants, partenariats constructeurs).",
+      "declencheur": "Escalade Dominique uniquement si : parc > seuil PDC à définir, deal revendeur/installateur multi-sites, ou blocage sur objection prix/technique que l'AM ne peut lever.",
+      "script_de_passe": "L'AM ouvre par une phrase de transfert explicite du type : « J'ai briefé Dominique sur nos échanges, il connaît votre projet. » Puis elle laisse la parole.",
+      "posture_vp": "Discovery avant pitch. Recadrer le problème avant de vendre la solution. Vendre la relation d'opérateur long terme, pas la ligne de facture supervision.",
+      "risque_a_eviter": "Dominique étant fondateur ET technicien ET opérateur, la tentation est de tout porter. Le dispositif ne fonctionne que si Marie-Estelle porte réellement le premier temps."
+    },
+    "statut": "Principe validé par Dominique. Reste à définir : seuil d'escalade, script de passe écrit, et check d'exécution avec Marie-Estelle.",
+    "prochaine_etape": "À intégrer au playbook commercial avant le lancement rentrée (semaine du 1er sept 2026)."
   }
 }
