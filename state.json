@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.379",
+    "version": "1.380",
     "updated": "2026-07-09",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-09",
+        "version_from": "1.379",
+        "version_to": "1.380",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "methode_vente_duo_am_vp_2026_07_09 : passé en PARKÉ. Principe validé, activation conditionnée à la mise en place de la structure commerciale (revue rentrée sept 2026).",
+          "connectivity_emnify_2026_07_09 : statut EN ATTENTE du devis Daria/Enver."
+        ]
+      },
       {
         "date": "2026-07-09",
         "version_from": "1.378",
@@ -13064,7 +13074,7 @@
   "connectivity_emnify_2026_07_09": {
     "date": "2026-07-09",
     "auteur": "Claude PM (claude.ai)",
-    "statut": "POC en préparation — emnify candidat #1. Recalcul économique 2026-07-09 invalide le verdict prix de juin.",
+    "statut": "EN ATTENTE du devis (Daria/Enver). Rien à décider avant réception.",
     "contexte": "Call emnify du 2026-07-09 (Daria = AM, Enver = VP Sales EMEA). Objectif : remplacer Simbase (non-steered) qui est la cause racine documentée des décrochages sur bornes à modem intégré (KEBA) — cf connectivity.diagnostic_decrochages_integres_2026_06_11.",
     "parc_reference_call": {
       "bornes_total": 2000,
@@ -13138,8 +13148,9 @@
         "Relancer Enver sous 5 jours si pas de devis"
       ],
       "claude_pm": [
-        "Rédiger la grille de critères de succès du POC",
-        "Comparer devis emnify vs 2 autres finalistes à réception"
+        "Attendre le devis",
+        "Vérifier présence du prix par SIM active",
+        "Comparer aux 3 finalistes à réception"
       ]
     },
     "historique_evaluation_providers": {
@@ -13216,7 +13227,8 @@
       "posture_vp": "Discovery avant pitch. Recadrer le problème avant de vendre la solution. Vendre la relation d'opérateur long terme, pas la ligne de facture supervision.",
       "risque_a_eviter": "Dominique étant fondateur ET technicien ET opérateur, la tentation est de tout porter. Le dispositif ne fonctionne que si Marie-Estelle porte réellement le premier temps."
     },
-    "statut": "Principe validé par Dominique. Reste à définir : seuil d'escalade, script de passe écrit, et check d'exécution avec Marie-Estelle.",
-    "prochaine_etape": "À intégrer au playbook commercial avant le lancement rentrée (semaine du 1er sept 2026)."
+    "statut": "PARKÉ (2026-07-09). Principe validé, aucune action maintenant. À activer une fois la structure commerciale en place.",
+    "prochaine_etape": "Ne rien construire tant que la condition d'activation n'est pas remplie. Pas de script, pas de seuil, pas de playbook prématuré.",
+    "condition_activation": "Marie-Estelle opérationnelle sur le premier temps commercial (qualification + relance) et volume de deals suffisant pour justifier une escalade sélective vers le Président. Revue au lancement rentrée (semaine du 1er sept 2026)."
   }
 }
