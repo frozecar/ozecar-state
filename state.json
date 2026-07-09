@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.383",
+    "version": "1.384",
     "updated": "2026-07-09",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-09",
+        "version_from": "1.383",
+        "version_to": "1.384",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "REFONTE DE L'OFFRE (valide Dominique): Essential 6,90 AC / 9,90 DC · Business 9,90 AC / 15,90 DC (recommande) · Enterprise sur devis (~50 €). Itinerance INCLUSE dans Business (capacite activable), monetisee au variable. Local 10% (Ent. 5%). Itinerance entrante 0,05 €/kWh + 4% (Ent. 0,025 + 4%) - le % couvre le cout Monta, les centimes sont la marge. DC = 1,65x AC. Maintenance en sus. Pro+/Transit supprimes (deviennent conditions Enterprise).",
+          "ECONOMIE: cout complet 11,64 €/socket a 700 sockets (fixe 5000 €/mo + 4,50 €/socket). Seul Business DC couvre. Seuil ~1 190 sockets. Deficit ~2 060 €/mo a combler par le variable. Levier n°1 = croissance vers 1 200 sockets; levier n°2 = pousser Business; levier n°3 = renegocier les 3 500 € de marque blanche.",
+          "ALERTE: migration Forfait Zero doit etre exprimee en PRIX FIXE 7,45 € (pas '-50%', qui donnerait 4,95 € sous le cout socket). Remises: reco annuel -10% / biannuel -15%, Essential exclu du biannuel (a valider)."
+        ]
+      },
       {
         "date": "2026-07-09",
         "version_from": "1.382",
@@ -13314,5 +13325,46 @@
     "statut": "PARKÉ (2026-07-09). Principe validé, aucune action maintenant. À activer une fois la structure commerciale en place.",
     "prochaine_etape": "Ne rien construire tant que la condition d'activation n'est pas remplie. Pas de script, pas de seuil, pas de playbook prématuré.",
     "condition_activation": "Marie-Estelle opérationnelle sur le premier temps commercial (qualification + relance) et volume de deals suffisant pour justifier une escalade sélective vers le Président. Revue au lancement rentrée (semaine du 1er sept 2026)."
+  },
+  "refonte_offre_2026_07_09": {
+    "statut": "GRILLE VALIDEE par Dominique (naming + prix + variable + DC). Remises et seuil de rentabilite: en discussion.",
+    "naming": "Essential / Business / Enterprise (convention marche, valide). Abandonne: Pro, Pro+, Transit, Socle/Flux/Reseau. Pro+ et Transit ne sont PAS des forfaits mais des conditions negociees -> vivent derriere Enterprise 'sur devis'.",
+    "grille": {
+      "Essential": {
+        "AC": "6,90 €/PDC/mois",
+        "DC": "9,90 €",
+        "contenu": "supervision temps reel, controle a distance, badges RFID locaux, alertes. PAS de transaction."
+      },
+      "Business": {
+        "AC": "9,90 €",
+        "DC": "15,90 €",
+        "contenu": "+ monetique (QR/CB/app), refacturation, groupes tarifaires, itinerance entrante ET sortante, smart charging",
+        "recommande": true
+      },
+      "Enterprise": {
+        "prix": "Sur devis (~50 €/PDC/mois)",
+        "contenu": "+ API/exports, multi-sites/sous-comptes, marque conducteur, CSM dedie, SLA renforce, frais variables reduits. Echange: engagement de volume contre baisse du variable."
+      }
+    },
+    "variable": {
+      "transaction_locale": "10 % (Enterprise 5 %). Cout Monta 2 % -> marge nette 8 % / 3 %. Justifie: Freshmile et les operateurs qui ciblent le client final sont ~10 %; les concurrents a 2,5 % ciblent des revendeurs.",
+      "itinerance_entrante": "0,05 €/kWh + 4 % (Enterprise 0,025 €/kWh + 4 %). Le % couvre EXACTEMENT le cout Monta (4 %), les centimes sont la marge -> marge garantie 0,05 (ou 0,025) €/kWh quel que soit le prix du kWh. IMPORTANT: ne jamais facturer un % inferieur au cout (inversion de marge sur DC a 0,87 €/kWh).",
+      "itinerance_sortante": "A DEFINIR - cout Monta inconnu (demande a Dominique).",
+      "regle": "Frais operateur/itinerance JAMAIS sur les pages publiques - devis uniquement."
+    },
+    "ratio_DC": "~1,65x l'AC (marche: Charge-Keeper 1,55x, e-flux 1,89x). Maintenance TOUJOURS en sus.",
+    "roaming_inclus": "L'itinerance devient une CAPACITE incluse dans Business (activable), monetisee au variable - pas une option a +5 €/PDC. Raison: le roaming coute proportionnellement a l'usage, pas au nombre de PDC. 'Ouvrir au public' = interrupteur gratuit qui active roaming entrant + conformite AFIR + hotline conducteur 24/7.",
+    "assistance_24_7": "DEUX choses distinctes: (1) hotline CONDUCTEUR 24/7 = standard marche (incluse chez e-flux des Essential, Charge-Keeper des Starter) -> incluse quand 'public' est active, inutile pour une flotte de service. (2) INTERVENTION technique sous SLA = niveau de maintenance N1-N4, FACTUREE (Vaylens la vend en add-on 6,90 €). Ne jamais melanger les deux.",
+    "economie": {
+      "couts_fixes": "5 000 €/mois (3 500 marque blanche + 500 API + 1 000 plateforme) + 4,50 €/socket variable.",
+      "parc_actuel": "~700 sockets -> le fixe pese 7,14 €/socket -> COUT COMPLET 11,64 €/socket/mois.",
+      "constat": "Seul Business DC (15,90) couvre le cout complet. Essential AC (6,90) ne couvre que 59% et ne genere AUCUN variable (pas de transaction).",
+      "contribution": "Essential AC 2,40 | Business AC 5,40 | Essential DC 5,40 | Business DC 11,40 | Enterprise 45,50.",
+      "seuil": "Mix realiste (60/25/10/5) -> contribution moyenne 4,20 €/socket -> il faut ~1 190 sockets pour couvrir le fixe avec l'abonnement seul. A 700 sockets: deficit ~2 060 €/mois a combler par le variable (≈25 700 € de transactions locales ou ≈41 000 kWh d'itinerance).",
+      "leviers": "(1) CROISSANCE = levier n°1 (le 3 500 € ne scale pas: 5 €/socket a 700, 2,33 € a 1 500). Objectif 1 200 sockets. (2) Pousser Business par defaut (equilibre a 926 sockets si 100% Business AC vs 2 083 si 100% Essential AC). (3) Renegocier les 3 500 € (70% du fixe)."
+    },
+    "remises_reco": "Cout socket = 65% du prix d'Essential -> une remise % attaque directement la marge (pas un coussin comme en SaaS ou le COGS est ~20%). Grille actuelle (-15% annuel / -25% biannuel) DETRUIT Essential (contribution 0,68 € en biannuel, -72%). RECO: annuel -10%, biannuel -15%, Essential exclu du biannuel (annuel -5% max). A VALIDER.",
+    "alerte_forfait_zero": "L'offre de migration Forfait Zero est 'Pro a -50%' calee sur Pro=14,90 -> 7,45 €. Avec Business a 9,90, '-50%' donnerait 4,95 € = SOUS le cout socket (4,50). REECRIRE en PRIX FIXE 7,45 €, jamais en pourcentage.",
+    "a_repercuter": "Configurateur (forfaits+prix+DC), page tarifs publique (3 plans, dernier sur devis), devis, CGV, deck. Ancienne grille (Essential 5,90 / Pro 14,90 / Pro+ 24,90 / Transit 54,90) OBSOLETE."
   }
 }
