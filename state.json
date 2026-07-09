@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.377",
+    "version": "1.378",
     "updated": "2026-07-09",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-09",
+        "version_from": "1.377",
+        "version_to": "1.378",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "connectivity_emnify_2026_07_09 : compte-rendu call emnify (Daria/Enver), pricing indicatif 0,210-0,220 €/GB, 3 paliers 450MB/1GB/2GB pooled, 2-3 mois offerts à formaliser",
+          "Plan POC 3 SIMs (API / terrain / swap inter-marques), site candidat Renault HPC ~40 sessions/jour",
+          "Leviers de négociation + liste des engagements à obtenir par écrit",
+          "Lien avec diagnostic_decrochages_integres_2026_06_11 : steering endpoint emnify = fix structurel du non-steered Simbase",
+          "monday item 12489027813 CONNECT-EMNIFY créé"
+        ]
+      },
       {
         "date": "2026-07-09",
         "version_from": "1.376",
@@ -13034,5 +13047,87 @@
     "a_verrouiller_plus_tard": "(1) QR du kit doit encoder l'INSTALLATEUR -> attribution/commission + deal supervision rattache a l'installateur referent. (2) Programme partenaire: roles (OZECAR supervise, installateur garde la relation) + no-poach ecrit. (3) Pro+/Transit restent 'sur devis' -> bouton 'besoin sur-mesure' bascule vers le guide (cree un lead). (4) Tarif supervision standard dans les 2 canaux; la remise installateur porte sur le MATERIEL.",
     "reste": "Affichage progressif des options (offre reco visible, options depliables) cote client. Puis STRIPE (kit one-time + abonnement recurrent). Puis notifications d'etapes (kit expedie...). URL propre (ozecar.fr/mon-offre/) via rewrite WP au passage en prod.",
     "bugfix_page_blanche": "BUG (page ne chargeait pas / vide en vue client): enterClientView() forcait showStep(1) -> affichait l'etape Materiel (masquee en dur) => contenu vide. FIX: enterClientView ne force plus showStep; le bloc de masquage materiel decide (showStep(1) si materiel, sinon masque l'etape 1 + wmin=2 + showStep(2)). Verifie en Playwright headless: self-service (Pro pre-selectionne, pdc=4, onglets 1/2, prev masque, 3660px de contenu) + guide (devis Julien, 8 PDC Essential) -> 0 erreur JS."
+  },
+  "connectivity_emnify_2026_07_09": {
+    "date": "2026-07-09",
+    "auteur": "Claude PM (claude.ai)",
+    "statut": "POC en préparation — emnify = candidat #1 sur 3 finalistes",
+    "contexte": "Call emnify du 2026-07-09 (Daria = AM, Enver = VP Sales EMEA). Objectif : remplacer Simbase (non-steered) qui est la cause racine documentée des décrochages sur bornes à modem intégré (KEBA) — cf connectivity.diagnostic_decrochages_integres_2026_06_11.",
+    "parc_reference_call": {
+      "bornes_total": 2000,
+      "bornes_avec_sim": 500,
+      "conso_ac_lente": "~100 MB/mois",
+      "conso_dc_hpc": "1.5–2 GB/mois",
+      "modele_refacturation": "Data absorbée par OZECAR (~2,50 €/borne/mois flat, non refacturé client)"
+    },
+    "historique_sim": [
+      "Vodafone (steered, bundle ancien CPMS)",
+      "Soracom (unsteered, ~500 €/station/an sur HPC)",
+      "Simbase (actuel, non-steered — décrochages)"
+    ],
+    "pourquoi_emnify": [
+      "Steering réseau au niveau endpoint : blocage opérateur (ex. SFR, problème Sud de la France via mutualisation antennes Orange/Three) ou lock mono-réseau → répond directement à la cause racine du non-steered sur assets fixes",
+      "API + data streamer (push events connectivité vers n'importe quel repo) + automation engine (if-this-then-that) inclus",
+      "eSIM pré-configurée activable par QR code → zéro APN manuel à l'install (aligné workflow /activation OZECAR)",
+      "IPsec disponible en option (exigé dans certains pays pour infra publique)"
+    ],
+    "pricing_indicatif": {
+      "prix_gb": "0,210–0,220 €/GB (indicatif, à confirmer par écrit)",
+      "paliers_a_devis": [
+        "450 MB",
+        "1 GB",
+        "2 GB (pooled)"
+      ],
+      "addons": [
+        "IPsec",
+        "Service package (inclus au-delà d'un seuil de dépense)"
+      ],
+      "geste_commercial": "Enver a proposé 2–3 mois offerts pour absorber le coût de migration — À FORMALISER PAR ÉCRIT dans le devis",
+      "modele_croissance": "Customer success au scale, renégociation par volume d'install base, QBRs"
+    },
+    "poc": {
+      "sims_en_main": 3,
+      "recues": "~2026-06-25",
+      "plan": [
+        "SIM 1 : tests intégration API (activation, data streamer, automation engine)",
+        "SIM 2 : déploiement terrain sur site réel",
+        "SIM 3 : swap inter-marques pour tester la connectivité cross-brand"
+      ],
+      "site_candidat": "Station HPC Renault — 4 bornes, ~40 sessions/jour, aujourd'hui en internet filaire. Permet de valider la conso data réelle avec écrans publicitaires.",
+      "duree_cible": "~1 mois (haute saison = conditions réelles)"
+    },
+    "a_obtenir_par_ecrit_avant_engagement": [
+      "Devis détaillé 3 paliers + IPsec + service package + tous add-ons",
+      "Conditions exactes de la gratuité 2–3 mois (périmètre, nb SIMs, date de départ)",
+      "SLA / support / escalade",
+      "Coût et modalités IPsec",
+      "Conditions eSIM concrètes (SM-DP+, QR, IMEI lock)",
+      "Paliers de volume + clause de re-pricing / engagement de compétitivité",
+      "Preuve terrain France sur HPC (référence client)",
+      "Modalités de migration à grande échelle (500 SIMs)"
+    ],
+    "leviers_negociation": [
+      "Enver a lui-même délégitimé le prix Soracom comme 'hors marché' → utiliser pour cadrer le prix de référence",
+      "Discours 'partenaire de croissance' + 'second poste de dépense après le personnel' → demander effort upfront, onboarding renforcé, support migration, remises liées au ramp-up post-levée",
+      "Levée de fonds en cours + fenêtre de croissance 12–18 mois = argument de volume futur",
+      "3 finalistes en compétition — ne pas révéler qu'emnify est #1"
+    ],
+    "impact_simbase": "Si emnify est retenu : sortie progressive de Simbase. Le mail support Simbase sur le steering (rédigé 2026-06-11) devient un test de dernière chance, pas une dépendance.",
+    "granola": "https://notes.granola.ai/t/b3b6f32b-2539-4e69-af88-3429cf34200a",
+    "monday_item": "12489027813",
+    "next_actions": {
+      "emnify": [
+        "Envoyer devis 3 paliers",
+        "Formaliser période d'évaluation gratuite"
+      ],
+      "dominique": [
+        "Confirmer site Renault comme site de test",
+        "Relancer Enver sous 5 jours si pas de devis"
+      ],
+      "claude_pm": [
+        "Rédiger la grille de critères de succès du POC",
+        "Comparer devis emnify vs 2 autres finalistes à réception"
+      ]
+    }
   }
 }
