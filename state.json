@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.387",
+    "version": "1.388",
     "updated": "2026-07-10",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-10",
+        "version_from": "1.387",
+        "version_to": "1.388",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "ECRAN OFFRE CLIENT v2 valide (maquette staging offre-bardinet2.html): repond d'abord a la demande, options PAR SITE (data + maintenance), tableau comparatif maintenance, questions au lieu de produits, kits aux vrais prix catalogue (49/29 €, activation 79 € offerte, mise en service sur site 450 €/site en option), engagement chiffre en economie, paiement SEPA ou recettes.",
+          "Argument N1 valide par Dominique: '60 % des incidents resolus sans deplacement'. Wording Data: prix a l'unite, commercial, sans technicite ni alternative Ethernet."
+        ]
+      },
       {
         "date": "2026-07-10",
         "version_from": "1.386",
@@ -13432,5 +13442,37 @@
     ],
     "self_service_reporte": "DECISION Dominique: on se concentre sur le guide. Le self-service depend du KIT D'ACTIVATION: l'installateur invite le client final -> c'est A L'INVITATION que le deal_id sera cree -> le parcours reprend ensuite le fil normal (signature, onboarding, setup final). Donc le 'trou dossier client' du self-service se resoudra par l'invitation installateur, pas par un formulaire de creation dans le configurateur.",
     "prochaine_brique": "STRIPE (sert les deux parcours)."
+  },
+  "ecran_offre_client_2026_07_10": {
+    "statut": "MAQUETTE VALIDEE (staging: /wp-content/uploads/ozecar/offre-bardinet2.html). A porter dans le vrai configurateur.",
+    "principe": "L'ecran repond D'ABORD a la demande du client (son prix, en haut, gros), puis OUVRE. Pas de tunnel a 2 ecrans: si l'ecran 1 ne convainc pas, personne ne clique 'Suivant'. Restitution explicite de sa demande en tete ('voici exactement cela, rien de plus').",
+    "structure": [
+      "1. Titre + restitution de la demande + prix abonnement (bloc Ink, chiffre Yellow)",
+      "2. UNE CARTE PAR SITE: lignes par type de borne (8xAC / 2xDC), PUIS 'Options de ce site' (Data checkbox + selecteur Maintenance N0-N4), PUIS sous-total du site. Chaque site vit sa vie.",
+      "3. Tableau comparatif maintenance (une seule fois) precede du bloc 60%",
+      "4. 'Ce que Business fait pour vous' (benefices) + note 'itinerance non activee, capacite incluse'",
+      "5. 'Avez-vous pense a ceci ?' — des QUESTIONS, pas des produits. Etiquettes INCLUS / GRATUIT A ACTIVER. (smart charging, itinerance sortante, ouverture au public)",
+      "6. Mise en place: Kit OZECAR x N sites, Kit Borne x (PDC-1 par site), Frais d'activation 79 € BARRES + 'Offerts', Mise en service sur site 450 € en CHECKBOX PAR SITE, cartes SIM 6,50 € si Data. + encadre 'A quoi sert le kit'",
+      "7. Engagement 12/24/36 (prix par PDC + economie chiffree) + prepaiement -5%",
+      "8. Paiement: SEPA mensuel OU 'Sur vos recettes de recharge'",
+      "9. References clients + 59% infra publique Corse (AVANT le bouton)",
+      "10. 'Et apres votre signature' (kits prepares/expedies 48h/config/actif)",
+      "11. Barre fixe: Abonnement · A LA MISE EN SERVICE (pas 'aujourd'hui') · Accepter et signer"
+    ],
+    "prix_reels_catalogue": "Kit OZECAR 49 € HT (1 par site, 1re borne incluse) · Kit Borne 29 € HT (nb PDC - 1) · Frais activation 79 € affiches, OFFERTS · Mise en service sur site 450 € HT (deplacement technicien, jusqu'a 10 PDC) · Carte SIM OZECAR 6,50 € (option Data) · Data 2,00 €/PDC/mois. Bardinet: 2 sites/16 PDC -> kits 504 € HT.",
+    "wording_data": "'Data 4G/5G — Connexion securisee par carte SIM multi-operateur : vos bornes restent en ligne en permanence, sur le meilleur reseau disponible. Rien a gerer, rien a installer.' PRIX A L'UNITE (2,00 €/PDC/mois). INTERDIT: parler de modem sans SIM, proposer l'alternative Ethernet (on donne des raisons de ne pas acheter).",
+    "argument_N1": "CHIFFRE VALIDE Dominique: '60 % des incidents resolus sans deplacement, des le niveau N1'. Affiche en gros (Space Mono violet) avant le tableau. Texte: relance, deblocage, reconfiguration a distance. Formule TOUJOURS au nom d'OZECAR ('nos outils de reparation a distance') - jamais le moteur technique.",
+    "regles_apprises": [
+      "NE JAMAIS inventer de donnees (j'avais invente 'Site Bordeaux', '98 € x 2 kits', et facture une maintenance que Bardinet n'avait pas demandee).",
+      "Le devis ne doit contenir QUE ce que le client a demande. Ce qu'il n'a pas demande se montre en 'non inclus' ou en question, jamais coche.",
+      "Les options appartiennent au SITE (data, maintenance), pas a un panier global. Le kit et l'engagement sont globaux.",
+      "Le wallet ne peut financer que la part avec transactions (Essential = pas de recettes). MAIS il vaut aussi en Essential grace a l'itinerance sortante (correction Dominique).",
+      "Afficher l'economie de l'engagement (648 € sur 36 mois), pas le total mensuel dilue par les options."
+    ],
+    "reste_ouvert": [
+      "Le prepaiement -5 % s'applique-t-il aux options ou au forfait seul ? (aujourd'hui: forfait seul)",
+      "Maintenance differente par site => backend: plans combines par PDC ou 2 groupes.",
+      "Le bouton 'ajouter' data = recalcul immediat; maintenance = choix direct (plus de demande de rappel)."
+    ]
   }
 }
