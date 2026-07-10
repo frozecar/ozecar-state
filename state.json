@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.386",
-    "updated": "2026-07-09",
+    "version": "1.387",
+    "updated": "2026-07-10",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-10",
+        "version_from": "1.386",
+        "version_to": "1.387",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "GRILLE FINALE VALIDEE: remise portee par l'ENGAGEMENT (12/24/36, mensuel SEPA par defaut, prepaiement annuel -5% en option). Itinerance entrante B (4%+0,05 €/kWh) pour les NOUVEAUX sites, A (20%) grandfathered. Itinerance sortante 4%+0,05 €/kWh. Mandat SEPA systematique. Configurateur migre (selecteur engagement + prepay) et verifie."
+        ]
+      },
       {
         "date": "2026-07-09",
         "version_from": "1.385",
@@ -13402,7 +13411,16 @@
     },
     "configurateur_applique": "LIVRE staging. SUP = 3 forfaits (ess/biz/ent). Selecteur AC/DC (#kind) ajoute a cote du selecteur de frequence. supPrice gere kind+mode+quote. Enterprise affiche 'Sur devis'. SUP_ROWS refait en 3 colonnes (itinerance entrante&sortante incluse en Business; assistance conducteurs 24/7 'avec ouverture publique'; API/multi-sites/CSM en Enterprise; frais d'operateur 10%/5%; itinerance 0,05 €/kWh+4% / 0,025+4%). Options remappees: wallet inclus biz/ent + masque en Essential (pas de transaction), data option partout, csm/flotte inclus Enterprise, loadbal inclus partout. Self-service pre-selectionne Business. Mention legale remises maj. Verifie Playwright: 3 colonnes, 6 combinaisons de prix exactes, 0 erreur JS.",
     "reste_a_repercuter": "Page tarifs publique, CGV, deck, emails. Migration Forfait Zero -> reecrire en PRIX FIXE 7,45 € (pas -50%). Itinerance sortante: prix a definir (cout Monta inconnu).",
-    "bugfix_kind_persistance": "BUG (introduit par la refonte, corrige): state.kind (AC/DC) n'etait PAS serialise dans le lien devis (genClientLink) ni restaure cote client -> un devis DC affichait les prix AC (9,90 au lieu de 15,90 = -6 €/PDC/mois silencieux). FIX: kind ajoute a config{}, restaure en vue client (c.kind) et en preview/sales (cf.kind). Verifie Playwright: DC/Business -> 15,90 € cote commercial ET cote client."
+    "bugfix_kind_persistance": "BUG (introduit par la refonte, corrige): state.kind (AC/DC) n'etait PAS serialise dans le lien devis (genClientLink) ni restaure cote client -> un devis DC affichait les prix AC (9,90 au lieu de 15,90 = -6 €/PDC/mois silencieux). FIX: kind ajoute a config{}, restaure en vue client (c.kind) et en preview/sales (cf.kind). Verifie Playwright: DC/Business -> 15,90 € cote commercial ET cote client.",
+    "engagement_et_itinerance_valides": {
+      "remise_par_engagement": "VALIDE Dominique. 12 mois = plein (7,90/10,90 AC · 10,90/17,90 DC), 24 mois ≈ -5% (7,40/10,40 · 10,40/16,90), 36 mois = prix cible (6,90/9,90 · 9,90/15,90). Facturation MENSUELLE par defaut sur nos rails (SEPA). Prepaiement annuel = option separee -5%. Biannuel supprime. Prix affiche partout = 36 mois ('a partir de 6,90').",
+      "itinerance_entrante": "FORMULE B VALIDEE: 4% + 0,05 €/kWh (Enterprise 0,025). GRANDFATHERING: sites existants restent en A (20%), nouveaux sites en B. Comparatif Assesse (3788 sessions, 26,9 kWh/s, 0,647 €/kWh): A=13 131 € · B=7 715 € · C session=4 331 € -> C rejetee (sous-facture le DC).",
+      "itinerance_sortante": "Cout Monta = 4% -> meme formule: 4% + 0,05 €/kWh (OZECARD sur reseaux tiers).",
+      "mandat_sepa": "SYSTEMATIQUE a la signature (SetupIntent Stripe, 0 € debite), meme pour clients wallet (mandat dort = interrupteur d'independance). SEPA Core. Campagne regularisation parc couplee a la migration Forfait Zero.",
+      "facturation_3_canaux": "(1) Defaut: SEPA mensuel nos rails via Stripe -> facture Pennylane, 0 commission. (2) Sites a recettes (Business/DC/public): wallet Monta, abonnement deduit des recettes, 5% = cout de distribution absorbe, mandat SEPA en reserve. (3) Prepaiement annuel -5%: facture Pennylane. Le VARIABLE n'est jamais facture: retenu a la source avant reversement.",
+      "site_web": "Le prix public = 36 mois. Variable jamais sur le site (devis uniquement). Mention '12/24 mois disponibles, voir devis'."
+    },
+    "configurateur_engagement": "LIVRE staging + verifie Playwright. Selecteur d'engagement 12/24/36 (remplace mensuel/annuel/biannuel), checkbox 'Prepaiement annuel -5%' (#prepay), SUP porte ac:[12,24,36] et dc:[...]. Retrocompat anciens liens: mode monthly->12, biannual->24, annual->36. Toutes combinaisons testees exactes (dont prepay: 6,56/9,40 en AC36). Captures: configurateur-engagement*.png."
   },
   "parcours_vente_etat_2026_07_09": {
     "guide_construit": "Commercial configure -> devis envoye (email unique, vues trackees, expiration J+30, relances J-7/J-2, overlay 'en cours de modification') -> client lit en lecture seule -> 'Accepter et signer' -> modal signature eSignatures (code email, SES) -> webhook contract-signed -> deal Gagné + creation deal Livraison. TESTE.",
