@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.388",
+    "version": "1.389",
     "updated": "2026-07-10",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-10",
+        "version_from": "1.388",
+        "version_to": "1.389",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "TARIFICATION COMPLETE VERROUILLEE: itinerance entrante+sortante 5 % + 0,07 €/kWh (negocie 4 % + 0,03, plancher absolu), local 10 %/5 %, ouverture public gratuite avec facturation minimale 5 €/PDC/mois deduite des recettes. Grandfathering sites existants. Analyse Assesse complete (7 743 sessions) + benchmark concurrence (pass-through vs commission) + positionnement course CPO graves."
+        ]
+      },
       {
         "date": "2026-07-10",
         "version_from": "1.387",
@@ -13430,7 +13439,18 @@
       "facturation_3_canaux": "(1) Defaut: SEPA mensuel nos rails via Stripe -> facture Pennylane, 0 commission. (2) Sites a recettes (Business/DC/public): wallet Monta, abonnement deduit des recettes, 5% = cout de distribution absorbe, mandat SEPA en reserve. (3) Prepaiement annuel -5%: facture Pennylane. Le VARIABLE n'est jamais facture: retenu a la source avant reversement.",
       "site_web": "Le prix public = 36 mois. Variable jamais sur le site (devis uniquement). Mention '12/24 mois disponibles, voir devis'."
     },
-    "configurateur_engagement": "LIVRE staging + verifie Playwright. Selecteur d'engagement 12/24/36 (remplace mensuel/annuel/biannuel), checkbox 'Prepaiement annuel -5%' (#prepay), SUP porte ac:[12,24,36] et dc:[...]. Retrocompat anciens liens: mode monthly->12, biannual->24, annual->36. Toutes combinaisons testees exactes (dont prepay: 6,56/9,40 en AC36). Captures: configurateur-engagement*.png."
+    "configurateur_engagement": "LIVRE staging + verifie Playwright. Selecteur d'engagement 12/24/36 (remplace mensuel/annuel/biannuel), checkbox 'Prepaiement annuel -5%' (#prepay), SUP porte ac:[12,24,36] et dc:[...]. Retrocompat anciens liens: mode monthly->12, biannual->24, annual->36. Toutes combinaisons testees exactes (dont prepay: 6,56/9,40 en AC36). Captures: configurateur-engagement*.png.",
+    "VARIABLE_VERROUILLE_2026_07_10": {
+      "statut": "VERROUILLE par Dominique le 2026-07-10. La grille tarifaire est COMPLETE.",
+      "transaction_locale": "10 % (Enterprise/negocie 5 %)",
+      "itinerance_entrante": "STANDARD 5 % + 0,07 €/kWh (= la moitie du local en %, taux effectif ~15,7 % sur profil Assesse 0,655 €/kWh — quasi iso avec l'existant 16 %). NEGOCIE (Enterprise/gros volume, plancher absolu): 4 % + 0,03 €/kWh (~8,6 % effectif — remise a ne dégainer que contre volume/engagement, elle divise la marge par 2,6).",
+      "itinerance_sortante": "5 % + 0,07 €/kWh (negocie 4 % + 0,03). Cout Monta 4 % les deux sens.",
+      "grandfathering": "Sites existants conservent leurs conditions (ex. Assesse 16 %/8 % plan 4782 'DC Essential (BE)' 10,80 €). Nouvelles conditions pour nouveaux sites uniquement.",
+      "analyse_assesse_complete": "7 743 sessions (10 sept 2025 -> 10 juil 2026, 11 mois calendaires), 4 PDC DC 180 kW, 100 % ITINERANCE (zero local). 187 203 kWh, 122 577 € recettes. Mensuel: 658 sessions, 17 018 kWh, 11 143 €, prix moyen 0,655 €/kWh. Facture itinerance/mois: actuel 16 % = 1 783 € | 5 %+0,07 = 1 748 € | 4 %+0,05 = 1 297 € (rejete, -27 %) | 4 %+0,03 = 956 €.",
+      "ouverture_public": "Activation GRATUITE + FACTURATION MINIMALE 5 €/PDC/mois deduite des recettes d'itinerance (plancher, pas peage): le PDC public actif ne paie rien de plus, le PDC public inactif couvre hotline 24/7 + referencement. Itinerance SORTANTE incluse sans frais fixes (aucun cout par PDC).",
+      "argumentaire_concurrence": "Le '0,03 €/kWh' d'e-flux/Charge-Keeper est un PASS-THROUGH de clearing (ChargePoint: 'we pass through costs without any markup'), pas une commission — ils se remunerent sur plateforme/abonnement/markup CPO. EVesto: roaming 1,25 €/connecteur/mois mais plancher 400 €/mois. ChargePoint mars 2026: frais par session VISIBLES conducteur (0,25-0,99 $) -> bad buzz massif; notre commission est invisible du conducteur (prelevee sur le reversement). REGLE: variable JAMAIS en grille publique; en RDV, presenter en NET: 'vous gardez ~84 % de vos recettes, sans devenir operateur'. Preuve: Assesse ~12 000 €/mois de recettes, le client 'laisse couler parce que ca tourne'.",
+      "positionnement_course": "Deux courses distinctes: (1) course au capital (tiers-invest Electra/Powerdot) = PAS la notre; (2) course a l'OPERATION des bornes obligees par AFIR/LOM/droit a la prise = la notre, la reglementation nous pousse des clients. Duel commercial cle vs tiers-invest: 'Possedez votre borne, gardez ~84 % de vos recettes' vs 'borne gratuite, loyer'. Vulnerabilites: (1) echelle 700->1 190 sockets = LA variable, (2) dependance moteur technique -> mandat SEPA + contrats a notre nom = assurance-vie, (3) concentration Corse -> repliquer Assesse sur continent/Belgique."
+    }
   },
   "parcours_vente_etat_2026_07_09": {
     "guide_construit": "Commercial configure -> devis envoye (email unique, vues trackees, expiration J+30, relances J-7/J-2, overlay 'en cours de modification') -> client lit en lecture seule -> 'Accepter et signer' -> modal signature eSignatures (code email, SES) -> webhook contract-signed -> deal Gagné + creation deal Livraison. TESTE.",
