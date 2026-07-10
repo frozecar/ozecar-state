@@ -1,12 +1,22 @@
 {
   "_meta": {
-    "version": "1.385",
+    "version": "1.386",
     "updated": "2026-07-09",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-09",
+        "version_from": "1.385",
+        "version_to": "1.386",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "FIX critique: AC/DC (state.kind) n'etait pas persiste dans le lien devis -> un devis DC affichait les prix AC (-6 €/PDC/mois). Corrige + verifie.",
+          "Parcours: focus GUIDE (decision Dominique). Self-service reporte: le deal_id sera cree a l'INVITATION du client final par l'installateur (kit d'activation). Prochaine brique = Stripe (paiement kit + abonnement)."
+        ]
+      },
       {
         "date": "2026-07-09",
         "version_from": "1.384",
@@ -13391,6 +13401,18 @@
       "raison": "Une remise % attaque directement la marge car le COGS est 65% du prix (vs ~20% en SaaS classique). L'ancienne grille (-15%/-25%) detruisait Essential."
     },
     "configurateur_applique": "LIVRE staging. SUP = 3 forfaits (ess/biz/ent). Selecteur AC/DC (#kind) ajoute a cote du selecteur de frequence. supPrice gere kind+mode+quote. Enterprise affiche 'Sur devis'. SUP_ROWS refait en 3 colonnes (itinerance entrante&sortante incluse en Business; assistance conducteurs 24/7 'avec ouverture publique'; API/multi-sites/CSM en Enterprise; frais d'operateur 10%/5%; itinerance 0,05 €/kWh+4% / 0,025+4%). Options remappees: wallet inclus biz/ent + masque en Essential (pas de transaction), data option partout, csm/flotte inclus Enterprise, loadbal inclus partout. Self-service pre-selectionne Business. Mention legale remises maj. Verifie Playwright: 3 colonnes, 6 combinaisons de prix exactes, 0 erreur JS.",
-    "reste_a_repercuter": "Page tarifs publique, CGV, deck, emails. Migration Forfait Zero -> reecrire en PRIX FIXE 7,45 € (pas -50%). Itinerance sortante: prix a definir (cout Monta inconnu)."
+    "reste_a_repercuter": "Page tarifs publique, CGV, deck, emails. Migration Forfait Zero -> reecrire en PRIX FIXE 7,45 € (pas -50%). Itinerance sortante: prix a definir (cout Monta inconnu).",
+    "bugfix_kind_persistance": "BUG (introduit par la refonte, corrige): state.kind (AC/DC) n'etait PAS serialise dans le lien devis (genClientLink) ni restaure cote client -> un devis DC affichait les prix AC (9,90 au lieu de 15,90 = -6 €/PDC/mois silencieux). FIX: kind ajoute a config{}, restaure en vue client (c.kind) et en preview/sales (cf.kind). Verifie Playwright: DC/Business -> 15,90 € cote commercial ET cote client."
+  },
+  "parcours_vente_etat_2026_07_09": {
+    "guide_construit": "Commercial configure -> devis envoye (email unique, vues trackees, expiration J+30, relances J-7/J-2, overlay 'en cours de modification') -> client lit en lecture seule -> 'Accepter et signer' -> modal signature eSignatures (code email, SES) -> webhook contract-signed -> deal Gagné + creation deal Livraison. TESTE.",
+    "guide_manquant": [
+      "PAIEMENT (Stripe): kit one-time + abonnement recurrent (SEPA/carte). Bloquant pour encaisser.",
+      "Envoi du contrat signe (PDF) aux parties (signataire, payeur, contact technique, copie OZECAR).",
+      "Notifications d'etapes (kit prepare/expedie/config/actif) promises dans le bloc 'Et apres ?'.",
+      "URL propre ozecar.fr/mon-offre (rewrite WP au passage en prod)."
+    ],
+    "self_service_reporte": "DECISION Dominique: on se concentre sur le guide. Le self-service depend du KIT D'ACTIVATION: l'installateur invite le client final -> c'est A L'INVITATION que le deal_id sera cree -> le parcours reprend ensuite le fil normal (signature, onboarding, setup final). Donc le 'trou dossier client' du self-service se resoudra par l'invitation installateur, pas par un formulaire de creation dans le configurateur.",
+    "prochaine_brique": "STRIPE (sert les deux parcours)."
   }
 }
