@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.390",
+    "version": "1.391",
     "updated": "2026-07-10",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-10",
+        "version_from": "1.390",
+        "version_to": "1.391",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Page tarifs publique: selecteur d'engagement retire (la duree se negocie au devis, pas en vitrine). Prix affiches = 36 mois avec mention loyaute. AC/DC conserve."
+        ]
+      },
       {
         "date": "2026-07-10",
         "version_from": "1.389",
@@ -13460,7 +13469,7 @@
       "argumentaire_concurrence": "Le '0,03 €/kWh' d'e-flux/Charge-Keeper est un PASS-THROUGH de clearing (ChargePoint: 'we pass through costs without any markup'), pas une commission — ils se remunerent sur plateforme/abonnement/markup CPO. EVesto: roaming 1,25 €/connecteur/mois mais plancher 400 €/mois. ChargePoint mars 2026: frais par session VISIBLES conducteur (0,25-0,99 $) -> bad buzz massif; notre commission est invisible du conducteur (prelevee sur le reversement). REGLE: variable JAMAIS en grille publique; en RDV, presenter en NET: 'vous gardez ~84 % de vos recettes, sans devenir operateur'. Preuve: Assesse ~12 000 €/mois de recettes, le client 'laisse couler parce que ca tourne'.",
       "positionnement_course": "Deux courses distinctes: (1) course au capital (tiers-invest Electra/Powerdot) = PAS la notre; (2) course a l'OPERATION des bornes obligees par AFIR/LOM/droit a la prise = la notre, la reglementation nous pousse des clients. Duel commercial cle vs tiers-invest: 'Possedez votre borne, gardez ~84 % de vos recettes' vs 'borne gratuite, loyer'. Vulnerabilites: (1) echelle 700->1 190 sockets = LA variable, (2) dependance moteur technique -> mandat SEPA + contrats a notre nom = assurance-vie, (3) concentration Corse -> repliquer Assesse sur continent/Belgique."
     },
-    "page_tarifs_staging_maj": "LIVRE 2026-07-10. Section #tarifs de /supervision-3/ (post 22463) remplacee en DB via $wpdb (bypass KSES, clean_post_cache). ANCIENNE grille supprimee (Essential 5,90/Pro 14,90/Pro Plus 24,90/Transit, 'annuel -15%', 'sans engagement', 'premier mois offert'). NOUVELLE: 3 cartes Essential/Business(populaire)/Enterprise(sur devis), selecteur ENGAGEMENT 12/24/36 (36=defaut 'meilleur prix') + selecteur AC/DC, prix JS dynamiques (ess ac 7.90/7.40/6.90 dc 10.90/10.40/9.90 · biz ac 10.90/10.40/9.90 dc 17.90/16.90/15.90). Footer: data 2 €, maintenance des 4 € + 60% incidents resolus sans deplacement, ouverture public gratuite, prepaiement -5%. AUCUN frais variable affiche (regle). Verifie Playwright: 4 combinaisons exactes, 0 erreur JS. Captures tarifs-36-ac/dc.png."
+    "page_tarifs_staging_maj": "LIVRE 2026-07-10. Section #tarifs de /supervision-3/ (post 22463) remplacee en DB via $wpdb (bypass KSES, clean_post_cache). ANCIENNE grille supprimee (Essential 5,90/Pro 14,90/Pro Plus 24,90/Transit, 'annuel -15%', 'sans engagement', 'premier mois offert'). NOUVELLE: 3 cartes Essential/Business(populaire)/Enterprise(sur devis), selecteur ENGAGEMENT 12/24/36 (36=defaut 'meilleur prix') + selecteur AC/DC, prix JS dynamiques (ess ac 7.90/7.40/6.90 dc 10.90/10.40/9.90 · biz ac 10.90/10.40/9.90 dc 17.90/16.90/15.90). Footer: data 2 €, maintenance des 4 € + 60% incidents resolus sans deplacement, ouverture public gratuite, prepaiement -5%. AUCUN frais variable affiche (regle). Verifie Playwright: 4 combinaisons exactes, 0 erreur JS. Captures tarifs-36-ac/dc.png. | REVISION 2026-07-10: selecteur d'engagement 12/24/36 RETIRE du public (decision Dominique — la duree est un outil de negociation, pas un argument de vente: elle revelait la grille de remise, transformait le prix d'appel en asterisque, et n'appartient qu'au devis). GARDE: selecteur AC/DC (decrit le besoin) + mention loyaute 'Prix pour un engagement 36 mois. Engagements 12 et 24 mois disponibles — detail au devis.' Prix affiches = 36 mois (6,90/9,90 AC · 9,90/15,90 DC). Verifie Playwright: 0 bouton engagement, AC/DC fonctionnel, 0 erreur."
   },
   "parcours_vente_etat_2026_07_09": {
     "guide_construit": "Commercial configure -> devis envoye (email unique, vues trackees, expiration J+30, relances J-7/J-2, overlay 'en cours de modification') -> client lit en lecture seule -> 'Accepter et signer' -> modal signature eSignatures (code email, SES) -> webhook contract-signed -> deal Gagné + creation deal Livraison. TESTE.",
