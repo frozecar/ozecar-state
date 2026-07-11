@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.393",
+    "version": "1.394",
     "updated": "2026-07-11",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-11",
+        "version_from": "1.393",
+        "version_to": "1.394",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "HubSpot: pipelines reels verifies (Vente + Livraison&Activation), 2 stages Avenant crees dans Vente, groupe+6 proprietes 'Parc OZECAR' crees sur les companies via API. Dashboard Parc clients livre (parc-clients.html + api/parc.php): KPI investisseur, actions Modifier/+Avenant, export CSV, instructions commercial. Vues UI (Ventes sans avenants / Avenants) a creer manuellement (pas d'API)."
+        ]
+      },
       {
         "date": "2026-07-11",
         "version_from": "1.392",
@@ -13555,5 +13564,13 @@
     "LOT_3_sans_engagement": "~15 pages avec 'sans engagement' (contradictoire avec l'offre 12/24/36): homepage(1001), homepage-2, supervision(22409), supervision-2, kit-3, contact-5, demo, hotellerie, supermarches, flottes, transport, installateurs(x2), weldom-2, simuler-mon-projet, cpo-2026, electrifier-flotte-2026, devenir-cpo-2026, remboursement-recharge-domicile, reprise-supervision. Remplacer par 'engagement flexible 12 a 36 mois' ou supprimer.",
     "NON_PROBLEMES": "fr.ozecar.monta.ozecarone (bundle Android, exception autorisee, pages 3148/22428/22462/one). 'montants/montagne/remontait' = faux positifs (22657, 22419, 22429). 5,90 sur remboursement-recharge-domicile = produit distinct legitime. Vieilles pages non liees (22409 supervision, 22344 activation v1, 1001/1002) = verifier si orphelines avant d'investir.",
     "statut": "RAPPORT LIVRE. Corrections en attente du go Dominique (lot 1 d'abord; question ouverte: URL OCPP reelle dans les guides)."
+  },
+  "parc_clients_hubspot_2026_07_11": {
+    "pipelines_REELS_verifies": "'Livraison & Activation' (id=default: Kit à préparer → Kit expédié → Activation en cours → Contrat envoyé → Contrat signé → Supervision active → Fermé gagné/perdu) et 'Vente' (id=3747862733: Nouveau → Qualifié → Démo planifiée → Devis à faire → Devis-contrat envoyé → Gagné → Perdu). Les anciens noms Supervision/L&Q sont PERIMES.",
+    "stages_avenant_CREES": "Pipeline Vente: 'Avenant — envoyé' (id=5678350578, prob 0.6) et 'Avenant — signé' (id=5678388459, prob 1.0). Deal signé = photo immuable; avenant = nouveau deal (montant = delta MRR) dans ces stages.",
+    "proprietes_company_CREEES": "Groupe 'Parc OZECAR' (ozecar_parc) + 6 proprietes: ozecar_parc_resume (textarea), ozecar_pdc_total (number), ozecar_mrr (number), ozecar_engagement_fin (date), ozecar_forfaits (checkbox essential/business/enterprise), ozecar_paiement (select sepa/wallet/prepay). NOTE: la creation via API companies FONCTIONNE (le blocage scope note precedemment ne concernait que crm.schemas.deals). Remplissage: webhook post-signature (a brancher au portage) + backfill Monta a prevoir.",
+    "vues_UI_a_creer_manuellement": "L'API views n'existe pas (404). Dominique, 2 min dans l'UI deals: (1) vue 'Ventes' = filtre Étape ≠ Avenant—envoyé/signé, definir par defaut; (2) vue 'Avenants' = filtre Étape ∈ les 2 stages avenant. + activer 'Masquer les colonnes vides' sur le board.",
+    "dashboard": "staging.ozecar.fr/wp-content/uploads/ozecar/parc-clients.html (interne). KPI investisseur: MRR, ARR, PDC (vs objectif 1190), MRR/PDC (vs cout 11,64), clients, fins d'engagement <90j. Tableau par societe (forfaits badges, PDC, MRR, paiement, fin eng., resume parc) + boutons Modifier/+Avenant (configurateur ?company=&avenant=1, mode a implementer au portage) + export CSV investisseurs + instructions commercial (36 mois, ~84% net, 60% N1, regles avenant, wallet forfait+options SEPA, jamais nommer le fournisseur).",
+    "endpoint": "ozecar.fr/api/parc.php (GET, cache 10 min, ?fresh=1 pour forcer). Agrege les companies HubSpot ayant un deal associe ou des donnees parc. Token server-side partage avec hubspot.php. 18 clients remontes, 0 avec donnees parc (backfill a venir)."
   }
 }
