@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.391",
+    "version": "1.392",
     "updated": "2026-07-10",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-10",
+        "version_from": "1.391",
+        "version_to": "1.392",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "AUDIT residus staging (109 pages): 46 touchees. LOT 1 critique marque blanche: 'ozecar.hub.monta.app' visible dans les mockups de supervision-3, 'Station ID Monta'/'portail Monta' sur pages activation, monta.imgix.net visible dans les params du proxy (bornes-compatibles-3 823x + recherche), homepage-2 = ancienne grille complete. LOT 2: ancienne grille (reprise-supervision, bundle-zaptec-pro, 4 articles support, blog LOM). LOT 3: 'sans engagement' sur ~15 pages. Bundle Android + montants/montagne = faux positifs ecartes."
+        ]
+      },
       {
         "date": "2026-07-10",
         "version_from": "1.390",
@@ -13513,5 +13522,24 @@
       "Maintenance differente par site => backend: plans combines par PDC ou 2 groupes.",
       "Le bouton 'ajouter' data = recalcul immediat; maintenance = choix direct (plus de demande de rappel)."
     ]
+  },
+  "audit_residus_staging_2026_07_10": {
+    "methode": "Scan DB (post_content, 109 pages/posts publies) des motifs: ancienne grille (5,90/14,90/17,50/24,90/54,90, Pro/Pro+/Pro Plus/Transit), mentions contradictoires (sans engagement, premier mois offert, -15/-25%), et 'monta'. Puis classification contextuelle des hits Monta: TEXTE visible / URL / faux positif (montant, montagne) / bundle Android autorise (fr.ozecar.monta.ozecarone).",
+    "LOT_1_CRITIQUE_marque_blanche": {
+      "supervision-3 (22463)": "6x 'ozecar.hub.monta.app' AFFICHE dans les barres d'URL des mockups dashboard -> remplacer par 'ozecar.app'. Fuite visible plein ecran sur LA page produit.",
+      "activation (22344) + activation-kit-2 (22426)": "12x chacune: 'Station ID Monta' (label de formulaire), 'portail Monta' (texte), et 6x 'wss://ocpp.monta.app' dans les guides OCPP. ATTENTION: l'URL OCPP est TECHNIQUEMENT REELLE (les bornes doivent pointer dessus tant que la migration wss://ocpp.ozecar.app n'existe pas). Trancher avec Dominique: masquer/renommer le label et 'portail OZECAR', mais l'URL OCPP ne peut pas etre inventee.",
+      "recherche (22593) + bornes-compatibles-3 (22465, 823x)": "monta.imgix.net DEJA proxifie via ozecar.fr/api/img-proxy.php?url=... MAIS l'URL Monta reste VISIBLE en clair dans le parametre. Modifier img-proxy pour accepter un id/chemin opaque, ou stocker les images. + 22593 contient des commentaires JS 'guides monta'.",
+      "homepage-2 (22462)": "1x fuite + ANCIENNE GRILLE COMPLETE (5,90/14,90/17,50/Pro Plus/-15%/premier mois offert/sans engagement) -> refaire sa section tarifs comme supervision-3."
+    },
+    "LOT_2_ancienne_grille": {
+      "reprise-supervision (22660)": "5,90 x3 + 14,90 + Pro+ -> nouvelle grille (6,90/9,90).",
+      "bundle-zaptec-pro (22504)": "Pro Plus x2.",
+      "articles support (22605,22607,22611,22613)": "Pro Plus x1-2 chacun -> Business.",
+      "blog loi-lom-flottes-2027 (22600)": "Pro Plus x2.",
+      "ozecar-one (22428)": "-15% (ascii) a verifier + bundle Android OK."
+    },
+    "LOT_3_sans_engagement": "~15 pages avec 'sans engagement' (contradictoire avec l'offre 12/24/36): homepage(1001), homepage-2, supervision(22409), supervision-2, kit-3, contact-5, demo, hotellerie, supermarches, flottes, transport, installateurs(x2), weldom-2, simuler-mon-projet, cpo-2026, electrifier-flotte-2026, devenir-cpo-2026, remboursement-recharge-domicile, reprise-supervision. Remplacer par 'engagement flexible 12 a 36 mois' ou supprimer.",
+    "NON_PROBLEMES": "fr.ozecar.monta.ozecarone (bundle Android, exception autorisee, pages 3148/22428/22462/one). 'montants/montagne/remontait' = faux positifs (22657, 22419, 22429). 5,90 sur remboursement-recharge-domicile = produit distinct legitime. Vieilles pages non liees (22409 supervision, 22344 activation v1, 1001/1002) = verifier si orphelines avant d'investir.",
+    "statut": "RAPPORT LIVRE. Corrections en attente du go Dominique (lot 1 d'abord; question ouverte: URL OCPP reelle dans les guides)."
   }
 }
