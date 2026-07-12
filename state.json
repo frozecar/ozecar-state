@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.394",
-    "updated": "2026-07-11",
+    "version": "1.395",
+    "updated": "2026-07-12",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-12",
+        "version_from": "1.394",
+        "version_to": "1.395",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Make credits: 3 scenarios polling 120s (05b/10/11) passes a 900s (15min) pour stopper le burn (tests finis). Fix durable = conversion webhook."
+        ]
+      },
       {
         "date": "2026-07-11",
         "version_from": "1.393",
@@ -4871,7 +4880,8 @@
       "name": "09 - Devis envoye -> email client",
       "active": false,
       "status_2026_07_04": "DESACTIVE - logique repliee dans 08 (event-driven). Ancien trigger = searchDeals polling 15min qui re-scannait tous les deals du stage 'Devis envoye' + re-GET chacun => ~6544 ops/mois a vide. Conserve pour rollback, ne pas reactiver."
-    }
+    },
+    "credits_fix_2026_07_12": "Credits epuises en 2j: 3 pollers a 120s (2min) = ~4800 ops/2j chacun. 05b(6400488) booking demo, 10(6452570) demo->devis, 11(6458109) devis-contrat->email passes a interval 900 (15min) => burn /7,5. 04 LinkedIn(5323747) reste a 900s (modere). Daily 07/12 et webhooks 01/08 = OK. FIX DURABLE a prevoir: convertir 05b/10/11 en webhook-driven (comme 01/08) pour eliminer le burn au repos (webhook-first principle)."
   },
   "hubspot": {
     "account_id": "143920450",
