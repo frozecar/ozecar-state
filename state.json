@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.418",
+    "version": "1.419",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.418",
+        "version_to": "1.419",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "PORTAGE ETAPE 1 LIVREE: configurateur-v2-dev.html = moteur multi-sites fonctionnel (sites/lignes dynamiques, options par site, engagement bas + prepay, kits auto, URL ?c=, mode client v=1), teste Playwright sur Bardinet reel: 170,40 au centime, zero erreur. Restes: prefill HubSpot, ecran avant/apres + avenant, rendu offre riche, webhook, bascule prod."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.417",
@@ -14175,6 +14184,11 @@
       "prix": "Panneau delta: Actuel -> Nouveau · +X €/mois, avec date d'effet par ligne (ajout/upgrade immediat · retrait anniversaire · options 30j).",
       "ECRAN_CONFIRMATION_AVANT_APRES": "OBLIGATOIRE avant generation (demande Dominique): deux colonnes AVANT|APRES site par site (inchange gris, modifie surligne, ajoute vert, retire barre+date d'effet), bloc delta central (ancien -> nouveau · +X €/mois HT + impact ponctuel kits/prorata), dates d'effet explicites, boutons [<- Modifier][Generer l'avenant ->]. Le meme avant/apres figure dans le document a signer.",
       "sortie": "Page 'Avenant n°X' = delta seul + nouveau total. Signature si prix/engagement/downgrade; e-mail recap si ajout demande (delta consenti)."
+    },
+    "ETAPE_1_LIVREE_2026_07_13": {
+      "livrable": "staging.ozecar.fr/wp-content/uploads/ozecar/configurateur-v2-dev.html — moteur multi-sites FONCTIONNEL: sites[] dynamiques (ajout/suppression sites et lignes), lignes kind AC/DC (badge cliquable violet/jaune) × forfait ess/biz × qty, options PAR SITE (data 2€, maintenance N0-N4, MES 450), kits auto (49 + 29×(pdc-1) par site), SIM 6,50 si data, engagement 12/24/36 EN BAS + prepay -5% sur tout + economie chiffree vs 12 mois, barre totale fixe (abonnement + mise en service + resume), serialisation URL ?c=base64(json) auto (history.replaceState), bouton 'Generer le lien client' (copie ?c=...&v=1), MODE CLIENT v=1 lecture seule (titre 'Votre offre OZECAR', CTA 'Accepter et signer' placeholder webhook).",
+      "tests_playwright_bardinet": "36m: 170,40 (= maquette au centime) · kits 504 · +data+N1 s1: 230,40 / once 510,50 · prepay: 218,82 · 12m+options: 248,40 · +site 4AC: 270,00 · 3 sites 20 PDC OK · mode RO OK · zero erreur JS.",
+      "restes_etapes": "2) prefill ?company= (HubSpot) + fiche client derniere page · 3) ecran confirmation AVANT/APRES + mode avenant (?company&avenant=1, prechargement ozecar_config_json) · 4) rendu offre client riche (blocs 60% N1, benefices, references — reprendre offre-bardinet2) au lieu du RO brut · 5) webhook post-signature 5 volets · 6) bascule prod (remplace configurateur-devis.html) apres go Dominique."
     }
   }
 }
