@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.397",
+    "version": "1.398",
     "updated": "2026-07-12",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-12",
+        "version_from": "1.397",
+        "version_to": "1.398",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Fiche de saisie complete des 12 plans Hub (ecrans 1-5): PRIX TTC (champ 'TVA incluse' -> plan test 7,90 a corriger en 9,48), resumes client-facing, frais operateur 10% / itinerance 5%+0,07 HT dans le plan, checkbox sessions non payees DECOCHEE, 1er du mois prorata, resiliation operateur seul."
+        ]
+      },
       {
         "date": "2026-07-12",
         "version_from": "1.396",
@@ -13658,6 +13667,15 @@
     },
     "parametres": "Periodicite mensuelle · s'applique au POINT DE CHARGE (subscription par PDC, pas par team — c'est ce qui permet le parc mixte) · prelevement sur le wallet de l'equipe · HT/TTC du champ prix A VERIFIER sur le premier plan cree (le Hub affiche ou non 'incl. VAT'; plan 4782 a 10,80 ne tranche pas).",
     "process": "Dominique cree UN plan test (Supervision Essential AC · 36 mois) -> Claude l'audite par API (/plans, champs price/applicableFor/priceModel/serviceConfig) -> feu vert -> Dominique cree les 11 autres a l'identique -> Claude re-audite les 12 et grave les IDs.",
-    "usage": "Ces plans servent: (1) provisioning des nouveaux contrats, (2) bascules wallet (le plan est preleve sur le wallet nativement), (3) le webhook du portage mappe devis -> plan par (forfait,type,engagement)."
+    "usage": "Ces plans servent: (1) provisioning des nouveaux contrats, (2) bascules wallet (le plan est preleve sur le wallet nativement), (3) le webhook du portage mappe devis -> plan par (forfait,type,engagement).",
+    "FICHE_SAISIE_COMPLETE_v2": {
+      "hub": "ozecar.hub-beta.monta.app (nouveau Hub, operator_id=2257) > Growth > Plans et abonnements > Forfaits > Nouveau",
+      "ecran1_type": "'Abonnement borne de recharge' pour les 12 plans standards (subscription par PDC = parc mixte possible). Plan de groupe: reserve a un futur Enterprise nominatif multi-sites uniforme. Plan de sous-compte: futur programme revendeur (pro.ozecar.fr), pas maintenant.",
+      "ecran2_details": "NOM sans redondance marketing mais explicite sur la facture wallet: 'Supervision {Forfait} {AC|DC} · {N} mois'. ATTENTION LE PRIX EST TTC ('Saisissez le prix, TVA incluse') -> saisir la colonne TTC FR 20%: EssAC 9,48/8,88/8,28 · EssDC 13,08/12,48/11,88 · BizAC 13,08/12,48/11,88 · BizDC 21,48/20,28/19,08. Le plan test cree a 7,90 (= 6,58 HT) DOIT etre corrige a 9,48. RESUME (client-facing, app + proprietaire): Essential: 'Supervision OZECAR de votre point de charge : pilotage a distance, acces badges et QR, alertes et rapports.' Business: 'Supervision OZECAR de votre point de charge : pilotage, monetisation des recharges, refacturation et assistance conducteurs 24/7.'",
+      "ecran3_frais_operateur": "Les frais variables VIVENT DANS LE PLAN (confirme par plan 4782 existant: serviceConfig 8%/16%). Champs HT ('La TVA sera ajoutee'). Frais de recharge de l'operateur: ON · Frais de transaction 10 % · Frais de depart par recharge: vide (0) · Frais par kWh: vide (0) · CHECKBOX 'appliquer aux sessions non payees': DECOCHER (sinon frais factures sur les recharges gratuites des flottes/Essential).",
+      "ecran4_frais_itinerance": "Frais de recharge en itinerance: ON · Frais de transaction en itinerance 5 % · Frais de depart itinerance: vide (0) · Frais itinerance par kWh: 0,07 EUR/kWh. Identique sur les 12 plans (Essential inclus: sans monetisation les frais ne se declenchent jamais, et un passage Business plus tard est deja couvert).",
+      "ecran5_parametres": "Approbation: 'ne necessite pas d'approbation' (abos crees par nous/API). Date de paiement: 'Premier jour du mois, paiement a l'avance' (prorata au demarrage -> tout le parc aligne sur le mois calendaire: reversements et compta propres). Resiliation: 'Seuls les utilisateurs operateurs' (engagement 12/24/36 oblige — jamais le proprietaire).",
+      "monetisations_futures_notees": "(1) Plan de groupe pour Enterprise multi-sites wallet uniforme. (2) Plan de sous-compte = abonnement partenaire/revendeur (portail pro). (3) Vendre la Data en abonnement borne Monta serait possible mais ON GARDE la regle options=SEPA (sinon retour des plans combines)."
+    }
   }
 }
