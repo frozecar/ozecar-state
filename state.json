@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.413",
+    "version": "1.414",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.413",
+        "version_to": "1.414",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CORRECTION verite terrain (40 points Dominique): liste forfait-zero refaite. Cible reelle: 8 maintenance-seule + 7 purs gratuits + 44 a verifier. Lecon: 2 canaux Pennylane + payeurs tiers -> croisement API insuffisant. Solution perenne proposee: mapping externalId team<->customer. PART-01 cree (contrat Grimaldi)."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.412",
@@ -14049,6 +14058,61 @@
     "niveau_2_clients": "88 teams · 290 PDC sans AUCUN abonnement payant (ni Monta ni Pennylane consolide via fiches HubSpot + verif manuelle des faux positifs de matching: Balesi/OEHC/Comepa/UDIFE/Moulin des Oliviers/A Cupulatta/A Chjusella paient bien Pennylane).",
     "niveau_3_decomposition": "Parmi les 88: 60 teams · 196 PDC ont de l'activite wallet (paient du VARIABLE 8-16 % sur transactions: Ville d'Ajaccio wtx5967, E.Leclerc wtx5804, Erba Rossa, Kalfleche, Pinede Calvi...) · 28 teams · 94 PDC = PURS GRATUITS (zero abonnement, zero variable).",
     "comparaison_campagne": "La campagne Forfait Zero (state anterieur) visait 38 clients / 119 PDC — mon perimetre est plus large (88/290) car il inclut les variable-only. Le segment le plus urgent de la migration = les 28 purs gratuits (94 PDC a ~11,64 €/PDC de cout = ~1 094 €/mois de perte seche) + faire passer les 60 variable-only sur le modele 'ouverture public: plancher 5 €/PDC deduit des recettes' ou abonnement.",
-    "livrable": "clients-forfait-zero.txt (liste nominative 88 teams triee par PDC) remis a Dominique. Donnees: /tmp/gratuits_v2.json."
+    "livrable": "clients-forfait-zero.txt (liste nominative 88 teams triee par PDC) remis a Dominique. Donnees: /tmp/gratuits_v2.json.",
+    "CORRECTION_verite_terrain": {
+      "lecon_methodologique": "Ma liste v1.413 etait fausse: Pennylane facture par DEUX canaux (billing_subscriptions recurrents ET customer_invoices directes FT) et le payeur est souvent un TIERS (Commune de Bonifacio pour les parkings, Nova Energie pour ses sites, raisons sociales differentes des noms de sites, tiers investisseurs). Le croisement API seul est INSUFFISANT — 769 factures recuperees, revue humaine indispensable. Dominique a verifie les 40 premieres teams point par point.",
+      "liste_corrigee": {
+        "supervision_payee": [
+          "Ville d'Ajaccio (FT20260000241/154/102)",
+          "ETS Europcar - Balesi = BALESI LOCATION (superv FT20260000180 + maint FT20260000185)",
+          "Agglomération Gard rhodanien (FT2026000040)",
+          "E.Leclerc Ile Rousse (2 contrats superv + maint)",
+          "SRS - Antibes (FT20260000233)",
+          "Hotel Marinca (4,90 € × 4 PDC)",
+          "Pierre et Vacances Lumio (abonnement)",
+          "Résidence U veniqui (superv + maint)",
+          "Hôtel Le Balamina (FT20260000192)",
+          "Hotel San Pellegrino (facturé à Nova)",
+          "Entente Valabre (FT20250000268)",
+          "Camping Bel'Balagne",
+          "Camping U Libecciu (superv + maint)",
+          "Camping U Sognu",
+          "Commerce DCL",
+          "Maison Canali",
+          "Poissonnerie Lucchini (facturé à Nova)",
+          "Groupe ADF (factures FT2026000036/34 trouvées — à confirmer)"
+        ],
+        "maintenance_seule_SUPERVISION_ZERO": [
+          "Résidence Les Terrasses d'Arsella (FT2026000039)",
+          "Camping La Pinede Calvi (FT20250000324)",
+          "Camping Marina d'Erba Rossa",
+          "Admin Mairie Bonifacio",
+          "Camping Domaine d'Anghione",
+          "Admin Mairie Serra-di-Fiumorbo",
+          "Camping Acqua e Sole",
+          "Camping Sole di Sari"
+        ],
+        "rien_confirme": [
+          "Camping Dolce Vita Calvi",
+          "Hôtel Le Genovese",
+          "ETS Izitek",
+          "Résidence Pinea Mare",
+          "Hôtel Les Jardins de Santa Giulia",
+          "Admin Mairie Olmeto",
+          "Centre Médical Prunelli"
+        ],
+        "cas_speciaux": [
+          "ELC INVEST (pas encore installé)",
+          "Parkings Arrenagio + P1 + P2 Bonifacio (tiers investisseur)",
+          "Maison Kalfleche (tiers investisseur)",
+          "Château Pimo (statut inconnu — à clarifier)",
+          "ETS Grimaldi TPI (partenaire installateur : supervision OFFERTE 3 bornes — CONTRAT À FORMALISER)",
+          "Camping La Vetta (compte inactif)"
+        ]
+      },
+      "cible_migration_reelle": "8 teams maintenance-seule (supervision a 0: Arsella, Pinede Calvi, Erba Rossa, Mairie Bonifacio, Anghione, Mairie Serra, Acqua e Sole, Sole di Sari) + 7 purs gratuits confirmes (Dolce Vita, Genovese, Izitek, Pinea Mare, Santa Giulia, Mairie Olmeto, Centre Medical) + ~44 teams 1-2 PDC restant a verifier meme methode.",
+      "actions_derivees": "Contrat partenaire Grimaldi a formaliser (Monday PART-01 item 12516452200). Camping La Vetta inactif -> a desactiver. Chateau Pimo statut inconnu -> clarifier.",
+      "solution_perenne_proposee": "Construire UNE FOIS le mapping team Monta <-> customer Pennylane en utilisant les champs externalId: stocker l'ID customer Pennylane dans partnerExternalId de la team Monta (ou l'inverse). Le webhook du portage l'ecrira a chaque nouveau contrat; le stock existant se mappe pendant la migration (checklist par client). Ce mapping rend tous les futurs croisements automatiques et fiables."
+    }
   }
 }
