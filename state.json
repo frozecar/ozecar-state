@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.404",
+    "version": "1.405",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.404",
+        "version_to": "1.405",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Nouvelle section ocpp_proxy_monta_2026_07_13: feature OCPP Proxy self-serve Monta Hub (changelog 07/07), impact reprise de supervision (migration sans coupure), vigilance domaine marque blanche, next steps"
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.403",
@@ -13902,5 +13911,21 @@
       "constat_assignation": "178 teams au total: 1 seule avec groupe (team 4915002 'test groupe' -> featureGroupId 23), 177 SANS groupe = elles voient TOUT (y compris les nouveautes Monta a venir). L'application en masse au parc + le defaut nouvelles teams restent a faire dans le Hub.",
       "groupe_23": "Existe et assignable — contenu (matrice T/O/D) NON verifiable par API tant que le scope n'est pas ouvert."
     }
+  },
+  "ocpp_proxy_monta_2026_07_13": {
+    "_source": "Changelog Monta Hub 2026-07-07 'OCPP Proxy goes live in Hub' — découvert par Dominique 2026-07-13",
+    "feature": "OCPP Proxy self-serve dans le Hub (Opérations > Proxy OCPP > Register a proxy). Les bornes pointent vers Monta une fois, le trafic est routé vers n'importe quelle destination wss://. Setup 1 étape, vue fleet temps réel, groupes de backends nommés, bulk moves (sélection lignes / paste OCPP IDs / restart depuis la table), filtre + export CSV.",
+    "impact_strategique": {
+      "reprise_supervision": "MAJEUR — migration sans coupure: borne pointée 1 fois vers le proxy, routée vers l'ancien backend pendant la transition, bascule vers Monta d'un clic sans retoucher la borne. Renforce Moteur B (reprise_supervision_2026_07_02). Argument commercial: une seule intervention, zéro interruption.",
+      "pilotes_prospects": "Router 1-2 bornes d'un prospect en side-by-side avant signature (test sans engagement).",
+      "parcs_orphelins": "Bulk moves + export CSV = reprise à l'échelle, aligné thèse consolidateur."
+    },
+    "vigilance_marque_blanche": "Page 'Proxy Domains' — vérifier quel domaine wss:// est exposé aux bornes/installateurs après enregistrement. Si domaine *.monta.com visible: voir si mappable derrière ocpp.ozecar.app ou équivalent OZECAR.",
+    "prochaines_etapes": [
+      "[Dominique] Enregistrer un proxy test dans le Hub (destination wss:// factice ou backend test) pour voir le domaine généré côté bornes",
+      "[Claude PM] Selon résultat: intégrer l'argument 'migration sans coupure' dans la landing reprise de supervision + argu commercial",
+      "[Claude PM] Vérifier si l'API partenaire expose les proxies (probablement Hub-only comme /plans)"
+    ],
+    "statut": "découvert, non testé"
   }
 }
