@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.419",
+    "version": "1.420",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.419",
+        "version_to": "1.420",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Grille d'options consolidee: assistance 2€ VALIDEE, badges lot de 10 a 49€ (regle Dominique), routeur sans SKU client-facing, Payter recalcule 9,90+25 (couts reels), Reporting avance 15€ propose (3 etages inclus/option/CSM), recharge domicile A 5,90/B 7,90 wallet provisionne. A confirmer: Payter, Reporting, CSM, B, cout Monta/vehicule."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.418",
@@ -14190,5 +14199,26 @@
       "tests_playwright_bardinet": "36m: 170,40 (= maquette au centime) · kits 504 · +data+N1 s1: 230,40 / once 510,50 · prepay: 218,82 · 12m+options: 248,40 · +site 4AC: 270,00 · 3 sites 20 PDC OK · mode RO OK · zero erreur JS.",
       "restes_etapes": "2) prefill ?company= (HubSpot) + fiche client derniere page · 3) ecran confirmation AVANT/APRES + mode avenant (?company&avenant=1, prechargement ozecar_config_json) · 4) rendu offre client riche (blocs 60% N1, benefices, references — reprendre offre-bardinet2) au lieu du RO brut · 5) webhook post-signature 5 volets · 6) bascule prod (remplace configurateur-devis.html) apres go Dominique."
     }
+  },
+  "grille_options_2026_07_13": {
+    "SITE": {
+      "Data 4G/5G": "2,00 €/PDC/mois (SIM 6,50 € one-time)",
+      "Routeur OZECAR 4G/5G multi-operateur": "249 € HT one-time (SKU interne OZRT — JAMAIS affiche client; regle: aucun SKU interne client-facing)",
+      "Maintenance": "N1-N4 = 4/9/18/24 €/PDC/mois (N0 defaut 'Aucune')",
+      "Mise en service sur site": "450 €/site one-time"
+    },
+    "COMPTE": {
+      "Assistance conducteurs 24/7 (Essential)": "VALIDE 2,00 €/PDC/mois (incluse Business) — standardise les lignes hotline legacy",
+      "Module Flotte": "20 €/mois/compte jusqu'a ~10 vehicules, au-dela sur devis — VERIFIER cout Monta par vehicule connecte avant lancement",
+      "CSM": "99 €/mois (Business, engagement annuel; inclus Enterprise): interlocuteur nomme, revue trimestrielle, rapport mensuel personnalise, optimisation tarifs, priorite support, INCLUT Reporting avance",
+      "Reporting avance": "PROPOSE 15 €/mois/compte: consolidation multi-sites, exports compta/RSE automatises, rapports personnalises (self-service; rapports standard toujours inclus — on ne micro-facture pas PAR rapport, on package)",
+      "Gestion terminal de paiement (Payter)": "PROPOSE 9,90 €/terminal/mois + 25 € one-time installation (couts reels OZECAR: 12,50 MES + 30 €/an contract + 48 €/an gateway = marge ~41 €/an/terminal)",
+      "Recharge a domicile": "Plan A remboursement fin de mois 5,90 €/salarie/mois · Plan B instantane 7,90 € CONDITIONNE a wallet employeur provisionne (jamais d'avance OZECAR). Dependance: Reimbursed charging Monta encore 'bientot disponible'"
+    },
+    "MATERIEL": {
+      "Badges RFID": "REGLE DOMINIQUE: par lot de 10 a 49 € — jamais a l'unite"
+    },
+    "exclusions": "Smart charging inclus (argument Business, pas une ligne) · ouverture public/itinerance = variable opere · pas de SLA a part (= maintenance N3/N4)",
+    "a_confirmer_dominique": "Payter 9,90+25 · Reporting avance 15 · CSM 99 (non conteste) · Plan B 7,90 (non conteste) · cout Monta/vehicule (module flotte)"
   }
 }
