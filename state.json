@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.420",
+    "version": "1.421",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.420",
+        "version_to": "1.421",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Payter Apollo tranche: 649 € HT couple obligatoirement a Gestion terminal 9,90 €/mois; option de site (si DC ou public, mention AFIR) + PandaDoc, pas Shopify."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.419",
@@ -14216,7 +14225,8 @@
       "Recharge a domicile": "Plan A remboursement fin de mois 5,90 €/salarie/mois · Plan B instantane 7,90 € CONDITIONNE a wallet employeur provisionne (jamais d'avance OZECAR). Dependance: Reimbursed charging Monta encore 'bientot disponible'"
     },
     "MATERIEL": {
-      "Badges RFID": "REGLE DOMINIQUE: par lot de 10 a 49 € — jamais a l'unite"
+      "Badges RFID": "REGLE DOMINIQUE: par lot de 10 a 49 € — jamais a l'unite",
+      "Terminal de paiement CB — Payter Apollo": "TRANCHE Claude PM: 649 € HT one-time (cout 480, marge ~26 %). Vendu UNIQUEMENT couple a l'abonnement Gestion terminal 9,90 €/mois (jamais de hardware sans service). Pose couverte par la MES. OU: option de SITE au configurateur, affichee si le site a du DC ou un acces public, mention 'requis AFIR pour la recharge rapide ouverte au public'. Aussi au catalogue PandaDoc. PAS sur Shopify (provisioning requis, pas du self-service). 'Payter Apollo' nommable client (marque tierce visible, hors perimetre marque blanche)."
     },
     "exclusions": "Smart charging inclus (argument Business, pas une ligne) · ouverture public/itinerance = variable opere · pas de SLA a part (= maintenance N3/N4)",
     "a_confirmer_dominique": "Payter 9,90+25 · Reporting avance 15 · CSM 99 (non conteste) · Plan B 7,90 (non conteste) · cout Monta/vehicule (module flotte)"
