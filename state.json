@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.417",
+    "version": "1.418",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.417",
+        "version_to": "1.418",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Spec mode avenant VALIDEE avec ecran de confirmation AVANT/APRES obligatoire (2 colonnes, delta central, dates d'effet) + nouvelle propriete ozecar_config_json (JSON config ecrit par webhook) pour prechargement exact."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.416",
@@ -14159,6 +14168,13 @@
     "2_sortie": "Page offre generee + modal eSignatures (template 73094966...). Prix publics = 36 mois.",
     "3_webhook": "(a) HubSpot: line items par site, deal Gagne/Avenant-signe 5678388459, proprietes Parc (pdc, mrr, mrr_supervision, mrr_mnt, forfaits, paiement, engagement_fin CONTRACTUEL, ozecar_contrats FORMAT CANONIQUE: — SUPERVISION: • 3× Essential AC · 36 mois ... / — MAINTENANCE: • 4× N3 ...). (b) Monta: subs par PDC — SEPA -> plans 0€ 6434/6435; wallet -> 6422-6433; feature group team (OZ Essential defaut). (c) Stripe: mandat SEPA systematique, options TOUJOURS SEPA, kits one-time. (d) Pennylane: customer ID -> partnerExternalId team Monta (mapping perenne) + regle bascule anti double facturation. (e) E-mail recap (delta-nul: mail seul).",
     "4_avenant": "?company=&avenant=1: precharge etat courant, delta -> deal Avenant-envoye 5678350578. Upgrade immediat · downgrade anniversaire · options 30j · wallet flux>=2x/3mois · 2 echecs -> SEPA.",
-    "5_dependances": "Cles Stripe (Dominique) · scope feature-groups Monta (FG-01/12515431742) · wss://ocpp.ozecar.app a creer chez Monta."
+    "5_dependances": "Cles Stripe (Dominique) · scope feature-groups Monta (FG-01/12515431742) · wss://ocpp.ozecar.app a creer chez Monta.",
+    "4bis_SPEC_MODE_AVENANT_VALIDEE": {
+      "ouverture": "Bandeau 'Avenant — {client} · contrat actuel: X PDC · Y €/mois · éch.' + fiche client (SIREN, contact, email) PRE-REMPLIE depuis HubSpot.",
+      "etat_courant": "Sites/lignes/options charges tels quels (source: ozecar_config_json, NOUVELLE propriete company ecrite par le webhook a chaque signature = JSON complet de la config; legacy = prechargement partiel depuis proprietes Parc + completion commercial au 1er avenant). Chaque selecteur affiche 'Actuellement: ...'. Marquage: +nouveau (vert) / modifie ancien->nouveau (violet) / retire (barre + date anniversaire).",
+      "prix": "Panneau delta: Actuel -> Nouveau · +X €/mois, avec date d'effet par ligne (ajout/upgrade immediat · retrait anniversaire · options 30j).",
+      "ECRAN_CONFIRMATION_AVANT_APRES": "OBLIGATOIRE avant generation (demande Dominique): deux colonnes AVANT|APRES site par site (inchange gris, modifie surligne, ajoute vert, retire barre+date d'effet), bloc delta central (ancien -> nouveau · +X €/mois HT + impact ponctuel kits/prorata), dates d'effet explicites, boutons [<- Modifier][Generer l'avenant ->]. Le meme avant/apres figure dans le document a signer.",
+      "sortie": "Page 'Avenant n°X' = delta seul + nouveau total. Signature si prix/engagement/downgrade; e-mail recap si ajout demande (delta consenti)."
+    }
   }
 }
