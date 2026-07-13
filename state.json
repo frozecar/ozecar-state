@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.401",
+    "version": "1.402",
     "updated": "2026-07-12",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-12",
+        "version_from": "1.401",
+        "version_to": "1.402",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Plan 6422 verifie corrige (8 %) — 14/14 conformes. Matrice des 5 feature groups Monta definie (OZ Essential defaut / Business / +Flotte x2 / Enterprise) + regles (defaut restrictif, flotte=option, team mixte=forfait le plus haut)."
+        ]
+      },
       {
         "date": "2026-07-12",
         "version_from": "1.400",
@@ -13735,5 +13744,23 @@
     },
     "frais_configures": "local 8 % (= 10 % client - 2 % Monta) · itinerance 1 % + 0,07 €/kWh (= 5 % + 0,07 client - 4 % Monta). Prix TTC FR 20 %.",
     "anomalie_a_corriger": "Plan 6422 (Essential AC · 12 mois): frais local 10 % -> 8 % (correction manuelle Hub demandee)."
+  },
+  "feature_groups_monta_2026_07_12": {
+    "principe": "3e couche de l'architecture (PRIX=plan · REMISE=abonnement · DROITS=feature group). Bundles on/off appliques PAR TEAM (Hub > Settings > Account features), nom interne invisible client, application en masse possible, defaut pour nouvelles teams.",
+    "5_groupes": {
+      "OZ Essential": "monetisation OFF (split billing, invoices, price groups, payment terminals) · flotte OFF (vehicles, fleet dashboard) · pilotage ON. DEFAUT nouvelles teams.",
+      "OZ Business": "monetisation ON · flotte OFF",
+      "OZ Essential + Flotte": "monetisation OFF · flotte ON (option 20 €/mois)",
+      "OZ Business + Flotte": "monetisation ON · flotte ON",
+      "OZ Enterprise": "tout ON (groupe EXPLICITE, pas de detach)"
+    },
+    "regles": [
+      "Defaut = OZ Essential: sans groupe une team voit TOUT, y compris les nouveautes Monta a venir — le defaut restrictif protege.",
+      "Le module flotte est une OPTION payante (20 €/mois): vehicles + fleet dashboard suivent la ligne du devis, pas le forfait.",
+      "Team mixte multi-forfaits: le groupe suit le forfait LE PLUS HAUT de la team (pas de bridage par PDC).",
+      "Capability non listee: touche l'argent -> Business · touche les vehicules -> option flotte · sinon visible partout. Dans le doute: cacher (reveler est un upgrade, retirer est un downgrade vecu).",
+      "Webhook portage: appliquer le groupe a la creation de team (API a verifier au portage)."
+    ],
+    "statut": "Matrice validee a creer par Dominique dans le Hub (5 groupes + defaut + application en masse au parc selon forfait). Plans 14/14 conformes apres correction 6422 (8 %)."
   }
 }
