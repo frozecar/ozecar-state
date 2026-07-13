@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.424",
+    "version": "1.425",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.424",
+        "version_to": "1.425",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "ETAPE 2bis LIVREE: configurateur habille (en-tete client+validite 30j, legende AC/DC-forfaits-maintenance, frais variables, steppers, checkboxes visibles, mode client interactif). Teste, zero erreur. Reste: etape 3 avant/apres + avenant, 4 rendu riche, 5 webhook, 6 prod."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.423",
@@ -14254,7 +14263,10 @@
         "9. Reprendre l'habillage valide de offre-bardinet2 (blocs benefices, references, activation offerte barree 79) dans le rendu client"
       ],
       "statut": "SPEC GRAVEE — execution = prochaine action (etape 2bis avant etape 3 avant/apres)."
-    }
+    },
+    "ETAPE_2bis_LIVREE_2026_07_13": [
+      "Habillage livre (9 corrections): en-tete noir 'Offre preparee pour {client}' + date + validite 30j calculee (st.created) · legende 'Comprendre cette offre' (AC/DC, Essential/Business, niveaux N1-N4 + 60% N1) · bloc frais variables violet (10% ~90% / 5%+0,07 ~84%, affiche si un site a des transactions, mention itinerance activable) · tooltips forfaits · descriptifs maintenance dans le select · steppers [-]qty[+] larges · checkboxes 19px accent violet · activation 79 barree offerte · MODE CLIENT: quantites+options manipulables (devis interactif), structure sites/forfaits/acces verrouillee. Tests: client affiche, stepper 170,40->180,30 exact, mode client interactif + add masque, zero erreur JS."
+    ]
   },
   "grille_options_2026_07_13": {
     "SITE": {
