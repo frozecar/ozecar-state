@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.412",
+    "version": "1.413",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.412",
+        "version_to": "1.413",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Analyse abonnements a 0: 274/317 abos Monta a 0 · 88 teams/290 PDC sans abonnement payant · dont 60/196 variable-only et 28/94 purs gratuits (~1 094 €/mois de perte seche). Liste nominative livree (clients-forfait-zero.txt)."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.411",
@@ -14033,5 +14042,13 @@
       "prerequis": "Inventaire des abonnements Pennylane actifs (client, montant annuel, date d'echeance) — export Dominique ou acces API Pennylane a fournir. Sans cet inventaire, le MRR consolide et le plan de migration par client sont impossibles.",
       "impact_dashboard": "ozecar_mrr devra a terme = MRR contractuel consolide (Stripe + Monta + Pennylane residuel), ecrit par le webhook post-signature et le script de migration."
     }
+  },
+  "analyse_abonnements_zero_2026_07_13": {
+    "question": "Combien ont un abonnement a 0 ?",
+    "niveau_1_abonnements": "274 / 317 abonnements Monta actifs sont a 0 € (86 %). 43 payants.",
+    "niveau_2_clients": "88 teams · 290 PDC sans AUCUN abonnement payant (ni Monta ni Pennylane consolide via fiches HubSpot + verif manuelle des faux positifs de matching: Balesi/OEHC/Comepa/UDIFE/Moulin des Oliviers/A Cupulatta/A Chjusella paient bien Pennylane).",
+    "niveau_3_decomposition": "Parmi les 88: 60 teams · 196 PDC ont de l'activite wallet (paient du VARIABLE 8-16 % sur transactions: Ville d'Ajaccio wtx5967, E.Leclerc wtx5804, Erba Rossa, Kalfleche, Pinede Calvi...) · 28 teams · 94 PDC = PURS GRATUITS (zero abonnement, zero variable).",
+    "comparaison_campagne": "La campagne Forfait Zero (state anterieur) visait 38 clients / 119 PDC — mon perimetre est plus large (88/290) car il inclut les variable-only. Le segment le plus urgent de la migration = les 28 purs gratuits (94 PDC a ~11,64 €/PDC de cout = ~1 094 €/mois de perte seche) + faire passer les 60 variable-only sur le modele 'ouverture public: plancher 5 €/PDC deduit des recettes' ou abonnement.",
+    "livrable": "clients-forfait-zero.txt (liste nominative 88 teams triee par PDC) remis a Dominique. Donnees: /tmp/gratuits_v2.json."
   }
 }
