@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.416",
+    "version": "1.417",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.416",
+        "version_to": "1.417",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Brief d'execution du portage configurateur consolide (structure, sortie, webhook 5 volets, avenant, dependances)."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.415",
@@ -14143,5 +14152,13 @@
       "actions_derivees": "Contrat partenaire Grimaldi a formaliser (Monday PART-01 item 12516452200). Camping La Vetta inactif -> a desactiver. Chateau Pimo statut inconnu -> clarifier.",
       "solution_perenne_proposee": "Construire UNE FOIS le mapping team Monta <-> customer Pennylane en utilisant les champs externalId: stocker l'ID customer Pennylane dans partnerExternalId de la team Monta (ou l'inverse). Le webhook du portage l'ecrira a chaque nouveau contrat; le stock existant se mappe pendant la migration (checklist par client). Ce mapping rend tous les futurs croisements automatiques et fiables."
     }
+  },
+  "PORTAGE_CONFIGURATEUR_BRIEF_EXECUTION": {
+    "statut": "PRET A EXECUTER — brief consolide session 2026-07-10/13 (v1.387-1.416). Prochain livrable: configurateur multi-sites teste sur le cas Bardinet reel.",
+    "1_structure": "state.sites[] = {nom, adresse, acces, lignes:[{kind AC|DC, forfait ess|biz, qty}], opts:{data, mnt 0|4|9|18|24, mes}}. Engagement 12/24/36 + prepay -5% (sur TOUT) EN BAS pres du prix. Badges AC violet / DC jaune (module compatibilite). Recap = offre-bardinet2.html.",
+    "2_sortie": "Page offre generee + modal eSignatures (template 73094966...). Prix publics = 36 mois.",
+    "3_webhook": "(a) HubSpot: line items par site, deal Gagne/Avenant-signe 5678388459, proprietes Parc (pdc, mrr, mrr_supervision, mrr_mnt, forfaits, paiement, engagement_fin CONTRACTUEL, ozecar_contrats FORMAT CANONIQUE: — SUPERVISION: • 3× Essential AC · 36 mois ... / — MAINTENANCE: • 4× N3 ...). (b) Monta: subs par PDC — SEPA -> plans 0€ 6434/6435; wallet -> 6422-6433; feature group team (OZ Essential defaut). (c) Stripe: mandat SEPA systematique, options TOUJOURS SEPA, kits one-time. (d) Pennylane: customer ID -> partnerExternalId team Monta (mapping perenne) + regle bascule anti double facturation. (e) E-mail recap (delta-nul: mail seul).",
+    "4_avenant": "?company=&avenant=1: precharge etat courant, delta -> deal Avenant-envoye 5678350578. Upgrade immediat · downgrade anniversaire · options 30j · wallet flux>=2x/3mois · 2 echecs -> SEPA.",
+    "5_dependances": "Cles Stripe (Dominique) · scope feature-groups Monta (FG-01/12515431742) · wss://ocpp.ozecar.app a creer chez Monta."
   }
 }
