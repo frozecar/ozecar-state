@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.406",
+    "version": "1.407",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.406",
+        "version_to": "1.407",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "FG-01 mis en attente retour Monta (decision Dominique): item Monday 12515431742 cree (groupe En cours, statut Bloque), todo rappelable ajoute, statut section feature_groups mis a jour."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.405",
@@ -9772,7 +9781,8 @@
       ],
       "livrable_cible": "Modèle financier xlsx manipulable: hypothèses ajustables, P&L 3 ans, trajectoire ARR, unit economics CAC/LTV, 3 scénarios, impact négo Monta sur marge brute",
       "lien_growth": "Projection PdC déjà actée: réaliste 1200/1800/2500 PdC sur 12/24/36 mois (cf monta_negotiation.growth_aligned_approach_2026_06_05)"
-    }
+    },
+    "FG-01_feature_groups_attente_monta": "Dominique ping des retour Monta (scope feature-groups operator 2257) → derouler les 3 etapes de l'item Monday 12515431742. Signaler aussi a Monta le possible bug Hub beta: application en masse non prise (177/178 featureGroupId=None)."
   },
   "kit_printing_hardware": {
     "decided": "2026-06-05",
@@ -13797,7 +13807,7 @@
       "Capability non listee: touche l'argent -> Business · touche les vehicules -> option flotte · sinon visible partout. Dans le doute: cacher (reveler est un upgrade, retirer est un downgrade vecu).",
       "Webhook portage: appliquer le groupe a la creation de team (API a verifier au portage)."
     ],
-    "statut": "Groupes crees (contenu non audite, scope en attente Monta). Audit usage LIVRE: 138 Biz / 4 Biz+Flotte / 36 Ess. Application en masse A REFAIRE dans le Hub par lots (pas prise, et API en lecture seule).",
+    "statut": "EN ATTENTE RETOUR MONTA (scope feature-groups, demande Dominique 2026-07-13). Tracke Monday FG-01 item 12515431742. Au retour: (1) Claude audite contenu 5 groupes vs matrice, (2) Dominique applique par lots avec les listes livrees, (3) Claude re-scan 178 teams. Note: l'application Hub UI ne depend PAS du scope API — faisable avant si souhaite. Audit usage LIVRE (138 Biz / 4 Biz+Flotte / 36 Ess).",
     "MATRICE_EXACTE_13_CAPABILITIES": {
       "etats": "T=Tous les administrateurs · O=Operateur uniquement (mode service opere: la fonction existe, NOUS la pilotons) · D=Desactive",
       "ordre_colonnes": [
