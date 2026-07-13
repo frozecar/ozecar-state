@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.409",
+    "version": "1.410",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.409",
+        "version_to": "1.410",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Consolidation Pennylane via api/pennylane.php: 87 abos actifs, MRR Pennylane 3 354 €/mois, 65/67 matches. Dashboard final: MRR 3 501 € / ARR 42 016 € / 15,03 €/PDC / 4 echeances <90j. UDIFE et Assesse sans fiche CRM."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.408",
@@ -13980,7 +13989,14 @@
     "proprietes_ecrites": "ozecar_pdc_total, ozecar_parc_resume (AC/DC + teams + abonnements Monta actifs), ozecar_mrr (montants Monta bruts si >0), ozecar_forfaits (equivalent audit), ozecar_paiement=wallet si wallet_tx>0. ozecar_engagement_fin laisse vide (legacy sans engagement).",
     "non_rapproches_importants": "ETS Intermarche Assesse (BE) wtx=21109 SANS fiche HubSpot (a creer par Dominique — plus gros client wallet!). Incertains a confirmer: E.Leclerc Ile Rousse <-> ACQUAVIVA DISTRIBUTION II? · teams suffixees '- Nova' <-> NOVA ENERGIE (revendeur?) · Eurotyre Corte <-> CORTE AUTO (x2 doublons CRM) · Dolce Vita Calvi, Kalliste St-Florent, Hotel Marinca, Homair: pas de fiche evidente. Doublons CRM releves: COMMUNE DE BONIFACIO x2, COMMUNE/MAIRIE DE GHISONACCIA, CORTE AUTO x2, A 2M / SARL A.2M.",
     "note_mrr": "ozecar_mrr legacy = totalAmount des subscriptions Monta actives (montants bruts Monta, majorite a 0 = design Forfait Zero). Apres migration/portage, le webhook post-signature ecrira le MRR contractuel reel.",
-    "CORRECTION_pennylane": "Le MRR affiche est PARTIEL: il ne compte que les abonnements Monta (totalAmount). Une partie du parc paie deja des abonnements ANNUELS via Pennylane, hors Monta et hors dashboard. Labels dashboard corriges ('MRR abonnements (Monta)' + mention 'hors Pennylane'). Consolidation reelle = a la migration."
+    "CORRECTION_pennylane": "Le MRR affiche est PARTIEL: il ne compte que les abonnements Monta (totalAmount). Une partie du parc paie deja des abonnements ANNUELS via Pennylane, hors Monta et hors dashboard. Labels dashboard corriges ('MRR abonnements (Monta)' + mention 'hors Pennylane'). Consolidation reelle = a la migration.",
+    "CONSOLIDATION_pennylane_2026_07_13": {
+      "acces": "Proxy EXISTANT: ozecar.fr/api/pennylane.php (API v2, POST {secret:'oz_pl_5Hn2Rq8Lw3Kx', path, method, body}) + pennylane-sync.php. Abonnements: /billing_subscriptions (cursor). Customers: /customers.",
+      "inventaire": "107 abonnements dont 87 in_progress (86 yearly / 21 monthly au global). MRR Pennylane HT mensualise: 3 354,45 €/mois (ARR 40 253 €). Locaux: /tmp/pl_subs.json, pl_customers.json, pl_active.json.",
+      "consolidation_hubspot": "65/67 customers actifs matches par nom normalise (CRM peuple depuis Pennylane -> matchs exacts). ozecar_mrr = Monta + Pennylane, resume enrichi, ozecar_paiement=prepay si annuel (sepa si mensuel et vide), ozecar_engagement_fin = next_occurrence des annuels (echeance de renouvellement, approx pour relances <90j).",
+      "dashboard_final": "102 clients / 90 avec donnees / 233 PDC / MRR 3 501,38 € / ARR 42 016,56 € / 15,03 €/PDC (vs cout 11,64 -> parc rentable au PDC) / 4 echeances <90 j.",
+      "restes": "UDIFE (35,70 €/mois) sans fiche HubSpot -> a creer. Assesse toujours sans fiche. ozecar_engagement_fin = echeance de FACTURATION Pennylane, pas un engagement contractuel — a remplacer par l'engagement reel a la migration."
+    }
   },
   "migration_abonnements_regles": {
     "pennylane_bascule_2026_07_13": {
