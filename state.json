@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.415",
+    "version": "1.416",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.415",
+        "version_to": "1.416",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Format contrats canonique valide (par nature, puces quantifiees, total+echeance) — 126 fiches reformatees; format grave comme sortie du webhook. Recette UI fiche HubSpot documentee (sidebar epuree, groupe Parc au centre, cartes Paiements/Abonnements retirees, enrichissement auto desactive)."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.414",
@@ -14058,6 +14067,11 @@
       "implemente": "2 nouvelles proprietes groupe Parc OZECAR: ozecar_mrr_supervision (number) et ozecar_contrats (textarea, une ligne par contrat: NATURE · X €/mois HT (Y € annuel/mensuel) · ech. date + refs factures FT recentes). Backfill 126 fiches depuis les lignes d'abonnements Pennylane (nature classifiee) + 769 factures. Groupe complet: parc_resume, pdc_total, mrr, mrr_supervision, mrr_mnt, contrats, engagement_fin, forfaits, paiement.",
       "action_UI_dominique": "Reglages -> Objets -> Societes -> Personnaliser la fiche (record customization): epingler le groupe 'Parc OZECAR' en haut de la colonne gauche -> le coup d'oeil est natif sur chaque fiche. + vue liste 'Parc clients' avec ces colonnes.",
       "limites": "Contrats legacy en factures directes: seules les refs FT apparaissent (nature/montant non decomposables automatiquement — payeurs tiers). Niveau de maintenance N0-N4 non renseigne (inconnu pour le legacy, sera ecrit par le webhook a la migration). Le webhook post-signature maintiendra ozecar_contrats a jour automatiquement."
+    },
+    "FORMAT_CONTRATS_CANONIQUE": {
+      "format_valide_dominique": "Par nature, puces quantifiees, total en pied:\n— SUPERVISION :\n  • 3× Essential AC · 36 mois\n  • 8× Business DC · 24 mois\n  211,00 €/mois HT · ech. JJ/MM/AAAA\n— MAINTENANCE :\n  • 4× N3  • 2× N1  • 8× N2\n  145,00 €/mois HT\n— Factures : FT...",
+      "backfill": "126 fiches reformatees. Legacy: puces = quantite × libelle produit Pennylane reel (ex '6× Contrat Supervision et Monetique Pro Saisonnier'); le detail forfait×type×engagement et niveaux N ne sera exact que via le webhook post-signature (contrats connus) — GRAVE comme format de sortie du webhook.",
+      "fiche_UI_recette": "1) Carte 'A propos': roue crantee -> retirer Type/Ville/CP/Employes/CA/LinkedIn/Description; ordre: Parc supervise, PDC, MRR, dont supervision, dont maintenance, Contrats en cours, Fin d'engagement, Forfaits, Paiement, Domaine, Proprietaire. 2) Bouton 'Personnaliser' (haut de fiche) -> Vue d'ensemble: ajouter carte Proprietes = groupe Parc OZECAR en 1er (le textarea Contrats s'affiche en entier au centre, pas tronque comme en sidebar). 3) Colonne droite: retirer cartes Paiements + Abonnements (HubSpot Payments non utilise) + Entreprises associees; garder Contacts/Transactions/Tickets. 4) Activites parasites ('Fiche enrichie: Logo URL') = HubSpot Insights/enrichissement auto -> Reglages > Objets > Entreprises > desactiver l'enrichissement; et filtre d'activites: decocher les maj de proprietes."
     }
   },
   "migration_abonnements_regles": {
