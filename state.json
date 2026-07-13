@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.407",
+    "version": "1.408",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.407",
+        "version_to": "1.408",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Backfill Parc clients HubSpot execute: 55 companies remplies (45 matching strict + 10 manuels valides, correction CALA->SARL CALA DI GRECO). Dashboard vivant: 233 PDC, 54 fiches avec donnees, MRR Monta 229 EUR (0,98/PDC vs cout 11,64 = argument migration). Assesse SANS fiche CRM a creer. Incertains et doublons CRM listes."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.406",
@@ -13955,5 +13964,12 @@
       "[Claude PM] Vérifier si l'API partenaire expose les proxies (probablement Hub-only comme /plans)"
     ],
     "statut": "découvert, non testé"
+  },
+  "backfill_parc_clients_2026_07_13": {
+    "fait": "Backfill des proprietes Parc OZECAR sur les companies HubSpot depuis les donnees Monta (audit 2026-07-13, fichiers /tmp: teams/subs/cps/plans/audit_usage). Passe 1 (matching strict tokens + revue PM avec exclusions: teams test/Ozecar SAS, faux positifs Ghisonaccia x5, Pinede Calvi, Mairie de Serra ambigue): 45 companies. Passe 2 (10 rapprochements manuels valides: BALESI AUTOMOBILE <- Renault Concession Balesi + Balesi VO · BALESI LOCATION <- Europcar Balesi · AJACCIO AUTOMOBILE <- Renault Ajaccio · Ste Nouvelle BAGHEERA <- Camping Bagheera · ERBA ROSSA DEV <- Marina d'Erba Rossa · SIMON MANCA <- Casa Maria Cicilia · LA PLAGE DE L'ARINELLA <- Arinella Bianca · LA PINEDE <- Camping Pinede Calvi · A MERENDELLA <- Merendella San-Nicolao · SARL CALA DI GRECO <- Cala di Greco DEPLACE depuis fiche CALA videe).",
+    "resultat_dashboard": "67 clients affiches / 54 avec donnees / 233 PDC / MRR abonnements Monta 229,23 EUR (MRR/PDC 0,98 EUR vs cout 11,64 = argument chiffre de la migration Forfait Zero, visible investisseurs).",
+    "proprietes_ecrites": "ozecar_pdc_total, ozecar_parc_resume (AC/DC + teams + abonnements Monta actifs), ozecar_mrr (montants Monta bruts si >0), ozecar_forfaits (equivalent audit), ozecar_paiement=wallet si wallet_tx>0. ozecar_engagement_fin laisse vide (legacy sans engagement).",
+    "non_rapproches_importants": "ETS Intermarche Assesse (BE) wtx=21109 SANS fiche HubSpot (a creer par Dominique — plus gros client wallet!). Incertains a confirmer: E.Leclerc Ile Rousse <-> ACQUAVIVA DISTRIBUTION II? · teams suffixees '- Nova' <-> NOVA ENERGIE (revendeur?) · Eurotyre Corte <-> CORTE AUTO (x2 doublons CRM) · Dolce Vita Calvi, Kalliste St-Florent, Hotel Marinca, Homair: pas de fiche evidente. Doublons CRM releves: COMMUNE DE BONIFACIO x2, COMMUNE/MAIRIE DE GHISONACCIA, CORTE AUTO x2, A 2M / SARL A.2M.",
+    "note_mrr": "ozecar_mrr legacy = totalAmount des subscriptions Monta actives (montants bruts Monta, majorite a 0 = design Forfait Zero). Apres migration/portage, le webhook post-signature ecrira le MRR contractuel reel."
   }
 }
