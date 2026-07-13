@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.423",
+    "version": "1.424",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.423",
+        "version_to": "1.424",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Lot UX etape 2bis grave (9 corrections Dominique): en-tete client+validite, forfaits/AC-DC/maintenance expliques, frais variables affiches, steppers quantite, checkboxes visibles, mode client interactif, habillage maquette."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.422",
@@ -14230,6 +14239,21 @@
       "livrable": "configurateur-v2-dev.html enrichi: (1) section OPTIONS DU COMPTE (grille validee v1.422): assistance 24/7 2€×PDC Essential (visible si PDC ess>0), Flotte 20, CSM 99 (Reporting inclus auto), Reporting 15, recharge domicile A 5,90 / B 7,90 par nb salaries — 'flexibles a 30 jours, toujours SEPA'; (2) Terminal Payter Apollo conditionnel (site PUBLIC + DC): qty × (649+25 pose one-time + 9,90/mois gestion), mention exacte 'Obligation AFIR : borne >= 50 kW accessible au public'; (3) prefill ?company= via parc.php (bandeau 'Client: X', stocke st.client); prepay -5% s'applique aussi aux options compte.",
       "tests": "4essAC+2bizDC 36m: 59,40 ✓ · Apollo visible ssi public+DC ✓ · +1 Apollo: 69,30 /mois + 868 once ✓ · +assist+CSM+5 domA: 205,80 au centime ✓ · Reporting bascule 'inclus' avec CSM ✓ · prepay sur tout: 195,54 ✓ · zero erreur JS.",
       "restes": "3) ecran confirmation AVANT/APRES + mode avenant · 4) rendu offre client riche · 5) webhook · 6) bascule prod."
+    },
+    "ETAPE_2bis_LOT_UX_A_EXECUTER": {
+      "critique_dominique_2026_07_13": "Etape 2 trop minimaliste — 9 corrections OBLIGATOIRES avant etape 3:",
+      "corrections": [
+        "1. EN-TETE CLIENT visible: carte 'Offre preparee pour {client}' + date + VALIDITE (30 jours, date limite affichee)",
+        "2. FORFAITS EXPLIQUES: sous chaque selecteur Essential/Business, une ligne descriptive (Essential: pilotage, badges/QR, alertes, rapports · Business: + monetisation, refacturation, itinerance, assistance 24/7) + tooltip detaille",
+        "3. FRAIS VARIABLES AFFICHES (bloc dedie comme la maquette): sessions locales 10 % tout compris (vous conservez ~90 %) · itinerance 5 % + 0,07 €/kWh (~84 %) — uniquement si un site a acces transaction/public",
+        "4. AC/DC expliques: tooltip/sous-titre (AC = recharge normale jusqu'a 22 kW · DC = recharge rapide)",
+        "5. MAINTENANCE expliquee: descriptif par niveau N1-N4 dans le select + bloc '60 % des incidents resolus sans deplacement des le N1'",
+        "6. QUANTITES: steppers larges [-] qty [+] au lieu du petit input number; affordance claire",
+        "7. OPTIONS: vraies cases a cocher visibles et larges (style custom, pas le checkbox natif discret), zones cliquables entieres",
+        "8. MODE CLIENT (v=1): les controles restent VISIBLES et manipulables pour quantites/options (c'est un devis interactif) — seule la structure (sites/lignes/forfaits) est verrouillee; a defaut, tout en lecture claire avec valeurs explicites",
+        "9. Reprendre l'habillage valide de offre-bardinet2 (blocs benefices, references, activation offerte barree 79) dans le rendu client"
+      ],
+      "statut": "SPEC GRAVEE — execution = prochaine action (etape 2bis avant etape 3 avant/apres)."
     }
   },
   "grille_options_2026_07_13": {
