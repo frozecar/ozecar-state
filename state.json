@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.396",
+    "version": "1.397",
     "updated": "2026-07-12",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-12",
+        "version_from": "1.396",
+        "version_to": "1.397",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Referentiel des 12 plans Monta standards a creer (noms, prix HT+TTC, parametres, process de creation en 2 temps avec audit API du plan test)."
+        ]
+      },
       {
         "date": "2026-07-12",
         "version_from": "1.395",
@@ -13599,5 +13608,56 @@
     "vues_UI_a_creer_manuellement": "L'API views n'existe pas (404). Dominique, 2 min dans l'UI deals: (1) vue 'Ventes' = filtre Étape ≠ Avenant—envoyé/signé, definir par defaut; (2) vue 'Avenants' = filtre Étape ∈ les 2 stages avenant. + activer 'Masquer les colonnes vides' sur le board.",
     "dashboard": "staging.ozecar.fr/wp-content/uploads/ozecar/parc-clients.html (interne). KPI investisseur: MRR, ARR, PDC (vs objectif 1190), MRR/PDC (vs cout 11,64), clients, fins d'engagement <90j. Tableau par societe (forfaits badges, PDC, MRR, paiement, fin eng., resume parc) + boutons Modifier/+Avenant (configurateur ?company=&avenant=1, mode a implementer au portage) + export CSV investisseurs + instructions commercial (36 mois, ~84% net, 60% N1, regles avenant, wallet forfait+options SEPA, jamais nommer le fournisseur).",
     "endpoint": "ozecar.fr/api/parc.php (GET, cache 10 min, ?fresh=1 pour forcer). Agrege les companies HubSpot ayant un deal associe ou des donnees parc. Token server-side partage avec hubspot.php. 18 clients remontes, 0 avec donnees parc (backfill a venir)."
+  },
+  "plans_monta_hub_a_creer_2026_07_12": {
+    "decision": "12 plans standards (4 combos forfait×type × 3 engagements) avec PRIX EXACTS — pas de discountPercentage pour l'engagement (les % seraient non ronds et varieraient par plan: source d'erreurs et de factures sales). Le discountPercentage reste reserve aux remises commerciales negociees. Enterprise = plans nominatifs sur devis, hors standards.",
+    "naming": "'Supervision {Forfait} {AC|DC} · {12|24|36} mois' (client-facing sur les factures wallet).",
+    "prix_HT": {
+      "Essential AC": [
+        7.9,
+        7.4,
+        6.9
+      ],
+      "Essential DC": [
+        10.9,
+        10.4,
+        9.9
+      ],
+      "Business AC": [
+        10.9,
+        10.4,
+        9.9
+      ],
+      "Business DC": [
+        17.9,
+        16.9,
+        15.9
+      ]
+    },
+    "prix_TTC_FR20": {
+      "Essential AC": [
+        9.48,
+        8.88,
+        8.28
+      ],
+      "Essential DC": [
+        13.08,
+        12.48,
+        11.88
+      ],
+      "Business AC": [
+        13.08,
+        12.48,
+        11.88
+      ],
+      "Business DC": [
+        21.48,
+        20.28,
+        19.08
+      ]
+    },
+    "parametres": "Periodicite mensuelle · s'applique au POINT DE CHARGE (subscription par PDC, pas par team — c'est ce qui permet le parc mixte) · prelevement sur le wallet de l'equipe · HT/TTC du champ prix A VERIFIER sur le premier plan cree (le Hub affiche ou non 'incl. VAT'; plan 4782 a 10,80 ne tranche pas).",
+    "process": "Dominique cree UN plan test (Supervision Essential AC · 36 mois) -> Claude l'audite par API (/plans, champs price/applicableFor/priceModel/serviceConfig) -> feu vert -> Dominique cree les 11 autres a l'identique -> Claude re-audite les 12 et grave les IDs.",
+    "usage": "Ces plans servent: (1) provisioning des nouveaux contrats, (2) bascules wallet (le plan est preleve sur le wallet nativement), (3) le webhook du portage mappe devis -> plan par (forfait,type,engagement)."
   }
 }
