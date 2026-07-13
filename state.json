@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.399",
+    "version": "1.400",
     "updated": "2026-07-12",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-12",
+        "version_from": "1.399",
+        "version_to": "1.400",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "ANNULE v1.399 (lecture fausse). Modele confirme: grille = taux client tout compris (Monta inclus). Saisie Hub NETTE: local 8 % (10-2), itinerance 1 % + 0,07 (5-4). Fiche de saisie des 12 plans rectifiee. Marge: 8 % local · 1 %+0,07 itinerance. Client conserve ~90 % local / ~84 % itinerance."
+        ]
+      },
       {
         "date": "2026-07-12",
         "version_from": "1.398",
@@ -13557,11 +13566,11 @@
       "autres_regles_rappel": "Upgrade immediat · downgrade/retrait PDC a date anniversaire · options a 30 j de preavis · engagement porte sur le forfait seul · changement engagement = avenant signe · mensuel<->prepaiement au renouvellement annuel."
     },
     "CORRECTION_MODELE_FRAIS_2026_07_12": {
-      "fait_verifie": "Screenshot wallet client (2026-07-06/03): Monta facture SES frais de transaction DIRECTEMENT sur le wallet du client, en ligne separee 'Monta frais' (2 % HT local verifie sur 3 sessions; 4 % en roaming), INDEPENDAMMENT de nos frais operateur ('OZECAR frais', 8 % sur le plan actuel, ligne distincte).",
-      "consequence_economique": "NOTRE MARGE = 100 % de nos frais operateur (rien a deduire — le cout Monta est porte par le client, pas par nous). Les analyses precedentes qui deduisaient 4 % de cout Monta de notre marge SOUS-ESTIMAIENT la marge. Assesse nouvelle grille: 1 748 €/mois de frais OZECAR = 1 748 € de marge brute (moins ~18 € sockets). La formule 'le % couvre le cout Monta, les centimes sont la marge' est OBSOLETE.",
-      "consequence_client": "Taux effectif TOTAL preleve sur le client = nos frais + frais Monta: LOCAL 10 % + 2 % = 12 % (client garde ~88 %) · ITINERANCE (5 % + 0,07) + 4 % ≈ 19,7 % sur profil Assesse (client garde ~80 %). Ancien monde Assesse: 16 % + 4 % = 20 % -> la neutralite de la migration reste VRAIE (~80 % dans les deux cas).",
-      "discours_commercial_corrige": "Ne plus dire '~84 %'. Dire: 'vous conservez ~88 % de vos recettes locales et ~80 % de vos recettes d'itinerance, tout compris, sans devenir operateur'. Les frais de clearing du prestataire de paiement (2 %/4 %) apparaissent sur le releve du client en ligne distincte — l'anticiper dans le devis d'une phrase: 'les frais de clearing du prestataire de paiement (2 % local, 4 % itinerance) s'ajoutent, preleves de meme sur vos recettes' pour eviter toute surprise.",
-      "marque_blanche_note": "La ligne 'Monta frais' sur le wallet client est une exposition ASSUMEE, couverte par l'exception CGV (art. 2.1.1/2.2.8, reversement Monta ApS). Ne pas la cacher, l'anticiper verbalement."
+      "STATUT": "ANNULEE ET REMPLACEE (v1.400). Ma lecture v1.399 etait FAUSSE.",
+      "modele_CONFIRME_par_Dominique": "Les % de la grille OZECAR sont des taux CLIENT TOUT COMPRIS = frais Monta + commission OZECAR. Exemple reel: contrat a 10 % = 2 % 'Monta frais' + 8 % 'OZECAR frais' (deux lignes sur le wallet, un seul taux commercial). Le raisonnement d'origine etait juste: le % couvre le cout Monta, les centimes sont la marge.",
+      "SAISIE_HUB_NETTE": "Les frais operateur saisis dans un plan Hub sont NETS de la part Monta (Monta preleve ses 2 %/4 % automatiquement en sus). GRILLE VERROUILLEE -> SAISIE PLAN: local 10 % client -> saisir 8 % · itinerance 5 % + 0,07 client -> saisir 1 % + 0,07 €/kWh. Confirme par le plan existant: 8 saisi + 2 Monta = 10 client (local), 16 saisi + 4 Monta = 20 client (itinerance Assesse).",
+      "economie": "Marge locale = 8 % du CA. Marge itinerance = 1 % + 0,07 €/kWh (Assesse: ~1 302 €/mois de marge sur 1 748 € factures au taux client 15,7 %). Client conserve: ~90 % en local, ~84 % en itinerance — chiffres du discours commercial.",
+      "devis": "Pas de mention supplementaire de clearing necessaire: le taux affiche au devis EST le taux total supporte par le client. La ligne 'Monta frais' du wallet est une decomposition, pas un supplement (exception CGV Monta ApS couvre l'exposition)."
     }
   },
   "parcours_vente_etat_2026_07_09": {
@@ -13688,8 +13697,8 @@
       "hub": "ozecar.hub-beta.monta.app (nouveau Hub, operator_id=2257) > Growth > Plans et abonnements > Forfaits > Nouveau",
       "ecran1_type": "'Abonnement borne de recharge' pour les 12 plans standards (subscription par PDC = parc mixte possible). Plan de groupe: reserve a un futur Enterprise nominatif multi-sites uniforme. Plan de sous-compte: futur programme revendeur (pro.ozecar.fr), pas maintenant.",
       "ecran2_details": "NOM sans redondance marketing mais explicite sur la facture wallet: 'Supervision {Forfait} {AC|DC} · {N} mois'. ATTENTION LE PRIX EST TTC ('Saisissez le prix, TVA incluse') -> saisir la colonne TTC FR 20%: EssAC 9,48/8,88/8,28 · EssDC 13,08/12,48/11,88 · BizAC 13,08/12,48/11,88 · BizDC 21,48/20,28/19,08. Le plan test cree a 7,90 (= 6,58 HT) DOIT etre corrige a 9,48. RESUME (client-facing, app + proprietaire): Essential: 'Supervision OZECAR de votre point de charge : pilotage a distance, acces badges et QR, alertes et rapports.' Business: 'Supervision OZECAR de votre point de charge : pilotage, monetisation des recharges, refacturation et assistance conducteurs 24/7.'",
-      "ecran3_frais_operateur": "Les frais variables VIVENT DANS LE PLAN (confirme par plan 4782 existant: serviceConfig 8%/16%). Champs HT ('La TVA sera ajoutee'). Frais de recharge de l'operateur: ON · Frais de transaction 10 % · Frais de depart par recharge: vide (0) · Frais par kWh: vide (0) · CHECKBOX 'appliquer aux sessions non payees': DECOCHER (sinon frais factures sur les recharges gratuites des flottes/Essential).",
-      "ecran4_frais_itinerance": "Frais de recharge en itinerance: ON · Frais de transaction en itinerance 5 % · Frais de depart itinerance: vide (0) · Frais itinerance par kWh: 0,07 EUR/kWh. Identique sur les 12 plans (Essential inclus: sans monetisation les frais ne se declenchent jamais, et un passage Business plus tard est deja couvert).",
+      "ecran3_frais_operateur": "Les frais variables VIVENT DANS LE PLAN, saisis NETS de la part Monta. Frais de recharge de l'operateur: ON · Frais de transaction: 8 % (= 10 % client - 2 % Monta) · Frais de depart par recharge: vide · Frais par kWh: vide · CHECKBOX 'appliquer aux sessions non payees': DECOCHER.",
+      "ecran4_frais_itinerance": "Frais de recharge en itinerance: ON · Frais de transaction en itinerance: 1 % (= 5 % client - 4 % Monta) · Frais de depart itinerance: vide · Frais itinerance par kWh: 0,07 EUR/kWh. Identique sur les 12 plans.",
       "ecran5_parametres": "Approbation: 'ne necessite pas d'approbation' (abos crees par nous/API). Date de paiement: 'Premier jour du mois, paiement a l'avance' (prorata au demarrage -> tout le parc aligne sur le mois calendaire: reversements et compta propres). Resiliation: 'Seuls les utilisateurs operateurs' (engagement 12/24/36 oblige — jamais le proprietaire).",
       "monetisations_futures_notees": "(1) Plan de groupe pour Enterprise multi-sites wallet uniforme. (2) Plan de sous-compte = abonnement partenaire/revendeur (portail pro). (3) Vendre la Data en abonnement borne Monta serait possible mais ON GARDE la regle options=SEPA (sinon retour des plans combines)."
     }
