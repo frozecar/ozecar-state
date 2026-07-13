@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.395",
+    "version": "1.396",
     "updated": "2026-07-12",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-12",
+        "version_from": "1.395",
+        "version_to": "1.396",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Regles avenants VALIDEES: (1) delta MRR nul = pas de deal, e-mail recap + note; (2) eligibilite wallet = flux net >= 2x abonnement sur 3 mois; (3) 2 echecs wallet consecutifs = retour SEPA auto + notification. Procedure bascule wallet documentee (Monta plans payants / Stripe options seules / mandat jamais revoque)."
+        ]
+      },
       {
         "date": "2026-07-12",
         "version_from": "1.394",
@@ -13511,6 +13520,14 @@
       "prepaiement_annuel": "VALIDE Dominique: le -5 % s'applique a TOUT l'abonnement recurrent (forfaits + options data + maintenance). Maquette et configurateur doivent remiser toutes les lignes. Libelle: 'sur l'ensemble de l'abonnement (forfaits et options)'.",
       "convention_couleurs_AC_DC": "Alignement sur le module bornes-compatibles: AC = fond rgba(95,45,255,0.1) texte violet #5F2DFF · DC = fond rgba(250,200,40,0.15) texte #a07000. Appliquee aux badges du devis. A appliquer partout ou AC/DC apparaissent (configurateur, portail).",
       "maintenance_par_site_ARCHITECTURE": "REGLE Dominique: les bornes d'un meme site restent ensemble techniquement (une seule team Monta, pas de decoupage artificiel en 2 groupes). RESOLUTION: (1) Facturation par defaut = NOS rails (Stripe/SEPA -> Pennylane): forfaits + options par site vivent dans NOTRE contrat (line items Stripe par site), Monta ne porte que les 4-8 plans forfaits standards attaches aux PDC selon type AC/DC — la granularite par site est native puisque le plan est PAR PDC. Aucun probleme d'architecture. (2) Cas wallet (abonnement preleve sur recettes cote Monta): le plan au PDC doit porter le prix complet forfait+options du site -> plan combine cree MANUELLEMENT a la demande (ex 'Business AC + N3 (site X)'). Friction acceptable: cas minoritaire, sites a recettes souvent uniformes. L'engagement ne cree jamais de plan supplementaire (remise portee par discountPercentage sur l'abonnement)."
+    },
+    "regles_avenants_VALIDEES_2026_07_12": {
+      "principe": "Deal signe = photo immuable. Evolution = nouveau deal d'avenant (stages 'Avenant — envoye/signe' du pipeline Vente) SAUF si delta MRR = 0.",
+      "regle_1_delta_nul": "VALIDE: changement sans impact MRR (ex. mode de paiement) = PAS de deal d'avenant. E-mail recapitulatif au client (fait foi) + note horodatee sur la fiche societe + maj propriete ozecar_paiement.",
+      "regle_2_eligibilite_wallet": "VALIDE: passage au wallet autorise si flux net moyen (recettes locales + itinerance entrante - recharges sortantes) >= 2x l'abonnement mensuel sur les 3 derniers mois (donnees supervision). Sinon refus courtois + rester SEPA.",
+      "regle_3_echec_wallet": "VALIDE: 2 prelevements wallet echoues consecutifs = bascule automatique sur le mandat SEPA dormant + notification client. Le mandat SEPA n'est JAMAIS revoque, meme en wallet.",
+      "bascule_wallet_technique": "Monta: subscriptions des PDC sur plans standards payants (preleves sur wallet, mecanisme natif). Stripe: abonnement reduit aux options (data/maintenance restent TOUJOURS en SEPA); si zero option, abonnement a 0 mais mandat actif. Effet a la prochaine echeance mensuelle (prorata Stripe). ozecar_paiement -> wallet.",
+      "autres_regles_rappel": "Upgrade immediat · downgrade/retrait PDC a date anniversaire · options a 30 j de preavis · engagement porte sur le forfait seul · changement engagement = avenant signe · mensuel<->prepaiement au renouvellement annuel."
     }
   },
   "parcours_vente_etat_2026_07_09": {
