@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.402",
+    "version": "1.403",
     "updated": "2026-07-12",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-12",
+        "version_from": "1.402",
+        "version_to": "1.403",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Matrice EXACTE des 5 feature groups x 13 capabilities gravee (T/O/D par cellule) + justifications + regle de vigilance (nouvelles features Monta = repasser sur les groupes)."
+        ]
+      },
       {
         "date": "2026-07-12",
         "version_from": "1.401",
@@ -13761,6 +13770,122 @@
       "Capability non listee: touche l'argent -> Business · touche les vehicules -> option flotte · sinon visible partout. Dans le doute: cacher (reveler est un upgrade, retirer est un downgrade vecu).",
       "Webhook portage: appliquer le groupe a la creation de team (API a verifier au portage)."
     ],
-    "statut": "Matrice validee a creer par Dominique dans le Hub (5 groupes + defaut + application en masse au parc selon forfait). Plans 14/14 conformes apres correction 6422 (8 %)."
+    "statut": "Matrice validee a creer par Dominique dans le Hub (5 groupes + defaut + application en masse au parc selon forfait). Plans 14/14 conformes apres correction 6422 (8 %).",
+    "MATRICE_EXACTE_13_CAPABILITIES": {
+      "etats": "T=Tous les administrateurs · O=Operateur uniquement (mode service opere: la fonction existe, NOUS la pilotons) · D=Desactive",
+      "ordre_colonnes": [
+        "OZ Essential",
+        "OZ Business",
+        "OZ Ess+Flotte",
+        "OZ Biz+Flotte",
+        "OZ Enterprise"
+      ],
+      "bornes_de_recharge": {
+        "Price groups": [
+          "O",
+          "T",
+          "O",
+          "T",
+          "T"
+        ],
+        "Payment terminals": [
+          "O",
+          "O",
+          "O",
+          "O",
+          "T"
+        ],
+        "Roaming (bientot)": [
+          "O",
+          "O",
+          "O",
+          "O",
+          "O"
+        ],
+        "Load balancing (bientot)": [
+          "O",
+          "O",
+          "O",
+          "O",
+          "T"
+        ]
+      },
+      "flotte": {
+        "Split billing": [
+          "D",
+          "T",
+          "D",
+          "T",
+          "T"
+        ],
+        "Fleet dashboard": [
+          "O",
+          "O",
+          "T",
+          "T",
+          "T"
+        ],
+        "Vehicles": [
+          "D",
+          "D",
+          "T",
+          "T",
+          "T"
+        ],
+        "Pay charges with team wallet": [
+          "D",
+          "T",
+          "D",
+          "T",
+          "T"
+        ],
+        "Country selection": [
+          "D",
+          "T",
+          "D",
+          "T",
+          "T"
+        ],
+        "Network selection": [
+          "D",
+          "T",
+          "D",
+          "T",
+          "T"
+        ],
+        "Reimbursed charging (bientot)": [
+          "O",
+          "O",
+          "O",
+          "O",
+          "O"
+        ]
+      },
+      "general": {
+        "Invoices": [
+          "D",
+          "T",
+          "D",
+          "T",
+          "T"
+        ],
+        "Account/Team settings": [
+          "T",
+          "T",
+          "T",
+          "T",
+          "T"
+        ]
+      },
+      "justifications": [
+        "Roaming = O partout MEME Enterprise: l'ouverture itinerance est une decision commerciale (activation gratuite, plancher 5 €, variable declenche) — jamais un toggle client.",
+        "Reimbursed charging = O partout: produit paye separement (remboursement recharge domicile 5,90 €), active a la souscription.",
+        "Technique (payment terminals, load balancing) = O sauf Enterprise: service opere.",
+        "Wallet conducteurs (pay charges/country/network) suit la monetisation: D en Essential, T des Business (itinerance sortante).",
+        "Invoices D en Essential (facture = Pennylane chez nous), T des Business (releves wallet). Branding factures wallet = question ouverte.",
+        "Vehicles D hors option (telemetrie OEM sans le client = non-sens), Fleet dashboard O hors option (utile a NOTRE support)."
+      ],
+      "REGLE_VIGILANCE": "Le catalogue de capabilities est defini par Monta et les NOUVELLES features y apparaissent AUTOMATIQUEMENT -> a chaque annonce Monta, repasser sur les 5 groupes pour statuer, sinon la nouveaute arrive chez les clients avec l'etat choisi par Monta."
+    }
   }
 }
