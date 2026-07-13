@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.403",
-    "updated": "2026-07-12",
+    "version": "1.404",
+    "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.403",
+        "version_to": "1.404",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Audit feature groups Monta: API contenu FORBIDDEN (scope ferme operator 2257), assignation lisible via /teams. Constat: 1 groupe test (23) sur team 4915002, 177/178 teams sans groupe. Section audit_2026_07_13 ajoutee."
+        ]
+      },
       {
         "date": "2026-07-12",
         "version_from": "1.402",
@@ -13770,7 +13779,7 @@
       "Capability non listee: touche l'argent -> Business · touche les vehicules -> option flotte · sinon visible partout. Dans le doute: cacher (reveler est un upgrade, retirer est un downgrade vecu).",
       "Webhook portage: appliquer le groupe a la creation de team (API a verifier au portage)."
     ],
-    "statut": "Matrice validee a creer par Dominique dans le Hub (5 groupes + defaut + application en masse au parc selon forfait). Plans 14/14 conformes apres correction 6422 (8 %).",
+    "statut": "Groupe test 23 cree et assigne a la team test. Contenu non auditable par API (scope feature-groups ferme). 177/178 teams sans groupe. Reste: creer les 5 groupes selon MATRICE_EXACTE + defaut + application en masse.",
     "MATRICE_EXACTE_13_CAPABILITIES": {
       "etats": "T=Tous les administrateurs · O=Operateur uniquement (mode service opere: la fonction existe, NOUS la pilotons) · D=Desactive",
       "ordre_colonnes": [
@@ -13886,6 +13895,12 @@
         "Vehicles D hors option (telemetrie OEM sans le client = non-sens), Fleet dashboard O hors option (utile a NOTRE support)."
       ],
       "REGLE_VIGILANCE": "Le catalogue de capabilities est defini par Monta et les NOUVELLES features y apparaissent AUTOMATIQUEMENT -> a chaque annonce Monta, repasser sur les 5 groupes pour statuer, sinon la nouveaute arrive chez les clients avec l'etat choisi par Monta."
+    },
+    "audit_2026_07_13": {
+      "api_contenu": "BLOQUE — GET /feature-groups retourne FORBIDDEN 'This API is not enabled for this operator'. Impossible d'auditer le contenu T/O/D des groupes par API. Deblocage: demander a Monta (partner support) l'activation du scope feature-groups sur l'operator 2257, sinon audit par captures Hub.",
+      "api_assignation": "OK — GET /teams expose featureGroupId par team. Audit d'assignation possible et fait.",
+      "constat_assignation": "178 teams au total: 1 seule avec groupe (team 4915002 'test groupe' -> featureGroupId 23), 177 SANS groupe = elles voient TOUT (y compris les nouveautes Monta a venir). L'application en masse au parc + le defaut nouvelles teams restent a faire dans le Hub.",
+      "groupe_23": "Existe et assignable — contenu (matrice T/O/D) NON verifiable par API tant que le scope n'est pas ouvert."
     }
   }
 }
