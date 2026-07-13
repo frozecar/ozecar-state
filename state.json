@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.405",
+    "version": "1.406",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.405",
+        "version_to": "1.406",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Audit usage feature groups LIVRE (178 teams croisees subs×plans×usage): 138 OZ Business / 4 Biz+Flotte / 36 Essential, 174 applications silencieuses, 4 cas flotte a trancher. Constats: application en masse non prise (177 sans groupe), PATCH featureGroupId ignore par l'API → application manuelle Hub par lots. Listes livrees (feature-groups-application.txt)."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.404",
@@ -13788,7 +13797,7 @@
       "Capability non listee: touche l'argent -> Business · touche les vehicules -> option flotte · sinon visible partout. Dans le doute: cacher (reveler est un upgrade, retirer est un downgrade vecu).",
       "Webhook portage: appliquer le groupe a la creation de team (API a verifier au portage)."
     ],
-    "statut": "Groupe test 23 cree et assigne a la team test. Contenu non auditable par API (scope feature-groups ferme). 177/178 teams sans groupe. Reste: creer les 5 groupes selon MATRICE_EXACTE + defaut + application en masse.",
+    "statut": "Groupes crees (contenu non audite, scope en attente Monta). Audit usage LIVRE: 138 Biz / 4 Biz+Flotte / 36 Ess. Application en masse A REFAIRE dans le Hub par lots (pas prise, et API en lecture seule).",
     "MATRICE_EXACTE_13_CAPABILITIES": {
       "etats": "T=Tous les administrateurs · O=Operateur uniquement (mode service opere: la fonction existe, NOUS la pilotons) · D=Desactive",
       "ordre_colonnes": [
@@ -13910,6 +13919,15 @@
       "api_assignation": "OK — GET /teams expose featureGroupId par team. Audit d'assignation possible et fait.",
       "constat_assignation": "178 teams au total: 1 seule avec groupe (team 4915002 'test groupe' -> featureGroupId 23), 177 SANS groupe = elles voient TOUT (y compris les nouveautes Monta a venir). L'application en masse au parc + le defaut nouvelles teams restent a faire dans le Hub.",
       "groupe_23": "Existe et assignable — contenu (matrice T/O/D) NON verifiable par API tant que le scope n'est pas ouvert."
+    },
+    "audit_usage_2026_07_13": {
+      "methode": "Croisement API: /teams (178, category) × /subscriptions actives (317, remontees cp→team via /charge-points 525) × plans (noms) × usage par team (price-groups count + wallet-transactions count, filtres teamId VERIFIES respectes).",
+      "resultat": "138 teams → OZ Business · 4 → OZ Business+Flotte (category fleet actives: Ville d'Ajaccio 16PDC wtx5967, Blanchisserie Roncaglia, Carre d'or, Europcar Balesi) · 36 → OZ Essential (aucun abo actif, 0 wallet, ≤2 price-groups: teams admin/kit/test/inactives). ZERO team 'a prevenir': tout usage detecte part en Business. Confirme l'intuition Dominique (majorite equivalent business).",
+      "application": "174 applications SILENCIEUSES possibles + 4 cas flotte a trancher (grandfather Biz+Flotte recommande pour Ville d'Ajaccio — couper le fleet dashboard d'un client public actif = downgrade vecu; les 3 autres: vendre l'option 20 € ou grandfather).",
+      "constat_bloquant_1": "L'application en masse annoncee 'faite' N'EST PAS visible API: 177/178 teams featureGroupId=None (seule team test 4915002 → groupe 23). Si lancee dans le Hub, elle n'a pas pris. A refaire par lots avec les listes.",
+      "constat_bloquant_2": "PATCH /teams/{id} {featureGroupId} repond 200 mais IGNORE le champ (lecture seule). Application par API impossible → manuelle Hub (Teams → selection multiple → Apply feature group). 3 operations de masse avec les listes.",
+      "livrable": "feature-groups-application.txt (listes nominatives par groupe avec flags wallet/pg/fleet) remis a Dominique.",
+      "scope_api": "Demande d'ouverture du scope feature-groups envoyee a Monta par Dominique (2026-07-13) — debloquera l'audit de CONTENU des 5 groupes vs MATRICE_EXACTE + possiblement l'assignation par API."
     }
   },
   "ocpp_proxy_monta_2026_07_13": {
