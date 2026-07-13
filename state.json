@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.410",
+    "version": "1.411",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.410",
+        "version_to": "1.411",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Correction semantique Dominique: PDC supervises = connectes (525 via Monta, dynamique) vs 233 rattaches CRM. MRR/PDC reel 6,67 € vs cout 11,64 → parc NON rentable au PDC, ecart = enjeu migration. parc.php + dashboard corriges et deployes."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.409",
@@ -13996,6 +14005,11 @@
       "consolidation_hubspot": "65/67 customers actifs matches par nom normalise (CRM peuple depuis Pennylane -> matchs exacts). ozecar_mrr = Monta + Pennylane, resume enrichi, ozecar_paiement=prepay si annuel (sepa si mensuel et vide), ozecar_engagement_fin = next_occurrence des annuels (echeance de renouvellement, approx pour relances <90j).",
       "dashboard_final": "102 clients / 90 avec donnees / 233 PDC / MRR 3 501,38 € / ARR 42 016,56 € / 15,03 €/PDC (vs cout 11,64 -> parc rentable au PDC) / 4 echeances <90 j.",
       "restes": "UDIFE (35,70 €/mois) sans fiche HubSpot -> a creer. Assesse toujours sans fiche. ozecar_engagement_fin = echeance de FACTURATION Pennylane, pas un engagement contractuel — a remplacer par l'engagement reel a la migration."
+    },
+    "CORRECTION_pdc_supervises_2026_07_13": {
+      "correction_dominique": "'PDC supervises' = CONNECTES a la plateforme (525, source Monta /charge-points totalItemCount, dynamique dans parc.php), a ne pas confondre avec les PDC rattaches aux fiches CRM (233) ni les PDC factures.",
+      "kpi_corriges": "Dashboard: 'PDC supervises (connectes)' = 525 (sous-titre: dont 233 rattaches aux fiches) · 'MRR / PDC supervise' = 6,67 € (3 501 / 525).",
+      "conclusion_rectifiee": "Ma conclusion v1.410 'parc rentable au PDC (15,03 vs 11,64)' etait FAUSSE (basee sur les 233 CRM). Reel: 6,67 €/PDC supervise vs cout 11,64 € -> le parc N'EST PAS rentable au PDC connecte. L'ecart (~5 €/PDC/mois) EST l'enjeu chiffre de la migration Forfait Zero et de la nouvelle grille."
     }
   },
   "migration_abonnements_regles": {
