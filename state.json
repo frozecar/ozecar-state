@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.414",
+    "version": "1.415",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.414",
+        "version_to": "1.415",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Vue contrats sur fiche: proprietes ozecar_mrr_supervision + ozecar_contrats (detail nature/montant/periodicite/echeance + refs FT), backfill 126 fiches. UI: epingler le groupe Parc OZECAR sur la fiche (action Dominique 2 min)."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.413",
@@ -14043,6 +14052,12 @@
       "reponse": "OUI incluse (48 % du MRR Pennylane), NON pas tous: 27/66 clients abonnes ont une ligne maintenance recurrente. Decomposition ligne a ligne des 87 abonnements (invoice_lines, 100 % couverts apres gestion du rate limit Pennylane ~6 req paralleles = 429, refaire en sequentiel +1,2s): supervision 1 655,53 · maintenance 1 606,25 · data 56 · support 36,67 = 3 354,45 €/mois. Top maintenance: Balesi 630 · Acquaviva 96 · CPAM 84 · Terrasses PV 68,75. Donnees: /tmp/pl_decompo.json.",
       "implementation": "Propriete company ozecar_mrr_mnt creee + backfill 27 fiches (27/27 matchees). parc.php expose mrr_supervision / mrr_maintenance et calcule mrr_par_pdc = SUPERVISION SEULE / PDC supervises. Dashboard: KPI MRR decompose (supervision + maintenance) + 'MRR supervision / PDC' = 3,61 € vs cout 11,64 — l'ecart reel de la migration, maintenance exclue du ratio car elle a ses propres couts terrain.",
       "chiffres_finaux": "MRR 3 501,38 € = supervision 1 895,13 (Pennylane 1 655 + Monta 229 + data/support ~93 non isoles cote Monta... NOTE: mrr_supervision = mrr_total - maintenance, inclut donc data+support ~93 €) + maintenance 1 606,25. Supervision/PDC: 3,61 €."
+    },
+    "VUE_CONTRATS_FICHE_2026_07_13": {
+      "demande": "Voir d'un coup d'oeil sur la fiche societe: contrats supervision/maintenance, montants, dates.",
+      "implemente": "2 nouvelles proprietes groupe Parc OZECAR: ozecar_mrr_supervision (number) et ozecar_contrats (textarea, une ligne par contrat: NATURE · X €/mois HT (Y € annuel/mensuel) · ech. date + refs factures FT recentes). Backfill 126 fiches depuis les lignes d'abonnements Pennylane (nature classifiee) + 769 factures. Groupe complet: parc_resume, pdc_total, mrr, mrr_supervision, mrr_mnt, contrats, engagement_fin, forfaits, paiement.",
+      "action_UI_dominique": "Reglages -> Objets -> Societes -> Personnaliser la fiche (record customization): epingler le groupe 'Parc OZECAR' en haut de la colonne gauche -> le coup d'oeil est natif sur chaque fiche. + vue liste 'Parc clients' avec ces colonnes.",
+      "limites": "Contrats legacy en factures directes: seules les refs FT apparaissent (nature/montant non decomposables automatiquement — payeurs tiers). Niveau de maintenance N0-N4 non renseigne (inconnu pour le legacy, sera ecrit par le webhook a la migration). Le webhook post-signature maintiendra ozecar_contrats a jour automatiquement."
     }
   },
   "migration_abonnements_regles": {
