@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.422",
+    "version": "1.423",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.422",
+        "version_to": "1.423",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "PORTAGE ETAPE 2 LIVREE: options du compte (grille validee), Apollo conditionnel public+DC avec mention AFIR 50kW, prefill ?company=. Tests au centime, zero erreur."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.421",
@@ -14216,6 +14225,11 @@
       "livrable": "staging.ozecar.fr/wp-content/uploads/ozecar/configurateur-v2-dev.html — moteur multi-sites FONCTIONNEL: sites[] dynamiques (ajout/suppression sites et lignes), lignes kind AC/DC (badge cliquable violet/jaune) × forfait ess/biz × qty, options PAR SITE (data 2€, maintenance N0-N4, MES 450), kits auto (49 + 29×(pdc-1) par site), SIM 6,50 si data, engagement 12/24/36 EN BAS + prepay -5% sur tout + economie chiffree vs 12 mois, barre totale fixe (abonnement + mise en service + resume), serialisation URL ?c=base64(json) auto (history.replaceState), bouton 'Generer le lien client' (copie ?c=...&v=1), MODE CLIENT v=1 lecture seule (titre 'Votre offre OZECAR', CTA 'Accepter et signer' placeholder webhook).",
       "tests_playwright_bardinet": "36m: 170,40 (= maquette au centime) · kits 504 · +data+N1 s1: 230,40 / once 510,50 · prepay: 218,82 · 12m+options: 248,40 · +site 4AC: 270,00 · 3 sites 20 PDC OK · mode RO OK · zero erreur JS.",
       "restes_etapes": "2) prefill ?company= (HubSpot) + fiche client derniere page · 3) ecran confirmation AVANT/APRES + mode avenant (?company&avenant=1, prechargement ozecar_config_json) · 4) rendu offre client riche (blocs 60% N1, benefices, references — reprendre offre-bardinet2) au lieu du RO brut · 5) webhook post-signature 5 volets · 6) bascule prod (remplace configurateur-devis.html) apres go Dominique."
+    },
+    "ETAPE_2_LIVREE_2026_07_13": {
+      "livrable": "configurateur-v2-dev.html enrichi: (1) section OPTIONS DU COMPTE (grille validee v1.422): assistance 24/7 2€×PDC Essential (visible si PDC ess>0), Flotte 20, CSM 99 (Reporting inclus auto), Reporting 15, recharge domicile A 5,90 / B 7,90 par nb salaries — 'flexibles a 30 jours, toujours SEPA'; (2) Terminal Payter Apollo conditionnel (site PUBLIC + DC): qty × (649+25 pose one-time + 9,90/mois gestion), mention exacte 'Obligation AFIR : borne >= 50 kW accessible au public'; (3) prefill ?company= via parc.php (bandeau 'Client: X', stocke st.client); prepay -5% s'applique aussi aux options compte.",
+      "tests": "4essAC+2bizDC 36m: 59,40 ✓ · Apollo visible ssi public+DC ✓ · +1 Apollo: 69,30 /mois + 868 once ✓ · +assist+CSM+5 domA: 205,80 au centime ✓ · Reporting bascule 'inclus' avec CSM ✓ · prepay sur tout: 195,54 ✓ · zero erreur JS.",
+      "restes": "3) ecran confirmation AVANT/APRES + mode avenant · 4) rendu offre client riche · 5) webhook · 6) bascule prod."
     }
   },
   "grille_options_2026_07_13": {
