@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.400",
+    "version": "1.401",
     "updated": "2026-07-12",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-12",
+        "version_from": "1.400",
+        "version_to": "1.401",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "14 plans Hub crees et audites par API: 2 plans SEPA 0 € (6434 Essential, 6435 Business) + 12 plans wallet TTC (6422-6433). Frais nets conformes partout sauf 6422 (local 10 % -> 8 %, correction Hub demandee). Mapping canal->plan grave."
+        ]
+      },
       {
         "date": "2026-07-12",
         "version_from": "1.399",
@@ -13702,5 +13711,29 @@
       "ecran5_parametres": "Approbation: 'ne necessite pas d'approbation' (abos crees par nous/API). Date de paiement: 'Premier jour du mois, paiement a l'avance' (prorata au demarrage -> tout le parc aligne sur le mois calendaire: reversements et compta propres). Resiliation: 'Seuls les utilisateurs operateurs' (engagement 12/24/36 oblige — jamais le proprietaire).",
       "monetisations_futures_notees": "(1) Plan de groupe pour Enterprise multi-sites wallet uniforme. (2) Plan de sous-compte = abonnement partenaire/revendeur (portail pro). (3) Vendre la Data en abonnement borne Monta serait possible mais ON GARDE la regle options=SEPA (sinon retour des plans combines)."
     }
+  },
+  "plans_monta_hub_CREES_2026_07_12": {
+    "statut": "14 PLANS CREES ET AUDITES PAR API le 2026-07-12. Tous: applicableFor=charge-point, priceModel=per-charge-point, itinerance 1 % + 0,07 €/kWh. UNE ANOMALIE: plan 6422 a 10 % en frais local au lieu de 8 % -> Dominique corrige dans le Hub (signale).",
+    "architecture": "2 familles: plans SEPA a 0 € (prix chez Stripe, le plan Monta ne porte que les frais variables) + 12 plans wallet avec prix TTC (Monta preleve l'abonnement sur les recettes). Mapping webhook: canal SEPA -> plan 0 € du forfait · canal wallet -> plan payant (forfait × type × engagement).",
+    "plans_SEPA_0eur": {
+      "Supervision Essential": 6434,
+      "Supervision Business": 6435
+    },
+    "plans_wallet_TTC": {
+      "Essential AC 12": 6422,
+      "Essential AC 24": 6423,
+      "Essential AC 36": 6424,
+      "Essential DC 12": 6425,
+      "Essential DC 24": 6426,
+      "Essential DC 36": 6427,
+      "Business AC 12": 6428,
+      "Business AC 24": 6429,
+      "Business AC 36": 6430,
+      "Business DC 12": 6431,
+      "Business DC 24": 6432,
+      "Business DC 36": 6433
+    },
+    "frais_configures": "local 8 % (= 10 % client - 2 % Monta) · itinerance 1 % + 0,07 €/kWh (= 5 % + 0,07 client - 4 % Monta). Prix TTC FR 20 %.",
+    "anomalie_a_corriger": "Plan 6422 (Essential AC · 12 mois): frais local 10 % -> 8 % (correction manuelle Hub demandee)."
   }
 }
