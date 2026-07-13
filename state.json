@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.411",
+    "version": "1.412",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.411",
+        "version_to": "1.412",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Decomposition MRR par nature (87 abos Pennylane, lignes completes): supervision 1 655 / maintenance 1 606 (48 %, 27 clients) / data 56 / support 37. Propriete ozecar_mrr_mnt + backfill 27 fiches. Dashboard: MRR decompose, ratio rentabilite = supervision seule / PDC = 3,61 € vs 11,64."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.410",
@@ -14010,6 +14019,12 @@
       "correction_dominique": "'PDC supervises' = CONNECTES a la plateforme (525, source Monta /charge-points totalItemCount, dynamique dans parc.php), a ne pas confondre avec les PDC rattaches aux fiches CRM (233) ni les PDC factures.",
       "kpi_corriges": "Dashboard: 'PDC supervises (connectes)' = 525 (sous-titre: dont 233 rattaches aux fiches) · 'MRR / PDC supervise' = 6,67 € (3 501 / 525).",
       "conclusion_rectifiee": "Ma conclusion v1.410 'parc rentable au PDC (15,03 vs 11,64)' etait FAUSSE (basee sur les 233 CRM). Reel: 6,67 €/PDC supervise vs cout 11,64 € -> le parc N'EST PAS rentable au PDC connecte. L'ecart (~5 €/PDC/mois) EST l'enjeu chiffre de la migration Forfait Zero et de la nouvelle grille."
+    },
+    "DECOMPOSITION_mrr_2026_07_13": {
+      "question_dominique": "La maintenance est-elle dans le MRR ? Sur tous les clients ?",
+      "reponse": "OUI incluse (48 % du MRR Pennylane), NON pas tous: 27/66 clients abonnes ont une ligne maintenance recurrente. Decomposition ligne a ligne des 87 abonnements (invoice_lines, 100 % couverts apres gestion du rate limit Pennylane ~6 req paralleles = 429, refaire en sequentiel +1,2s): supervision 1 655,53 · maintenance 1 606,25 · data 56 · support 36,67 = 3 354,45 €/mois. Top maintenance: Balesi 630 · Acquaviva 96 · CPAM 84 · Terrasses PV 68,75. Donnees: /tmp/pl_decompo.json.",
+      "implementation": "Propriete company ozecar_mrr_mnt creee + backfill 27 fiches (27/27 matchees). parc.php expose mrr_supervision / mrr_maintenance et calcule mrr_par_pdc = SUPERVISION SEULE / PDC supervises. Dashboard: KPI MRR decompose (supervision + maintenance) + 'MRR supervision / PDC' = 3,61 € vs cout 11,64 — l'ecart reel de la migration, maintenance exclue du ratio car elle a ses propres couts terrain.",
+      "chiffres_finaux": "MRR 3 501,38 € = supervision 1 895,13 (Pennylane 1 655 + Monta 229 + data/support ~93 non isoles cote Monta... NOTE: mrr_supervision = mrr_total - maintenance, inclut donc data+support ~93 €) + maintenance 1 606,25. Supervision/PDC: 3,61 €."
     }
   },
   "migration_abonnements_regles": {
