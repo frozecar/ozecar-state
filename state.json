@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.408",
+    "version": "1.409",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.408",
+        "version_to": "1.409",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CORRECTION Dominique: MRR dashboard partiel (Monta seul), abonnements annuels Pennylane existants non comptes. Labels dashboard corriges. Regle de migration gravee: verifier Pennylane avant bascule, pas de double facturation, prorata a solder, resiliation a la bascule. Prerequis: inventaire abonnements Pennylane (export/API Dominique)."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.407",
@@ -13970,6 +13979,14 @@
     "resultat_dashboard": "67 clients affiches / 54 avec donnees / 233 PDC / MRR abonnements Monta 229,23 EUR (MRR/PDC 0,98 EUR vs cout 11,64 = argument chiffre de la migration Forfait Zero, visible investisseurs).",
     "proprietes_ecrites": "ozecar_pdc_total, ozecar_parc_resume (AC/DC + teams + abonnements Monta actifs), ozecar_mrr (montants Monta bruts si >0), ozecar_forfaits (equivalent audit), ozecar_paiement=wallet si wallet_tx>0. ozecar_engagement_fin laisse vide (legacy sans engagement).",
     "non_rapproches_importants": "ETS Intermarche Assesse (BE) wtx=21109 SANS fiche HubSpot (a creer par Dominique — plus gros client wallet!). Incertains a confirmer: E.Leclerc Ile Rousse <-> ACQUAVIVA DISTRIBUTION II? · teams suffixees '- Nova' <-> NOVA ENERGIE (revendeur?) · Eurotyre Corte <-> CORTE AUTO (x2 doublons CRM) · Dolce Vita Calvi, Kalliste St-Florent, Hotel Marinca, Homair: pas de fiche evidente. Doublons CRM releves: COMMUNE DE BONIFACIO x2, COMMUNE/MAIRIE DE GHISONACCIA, CORTE AUTO x2, A 2M / SARL A.2M.",
-    "note_mrr": "ozecar_mrr legacy = totalAmount des subscriptions Monta actives (montants bruts Monta, majorite a 0 = design Forfait Zero). Apres migration/portage, le webhook post-signature ecrira le MRR contractuel reel."
+    "note_mrr": "ozecar_mrr legacy = totalAmount des subscriptions Monta actives (montants bruts Monta, majorite a 0 = design Forfait Zero). Apres migration/portage, le webhook post-signature ecrira le MRR contractuel reel.",
+    "CORRECTION_pennylane": "Le MRR affiche est PARTIEL: il ne compte que les abonnements Monta (totalAmount). Une partie du parc paie deja des abonnements ANNUELS via Pennylane, hors Monta et hors dashboard. Labels dashboard corriges ('MRR abonnements (Monta)' + mention 'hors Pennylane'). Consolidation reelle = a la migration."
+  },
+  "migration_abonnements_regles": {
+    "pennylane_bascule_2026_07_13": {
+      "regle": "AVANT toute migration d'un client vers les nouveaux plans (Stripe SEPA ou Monta wallet), VERIFIER s'il a un abonnement annuel Pennylane en cours. Si oui: (1) pas de double facturation — le nouveau canal ne demarre qu'a l'echeance Pennylane OU l'abonnement Pennylane est arrete avec avoir/prorata; (2) le prorata annuel deja paye est un credit a solder; (3) l'abonnement Pennylane est resilie a la bascule, jamais laisse en parallele.",
+      "prerequis": "Inventaire des abonnements Pennylane actifs (client, montant annuel, date d'echeance) — export Dominique ou acces API Pennylane a fournir. Sans cet inventaire, le MRR consolide et le plan de migration par client sont impossibles.",
+      "impact_dashboard": "ozecar_mrr devra a terme = MRR contractuel consolide (Stripe + Monta + Pennylane residuel), ecrit par le webhook post-signature et le script de migration."
+    }
   }
 }
