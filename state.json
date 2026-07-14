@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.428",
+    "version": "1.429",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.428",
+        "version_to": "1.429",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "MES recharge domicile 29 €/borne ajoutee (grille + configurateur). Tooltips natifs remplaces par bulles cliquables visibles (i violet -> tipbox)."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.427",
@@ -14295,7 +14304,7 @@
       "Habillage livre (9 corrections): en-tete noir 'Offre preparee pour {client}' + date + validite 30j calculee (st.created) · legende 'Comprendre cette offre' (AC/DC, Essential/Business, niveaux N1-N4 + 60% N1) · bloc frais variables violet (10% ~90% / 5%+0,07 ~84%, affiche si un site a des transactions, mention itinerance activable) · tooltips forfaits · descriptifs maintenance dans le select · steppers [-]qty[+] larges · checkboxes 19px accent violet · activation 79 barree offerte · MODE CLIENT: quantites+options manipulables (devis interactif), structure sites/forfaits/acces verrouillee. Tests: client affiche, stepper 170,40->180,30 exact, mode client interactif + add masque, zero erreur JS."
     ],
     "ETAPE_2ter_BLOC_VENTE_2026_07_13": "Bloc 'Comprendre cette offre' remplace par composants de VENTE (critique Dominique: piece maitresse): 2 cartes forfaits cote a cote (Essential vs Business borde violet + badge LE PLUS CHOISI, listes ✓/✗), bandeau noir 60% en Space Mono 34px jaune + phrase choc, TABLEAU maintenance N1-N4 a progression visuelle (4 prestations cumulatives ●/—, colonne N4 surlignee, prix en pied), 2 cartes AC/DC avec badges couleur et cas d'usage. Deploye, zero erreur JS, calculs intacts. REORDONNE (3 corrections Dominique): frais de service integres DANS la carte Business (sous-bloc dedie, plus de section a part) · 60% integre en tete de la carte maintenance (violet lisible, plus de bandeau noir) · section ENGAGEMENT deplacee EN DERNIER (apres mise en place, juste avant la barre). Ordre final: en-tete client -> sites -> options compte -> cartes forfaits (frais inclus) -> maintenance (60% + tableau N1-N4) -> AC/DC -> mise en place -> engagement+prepay -> barre totale. Zero erreur JS.",
-    "ETAPE_2quater_2026_07_13": "3 corrections Dominique: options du compte deplacees APRES les cartes forfaits · tooltips explicatifs (title + ⓘ) sur assistance/flotte/CSM/reporting · REMBOURSEMENT RECHARGES A DOMICILE en section dediee mise en avant (carte bordee violet, 2 plans cote a cote fin-de-mois 5,90 / INSTANTANE 7,90 wallet provisionne, steppers salaries [-n+], prix par plan). Ordre final: client -> sites -> forfaits(frais inclus) -> maintenance(60%+tableau) -> AC/DC -> options compte -> domicile -> mise en place -> engagement -> barre. Tests: +2 domB = 25,70 exact, zero erreur."
+    "ETAPE_2quater_2026_07_13": "3 corrections Dominique: options du compte deplacees APRES les cartes forfaits · tooltips explicatifs (title + ⓘ) sur assistance/flotte/CSM/reporting · REMBOURSEMENT RECHARGES A DOMICILE en section dediee mise en avant (carte bordee violet, 2 plans cote a cote fin-de-mois 5,90 / INSTANTANE 7,90 wallet provisionne, steppers salaries [-n+], prix par plan). Ordre final: client -> sites -> forfaits(frais inclus) -> maintenance(60%+tableau) -> AC/DC -> options compte -> domicile -> mise en place -> engagement -> barre. Tests: +2 domB = 25,70 exact, zero erreur. + MES domicile 29 €/borne (once, teste 3 bornes = 136 exact) + tooltips remplaces par bulles CLIQUABLES visibles (bouton i violet -> tipbox, fonctionne mobile), testes."
   },
   "grille_options_2026_07_13": {
     "SITE": {
@@ -14310,7 +14319,7 @@
       "CSM": "99 €/mois (Business, engagement annuel; inclus Enterprise): interlocuteur nomme, revue trimestrielle, rapport mensuel personnalise, optimisation tarifs, priorite support, INCLUT Reporting avance",
       "Reporting avance": "PROPOSE 15 €/mois/compte: consolidation multi-sites, exports compta/RSE automatises, rapports personnalises (self-service; rapports standard toujours inclus — on ne micro-facture pas PAR rapport, on package)",
       "Gestion terminal de paiement (Payter)": "PROPOSE 9,90 €/terminal/mois + 25 € one-time installation (couts reels OZECAR: 12,50 MES + 30 €/an contract + 48 €/an gateway = marge ~41 €/an/terminal)",
-      "Recharge a domicile": "Plan A remboursement fin de mois 5,90 €/salarie/mois · Plan B instantane 7,90 € CONDITIONNE a wallet employeur provisionne (jamais d'avance OZECAR). Dependance: Reimbursed charging Monta encore 'bientot disponible'"
+      "Recharge a domicile": "Plan A remboursement fin de mois 5,90 €/salarie/mois · Plan B instantane 7,90 € CONDITIONNE a wallet employeur provisionne (jamais d'avance OZECAR). Dependance: Reimbursed charging Monta encore 'bientot disponible' + MISE EN SERVICE 29 €/borne domicile one-time (valide Dominique 2026-07-13, integree au configurateur: once += 29 × nb salaries A+B, mention affichee)."
     },
     "MATERIEL": {
       "Badges RFID": "REGLE DOMINIQUE: par lot de 10 a 49 € — jamais a l'unite",
