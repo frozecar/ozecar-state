@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.431",
+    "version": "1.432",
     "updated": "2026-07-14",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-14",
+        "version_from": "1.431",
+        "version_to": "1.432",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "configurateur-v2: contenu des kits affiche (Kit OZECAR / Kit Borne, encarts mise en service + recap), source canonique state."
+        ]
+      },
       {
         "date": "2026-07-14",
         "version_from": "1.430",
@@ -14366,6 +14375,7 @@
       "RETIRES: cartes AC/DC du bas (info conservee en tooltip sur les badges de ligne), sous-total salaries masque a 0"
     ],
     "tests": "Playwright: scenario 2 sites + options + CSM + 4 salaries + remise 5% -> 382,85 EUR/mois et 1 076,50 EUR once verifies a la main au centime. Mode client: remise masquee, fiche editable. 0 erreur JS.",
-    "restant_configurateur": "CTA client reel (webhook eSignatures, etape 5 brief) · ecran avant/apres avenant (etape 3) · forfait par defaut au niveau site (proposition non tranchee)"
+    "restant_configurateur": "CTA client reel (webhook eSignatures, etape 5 brief) · ecran avant/apres avenant (etape 3) · forfait par defaut au niveau site (proposition non tranchee)",
+    "ajout_contenu_kits": "Bloc 'Mise en service et activation': 2 encarts detaillant le contenu (source state pricing_canonical + products.OZKM/OZKU.contents) — Kit OZECAR 49e (SIM multi-operateurs, QR de paiement, carte RFID OZECARD, etiquettes d'identification, notice, 1re borne incluse) · Kit Borne 29e (carte RFID OZECARD, QR de paiement, etiquette). Meme detail en small dans le recap sous la ligne Kits."
   }
 }
