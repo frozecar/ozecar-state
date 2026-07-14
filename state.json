@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.436",
+    "version": "1.437",
     "updated": "2026-07-14",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-14",
+        "version_from": "1.436",
+        "version_to": "1.437",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CORRECTIONS Dominique cas 2: catalogue Sungrow = DC uniquement (pas d'AC Sungrow). Pas de bonus remise supervision — le levier est les premiers mois de supervision OFFERTS si materiel OZECAR (regle v1.179, duree a confirmer). Regle d'or reformulee: l'avantage client verrouille, pas la remise."
+        ]
+      },
       {
         "date": "2026-07-14",
         "version_from": "1.435",
@@ -14426,10 +14435,11 @@
       "cas_1_supervision_seule": "L'installateur pose SON materiel, ajoute la supervision OZECAR. Le plus repandu. Lien configurateur transfere tel quel, MEME PRIX pour installateur et client final. L'installateur peut preremplir la fiche (societe, nom, email) avant transfert (fiche editable en mode client). A ajouter (webhook/etape 5): bouton 'Envoyer au client par e-mail' au lieu du copier-coller.",
       "cas_2_devis_materiel": {
         "probleme": "Devis bornes (Zaptec/Sungrow) avec prix public + remise quantite -> l'installateur integre le materiel dans SON devis et mentionne la supervision 'accessoirement'. Consequence: OZECAR vend du one-shot a marge faible, le MRR devient une ligne remplacable dans le devis d'un tiers, et le client final n'existe pas dans le CRM.",
-        "levier_1_remise_deux_etages": "La remise quantite devient: remise de base + BONUS si la supervision part avec les bornes (contrat signe via configurateur). Une Business AC 36 mois ~356 EUR HT de recurrent + variable => vaut 2-4 points de remise materiel. On achete du MRR avec de la marge one-shot.",
         "levier_2_double_vue": "Le devis materiel = lien configurateur a DOUBLE VUE: vue installateur (prix nets, remise — salesonly existant) / vue client final (prix public materiel + supervision presentee par le configurateur). L'installateur garde sa marge sur le delta; OZECAR capture le client final dans HubSpot des le devis. Prerequis: reprendre la section Materiel de l'ancien configurateur (catalogue Zaptec AC + Sungrow DC, prix du state v1.178-1.179) dans la v2 — ETAPE DE PORTAGE DUE.",
         "levier_3_bounty": "Prime one-shot par PDC active (grille partner_program validee 2026-05-14, proprietes partner_bounty_* HubSpot existantes) — JAMAIS de retrocession recurrente (MRR deja a 3,61/PDC).",
-        "regle_or": "La remise materiel n'existe jamais nue — toujours conditionnee ou bonifiee par la supervision. C'est le seul levier au moment ou l'installateur choisit quel CPMS mentionner."
+        "regle_or": "Materiel OZECAR => supervision offerte les premiers mois. C'est l'argument que l'installateur met dans SON devis pour justifier la supervision OZECAR plutot qu'un CPMS tiers — l'avantage client fait le verrouillage, pas la remise.",
+        "CORRECTION_catalogue": "Catalogue materiel v2: Zaptec = AC · Sungrow = DC UNIQUEMENT (la borne AC Sungrow type AC22E de l'ancien catalogue v1.178 NE DOIT PAS etre reprise — OZECAR ne revend que le DC Sungrow).",
+        "levier_1_mois_offerts": "PAS de bonus de remise lie a la supervision (corrige Dominique). Le mecanisme d'alignement existe deja: PREMIERS MOIS DE SUPERVISION OFFERTS au client final SI le materiel vient d'OZECAR (regle historique configurateur v1.179: 3 mois offerts auto des qu'une borne est au panier — confirmer si toujours 3). L'incitatif client pousse le combo materiel+supervision; l'incitatif installateur = remise quantite simple + bounty one-shot."
       },
       "FACTURATION_CAS_2_MODELE_V1": {
         "principe": "Deux factures, deux relations, un seul configurateur. AUCUN flux d'argent triangulaire en V1.",
@@ -14443,7 +14453,7 @@
         "webhook_etape5_branche": "Line items materiel marques 'facturation installateur' -> facture Pennylane sur le customer INSTALLATEUR; supervision/kits -> flux normal client final; bounty -> partner_bounty_amount + tache versement apres activation.",
         "V2_ulterieure": "Modele tout-en-un (OZECAR facture tout au client final, reverse la marge installateur) = chantier portail pro / Stripe Connect (reversements, auto-facturation commissions, BFR materiel). A ouvrir quand le volume du cas 2 le justifie, pas avant."
       },
-      "a_trancher_dominique_marge": "Points de bonus supervision sur la remise materiel (2-4 pts proposes) + montant bounty par PDC active pour le cas transfert de lien (grille partner_program a confirmer)."
+      "a_trancher_dominique_marge": "Montant bounty par PDC active pour le transfert de lien (grille partner_program a confirmer) + confirmer la duree des mois offerts (3 mois selon v1.179 ?)."
     }
   }
 }
