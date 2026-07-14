@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.437",
+    "version": "1.438",
     "updated": "2026-07-14",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-14",
+        "version_from": "1.437",
+        "version_to": "1.438",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Section Matériel double vue LIVREE: catalogue 15 réf (Zaptec AC + Sungrow DC only), 3 mois offerts auto, remise matériel salesonly, vue installateur v=2 (nets), vue client (prix masqués si apporteur), facturation cas 2 câblée (net -> installateur, hors one-time client). Testé 4 vues au centime."
+        ]
+      },
       {
         "date": "2026-07-14",
         "version_from": "1.436",
@@ -14455,5 +14464,17 @@
       },
       "a_trancher_dominique_marge": "Montant bounty par PDC active pour le transfert de lien (grille partner_program a confirmer) + confirmer la duree des mois offerts (3 mois selon v1.179 ?)."
     }
+  },
+  "configurateur_v2_materiel_double_vue_2026_07_14": {
+    "livre": "Section 'Matériel — fourniture OZECAR' codée, déployée staging, testée Playwright 4 vues, zéro erreur JS.",
+    "catalogue": "15 réf. (prix state): Zaptec AC (Pro 1325 · GO2 890 · colonnes 325/410/530) · Sungrow DC UNIQUEMENT (IDC30E MID 7250 · MID+TPE 8150 · IDC60E 9500 · IDC80E 10538 · IDC120/180+armoires SUR DEVIS) · accessoires (piédestaux 295/520, CMS 832, DLM 390, badges lot10 49). PAS d'AC Sungrow (correction Dominique). Payter Apollo reste en option de site (pas dupliqué).",
+    "logique": {
+      "trois_mois_offerts": "FREE_MONTHS=3 (décision 2026-06-23): dès qu'une borne (non-accessoire) qty>0 -> encart vert section + ligne verte récap avec valeur = 3× supervision mensuelle (supT).",
+      "remise_materiel": "st.matRem (0-40%, salesonly), sur le matériel uniquement — distincte de la remise abonnement.",
+      "facturation": "AVEC apporteur: matériel HORS one-time client, sous-total 'facturé à {installateur}' au NET; récap client = bloc 'Fourni et posé par votre installateur' sans prix. SANS apporteur (vente directe): matériel NET ajouté au one-time client + ligne récap détaillée.",
+      "vues": "Commerciale: catalogue complet + steppers + remise + bouton 'Copier le lien devis installateur'. v=2 INSTALLATEUR: titre dédié, prix publics + remise −X% + NET visibles, CTA 'Commander le matériel' (placeholder webhook). v=1 CLIENT: uniquement lignes qty>0, prix 'via votre installateur' si apporteur (sinon prix publics), jamais de remise visible."
+    },
+    "tests": "Cas 2 (apporteur Grimaldi, 2×Pro+IDC30E+colonne, rem 25%): commercial once=136 (kits seuls) ✓ · v=2 net 7668,75 (public 10225) ✓ · v=1 prix masqués + bloc installateur ✓ · vente directe once=10361 ✓ · 3 mois offerts partout ✓.",
+    "webhook_etape5_branche_materiel": "Si matLines: AVEC apporteur -> facture Pennylane matériel NET sur le customer INSTALLATEUR + expédition; SANS -> matériel au one-time client. Dans les deux cas: crédit 3 mois supervision (1res échéances offertes) si hasBorne."
   }
 }
