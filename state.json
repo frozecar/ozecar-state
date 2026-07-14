@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.435",
+    "version": "1.436",
     "updated": "2026-07-14",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-14",
+        "version_from": "1.435",
+        "version_to": "1.436",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Strategie installateur cas 1/2 GRAVEE: remise deux etages (bonus supervision), devis materiel double vue (reprise catalogue Zaptec/Sungrow = etape de portage due), bounty one-shot jamais recurrent, regle d'or remise jamais nue. FACTURATION cas 2 V1: bornes -> facture installateur, supervision -> client final SEPA, bonus via bounty post-activation, contrat = supervision seule, recap 2 blocs. Branche webhook specifiee. V2 Stripe Connect differee."
+        ]
+      },
       {
         "date": "2026-07-14",
         "version_from": "1.434",
@@ -14412,6 +14421,29 @@
     "implemente_configurateur": "st.apporteur={name} serialise dans l'URL (transferable tel quel). Champ 'Apporteur / Installateur' salesonly dans la fiche (masque cote client). Bandeau client: 'Offre transmise par votre installateur : X'. Recap: si AUCUNE MES sur site -> ligne 'installation par vos soins avec le kit, ou par votre installateur X / un installateur de notre reseau (sur devis)'. Teste modes commercial+client, zero erreur.",
     "spec_webhook_etape5_AJOUT": "(a) Associer au deal la societe cliente + contact (fiche) ET la societe installateur en role APPORTEUR (association label ou propriete ozecar_apporteur) — base du calcul de commission partenaire (bareme = programme partenaire, hors configurateur). (b) FLUX INVERSE MES: si un site signe a opts.mes=false -> si apporteur installateur present: tache HubSpot/Monday 'Proposer la MES a {installateur}' (prestation via futur portail pro, commission OZECAR); sinon: tache 'Proposer un installateur du reseau au client'. La MES refusee devient un lead installateur.",
     "V2_ulterieure": "Lien generateur propre a chaque installateur (portail pro.ozecar.fr): l'installateur configure lui-meme le devis de son client avec son tag apporteur permanent. Rattacher a PART-01 (contrat Grimaldi) et au programme revendeur.",
-    "a_trancher_dominique": "Bareme commission apporteur sur les deals transmis (le programme partenaire a des grilles Installateur/Revendeur/Distributeur — laquelle s'applique au simple transfert de lien ?) + l'apporteur voit-il le prix client final (actuellement oui, il transfere le lien tel quel)."
+    "a_trancher_dominique": "Bareme commission apporteur sur les deals transmis (le programme partenaire a des grilles Installateur/Revendeur/Distributeur — laquelle s'applique au simple transfert de lien ?) + l'apporteur voit-il le prix client final (actuellement oui, il transfere le lien tel quel).",
+    "CAS_1_2_STRATEGIE_VALIDEE_2026_07_14": {
+      "cas_1_supervision_seule": "L'installateur pose SON materiel, ajoute la supervision OZECAR. Le plus repandu. Lien configurateur transfere tel quel, MEME PRIX pour installateur et client final. L'installateur peut preremplir la fiche (societe, nom, email) avant transfert (fiche editable en mode client). A ajouter (webhook/etape 5): bouton 'Envoyer au client par e-mail' au lieu du copier-coller.",
+      "cas_2_devis_materiel": {
+        "probleme": "Devis bornes (Zaptec/Sungrow) avec prix public + remise quantite -> l'installateur integre le materiel dans SON devis et mentionne la supervision 'accessoirement'. Consequence: OZECAR vend du one-shot a marge faible, le MRR devient une ligne remplacable dans le devis d'un tiers, et le client final n'existe pas dans le CRM.",
+        "levier_1_remise_deux_etages": "La remise quantite devient: remise de base + BONUS si la supervision part avec les bornes (contrat signe via configurateur). Une Business AC 36 mois ~356 EUR HT de recurrent + variable => vaut 2-4 points de remise materiel. On achete du MRR avec de la marge one-shot.",
+        "levier_2_double_vue": "Le devis materiel = lien configurateur a DOUBLE VUE: vue installateur (prix nets, remise — salesonly existant) / vue client final (prix public materiel + supervision presentee par le configurateur). L'installateur garde sa marge sur le delta; OZECAR capture le client final dans HubSpot des le devis. Prerequis: reprendre la section Materiel de l'ancien configurateur (catalogue Zaptec AC + Sungrow DC, prix du state v1.178-1.179) dans la v2 — ETAPE DE PORTAGE DUE.",
+        "levier_3_bounty": "Prime one-shot par PDC active (grille partner_program validee 2026-05-14, proprietes partner_bounty_* HubSpot existantes) — JAMAIS de retrocession recurrente (MRR deja a 3,61/PDC).",
+        "regle_or": "La remise materiel n'existe jamais nue — toujours conditionnee ou bonifiee par la supervision. C'est le seul levier au moment ou l'installateur choisit quel CPMS mentionner."
+      },
+      "FACTURATION_CAS_2_MODELE_V1": {
+        "principe": "Deux factures, deux relations, un seul configurateur. AUCUN flux d'argent triangulaire en V1.",
+        "flux": [
+          "Bornes (prix remise palier): OZECAR -> facture l'INSTALLATEUR (Pennylane, virement ou lien Stripe a la commande). Drop-ship possible chez le client final.",
+          "Materiel + pose (prix public ou le sien): l'INSTALLATEUR -> facture le client final. Sa marge, sa garantie de pose, sa responsabilite.",
+          "Supervision + kits + options: OZECAR -> facture le CLIENT FINAL (mandat SEPA a la signature configurateur, flux normal).",
+          "Bonus supervision: OZECAR -> installateur via BOUNTY partenaire (verse apres activation, jamais en avoir sur la facture materiel — pas d'avoirs conditionnels ingerables)."
+        ],
+        "contrat": "Le contrat signe au configurateur ne porte QUE supervision/kits/options. Le materiel y figure a titre indicatif, marque 'fourni et pose par {installateur} — facture par votre installateur'. Recap en DEUX BLOCS distincts: 'Facture par OZECAR' / 'Fourni par votre installateur'. Zero ambiguite juridique, zero responsabilite de pose.",
+        "webhook_etape5_branche": "Line items materiel marques 'facturation installateur' -> facture Pennylane sur le customer INSTALLATEUR; supervision/kits -> flux normal client final; bounty -> partner_bounty_amount + tache versement apres activation.",
+        "V2_ulterieure": "Modele tout-en-un (OZECAR facture tout au client final, reverse la marge installateur) = chantier portail pro / Stripe Connect (reversements, auto-facturation commissions, BFR materiel). A ouvrir quand le volume du cas 2 le justifie, pas avant."
+      },
+      "a_trancher_dominique_marge": "Points de bonus supervision sur la remise materiel (2-4 pts proposes) + montant bounty par PDC active pour le cas transfert de lien (grille partner_program a confirmer)."
+    }
   }
 }
