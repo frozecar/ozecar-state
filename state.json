@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.426",
+    "version": "1.427",
     "updated": "2026-07-13",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-13",
+        "version_from": "1.426",
+        "version_to": "1.427",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Configurateur reordonne: frais dans carte Business, 60% dans maintenance, engagement en dernier."
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.425",
@@ -14276,7 +14285,7 @@
     "ETAPE_2bis_LIVREE_2026_07_13": [
       "Habillage livre (9 corrections): en-tete noir 'Offre preparee pour {client}' + date + validite 30j calculee (st.created) · legende 'Comprendre cette offre' (AC/DC, Essential/Business, niveaux N1-N4 + 60% N1) · bloc frais variables violet (10% ~90% / 5%+0,07 ~84%, affiche si un site a des transactions, mention itinerance activable) · tooltips forfaits · descriptifs maintenance dans le select · steppers [-]qty[+] larges · checkboxes 19px accent violet · activation 79 barree offerte · MODE CLIENT: quantites+options manipulables (devis interactif), structure sites/forfaits/acces verrouillee. Tests: client affiche, stepper 170,40->180,30 exact, mode client interactif + add masque, zero erreur JS."
     ],
-    "ETAPE_2ter_BLOC_VENTE_2026_07_13": "Bloc 'Comprendre cette offre' remplace par composants de VENTE (critique Dominique: piece maitresse): 2 cartes forfaits cote a cote (Essential vs Business borde violet + badge LE PLUS CHOISI, listes ✓/✗), bandeau noir 60% en Space Mono 34px jaune + phrase choc, TABLEAU maintenance N1-N4 a progression visuelle (4 prestations cumulatives ●/—, colonne N4 surlignee, prix en pied), 2 cartes AC/DC avec badges couleur et cas d'usage. Deploye, zero erreur JS, calculs intacts."
+    "ETAPE_2ter_BLOC_VENTE_2026_07_13": "Bloc 'Comprendre cette offre' remplace par composants de VENTE (critique Dominique: piece maitresse): 2 cartes forfaits cote a cote (Essential vs Business borde violet + badge LE PLUS CHOISI, listes ✓/✗), bandeau noir 60% en Space Mono 34px jaune + phrase choc, TABLEAU maintenance N1-N4 a progression visuelle (4 prestations cumulatives ●/—, colonne N4 surlignee, prix en pied), 2 cartes AC/DC avec badges couleur et cas d'usage. Deploye, zero erreur JS, calculs intacts. REORDONNE (3 corrections Dominique): frais de service integres DANS la carte Business (sous-bloc dedie, plus de section a part) · 60% integre en tete de la carte maintenance (violet lisible, plus de bandeau noir) · section ENGAGEMENT deplacee EN DERNIER (apres mise en place, juste avant la barre). Ordre final: en-tete client -> sites -> options compte -> cartes forfaits (frais inclus) -> maintenance (60% + tableau N1-N4) -> AC/DC -> mise en place -> engagement+prepay -> barre totale. Zero erreur JS."
   },
   "grille_options_2026_07_13": {
     "SITE": {
