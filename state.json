@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.429",
-    "updated": "2026-07-13",
+    "version": "1.430",
+    "updated": "2026-07-14",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-14",
+        "version_from": "1.429",
+        "version_to": "1.430",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "configurateur-v2-dev.html: reformulation frais operateur/itinerance, sous-total propre options salaries, 'Mise en service et activation'"
+        ]
+      },
       {
         "date": "2026-07-13",
         "version_from": "1.428",
@@ -14328,5 +14337,13 @@
     "exclusions": "Smart charging inclus (argument Business, pas une ligne) · ouverture public/itinerance = variable opere · pas de SLA a part (= maintenance N3/N4)",
     "a_confirmer_dominique": "Payter 9,90+25 · Reporting avance 15 · CSM 99 (non conteste) · Plan B 7,90 (non conteste) · cout Monta/vehicule (module flotte)",
     "STATUT": "GRILLE VALIDEE DOMINIQUE 2026-07-13: Payter 9,90/mois + 25 pose · Reporting avance 15 · CSM 99 · Recharge domicile A 5,90 / B 7,90 (wallet provisionne) · Apollo 649. Reste: cout Monta/vehicule (module flotte) a verifier."
+  },
+  "configurateur_v2_textes_2026_07_14": {
+    "fichier": "staging /wp-content/uploads/ozecar/configurateur-v2-dev.html",
+    "changements": [
+      "Frais de service Business reformules: 'frais d'operateur 10% du CA' + 'frais d'itinerance 5% + 0,07 EUR/kWh' (suppression des mentions ~90%/~84% conserves)",
+      "Options salaries (recharge domicile A/B) sorties du sous-total 'options du compte' -> sous-total propre 'Sous-total option salaries' dans la section (var recDom; rec+=recC+recDom, total global inchange)",
+      "'Mise en place' -> 'Mise en service et activation' (bloc recap one-time)"
+    ]
   }
 }
