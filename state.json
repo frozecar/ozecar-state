@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.434",
+    "version": "1.435",
     "updated": "2026-07-14",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-14",
+        "version_from": "1.434",
+        "version_to": "1.435",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Flux installateur/apporteur: st.apporteur implemente au configurateur (champ salesonly, bandeau client, note MES reseau), spec webhook enrichie (association apporteur + flux inverse MES -> tache installateur). A trancher: bareme commission transfert + visibilite prix."
+        ]
+      },
       {
         "date": "2026-07-14",
         "version_from": "1.433",
@@ -14397,5 +14406,12 @@
     "ajout_contenu_kits": "Bloc 'Mise en service et activation': 2 encarts detaillant le contenu (source state pricing_canonical + products.OZKM/OZKU.contents) — Kit OZECAR 49e (SIM multi-operateurs, QR de paiement, carte RFID OZECARD, etiquettes d'identification, notice, 1re borne incluse) · Kit Borne 29e (carte RFID OZECARD, QR de paiement, etiquette). Meme detail en small dans le recap sous la ligne Kits.",
     "logos_references_nb": "Barre de logos OFFICIELS en noir et blanc (CSS grayscale, jamais de logo fabrique — regle absolue) remplacant la ligne texte: Renault, E.Leclerc, Europcar, Weldom, Eurotyre, CPAM, Spar, Ville de Bonifacio, Utile — 9 fichiers officiels de la mediatheque WP prod (uploads/2024/11 + 2025/02), tous verifies 200 + chargement runtime OK. MANQUANTS (pas de fichier officiel en mediatheque, non fabriques): Ibis, Gedimat, URSSAF, Ville d'Ajaccio -> Dominique upload les fichiers officiels si voulus dans la barre. Homair exclu (format vertical casse la barre).",
     "responsive_mobile": "Audit PM: overflow horizontal a 390px detecte (en-tete de site: input+select+bouton). Corrige par media query <=700px: grids 1 colonne, shead wrap, lignes/steppers adaptes, barre compacte, logos reduits. Verifie: plus d'overflow, desktop intact."
+  },
+  "configurateur_v2_flux_installateur_2026_07_14": {
+    "cas_dominique": "Devis envoye a un installateur qui le transfere au client final (contact ajoute au deal) + flux inverse post-signature: si le client n'a pas pris la MES sur site, router la MES vers l'installateur.",
+    "implemente_configurateur": "st.apporteur={name} serialise dans l'URL (transferable tel quel). Champ 'Apporteur / Installateur' salesonly dans la fiche (masque cote client). Bandeau client: 'Offre transmise par votre installateur : X'. Recap: si AUCUNE MES sur site -> ligne 'installation par vos soins avec le kit, ou par votre installateur X / un installateur de notre reseau (sur devis)'. Teste modes commercial+client, zero erreur.",
+    "spec_webhook_etape5_AJOUT": "(a) Associer au deal la societe cliente + contact (fiche) ET la societe installateur en role APPORTEUR (association label ou propriete ozecar_apporteur) — base du calcul de commission partenaire (bareme = programme partenaire, hors configurateur). (b) FLUX INVERSE MES: si un site signe a opts.mes=false -> si apporteur installateur present: tache HubSpot/Monday 'Proposer la MES a {installateur}' (prestation via futur portail pro, commission OZECAR); sinon: tache 'Proposer un installateur du reseau au client'. La MES refusee devient un lead installateur.",
+    "V2_ulterieure": "Lien generateur propre a chaque installateur (portail pro.ozecar.fr): l'installateur configure lui-meme le devis de son client avec son tag apporteur permanent. Rattacher a PART-01 (contrat Grimaldi) et au programme revendeur.",
+    "a_trancher_dominique": "Bareme commission apporteur sur les deals transmis (le programme partenaire a des grilles Installateur/Revendeur/Distributeur — laquelle s'applique au simple transfert de lien ?) + l'apporteur voit-il le prix client final (actuellement oui, il transfere le lien tel quel)."
   }
 }
