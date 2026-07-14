@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.430",
+    "version": "1.431",
     "updated": "2026-07-14",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-14",
+        "version_from": "1.430",
+        "version_to": "1.431",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "configurateur-v2: lot completude livre (recap final, fiche client, Et apres, references, remise commerciale .salesonly; retraits AC/DC bas + stot salaries a 0). Tests au centime OK."
+        ]
+      },
       {
         "date": "2026-07-14",
         "version_from": "1.429",
@@ -14345,5 +14354,18 @@
       "Options salaries (recharge domicile A/B) sorties du sous-total 'options du compte' -> sous-total propre 'Sous-total option salaries' dans la section (var recDom; rec+=recC+recDom, total global inchange)",
       "'Mise en place' -> 'Mise en service et activation' (bloc recap one-time)"
     ]
+  },
+  "configurateur_v2_lot_completude_2026_07_14": {
+    "critique_pm": "Revue a froid de l'ecran: manquants bloquants identifies (recap final, fiche client, reassurance, preuve sociale, remise commerciale) + retraits (cartes AC/DC redondantes, sous-total salaries a 0).",
+    "livre": [
+      "RECAP 'Votre offre en resume' (#recap, rendu dans R()): une ligne par site (detail lignes+options), options compte, salaries, remise, total abonnement, puis one-time detaille (kits/MES/SIM/Apollo/bornes domicile) + mentions legales (HT TVA 20%, facturation a la mise en service, preavis 3 mois, validite 30j, options 30j SEPA)",
+      "FICHE CLIENT (#fiche): raison sociale, SIREN, contact, e-mail facturation -> st.client, editables aussi en mode client (RO), serialises dans l'URL c= -> le webhook aura tout",
+      "Bloc 'Et apres votre signature ?' 4 etapes (kits prepares/expedies 48h/configuration/supervision active) + contact support",
+      "Preuve sociale: references (Renault Group, Ibis, Weldom, Gedimat, Eurotyre, URSSAF, CPAM, Ville d'Ajaccio) + 59% infra publique Corse",
+      "REMISE COMMERCIALE: input % (max 30) dans Engagement, classe .salesonly masquee en mode client, appliquee sur le recurrent, tracee dans st.remise + ligne dediee au recap",
+      "RETIRES: cartes AC/DC du bas (info conservee en tooltip sur les badges de ligne), sous-total salaries masque a 0"
+    ],
+    "tests": "Playwright: scenario 2 sites + options + CSM + 4 salaries + remise 5% -> 382,85 EUR/mois et 1 076,50 EUR once verifies a la main au centime. Mode client: remise masquee, fiche editable. 0 erreur JS.",
+    "restant_configurateur": "CTA client reel (webhook eSignatures, etape 5 brief) · ecran avant/apres avenant (etape 3) · forfait par defaut au niveau site (proposition non tranchee)"
   }
 }
