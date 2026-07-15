@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.447",
+    "version": "1.448",
     "updated": "2026-07-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-15",
+        "version_from": "1.447",
+        "version_to": "1.448",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "NOUVELLE SLIDE 'Repartir une puissance fixe ou repartir ce qui reste' (statique vs dynamique) dans les 2 decks: schema original OZECAR en formes natives editables, echelle reelle 60 A, +60% de vitesse la nuit. Les decks passent a 16 slides.",
+          "DECOUVERTE REUTILISABLE: ~52 icones du design system OZECAR existent deja dans les HTML du project knowledge -> extraites et rasterisees en assets/ic_*.png (ink/yellow/violet). Ne plus dessiner d'icones.",
+          "Icones ajoutees sur la slide 04 (perimetre) des 2 decks.",
+          "Detail load management grave dans pilotage_energetique: statique vs dynamique, algorithmes (part egale / premier arrive), plages en amperes, priorite PAR BORNE, equilibrage par phase L1/L2/L3.",
+          "CORRECTION deck transport slide 05: la priorite est par BORNE, pas par vehicule ni par heure de depart (formulation precedente sur-promettait)."
+        ]
+      },
       {
         "date": "2026-07-15",
         "version_from": "1.446",
@@ -9249,7 +9262,14 @@
     },
     "BUG_CORRIGE_ticks_2026_07_15": "Le helper ticks() sous-estimait le nombre de lignes: il calculait les caracteres/ligne avec la largeur en PX alors que la fontSize est en PT (facteur 0.75 oublie) -> puces qui se chevauchent. Corrige dans lib.js ET build.js: cpl = (w-15)*0.75/(size*0.5). Le deck client final v5 (pptx) a ete REGENERE — la version poussee avant 18h00 le 2026-07-15 avait des chevauchements sur 3 slides.",
     "QA_PROGRAMMATIQUE_deck": "Le rendu d'images n'etant pas toujours inspectable, QA outillee obligatoire: 1) validate.py (schema/relations) 2) soffice -> PDF 3) pdfplumber: mots hors cadre (x<20, x>W-20, bottom>H-8) + chevauchements (bbox qui s'intersectent a moins de 14pt d'ecart vertical) 4) markitdown + regex pour l'audit de fuites. Les 3 polices de marque (DM Sans, Space Mono, Instrument Serif) doivent etre installees dans ~/.fonts depuis github.com/google/fonts sinon le PDF LibreOffice substitue.",
-    "maj_smart_charging_2026_07_15": "Slide pilotage energetique refaite sur le modele en 4 couches (voir section pilotage_energetique_2026_07_15). Les deux pptx regeneres + QA (0 hors cadre, 0 chevauchement). Marque blanche verifiee: aucun nom produit fournisseur (SmartCharge/SolarCharge/PowerBank/Perific/MQTT/ModBus) ne sort dans le texte client."
+    "maj_smart_charging_2026_07_15": "Slide pilotage energetique refaite sur le modele en 4 couches (voir section pilotage_energetique_2026_07_15). Les deux pptx regeneres + QA (0 hors cadre, 0 chevauchement). Marque blanche verifiee: aucun nom produit fournisseur (SmartCharge/SolarCharge/PowerBank/Perific/MQTT/ModBus) ne sort dans le texte client.",
+    "maj_visuels_2026_07_15": {
+      "demande": "Dominique: slides 04 et 07 interessantes mais manque d'elements visuels; produire un graphique statique vs dynamique.",
+      "icones": "DECOUVERTE: le design system OZECAR contient deja ~52 icones 24x24 (stroke, currentColor) inline dans les HTML du project knowledge. NE PLUS EN DESSINER. Extraites, rasterisees en PNG transparent 160px x3 couleurs (ink/yellow/violet) via Chromium -> deck/assets/ic_*.png. Mapping: activity=monitoring temps reel · chart=analytics · ocpp=protocole/connectivite · bolt=pilotage de charge · card=paiement · globe=itinerance/reseau · wrench=maintenance · clock=alertes SLA · box=materiel · truck=transport · layers=multi-sites · gauge · swap=migration · euro.",
+      "slide_04": "Icone violette 26px ajoutee sur chacune des 6 cartes du perimetre (les deux decks).",
+      "slide_statique_vs_dynamique": "NOUVELLE SLIDE (transport 08, client final 12). Schema ORIGINAL OZECAR (aucune reprise du visuel fournisseur): 2 panneaux avec barre empilee batiment/bornes/inutilise a l'echelle reelle (60 A), 3 chips bornes (10 A vs 16 A), trait de limite du site, bandeau +60% + 3 reglages (algorithmes, priorite/plages, equilibrage par phase). Genere en FORMES NATIVES pptx -> editable dans Slides. Geometrie verifiee au pdfplumber: 75,3pt=12A · 190,5pt=30A · 113,7pt=18A · 305,7pt=48A. Fonction reutilisable loadPanel() dans lib.js.",
+      "decks": "Les deux decks passent de 15 a 16 slides. Renumerotation automatique des pieds de page (script patch.js). QA: 0 hors cadre, 0 chevauchement, 0 fuite."
+    }
   },
   "maintenance_plans_monta": {
     "constat_api": "POST /plans = 405 METHOD_NOT_ALLOWED. L'API partenaire supervision est READ-ONLY sur /plans (creation impossible par API). /subscriptions existe (affectation team<->plan, facturation recurrente nextPurchaseAt). Les plans se creent dans le DASHBOARD operateur uniquement.",
@@ -11335,6 +11355,13 @@
     "hors_France": "Le programme d'effacement/demand response du fournisseur (pause de charge pour soulager le reseau) n'est disponible qu'au DK/SE/UK/IE. NE PAS le vendre en France.",
     "champs_API_utiles": "charge-points[].smartChargeSetting (valeurs vues: 'off', 'optional') · charge-points[].scheduleId · /schedules/{id} = entries[{dayOfWeek, from, to, visibility, priceGroupId}] + selectedChargePointIds + selectedSiteIds -> permet de basculer visibilite ET groupe de prix par plage horaire et par jour. C'est le mecanisme qui porte 'prive la nuit pour la flotte / public le jour au plein tarif'.",
     "CONSTAT_PARC_OZECAR": "Sur 100 PDC echantillonnes: smartChargeSetting = 'off' sur 99, 'optional' sur 1. scheduleId non nul: 0. AUCUN pilotage energetique ni aucune regle horaire n'est active sur le parc aujourd'hui. On vend une capacite reelle mais non exploitee -> OPPORTUNITE (upsell + argument de differenciation) ET RISQUE (premier client qui la demande = mise en place a faire, pas de reference interne). A arbitrer par Dominique.",
-    "decks_impactes": "Slide 'Pilotage energetique' refaite dans les deux decks (transport slide 07, client final slide 11): 4 cartes = les 4 couches avec la contrainte de chacune en pied de carte, + bandeau 'Ce qu'il faut sur le depot/site' (mesure temps reel / sans mesure = statique / solaire previsionnel sans materiel). Remplace 4 cartes generiques (equilibrage/heures creuses/solaire/batterie) jugees 'pas assez travaillees' par Dominique. La carte 'batterie tampon' a ete RETIREE: non verifiee dans la stack."
+    "decks_impactes": "Slide 'Pilotage energetique' refaite dans les deux decks (transport slide 07, client final slide 11): 4 cartes = les 4 couches avec la contrainte de chacune en pied de carte, + bandeau 'Ce qu'il faut sur le depot/site' (mesure temps reel / sans mesure = statique / solaire previsionnel sans materiel). Remplace 4 cartes generiques (equilibrage/heures creuses/solaire/batterie) jugees 'pas assez travaillees' par Dominique. La carte 'batterie tampon' a ete RETIREE: non verifiee dans la stack.",
+    "load_management_detail": {
+      "statique": "Le site a une reserve FIXE pour les bornes, calee sur la pointe du batiment. Algo de partage entre les bornes actives (part egale ou premier arrive premier servi). Ne necessite AUCUN materiel de mesure. Defaut: la capacite non utilisee par le batiment reste inutilisee.",
+      "dynamique": "Chaque borne puise dans un pool qui s'ajuste en temps reel, guide par un COMPTEUR EXTERNE qui mesure la puissance totale du site. Les bornes recuperent tout ce que le batiment ne prend pas, et le rendent des que la conso remonte.",
+      "algorithmes": "First Come First Serve · Equal Share. Autres reglages: plages horaires en amperes (ampere schedules), detection automatique de phase, priorite PAR BORNE (charge point priority) — PAS par vehicule ni par heure de depart. Correction appliquee au deck transport slide 05.",
+      "equilibrage_par_phase": "3 phases L1/L2/L3, 100 A disponibles SUR CHAQUE phase. Sans phase-awareness, un vehicule qui charge sur L1 bloque L2 et L3 -> capacite gachee. Le basculement de phase est gere par la plateforme (elle 'trompe' le vehicule au branchement), pas par la borne. C'est le vehicule qui decide de ses phases. Argument fort pour les parcs avec des vehicules mono-phase.",
+      "exemple_pedagogique_deck": "Site 60 A, batiment mesure a 12 A la nuit, 3 bornes. Statique: reserve 30 A -> 10 A/borne, 18 A inutilises. Dynamique: pool 60-12=48 A -> 16 A/borne. Soit +60% de vitesse de charge, meme installation. Chiffres declares 'exemple pedagogique' sur la slide."
+    }
   }
 }
