@@ -1,0 +1,1019 @@
+{
+ "_note": "Archive OZECAR — historique de session. state.json ne porte QUE la verite actuelle; l'historique du 'comment on y est arrive' vit ici et dans git log. Lire via {\"action\":\"read\",\"file\":\"archive.json\"}.",
+ "changelog_2026": [
+  {
+   "date": "2026-07-15",
+   "version_from": "1.449",
+   "version_to": "1.450",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "AUDIT coherence site vs deck (section audit_coherence_site_vs_deck_2026_07_15). Verdict: site PAS pret a etre lance, mais ne bloque pas l'envoi du deck (la prod n'affiche aucun prix).",
+    "CORRECTION DECK SUNGROW: la slide 07 affirmait 'nous ne vendons pas de bornes' -> FAUX (la prod vend du materiel + LOA, la boutique vend des Zaptec). Reformule en 'sur ce dossier, le materiel et la pose restent chez Sungrow'.",
+    "NUANCE IMPORTANTE: les claims 98,6% / SLA 24-48h / 70% / 800+ ne sont PAS sur les pages prod live (ils venaient des maquettes du project knowledge). L'arbitrage demande precedemment est sans objet pour la prod. En revanche '800+ modeles OCPP' est dans le MENU du staging et contredit le '400+' de la prod et du deck -> a trancher.",
+    "FUITE PROD identifiee: slug wp-content/plugins/monta-hardware-connector/ + id monta-map-canvas visibles dans le code source de la home."
+   ]
+  },
+  {
+   "date": "2026-07-15",
+   "version_from": "1.448",
+   "version_to": "1.449",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "NOUVEAU DEAL: Sungrow / appel d'offre 5 PDC 480 kW poids lourds (armoire + 5 satellites) contre Bump (clé-en-main). OZECAR = la couche supervision qui manque a Sungrow. Section deal_sungrow_480kW_2026_07_15 creee.",
+    "Deck dedie livre: OZECAR-Sungrow-Station-480kW (7 slides) — offre conjointe, schema armoire 16 modules de 30 kW + 2 scenarios de repartition sur 5 satellites, exploitation, monetique/AFIR, chiffrage 79,50 €/mois, references + suite.",
+    "Materiel Sungrow verifie: IDC480E satellite = modules de 30 kW, repartition dynamique par pas de 30 kW (ne pas confondre avec IDC480E-C = modules de 40 kW).",
+    "LECON: 7 slides max, une idee par slide. Etablir la cible et l'usage du deck AVANT de produire.",
+    "RESTE: l'offre commerciale chiffree (maintenance, terminal AFIR, conditions d'encaissement) est a produire par Dominique."
+   ]
+  },
+  {
+   "date": "2026-07-15",
+   "version_from": "1.447",
+   "version_to": "1.448",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "NOUVELLE SLIDE 'Repartir une puissance fixe ou repartir ce qui reste' (statique vs dynamique) dans les 2 decks: schema original OZECAR en formes natives editables, echelle reelle 60 A, +60% de vitesse la nuit. Les decks passent a 16 slides.",
+    "DECOUVERTE REUTILISABLE: ~52 icones du design system OZECAR existent deja dans les HTML du project knowledge -> extraites et rasterisees en assets/ic_*.png (ink/yellow/violet). Ne plus dessiner d'icones.",
+    "Icones ajoutees sur la slide 04 (perimetre) des 2 decks.",
+    "Detail load management grave dans pilotage_energetique: statique vs dynamique, algorithmes (part egale / premier arrive), plages en amperes, priorite PAR BORNE, equilibrage par phase L1/L2/L3.",
+    "CORRECTION deck transport slide 05: la priorite est par BORNE, pas par vehicule ni par heure de depart (formulation precedente sur-promettait)."
+   ]
+  },
+  {
+   "date": "2026-07-15",
+   "version_from": "1.446",
+   "version_to": "1.447",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "NOUVELLE SECTION pilotage_energetique_2026_07_15: modele en 4 couches (limite / quand / solaire / ecretage) + prerequis materiel de mesure + seuil 1,4 kW + champs API (smartChargeSetting, scheduleId, /schedules).",
+    "CONSTAT: sur 100 PDC du parc, smartChargeSetting='off' sur 99 et 0 schedule actif -> capacite reelle mais jamais activee. Opportunite d'upsell / risque d'absence de reference interne. A arbitrer.",
+    "Slide 'Pilotage energetique' refaite dans les 2 decks (transport 07 + client final 11), pptx + PDF regeneres, QA propre.",
+    "A VERIFIER: gating des plans Hub vs couches (load management et ecretage sont gates chez le fournisseur). Effacement reseau = DK/SE/UK/IE uniquement, ne pas vendre en France."
+   ]
+  },
+  {
+   "date": "2026-07-15",
+   "version_from": "1.445",
+   "version_to": "1.446",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Deck TRANSPORT & LOGISTIQUE livre (15 slides, pptx + PDF): variante exploitation seule, sans installation. Slides specifiques: charge au depot/rotations, itinerance sortante, conformite AFIR, refacturation location.",
+    "BUG CORRIGE dans le helper ticks() (px vs pt): chevauchement de puces. Deck client final v5 REGENERE.",
+    "QA programmatique du deck gravee (validate.py + pdfplumber hors-cadre/chevauchements + markitdown regex) + polices de marque installables depuis github.com/google/fonts.",
+    "ARBITRAGE DEMANDE: claims de l'ancienne page secteur transport (98,6% dispo contractuelle, SLA 24-48h, 70% a distance, 800+ modeles) non verifies -> ecartes du deck."
+   ]
+  },
+  {
+   "date": "2026-07-15",
+   "version_from": "1.444",
+   "version_to": "1.445",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Dashboard parc mis a jour sur les chiffres verifies (facturation-reelle.json + parc.php 'reel' + 5 KPI + bandeau transparence).",
+    "ALERTE INFRA: state.json depassait 1 Mo -> l'API GitHub Contents ne renvoyait plus le contenu (relay muet). Changelog tronque aux 100 dernieres entrees, 312 anciennes archivees dans changelog-archive.json. Taille ramenee sous la limite."
+   ]
+  },
+  {
+   "date": "2026-07-15",
+   "version_from": "1.443",
+   "version_to": "1.444",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "CORRECTION wallet Monta apres recoupement avec le Hub (Dominique): la formule est prix_plan × nb_bornes pour les abos de GROUPE en per-charge-point (totalAmount ne porte que le prix unitaire). Resultat 1 100,01 TTC = 916,68 HT, au centime du Hub. MRR consolide corrige a 6323.51 EUR/mois HT. Les 287 bornes 'sans abonnement' du Hub = sans abo PAR BORNE; 164 sont couvertes par un abo de groupe, 127 sans rien."
+   ]
+  },
+  {
+   "date": "2026-07-15",
+   "version_from": "1.442",
+   "version_to": "1.443",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "CHIFFRE FINAL: supervision 10,36 EUR/PDC (2 615,67 / 252 PDC), MRR recurrent consolide 5 858,25 EUR/mois (4 canaux: abos Pennylane annuels+mensuels GoCardless, factures simples annuelles, wallet Monta). Le 3,61 ignorait les factures annuelles (960 EUR/mois) et divisait par 525.",
+    "DECOUVERTE: Homair paie 4 340 EUR/an pour 5 campings classes 'Forfait Zero' -> la liste des gratuits est a reverifier.",
+    "MAPPING: 59 teams Monta ont recu partnerExternalId=PL:{customer_id} (regle permanente pour toute nouvelle team). 96 restantes en revue manuelle (MAP-01)."
+   ]
+  },
+  {
+   "date": "2026-07-15",
+   "version_from": "1.441",
+   "version_to": "1.442",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "CROSS-CHECK FACTURATION: le 3,61 EUR/PDC etait FAUX -> reel 8,49 EUR/PDC (195 PDC factures, pas 525). Cause: matching par nom captait 17% du MRR + mauvais denominateur. Methode fiable = lignes de facture Pennylane. MRR reel tous canaux 3 805,88 EUR/mois HT. Listes nominatives: 115 PDC Forfait Zero, 39 PDC sans trace, 15 clients payant sans plan Monta."
+   ]
+  },
+  {
+   "date": "2026-07-15",
+   "version_from": "1.440",
+   "version_to": "1.441",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Assistance 24/7 deplacee en option de SITE (2 EUR x PDC Essential du site, tipbox, sous-total site). Logo Bonifacio retire, 8 logos sur une ligne."
+   ]
+  },
+  {
+   "date": "2026-07-15",
+   "version_from": "1.439",
+   "version_to": "1.440",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "7 retours test Marie-Estelle traites: modals maintenance+AC/DC, assistance durcie (toujours visible), reporting -> 3 mois offerts + upsell J+90 (REPORT-01), barre centree, RECAP repare (bug CSS td[colspan] nowrap), logos agrandis."
+   ]
+  },
+  {
+   "date": "2026-07-15",
+   "version_from": "1.438",
+   "version_to": "1.439",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Charte docs Pennylane: VERIFIE par API. Scope customer_invoice_templates:readonly, endpoint liste id+name uniquement, pas de detail ni d'ecriture => personnalisation IMPOSSIBLE par API. Voie unique = UI Parametres > Facturation clients > Documents et modeles + E-mails (action admin Dominique). Consignes charte gravees: dominante Ink #0F141E (pas le jaune: fond encadre paiement), logo officiel, retirer 'Genere par Pennylane', 5 modeles a mettre a jour."
+   ]
+  },
+  {
+   "date": "2026-07-14",
+   "version_from": "1.437",
+   "version_to": "1.438",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Section Matériel double vue LIVREE: catalogue 15 réf (Zaptec AC + Sungrow DC only), 3 mois offerts auto, remise matériel salesonly, vue installateur v=2 (nets), vue client (prix masqués si apporteur), facturation cas 2 câblée (net -> installateur, hors one-time client). Testé 4 vues au centime."
+   ]
+  },
+  {
+   "date": "2026-07-14",
+   "version_from": "1.436",
+   "version_to": "1.437",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "CORRECTIONS Dominique cas 2: catalogue Sungrow = DC uniquement (pas d'AC Sungrow). Pas de bonus remise supervision — le levier est les premiers mois de supervision OFFERTS si materiel OZECAR (regle v1.179, duree a confirmer). Regle d'or reformulee: l'avantage client verrouille, pas la remise."
+   ]
+  },
+  {
+   "date": "2026-07-14",
+   "version_from": "1.435",
+   "version_to": "1.436",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Strategie installateur cas 1/2 GRAVEE: remise deux etages (bonus supervision), devis materiel double vue (reprise catalogue Zaptec/Sungrow = etape de portage due), bounty one-shot jamais recurrent, regle d'or remise jamais nue. FACTURATION cas 2 V1: bornes -> facture installateur, supervision -> client final SEPA, bonus via bounty post-activation, contrat = supervision seule, recap 2 blocs. Branche webhook specifiee. V2 Stripe Connect differee."
+   ]
+  },
+  {
+   "date": "2026-07-14",
+   "version_from": "1.434",
+   "version_to": "1.435",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Flux installateur/apporteur: st.apporteur implemente au configurateur (champ salesonly, bandeau client, note MES reseau), spec webhook enrichie (association apporteur + flux inverse MES -> tache installateur). A trancher: bareme commission transfert + visibilite prix."
+   ]
+  },
+  {
+   "date": "2026-07-14",
+   "version_from": "1.433",
+   "version_to": "1.434",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "configurateur-v2: responsive mobile corrige (overflow 390px elimine, media query <=700px)."
+   ]
+  },
+  {
+   "date": "2026-07-14",
+   "version_from": "1.432",
+   "version_to": "1.433",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "configurateur-v2: barre logos references officiels N&B (9 logos mediatheque WP, grayscale CSS). Ibis/Gedimat/URSSAF/Ajaccio sans fichier officiel -> a uploader si voulus."
+   ]
+  },
+  {
+   "date": "2026-07-14",
+   "version_from": "1.431",
+   "version_to": "1.432",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "configurateur-v2: contenu des kits affiche (Kit OZECAR / Kit Borne, encarts mise en service + recap), source canonique state."
+   ]
+  },
+  {
+   "date": "2026-07-14",
+   "version_from": "1.430",
+   "version_to": "1.431",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "configurateur-v2: lot completude livre (recap final, fiche client, Et apres, references, remise commerciale .salesonly; retraits AC/DC bas + stot salaries a 0). Tests au centime OK."
+   ]
+  },
+  {
+   "date": "2026-07-14",
+   "version_from": "1.429",
+   "version_to": "1.430",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "configurateur-v2-dev.html: reformulation frais operateur/itinerance, sous-total propre options salaries, 'Mise en service et activation'"
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.428",
+   "version_to": "1.429",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "MES recharge domicile 29 €/borne ajoutee (grille + configurateur). Tooltips natifs remplaces par bulles cliquables visibles (i violet -> tipbox)."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.427",
+   "version_to": "1.428",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Configurateur: options compte apres forfaits, tooltips options, section domicile dediee (2 plans + steppers)."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.426",
+   "version_to": "1.427",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Configurateur reordonne: frais dans carte Business, 60% dans maintenance, engagement en dernier."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.425",
+   "version_to": "1.426",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Bloc vente visuel livre: cartes forfaits comparees (badge LE PLUS CHOISI), bandeau 60% choc, tableau maintenance N1-N4 progressif, cartes AC/DC."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.424",
+   "version_to": "1.425",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "ETAPE 2bis LIVREE: configurateur habille (en-tete client+validite 30j, legende AC/DC-forfaits-maintenance, frais variables, steppers, checkboxes visibles, mode client interactif). Teste, zero erreur. Reste: etape 3 avant/apres + avenant, 4 rendu riche, 5 webhook, 6 prod."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.423",
+   "version_to": "1.424",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Lot UX etape 2bis grave (9 corrections Dominique): en-tete client+validite, forfaits/AC-DC/maintenance expliques, frais variables affiches, steppers quantite, checkboxes visibles, mode client interactif, habillage maquette."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.422",
+   "version_to": "1.423",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "PORTAGE ETAPE 2 LIVREE: options du compte (grille validee), Apollo conditionnel public+DC avec mention AFIR 50kW, prefill ?company=. Tests au centime, zero erreur."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.421",
+   "version_to": "1.422",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Grille options VALIDEE (Payter 9,90+25, Reporting 15, CSM 99, domicile A/B). Libelle AFIR precise: obligation >= 50 kW ET accessible au public."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.420",
+   "version_to": "1.421",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Payter Apollo tranche: 649 € HT couple obligatoirement a Gestion terminal 9,90 €/mois; option de site (si DC ou public, mention AFIR) + PandaDoc, pas Shopify."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.419",
+   "version_to": "1.420",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Grille d'options consolidee: assistance 2€ VALIDEE, badges lot de 10 a 49€ (regle Dominique), routeur sans SKU client-facing, Payter recalcule 9,90+25 (couts reels), Reporting avance 15€ propose (3 etages inclus/option/CSM), recharge domicile A 5,90/B 7,90 wallet provisionne. A confirmer: Payter, Reporting, CSM, B, cout Monta/vehicule."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.418",
+   "version_to": "1.419",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "PORTAGE ETAPE 1 LIVREE: configurateur-v2-dev.html = moteur multi-sites fonctionnel (sites/lignes dynamiques, options par site, engagement bas + prepay, kits auto, URL ?c=, mode client v=1), teste Playwright sur Bardinet reel: 170,40 au centime, zero erreur. Restes: prefill HubSpot, ecran avant/apres + avenant, rendu offre riche, webhook, bascule prod."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.417",
+   "version_to": "1.418",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Spec mode avenant VALIDEE avec ecran de confirmation AVANT/APRES obligatoire (2 colonnes, delta central, dates d'effet) + nouvelle propriete ozecar_config_json (JSON config ecrit par webhook) pour prechargement exact."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.416",
+   "version_to": "1.417",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Brief d'execution du portage configurateur consolide (structure, sortie, webhook 5 volets, avenant, dependances)."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.415",
+   "version_to": "1.416",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Format contrats canonique valide (par nature, puces quantifiees, total+echeance) — 126 fiches reformatees; format grave comme sortie du webhook. Recette UI fiche HubSpot documentee (sidebar epuree, groupe Parc au centre, cartes Paiements/Abonnements retirees, enrichissement auto desactive)."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.414",
+   "version_to": "1.415",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Vue contrats sur fiche: proprietes ozecar_mrr_supervision + ozecar_contrats (detail nature/montant/periodicite/echeance + refs FT), backfill 126 fiches. UI: epingler le groupe Parc OZECAR sur la fiche (action Dominique 2 min)."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.413",
+   "version_to": "1.414",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "CORRECTION verite terrain (40 points Dominique): liste forfait-zero refaite. Cible reelle: 8 maintenance-seule + 7 purs gratuits + 44 a verifier. Lecon: 2 canaux Pennylane + payeurs tiers -> croisement API insuffisant. Solution perenne proposee: mapping externalId team<->customer. PART-01 cree (contrat Grimaldi)."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.412",
+   "version_to": "1.413",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Analyse abonnements a 0: 274/317 abos Monta a 0 · 88 teams/290 PDC sans abonnement payant · dont 60/196 variable-only et 28/94 purs gratuits (~1 094 €/mois de perte seche). Liste nominative livree (clients-forfait-zero.txt)."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.411",
+   "version_to": "1.412",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Decomposition MRR par nature (87 abos Pennylane, lignes completes): supervision 1 655 / maintenance 1 606 (48 %, 27 clients) / data 56 / support 37. Propriete ozecar_mrr_mnt + backfill 27 fiches. Dashboard: MRR decompose, ratio rentabilite = supervision seule / PDC = 3,61 € vs 11,64."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.410",
+   "version_to": "1.411",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Correction semantique Dominique: PDC supervises = connectes (525 via Monta, dynamique) vs 233 rattaches CRM. MRR/PDC reel 6,67 € vs cout 11,64 → parc NON rentable au PDC, ecart = enjeu migration. parc.php + dashboard corriges et deployes."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.409",
+   "version_to": "1.410",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Consolidation Pennylane via api/pennylane.php: 87 abos actifs, MRR Pennylane 3 354 €/mois, 65/67 matches. Dashboard final: MRR 3 501 € / ARR 42 016 € / 15,03 €/PDC / 4 echeances <90j. UDIFE et Assesse sans fiche CRM."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.408",
+   "version_to": "1.409",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "CORRECTION Dominique: MRR dashboard partiel (Monta seul), abonnements annuels Pennylane existants non comptes. Labels dashboard corriges. Regle de migration gravee: verifier Pennylane avant bascule, pas de double facturation, prorata a solder, resiliation a la bascule. Prerequis: inventaire abonnements Pennylane (export/API Dominique)."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.407",
+   "version_to": "1.408",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Backfill Parc clients HubSpot execute: 55 companies remplies (45 matching strict + 10 manuels valides, correction CALA->SARL CALA DI GRECO). Dashboard vivant: 233 PDC, 54 fiches avec donnees, MRR Monta 229 EUR (0,98/PDC vs cout 11,64 = argument migration). Assesse SANS fiche CRM a creer. Incertains et doublons CRM listes."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.406",
+   "version_to": "1.407",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "FG-01 mis en attente retour Monta (decision Dominique): item Monday 12515431742 cree (groupe En cours, statut Bloque), todo rappelable ajoute, statut section feature_groups mis a jour."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.405",
+   "version_to": "1.406",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Audit usage feature groups LIVRE (178 teams croisees subs×plans×usage): 138 OZ Business / 4 Biz+Flotte / 36 Essential, 174 applications silencieuses, 4 cas flotte a trancher. Constats: application en masse non prise (177 sans groupe), PATCH featureGroupId ignore par l'API → application manuelle Hub par lots. Listes livrees (feature-groups-application.txt)."
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.404",
+   "version_to": "1.405",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Nouvelle section ocpp_proxy_monta_2026_07_13: feature OCPP Proxy self-serve Monta Hub (changelog 07/07), impact reprise de supervision (migration sans coupure), vigilance domaine marque blanche, next steps"
+   ]
+  },
+  {
+   "date": "2026-07-13",
+   "version_from": "1.403",
+   "version_to": "1.404",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Audit feature groups Monta: API contenu FORBIDDEN (scope ferme operator 2257), assignation lisible via /teams. Constat: 1 groupe test (23) sur team 4915002, 177/178 teams sans groupe. Section audit_2026_07_13 ajoutee."
+   ]
+  },
+  {
+   "date": "2026-07-12",
+   "version_from": "1.402",
+   "version_to": "1.403",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Matrice EXACTE des 5 feature groups x 13 capabilities gravee (T/O/D par cellule) + justifications + regle de vigilance (nouvelles features Monta = repasser sur les groupes)."
+   ]
+  },
+  {
+   "date": "2026-07-12",
+   "version_from": "1.401",
+   "version_to": "1.402",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Plan 6422 verifie corrige (8 %) — 14/14 conformes. Matrice des 5 feature groups Monta definie (OZ Essential defaut / Business / +Flotte x2 / Enterprise) + regles (defaut restrictif, flotte=option, team mixte=forfait le plus haut)."
+   ]
+  },
+  {
+   "date": "2026-07-12",
+   "version_from": "1.400",
+   "version_to": "1.401",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "14 plans Hub crees et audites par API: 2 plans SEPA 0 € (6434 Essential, 6435 Business) + 12 plans wallet TTC (6422-6433). Frais nets conformes partout sauf 6422 (local 10 % -> 8 %, correction Hub demandee). Mapping canal->plan grave."
+   ]
+  },
+  {
+   "date": "2026-07-12",
+   "version_from": "1.399",
+   "version_to": "1.400",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "ANNULE v1.399 (lecture fausse). Modele confirme: grille = taux client tout compris (Monta inclus). Saisie Hub NETTE: local 8 % (10-2), itinerance 1 % + 0,07 (5-4). Fiche de saisie des 12 plans rectifiee. Marge: 8 % local · 1 %+0,07 itinerance. Client conserve ~90 % local / ~84 % itinerance."
+   ]
+  },
+  {
+   "date": "2026-07-12",
+   "version_from": "1.398",
+   "version_to": "1.399",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "CORRECTION MODELE: les frais Monta (2 % local / 4 % roaming) sont factures au CLIENT en ligne separee sur son wallet, pas preleves sur nos frais -> notre marge = 100 % de nos frais operateur. Taux effectif client: local 12 % (~88 % conserves), itinerance ~19,7 % (~80 %). Discours commercial et devis a ajuster (mention clearing)."
+   ]
+  },
+  {
+   "date": "2026-07-12",
+   "version_from": "1.397",
+   "version_to": "1.398",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Fiche de saisie complete des 12 plans Hub (ecrans 1-5): PRIX TTC (champ 'TVA incluse' -> plan test 7,90 a corriger en 9,48), resumes client-facing, frais operateur 10% / itinerance 5%+0,07 HT dans le plan, checkbox sessions non payees DECOCHEE, 1er du mois prorata, resiliation operateur seul."
+   ]
+  },
+  {
+   "date": "2026-07-12",
+   "version_from": "1.396",
+   "version_to": "1.397",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Referentiel des 12 plans Monta standards a creer (noms, prix HT+TTC, parametres, process de creation en 2 temps avec audit API du plan test)."
+   ]
+  },
+  {
+   "date": "2026-07-12",
+   "version_from": "1.395",
+   "version_to": "1.396",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Regles avenants VALIDEES: (1) delta MRR nul = pas de deal, e-mail recap + note; (2) eligibilite wallet = flux net >= 2x abonnement sur 3 mois; (3) 2 echecs wallet consecutifs = retour SEPA auto + notification. Procedure bascule wallet documentee (Monta plans payants / Stripe options seules / mandat jamais revoque)."
+   ]
+  },
+  {
+   "date": "2026-07-12",
+   "version_from": "1.394",
+   "version_to": "1.395",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Make credits: 3 scenarios polling 120s (05b/10/11) passes a 900s (15min) pour stopper le burn (tests finis). Fix durable = conversion webhook."
+   ]
+  },
+  {
+   "date": "2026-07-11",
+   "version_from": "1.393",
+   "version_to": "1.394",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "HubSpot: pipelines reels verifies (Vente + Livraison&Activation), 2 stages Avenant crees dans Vente, groupe+6 proprietes 'Parc OZECAR' crees sur les companies via API. Dashboard Parc clients livre (parc-clients.html + api/parc.php): KPI investisseur, actions Modifier/+Avenant, export CSV, instructions commercial. Vues UI (Ventes sans avenants / Avenants) a creer manuellement (pas d'API)."
+   ]
+  },
+  {
+   "date": "2026-07-11",
+   "version_from": "1.392",
+   "version_to": "1.393",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Decisions: prepaiement -5% sur TOUT (forfaits+options), convention couleurs AC violet/DC jaune alignee sur module compatibilite (appliquee au devis), architecture maintenance par site tranchee (defaut Stripe = options chez nous + plans Monta forfait-seuls par PDC; wallet = plans combines manuels a la demande)."
+   ]
+  },
+  {
+   "date": "2026-07-10",
+   "version_from": "1.391",
+   "version_to": "1.392",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "AUDIT residus staging (109 pages): 46 touchees. LOT 1 critique marque blanche: 'ozecar.hub.monta.app' visible dans les mockups de supervision-3, 'Station ID Monta'/'portail Monta' sur pages activation, monta.imgix.net visible dans les params du proxy (bornes-compatibles-3 823x + recherche), homepage-2 = ancienne grille complete. LOT 2: ancienne grille (reprise-supervision, bundle-zaptec-pro, 4 articles support, blog LOM). LOT 3: 'sans engagement' sur ~15 pages. Bundle Android + montants/montagne = faux positifs ecartes."
+   ]
+  },
+  {
+   "date": "2026-07-10",
+   "version_from": "1.390",
+   "version_to": "1.391",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Page tarifs publique: selecteur d'engagement retire (la duree se negocie au devis, pas en vitrine). Prix affiches = 36 mois avec mention loyaute. AC/DC conserve."
+   ]
+  },
+  {
+   "date": "2026-07-10",
+   "version_from": "1.389",
+   "version_to": "1.390",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Section tarifs /supervision-3/ (staging) remplacee par la grille verrouillee: Essential/Business/Enterprise, selecteurs engagement 12/24/36 + AC/DC, prix dynamiques, mentions data/maintenance(60%)/public gratuit/prepaiement -5%. Ancienne grille (Pro/Pro Plus/Transit, -15%, sans engagement) supprimee."
+   ]
+  },
+  {
+   "date": "2026-07-10",
+   "version_from": "1.388",
+   "version_to": "1.389",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "TARIFICATION COMPLETE VERROUILLEE: itinerance entrante+sortante 5 % + 0,07 €/kWh (negocie 4 % + 0,03, plancher absolu), local 10 %/5 %, ouverture public gratuite avec facturation minimale 5 €/PDC/mois deduite des recettes. Grandfathering sites existants. Analyse Assesse complete (7 743 sessions) + benchmark concurrence (pass-through vs commission) + positionnement course CPO graves."
+   ]
+  },
+  {
+   "date": "2026-07-10",
+   "version_from": "1.387",
+   "version_to": "1.388",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "ECRAN OFFRE CLIENT v2 valide (maquette staging offre-bardinet2.html): repond d'abord a la demande, options PAR SITE (data + maintenance), tableau comparatif maintenance, questions au lieu de produits, kits aux vrais prix catalogue (49/29 €, activation 79 € offerte, mise en service sur site 450 €/site en option), engagement chiffre en economie, paiement SEPA ou recettes.",
+    "Argument N1 valide par Dominique: '60 % des incidents resolus sans deplacement'. Wording Data: prix a l'unite, commercial, sans technicite ni alternative Ethernet."
+   ]
+  },
+  {
+   "date": "2026-07-10",
+   "version_from": "1.386",
+   "version_to": "1.387",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "GRILLE FINALE VALIDEE: remise portee par l'ENGAGEMENT (12/24/36, mensuel SEPA par defaut, prepaiement annuel -5% en option). Itinerance entrante B (4%+0,05 €/kWh) pour les NOUVEAUX sites, A (20%) grandfathered. Itinerance sortante 4%+0,05 €/kWh. Mandat SEPA systematique. Configurateur migre (selecteur engagement + prepay) et verifie."
+   ]
+  },
+  {
+   "date": "2026-07-09",
+   "version_from": "1.385",
+   "version_to": "1.386",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "FIX critique: AC/DC (state.kind) n'etait pas persiste dans le lien devis -> un devis DC affichait les prix AC (-6 €/PDC/mois). Corrige + verifie.",
+    "Parcours: focus GUIDE (decision Dominique). Self-service reporte: le deal_id sera cree a l'INVITATION du client final par l'installateur (kit d'activation). Prochaine brique = Stripe (paiement kit + abonnement)."
+   ]
+  },
+  {
+   "date": "2026-07-09",
+   "version_from": "1.384",
+   "version_to": "1.385",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Configurateur MIGRE sur la nouvelle offre: Essential/Business/Enterprise (3 plans, dernier sur devis) + selecteur AC/DC. Prix affiches = annuels (6,90/9,90 AC · 9,90/15,90 DC); mensuel derive au-dessus (7,90/10,90 · 10,90/17,90). Remises: annuel -10%, biannuel -15%, Essential exclu du biannuel. Tableau comparatif refait (itinerance incluse en Business, frais 10%/5% et 0,05 €/kWh+4%). Pro/Pro+/Transit supprimes. Teste Playwright, 0 erreur."
+   ]
+  },
+  {
+   "date": "2026-07-09",
+   "version_from": "1.383",
+   "version_to": "1.384",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "REFONTE DE L'OFFRE (valide Dominique): Essential 6,90 AC / 9,90 DC · Business 9,90 AC / 15,90 DC (recommande) · Enterprise sur devis (~50 €). Itinerance INCLUSE dans Business (capacite activable), monetisee au variable. Local 10% (Ent. 5%). Itinerance entrante 0,05 €/kWh + 4% (Ent. 0,025 + 4%) - le % couvre le cout Monta, les centimes sont la marge. DC = 1,65x AC. Maintenance en sus. Pro+/Transit supprimes (deviennent conditions Enterprise).",
+    "ECONOMIE: cout complet 11,64 €/socket a 700 sockets (fixe 5000 €/mo + 4,50 €/socket). Seul Business DC couvre. Seuil ~1 190 sockets. Deficit ~2 060 €/mo a combler par le variable. Levier n°1 = croissance vers 1 200 sockets; levier n°2 = pousser Business; levier n°3 = renegocier les 3 500 € de marque blanche.",
+    "ALERTE: migration Forfait Zero doit etre exprimee en PRIX FIXE 7,45 € (pas '-50%', qui donnerait 4,95 € sous le cout socket). Remises: reco annuel -10% / biannuel -15%, Essential exclu du biannuel (a valider)."
+   ]
+  },
+  {
+   "date": "2026-07-09",
+   "version_from": "1.382",
+   "version_to": "1.383",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "'Et apres' corrige: delai reel = KIT EXPEDIE SOUS 48H (valide Dominique). Deux versions selon parcours: guide (kit prepare/expedie/config/actif) vs self-service QR (contrat signe/compte cree/borne rattachee/actif) - le kit est deja chez le client. Auto-critique affichage progressif consignee (a reformuler en benefices, sortir les prix, Pro seul en self-service)."
+   ]
+  },
+  {
+   "date": "2026-07-09",
+   "version_from": "1.381",
+   "version_to": "1.382",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "connectivity_emnify_2026_07_09.devis_recu_2026_07_09 : plans pooled 50MB/0,57 € - 1GB/2,22 € - 2GB/4,21 € par SIM active",
+    "BLOCKER : le devis ecrit dit NON-STEERED, contredit la promesse orale d'Enver (steering endpoint, blocage SFR). Le non-steered est la cause racine des decrochages.",
+    "Ecart prix call vs devis : 0,210-0,220 €/GB annonce vs 2,105-2,22 €/GB reel (facteur 10)",
+    "Palier 450 MB promis remplace par 50 MB, qui ne couvre pas la conso AC reelle (100 MB)",
+    "Gratuite 2-3 mois non formalisee, remplacee par 1 000 € de credits de test (valeur reelle ~15 € sur 3 SIMs)",
+    "Simulation fleet : emnify 467 à 1 209 €/mois selon palier AC vs Simbase 381 €/mois avec abo"
+   ]
+  },
+  {
+   "date": "2026-07-09",
+   "version_from": "1.380",
+   "version_to": "1.381",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Affichage progressif livre (vue client): forfait visible d'emblee + bloc depliable 'Decouvrez ce que la supervision permet' (options PDC/compte, maintenance, mise en service). Replie par defaut, deplie auto si options deja configurees par le commercial. Vue commerciale inchangee (tout ouvert). Verifie Playwright."
+   ]
+  },
+  {
+   "date": "2026-07-09",
+   "version_from": "1.379",
+   "version_to": "1.380",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "methode_vente_duo_am_vp_2026_07_09 : passé en PARKÉ. Principe validé, activation conditionnée à la mise en place de la structure commerciale (revue rentrée sept 2026).",
+    "connectivity_emnify_2026_07_09 : statut EN ATTENTE du devis Daria/Enver."
+   ]
+  },
+  {
+   "date": "2026-07-09",
+   "version_from": "1.378",
+   "version_to": "1.379",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "connectivity_emnify_2026_07_09.historique_evaluation_providers : consolidation Simbase / Soracom / Vodafone / Onomondo (écarté) / Eseye / emnify",
+    "connectivity_emnify_2026_07_09.recalcul_economique_2026_07_09 : le verdict prix de juin (emnify 13-17x) reposait sur 30 MB/SIM/mois ; les vraies consos (100 MB AC / 1,5-2 GB HPC) l'invalident",
+    "Constat : Simbase à 5 €/GB fait perdre de l'argent sur chaque borne HPC (~9 €/mois vs 2,50 € absorbés)",
+    "ACTION : souscrire abo Simbase 50 €/mois (break-even 20 GB/mois largement dépassé)",
+    "methode_vente_duo_am_vp_2026_07_09 : dispositif AM (Marie-Estelle) + VP/Président (Dominique) inspiré de Daria/Enver chez emnify, à intégrer au playbook commercial avant rentrée"
+   ]
+  },
+  {
+   "date": "2026-07-09",
+   "version_from": "1.377",
+   "version_to": "1.378",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "connectivity_emnify_2026_07_09 : compte-rendu call emnify (Daria/Enver), pricing indicatif 0,210-0,220 €/GB, 3 paliers 450MB/1GB/2GB pooled, 2-3 mois offerts à formaliser",
+    "Plan POC 3 SIMs (API / terrain / swap inter-marques), site candidat Renault HPC ~40 sessions/jour",
+    "Leviers de négociation + liste des engagements à obtenir par écrit",
+    "Lien avec diagnostic_decrochages_integres_2026_06_11 : steering endpoint emnify = fix structurel du non-steered Simbase",
+    "monday item 12489027813 CONNECT-EMNIFY créé"
+   ]
+  },
+  {
+   "date": "2026-07-09",
+   "version_from": "1.376",
+   "version_to": "1.377",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "FIX page blanche vue client: enterClientView ne force plus showStep(1) (affichait l'etape Materiel masquee). Masquage materiel gere l'etape. Verifie Playwright: self-service + guide OK, 0 erreur."
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.375",
+   "version_to": "1.376",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Configurateur: 2 modes client. GUIDE (avec 'c') = lecture seule. SELF-SERVICE (QR installateur, sans 'c') = Pro pre-selectionne + PDC pre-rempli + selecteurs actifs. Ajoute bloc 'Et apres ?' (kit prepare/expedie/config/actif + support). Titre client 'Votre offre...'. Modele installateur documente (materiel->installateur, supervision->client final, pont = kit QR + invitation proprietaire)."
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.374",
+   "version_to": "1.375",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Configurateur vue client: titre 'Votre offre' (client)/'Configurez' (commercial); LECTURE SEULE en mode guide (verrouille forfait/options/maintenance); bloc 'Et apres votre signature' (5 etapes reassurance). Deux modes client definis: guide=lecture seule, self-service=Pro par defaut (a construire avec le pont QR/activation). Modele installateur (shop) valide + consigne (Izitek/Soleco, proprietaire requis a l'activation)."
+   ]
+  },
+  {
+   "date": "2026-07-03",
+   "version_from": "1.373",
+   "version_to": "1.374",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Creation d'intervention DEPUIS #support LIVREE: @mention note -> propose_intervention (agent) -> Confirmer -> create_intervention (bot-tools) cree ticket Maintenance & Intervention + GATE niveau (N3/N4->a prevoir, sinon Devis a faire) + bouton Planifier. Gate maintenance vivant. Teste (N0->Devis a faire)."
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.372",
+   "version_to": "1.373",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Signature eSignatures passee en MODAL sur le devis (openEsign/#esignOvl, iframe dans #esignBody) - le client reste sur notre page. Recipient corrige (exclut installateur/fournisseur, prend le client). SES par code email validee par Dominique. Reste: Stripe."
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.371",
+   "version_to": "1.372",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Configurateur: signature eSignatures cablee (Accepter -> mountEsign -> iframe embed_url dans la page; ancien PandaDoc supprime). UX etapes corrigee en vue client (Supervision=1, Recap=2, plus de bouton Precedent orphelin). Deploye staging. Pret a tester sur le devis Julien."
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.370",
+   "version_to": "1.371",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "eSignatures: template cree PAR API (id 73094966-...bae726, markdown+placeholders). Endpoints corriges au format v1.3 (esignatures.com/api). Chaine testee end-to-end en demo: create deal Julien -> embed_url (sign?embedded=yes) OK, webhook contract-signed->Gagné/Livraison. Config maj server-side (token non expose). Reste: cabler l'iframe dans le modal + Stripe."
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.369",
+   "version_to": "1.370",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "E-SIGN bascule Subnoto -> eSignatures.com (Subnoto bloque: SDK PHP = extension native impossible sur Hostinger). eSignatures = REST simple + Basic Auth + UE Francfort + embarque. Cree esignatures-config/create/webhook.php (metadata=deal_id, sign_page_url embarque, webhook contract-signed -> Gagné/Livraison, teste). Subnoto supprime du serveur. Reste Dominique: Secret Token + creer template -> ESIG_TEMPLATE_ID."
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.368",
+   "version_to": "1.369",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "E-SIGN: SUBNOTO retenu (verifie doc: embedded signing via iframe token /embeds/sign, HTML pur, domaine custom marque blanche, heberge France/confidential computing, webhooks, 5-19 EUR/mois). Bat DocuSign/Yousign/PandaDoc sur RGPD+prix. Caveat SES-only aujourd'hui (AES/QES 2026, non bloquant B2B). Plan d'integration defini. Reste Dominique: compte Subnoto + cle API dans api/subnoto-config.php."
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.367",
+   "version_to": "1.368",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Checkout OPTION B validee: page maison OZECAR + Stripe + Yousign (signature embarquee meme page), PandaDoc abandonne dans la vente. Page finie livree + deployee staging (checkout.html, HTTP 200). Reste a cabler apres validation design: Stripe, Yousign, backend HubSpot/Pennylane."
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.366",
+   "version_to": "1.367",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "PandaDoc API ABANDONNEE DEFINITIVEMENT (email PandaDoc confirme 2$/document en generation API). Code API supprime. Bouton 'Accepter' neutralise -> devis-accepted.php (marque acceptation + notif #devis). Verite: redirection in-page pre-remplie = API only; sans API = Form (etape formulaire) ou native (document par email). Arbitrage a trancher: email natif vs redirection."
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.365",
+   "version_to": "1.366",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "PandaDoc FLUX FINAL verrouille: clic 'Accepter' -> redirection vers le DOCUMENT mis en page (app.pandadoc.com/s/{session_id}) -> signe -> Gagné/Livraison auto, zero manuel. = API (seule voie). Recree pandadoc-config.php + pandadoc-create-session.php (template ERRteELd, tokens depuis deal, metadata deal_id). Configurateur redirige vers la session. Cout corrige (2€=Forms; documents inclus). Reste Dominique: cle API + role template + webhook."
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.364",
+   "version_to": "1.365",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "PandaDoc: nouveau lien public form.pandadoc.com/form/ruLyyyjADRrNiUpntm63ie branche dans le redirect du configurateur. C'est un lien FORM -> etape formulaire structurelle, pre-remplie (pas de re-saisie). Zero etape formulaire = API (ecartee). A tester: auto-skip si tout pre-rempli."
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.363",
+   "version_to": "1.364",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "PandaDoc: CORRECTION cout (2$=Forms, pas documents; documents inclus). Solution retenue = LIEN PUBLIC DE TEMPLATE (document mis en page + signature, sans API, pre-remplissable) au lieu de la Form. Template contrat ERRteELdLVDKGWEffNndBE. Reste Dominique: activer le lien public + donner l'URL + confirmer variables. Claude: recabler le redirect."
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.362",
+   "version_to": "1.363",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "PandaDoc signature: solution REDIRECTION plein ecran (idee Dominique). acceptBtn redirige vers la Form PandaDoc pre-remplie (au lieu de l'iframe). Signature detectee par webhook serveur pandadoc-webhook.php (cle en query) -> pandadoc-signed.php (Gagné->Livraison). Teste. Reste Dominique: variables Form + configurer le webhook PandaDoc."
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.361",
+   "version_to": "1.362",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "PandaDoc: API embedded signing ABANDONNEE (~2€/doc, non viable). Retour a la Form (incluse plan, no API). Configurateur revenu au Form embed + prefill URL. Endpoints pandadoc-create-session.php/pandadoc-config.php supprimes. Handoff pandadoc-signed.php conserve (declenche par embed.form.completed). Reste Dominique: creer+lier les variables dans la Form."
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.360",
+   "version_to": "1.361",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "PandaDoc: bascule Form -> EMBEDDED SIGNING (API) suite lien Dominique. Construit pandadoc-config.php (cle a remplir), pandadoc-create-session.php (doc depuis template + session), configurateur charge l'iframe app.pandadoc.com/s/{session_id}/ au clic signer, evenement completed -> pandadoc-signed.php. Propriete ozecar_pandadoc_doc. Gate sur cle API (503 sinon). Reste Dominique: creer cle API + confirmer role/tokens du template."
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.359",
+   "version_to": "1.360",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Item 4 LIVRE: embed Form PandaDoc integre au configurateur (pre-remplissage deal_id/numero_devis/societe/nom/email, monte au clic 'Accepter et signer'). Evenement 'completed' -> pandadoc-signed.php: Vente->Gagné + statut Signé + creation deal Livraison & Activation (Kit a preparer, props+assoc copiees, lien source). Idempotent. Proprietes ozecar_livraison_cree+ozecar_deal_source. Teste OK. Reste: creer les variables dans la Form PandaDoc (Dominique)."
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.358",
+   "version_to": "1.359",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Comparatif migration: version interactive abandonnee (clientele non adaptee UI)",
+    "Version retenue = comparatif STATIQUE base sur le fixe uniquement (abo + services)",
+    "Regle: pas de simulation itinerance ni calculateur dans le comparatif migration"
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.357",
+   "version_to": "1.358",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Comparateur interactif Forfait Zero vs Pro -50% (break-even ~149e/mois/PDC)",
+    "Pitch double: borne active=Pro moins cher / dormante=fin offre",
+    "Asset campagne migration"
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.356",
+   "version_to": "1.357",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Liste migration resolue: 38 clients / 119 PDC Forfait Zero actifs (100% Corse)",
+    "Decisions: butoir 30/09/2026, ton Relationnel, liste via API",
+    "11 PDC sans contact reel a retrouver avant envoi",
+    "Page bascule date -> 30/09/2026"
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.355",
+   "version_to": "1.356",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Parcours client migration Forfait Zero: 3 portes (continuer/arreter/silence=arret)",
+    "Page bascule white-label mockee (2 portes cliquables)",
+    "Email annonce redige (2 tons: Relationnel / Direct)",
+    "Sequence annonce+relances+sunset definie",
+    "A lock: date butoir, ton email, liste nominative"
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.354",
+   "version_to": "1.355",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "DIRECTIVE v2: migrer TOUS les Forfait Zero (override segmentation)",
+    "Offre = Pro -50% (7,45e) 12 mois ou arret service",
+    "Enumeration Monta: 119 abonnements Forfait Zero ACTIFS identifies (215 total, 90 annules)",
+    "customerId->client a resoudre (etape suivante)",
+    "Custom deals 50/50 + Tiers invest + Deltagame hors scope"
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "version_from": "1.353",
+   "version_to": "1.354",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Nouveau chantier migration_legacy_forfait_zero_2026_07_07: diagnostic + strategie",
+    "Trouve clause 700e/an dans conditions Forfait Zero (id 2541) = levier d'application",
+    "Cout backend 5e/PDC confirme par Dominique -> remise recurrent Essential impossible (marge 0,90)",
+    "Contrats legacy: accord client requis, mais clause 700 acceptee a la souscription",
+    "Custom plans (50/50, Tiers invest, Deltagame) isoles de la migration de masse",
+    "Parc 100+ teams; enumeration complete en attente go"
+   ]
+  },
+  {
+   "date": "2026-07-06",
+   "version_from": "1.352",
+   "version_to": "1.353",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Decision meeting-notes: on reste sur Granola (Starter). Notetaker HubSpot = Sales Hub Pro (~90-100$/siege+1500$ onboarding), indispo Starter. Declencheur bascule Pro = embauche 1er commercial (Notetaker natif + workflows + pipelines + sequences)."
+   ]
+  },
+  {
+   "date": "2026-07-06",
+   "version_from": "1.351",
+   "version_to": "1.352",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Cycle de vie post-devis 1+2+3 LIVRE: (1) renvoi sur MAJ (devis-save-link toujours pending -> scenario 11 renvoie). (2) expiration: ozecar_devis_expire_le J+30 + bascule 'Expiré' via devis-lifecycle. (3) relances J-7/J-2 via devis-lifecycle.php + Make 12 quotidien (6459838, actif). Props expire_le+relances creees. Teste OK. Item 4 (signe->Gagne->Livraison) reste, depend embed PandaDoc."
+   ]
+  },
+  {
+   "date": "2026-07-06",
+   "version_from": "1.350",
+   "version_to": "1.351",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Impression PDF devis client CORRIGEE: bouton Imprimer force render+showStep(3)+affiche tous les wstep avant print (restaure apres) + CSS print renforce (break-inside, @page, chrome masque).",
+    "Questions post-devis documentees comme NON construites: renvoi sur MAJ (non), expiration (aucune), relances J-7/J-2 (non), signe->Gagne->Livraison (non). Chantier 'cycle de vie post-devis' propose."
+   ]
+  },
+  {
+   "date": "2026-07-06",
+   "version_from": "1.349",
+   "version_to": "1.350",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Doublon email resolu: scenario 08 envoyait devis-pret a la generation + scenario 11 ma version au card-move. Retire l'email du scenario 08 (MAJ deal seule) + devis-send-client.php utilise le template ACTE devis-pret. UN seul email au card-move.",
+    "Tracking vues devis: devis-viewed.php (incremente ozecar_devis_views, set ozecar_devis_statut='Envoyé · vu N fois', ne compte que si sent) + ping dans configurateur checkEditLock (vue client reelle). Proprietes ozecar_devis_statut + ozecar_devis_views creees. Teste OK."
+   ]
+  },
+  {
+   "date": "2026-07-06",
+   "version_from": "1.348",
+   "version_to": "1.349",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Liens fiche cliquables RESOLU: HubSpot rend cliquable le type text (pas textarea). 2 proprietes text: ozecar_devis_edit_url (Éditer, ?sales) + ozecar_devis_url (Voir le devis client, ?client). Textarea supprimee, note supprimee, endpoints repointes sur ozecar_devis_url. 25 deals nettoyes (?sales errone dans devis_url vide). Julien pose les 2. Note pas retenue."
+   ]
+  },
+  {
+   "date": "2026-07-06",
+   "version_from": "1.347",
+   "version_to": "1.348",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Liens fiche: edit_url rempli partout, client_url vide jusqu'a generation (normal). HubSpot n'affiche pas les texte-URL en cliquable (Starter). Solution: note epinglee avec liens <a> cliquables (pose sur Julien, note 502255978702). A automatiser si Dominique valide."
+   ]
+  },
+  {
+   "date": "2026-07-06",
+   "version_from": "1.346",
+   "version_to": "1.347",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "2 boutons devis: 'Éditer le devis' (edit_url ?sales) + 'Voir le devis client' (client_url ?client&c=) + overlay client. Envoi AUTO client CABLE (ferme Q2): genClientLink->devis-save-link.php (stocke url+flag pending) -> scenario Make 11 (poll Devis-contrat envoye + pending) -> devis-send-client.php (email client charte + flag sent, idempotent). devis-transfer pose flag sent (anti-doublon). Teste OK. Scenario 11 (6458109) a remettre a 900s apres test."
+   ]
+  },
+  {
+   "date": "2026-07-06",
+   "version_from": "1.345",
+   "version_to": "1.346",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Bouton devis backfille (25 deals). Q3: etape Materiel masquee cote client si aucun materiel (deploye). Q4: devis-status.php cree (prod) + configurateur pointe vers URL absolue -> overlay 'modification en cours' si deal pas en 'Devis-contrat envoye'/Gagne/Livraison. Rebascule en Devis a faire -> client voit l'overlay pas le devis. Q1: 'Accepter et signer'=bouton vue client (apercu). Q2: email direct commercial PAS cable (ancien scenario 09 deprecated) -> a wirer sur 'Devis-contrat envoye'."
+   ]
+  },
+  {
+   "date": "2026-07-06",
+   "version_from": "1.344",
+   "version_to": "1.345",
+   "author": "Claude PM (claude.ai)",
+   "changes": [
+    "Curation fiche HubSpot (option 1): labels nettoyes (PDC/stations/options/forfait). Propriete ozecar_devis_edit_url creee (bouton reouverture, endpoints repointes). ERREUR corrigee: ozecar_devis_url (existait, usage client) backfille par erreur avec lien sales sur ~25 deals -> a verifier via property history si besoin. Liste 'À propos' curee definie (garder essentiel business+resume+lien, retirer champs kit). Application = UI (Starter)."
+   ]
+  }
+ ]
+}
