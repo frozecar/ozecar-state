@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.445",
+    "version": "1.446",
     "updated": "2026-07-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-15",
+        "version_from": "1.445",
+        "version_to": "1.446",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Deck TRANSPORT & LOGISTIQUE livre (15 slides, pptx + PDF): variante exploitation seule, sans installation. Slides specifiques: charge au depot/rotations, itinerance sortante, conformite AFIR, refacturation location.",
+          "BUG CORRIGE dans le helper ticks() (px vs pt): chevauchement de puces. Deck client final v5 REGENERE.",
+          "QA programmatique du deck gravee (validate.py + pdfplumber hors-cadre/chevauchements + markitdown regex) + polices de marque installables depuis github.com/google/fonts.",
+          "ARBITRAGE DEMANDE: claims de l'ancienne page secteur transport (98,6% dispo contractuelle, SLA 24-48h, 70% a distance, 800+ modeles) non verifies -> ecartes du deck."
+        ]
+      },
       {
         "date": "2026-07-15",
         "version_from": "1.444",
@@ -9197,7 +9209,34 @@
     "learning_DKK": "ATTENTION: l'ecran app 'Demarrage de la recharge' du PDF affiche 'Cout cumule 0 DKK' (couronne danoise = tell backend + mauvaise devise FR). NE JAMAIS l'utiliser. Verif OCR systematique DKK/kr/Monta avant d'integrer un screenshot. Ecrans EUR-propres valides: parcours_row, dash_revenue, dash_etats, dash_tension, kit_lockup, phone_kit.",
     "case_studies_statut": "EN ATTENTE - Dominique met Marie-Estelle sur la collecte des chiffres (enseigne/secteur/PDC/%dispo/delai). Emplacements balises dans client (slide 10).",
     "learning_faux_positif_marque_blanche": "Un grep binaire 'monta|DKK' sur les .png embarques peut matcher des octets aleatoires du flux compresse (ex 'dkk' 3 lettres). Ce N'EST PAS une fuite. Le vrai controle marque blanche = contenu VISIBLE (OCR) + URLs/metadonnees, pas les octets compresses. Verif faite: 0 'monta' reel, OCR EUR-propre.",
-    "correction_marque_blanche": "Purge de toute mention 'marque blanche/votre marque/invisible' des decks client + demo (etaient un contresens). Client voit OZECAR partout. Voir positioning_marque_blanche_CLARIF_2026_07_03."
+    "correction_marque_blanche": "Purge de toute mention 'marque blanche/votre marque/invisible' des decks client + demo (etaient un contresens). Client voit OZECAR partout. Voir positioning_marque_blanche_CLARIF_2026_07_03.",
+    "deck_transport_2026_07_15": {
+      "statut": "LIVRE — deck TRANSPORT & LOGISTIQUE, 15 slides, .pptx editable + PDF. Variante 'exploitation seule' (SANS installation).",
+      "cible": "Transporteurs, logistique, location courte duree, navettes, flottes en rotation. Bornes de depot deja posees ou a venir — OZECAR ne vend pas l'installation dans ce deck.",
+      "angle": "La borne est un outil de production. Un vehicule non charge = une tournee manquee. Positionnement: 'Vos bornes. Notre metier.' + 'Nous n'intervenons pas sur votre installation electrique, nous prenons tout ce qui commence apres.'",
+      "structure": [
+        "cover (Vos vehicules ne s'arretent pas / Vos bornes non plus)",
+        "contexte (9% HS>7j · 90% dispo · 24-7)",
+        "notre role (reprise parc / exploitation / encaissement)",
+        "perimetre 6 blocs sans installation",
+        "charge au depot + schema nuit (rotations, priorisation, depart a l'heure)",
+        "portail multi-depots (capture reelle)",
+        "smart charging (angle = abonnement electrique / raccordement)",
+        "itinerance sortante + encart depot vide en journee",
+        "refacturation par groupe (capture reelle) — flotte/sous-traitants/location/public",
+        "maintenance N1-N4 sans prix",
+        "kit / mise en service",
+        "forfaits Essential(depot prive)/Business(refacture ou ouvert)/Enterprise(multi-depots)",
+        "conformite AFIR",
+        "references (Europcar en tete)",
+        "demarrage + timeline ~2 semaines"
+      ],
+      "slide_conformite_AFIR": "Verifiee par recherche web (ministere Transition ecologique + Avere). Contenu: bornes reservees a la flotte = AFIR NE s'applique PAS · ouvert au public = paiement a l'acte + prix avant session · >=50 kW ET accessible au public = TPE/sans contact obligatoire (QR seul insuffisant) · aires de stationnement sures et securisees = 2 points PL fin 2027, 4 fin 2030. Critere = accessibilite reelle, pas propriete du terrain. Source citee (UE 2023/1804) + disclaimer 'ne constitue pas un avis juridique'.",
+      "claims_ECARTES": "'98,6% de disponibilite contractuelle', 'SLA 24-48h', '70% de pannes resolues a distance', '800+ modeles OCPP' — presents sur l'ancienne page ozecar.fr/secteur transport mais NON verifies dans le state. Remplaces par les valeurs validees: 60% resolus des N1, 400+ modeles OCPP, 'delais d'intervention garantis' (N3/N4) sans chiffre. A ARBITRER PAR DOMINIQUE: soit ces claims sont vrais et on les grave dans le state, soit la page publique doit etre corrigee.",
+      "fichiers": "OZECAR-Transport-Prestations.pptx + .pdf (meme source). build-transport.js + lib.js (helpers partages avec build.js)."
+    },
+    "BUG_CORRIGE_ticks_2026_07_15": "Le helper ticks() sous-estimait le nombre de lignes: il calculait les caracteres/ligne avec la largeur en PX alors que la fontSize est en PT (facteur 0.75 oublie) -> puces qui se chevauchent. Corrige dans lib.js ET build.js: cpl = (w-15)*0.75/(size*0.5). Le deck client final v5 (pptx) a ete REGENERE — la version poussee avant 18h00 le 2026-07-15 avait des chevauchements sur 3 slides.",
+    "QA_PROGRAMMATIQUE_deck": "Le rendu d'images n'etant pas toujours inspectable, QA outillee obligatoire: 1) validate.py (schema/relations) 2) soffice -> PDF 3) pdfplumber: mots hors cadre (x<20, x>W-20, bottom>H-8) + chevauchements (bbox qui s'intersectent a moins de 14pt d'ecart vertical) 4) markitdown + regex pour l'audit de fuites. Les 3 polices de marque (DM Sans, Space Mono, Instrument Serif) doivent etre installees dans ~/.fonts depuis github.com/google/fonts sinon le PDF LibreOffice substitue."
   },
   "maintenance_plans_monta": {
     "constat_api": "POST /plans = 405 METHOD_NOT_ALLOWED. L'API partenaire supervision est READ-ONLY sur /plans (creation impossible par API). /subscriptions existe (affectation team<->plan, facturation recurrente nextPurchaseAt). Les plans se creent dans le DASHBOARD operateur uniquement.",
