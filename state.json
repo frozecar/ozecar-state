@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.443",
+    "version": "1.444",
     "updated": "2026-07-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-15",
+        "version_from": "1.443",
+        "version_to": "1.444",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CORRECTION wallet Monta apres recoupement avec le Hub (Dominique): la formule est prix_plan × nb_bornes pour les abos de GROUPE en per-charge-point (totalAmount ne porte que le prix unitaire). Resultat 1 100,01 TTC = 916,68 HT, au centime du Hub. MRR consolide corrige a 6323.51 EUR/mois HT. Les 287 bornes 'sans abonnement' du Hub = sans abo PAR BORNE; 164 sont couvertes par un abo de groupe, 127 sans rien."
+        ]
+      },
       {
         "date": "2026-07-15",
         "version_from": "1.442",
@@ -14563,10 +14572,18 @@
     "rapport": "/mnt/user-data/outputs/ozecar-crosscheck-facturation-2026-07-15.txt",
     "correctif_structurel": "Ecrire customer_id Pennylane dans partnerExternalId de chaque team Monta (deja decide, non fait) — tant que non fait, tout rapprochement reste manuel. Le dashboard parc-clients doit etre recalcule sur la base 'PDC factures' et non 'PDC supervises'.",
     "CHIFFRE_FINAL_TOUS_CANAUX": "SUPERVISION REELLE = 10,36 EUR/PDC/mois HT (2 615,67 EUR / 252 PDC). Le 3,61 du dashboard etait faux sur DEUX plans: (1) denominateur = 525 PDC supervises au lieu des PDC reellement factures; (2) il ignorait le canal FACTURES SIMPLES ANNUELLES (960,14 EUR/mois de supervision sur 57 PDC — ex. Homair 4 340 EUR HT en juin 2026 pour 5 campings classes 'Forfait Zero', Nova Energie 6 678 EUR, Commune Bonifacio, Ville d'Ajaccio, Gard rhodanien).",
-    "MRR_RECURRENT_CONSOLIDE": "5 858,25 EUR/mois HT = supervision 2 615,67 (abos 1 655,53 + factures annuelles 960,14) + maintenance 2 182,20 (abos 1 606,25 + factures 575,95) + assistance 160,18 + data 182,85 + payter 265,93 + wallet Monta 451,43. (Dashboard affichait 3 501,38.)",
+    "MRR_RECURRENT_CONSOLIDE": "6323.51 EUR/mois HT = supervision Pennylane 2 615,67 (abos 1 655,53 + factures annuelles 960,14) + maintenance 2 182,20 + assistance 160,18 + data 182,85 + payter 265,93 + wallet Monta 916,68 HT (1 100,01 TTC, formule verifiee contre le Hub).",
     "ONE_SHOT_12M": "Materiel 143 827,31 EUR HT/an + pose/MES 14 295,02 = 158 122 EUR HT/an (Autel, KEBA, Zaptec, DazeBox, pieds, branchements) — non MRR.",
     "4_CANAUX_CONFIRMES_DOMINIQUE": "ANNUEL: abonnements Pennylane annuels + factures simples annuelles. MENSUEL: GoCardless (via abos Pennylane) + wallet Monta. Tout calcul de MRR doit agreger les QUATRE.",
-    "DECOUVERTE_PAYEURS_GROUPE": "Payeurs multi-sites: HOMAIR VACANCES paie pour 5 campings (Acqua e Sole, Anghione, Kalliste, Erba Rossa, Sole di Sari) tous classes 'Forfait Zero' dans Monta -> ILS NE SONT PAS GRATUITS, ils sont factures au niveau groupe par facture annuelle. NOVA ENERGIE paie pour 4 teams. CALA DI GRECO 2, A 2M 2. La liste 'Forfait Zero' du 2026-07-13 doit etre reverifiee a cette aune."
+    "DECOUVERTE_PAYEURS_GROUPE": "Payeurs multi-sites: HOMAIR VACANCES paie pour 5 campings (Acqua e Sole, Anghione, Kalliste, Erba Rossa, Sole di Sari) tous classes 'Forfait Zero' dans Monta -> ILS NE SONT PAS GRATUITS, ils sont factures au niveau groupe par facture annuelle. NOVA ENERGIE paie pour 4 teams. CALA DI GRECO 2, A 2M 2. La liste 'Forfait Zero' du 2026-07-13 doit etre reverifiee a cette aune.",
+    "CORRECTION_WALLET_MONTA_verifiee_contre_le_Hub": {
+      "declencheur": "Dominique: capture du Hub Monta = '287 bornes sans abonnement' et 'Revenu mensuel previsionnel 1 100,01 EUR' vs mes 541,71.",
+      "cause": "ERREUR DE METHODE: je sommais subscription.totalAmount. Or pour un abonnement de GROUPE (customerType=team) dont le plan est priceModel='per-charge-point', totalAmount ne porte que le prix UNITAIRE — Monta facture prix × nombre de bornes de la team.",
+      "FORMULE_EXACTE_VERIFIEE": "revenu = SOMME( si customerType='charge-point': totalAmount ; si customerType='team' ET plan.priceModel='per-charge-point': plan.prices[0].price × nb_bornes_de_la_team ; si plan.priceModel='fixed': totalAmount ). Resultat: 1 100,01 EUR TTC = 916,68 HT — AU CENTIME le chiffre du Hub. 292 plans utilises sont per-charge-point, 25 fixed.",
+      "impact": "Wallet Monta reel = 916,68 EUR/mois HT (et non 451,43). MRR recurrent consolide corrige: 6323.51 EUR/mois HT.",
+      "287_bornes": "Recoupe: 291 bornes sans abonnement PAR BORNE (Monta affiche 287, ecart de 4 = bornes passives/supprimees). Sur ces 291, 164 sont couvertes par un abonnement de GROUPE -> 127 bornes vraiment sans aucun abonnement. Le compteur du Hub ne distingue pas les deux: il compte les bornes sans abonnement par borne, meme si un abonnement de groupe les couvre.",
+      "lecon": "Toujours recouper les chiffres calcules contre l'UI Monta avant de les publier. Le modele de prix (per-charge-point vs fixed) est determinant et n'apparait PAS dans l'objet subscription — il faut joindre /plans."
+    }
   },
   "MAPPING_PARTNEREXTERNALID_2026_07_15": {
     "REGLE_ABSOLUE": "Toute team Monta creee doit recevoir partnerExternalId = 'PL:{customer_id Pennylane}' DES SA CREATION (decision Dominique 2026-07-15). C'est la seule cle de rapprochement fiable: les noms ne matchent pas (team 'Balesi - VO' vs 'BALESI AUTOMOBILE', 'OEHC Corse' vs 'OFFICE EQUIPEMENT HYDRAULIQUE CORSE'). Valeur 'PL:NONE' si non payant/technique.",
