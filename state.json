@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.441",
+    "version": "1.442",
     "updated": "2026-07-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-15",
+        "version_from": "1.441",
+        "version_to": "1.442",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Deck client final v4 LIVRE (15 slides): retours Dominique appliques + 4 slides ajoutees (gammes/installation, tarification par groupe, itinerance sortante flottes, smart charging).",
+          "REGLES GRAVEES: jamais de screenshot genere (vraies captures only) · jamais de nb de PDC en presentation · logo = SVG a deux couleurs (le recolor PNG tuait la tete dormante) · details options/maintenance = devis.",
+          "Assets reels decoupes + logos de references recuperes depuis ozecar.fr. Urssaf sans logo -> retire."
+        ]
+      },
       {
         "date": "2026-07-15",
         "version_from": "1.440",
@@ -12519,7 +12530,36 @@
       "illustrations": "Mocks app + portail dessines en CSS (pas de screenshot produit dispo dans cette session) — chiffres du portail volontairement neutres avec mention 'illustration'. AMELIORATION POSSIBLE: reintegrer les vrais screenshots EUR-propres (parcours_row, dash_revenue, dash_etats) du PDF client.",
       "reste": "Cas clients chiffres toujours EN ATTENTE (Marie-Estelle). Decks installateur + revendeur toujours a produire. Repercuter la grille validee sur: page tarifs publique, CGV, emails."
     },
-    "_ALERTE_GRILLE": "Tout deck/presentation genere avant 2026-07-09 porte l'ancienne grille (Essential 5,90 / Pro 14,90 / Pro+ / Transit) = OBSOLETE. Ne plus envoyer. Reference unique: refonte_offre_2026_07_09.prix_definitifs."
+    "_ALERTE_GRILLE": "Tout deck/presentation genere avant 2026-07-09 porte l'ancienne grille (Essential 5,90 / Pro 14,90 / Pro+ / Transit) = OBSOLETE. Ne plus envoyer. Reference unique: refonte_offre_2026_07_09.prix_definitifs.",
+    "v4_2026_07_15": {
+      "statut": "LIVRE — v4 = version de reference client final. 15 slides.",
+      "retours_dominique_appliques": [
+        "Logo: PNG recolore ecrasait la tete dormante (le remplissage interieur #FEFEFE devenait cream -> disque plein). FIX: utiliser le SVG officiel et remapper #121A28->cream ET #FEFEFE->ink pour fond sombre. REGLE: ne jamais recolorer le logo en PNG, toujours passer par le SVG a deux couleurs.",
+        "Cover reformulee: le prospect peut vouloir l'installation -> 'installées, supervisées, et qui rapportent' + badge Materiel/Installation/Supervision.",
+        "REGLE: plus jamais d'ecran mobile/dashboard genere en CSS. Uniquement de vraies captures. v4 utilise les assets reels fournis par Dominique (phone recharge en cours, dashboard Espace personnel, OZECARD, QR direct payment, SIM, stickers SCANNEZ/BRANCHEZ/TERMINEZ, ecran Tarification).",
+        "Slide Kit rendue visuelle (assets reels au lieu de texte seul).",
+        "Maintenance: prix N1-N4 retires (details au devis).",
+        "Slide Options SUPPRIMEE (details au devis).",
+        "References: vrais logos (recuperes sur ozecar.fr/wp-content/uploads/2024/11/) en grille 5x2 lisible. REGLE ABSOLUE: ne JAMAIS afficher le nombre de PDC dans une presentation.",
+        "Slide demarrage: estimatifs de temps par etape + timeline J0/J+5/J+8/J+10/~4-6 semaines."
+      ],
+      "slides_ajoutees": [
+        "Installation / gammes: Zaptec 7,4-22 kW (partenaire norvegien, 4G integree, 5 ans garantie, MID+badge) · Sungrow 30-50 kW semi-rapide · Sungrow 120-480 kW rapide/ultra-rapide VE et poids lourds",
+        "Tarification par groupe (vrai screenshot): flotte gratuite / entreprises tarif preferentiel / public plein tarif",
+        "Itinerance sortante flottes: OZECARD sur reseaux publics, zero avance de frais, facture unique (+ encart itinerance entrante = interrupteur)",
+        "Smart charging: equilibrage, heures creuses, solaire, batterie tampon. Argument central = eviter d'augmenter la puissance souscrite."
+      ],
+      "assets_reels_source": "Montage fourni par Dominique 2026-07-15 (1034x842) decoupe en: phone.png, dash.png, card.png (OZECARD STARTER), qr.png (direct payment), sim.png, onelogo.png (OZECAR.ONE), st1/st2/st3.png (stickers). + tarif.png (ecran Tarification 824x828). OCR verifie: 0 monta, 0 DKK, EUR propre. RESOLUTION LIMITEE (crops natifs) — demander des exports HD a Dominique pour la prochaine iteration.",
+      "logos_references": "renault, carrefour_market, leclerc, utile, weldom, spar, europcar, pierre-et-vacances, homair, bonifacio — tous depuis ozecar.fr/wp-content/uploads/2024/11/. Urssaf: PAS de logo disponible (retire de la grille). Traitement: fond blanc composite + autocrop + carte blanche.",
+      "conformite": "Audit texte PDF v4: 0 monta/DKK/SKU interne/marque blanche/frais variables. Aucune marque tierce d'option (Payter/Teltonika) exposee. Prix: 6,90 / 9,90 / 15,90 + Sur devis uniquement.",
+      "fichier": "OZECAR-Presentation-Prestations.pdf — 15 slides 16:9, 1,9 Mo. Source: deck.html + assets/ (rendu Chromium/Playwright)."
+    },
+    "REGLES_APPRISES_2026_07_15": [
+      "JAMAIS de screenshot produit genere/simule en CSS ou HTML dans un deck. Vraie capture uniquement (regle Dominique).",
+      "JAMAIS afficher le nombre de PDC supervises dans une presentation.",
+      "Logo: SVG officiel obligatoire. Fond sombre = remap #121A28->#F5F0EB ET #FEFEFE->#0F141E. Un recolor PNG global detruit la tete dormante.",
+      "Details tarifaires fins (options, prix de maintenance) = devis, pas deck."
+    ]
   },
   "maintenance_plans_monta": {
     "constat_api": "POST /plans = 405 METHOD_NOT_ALLOWED. L'API partenaire supervision est READ-ONLY sur /plans (creation impossible par API). /subscriptions existe (affectation team<->plan, facturation recurrente nextPurchaseAt). Les plans se creent dans le DASHBOARD operateur uniquement.",
