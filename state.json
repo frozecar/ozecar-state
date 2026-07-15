@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.438",
-    "updated": "2026-07-14",
+    "version": "1.439",
+    "updated": "2026-07-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-15",
+        "version_from": "1.438",
+        "version_to": "1.439",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Charte docs Pennylane: VERIFIE par API. Scope customer_invoice_templates:readonly, endpoint liste id+name uniquement, pas de detail ni d'ecriture => personnalisation IMPOSSIBLE par API. Voie unique = UI Parametres > Facturation clients > Documents et modeles + E-mails (action admin Dominique). Consignes charte gravees: dominante Ink #0F141E (pas le jaune: fond encadre paiement), logo officiel, retirer 'Genere par Pennylane', 5 modeles a mettre a jour."
+        ]
+      },
       {
         "date": "2026-07-14",
         "version_from": "1.437",
@@ -10927,7 +10936,19 @@
       "mailer non tranché (MailerSend/SES/Resend en réflexion) — nécessaire pour les mails bienvenue/facture",
       "clé API Pennylane à fournir via proxy (jamais en clair, comme HubSpot/WP)"
     ],
-    "lien_chaine": "Prolonge le flux post-démo: PandaDoc signé -> (préparation) -> mise en service -> facturation. S'enchaîne après le devis configurateur + signature PandaDoc."
+    "lien_chaine": "Prolonge le flux post-démo: PandaDoc signé -> (préparation) -> mise en service -> facturation. S'enchaîne après le devis configurateur + signature PandaDoc.",
+    "charte_documents_pennylane": {
+      "constat_api_2026_07_15": "API Pennylane v2: scope 'customer_invoice_templates:READONLY'. Endpoint GET /customer_invoice_templates ne renvoie que id+name (5 modeles, tous 'Modele par defaut': 244736, 244734, 244732, 244725, 244671). Pas d'endpoint detail (404), pas de PUT/POST. => La charte des documents envoyes par Pennylane N'EST PAS pilotable par API.",
+      "voie_unique": "UI Pennylane: Parametres entreprise > Facturation clients > Documents et modeles (apparence/logo/couleur/pied de page/annexes) + onglet E-mails (modeles d'envoi et de relance). Action admin Dominique.",
+      "consignes_charte": {
+        "couleur_dominante": "Ink #0F141E (la couleur dominante Pennylane s'applique aux titres ET au fond de l'encadre paiement -> le jaune #FAC828 rendrait l'encadre illisible; le jaune reste un accent, pas la dominante)",
+        "logo": "https://ozecar.fr/wp-content/uploads/ozecar/logo_OZe_final.png (regle logo absolue, fond clair OK)",
+        "mention_genere_par_pennylane": "a retirer (dispo des l'abo Starter)",
+        "limite": "la mise en page (disposition des blocs) n'est pas modifiable, ni via UI ni via API",
+        "portee": "les 5 modeles = 5 types de documents (facture, devis, avoir, BC, BL) -> chacun a mettre a jour"
+      },
+      "statut": "a faire par Dominique (admin), non automatisable"
+    }
   },
   "mailersend_reactivation_2026_06_21": {
     "statut": "✅ OPÉRATIONNEL 2026-06-21. Compte réactivé + send-mail.php authentifie et envoie via SMTP MailerSend. Test d'envoi réussi (ok:true, HTTP 200).",
