@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.439",
+    "version": "1.440",
     "updated": "2026-07-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-15",
+        "version_from": "1.439",
+        "version_to": "1.440",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "7 retours test Marie-Estelle traites: modals maintenance+AC/DC, assistance durcie (toujours visible), reporting -> 3 mois offerts + upsell J+90 (REPORT-01), barre centree, RECAP repare (bug CSS td[colspan] nowrap), logos agrandis."
+        ]
+      },
       {
         "date": "2026-07-15",
         "version_from": "1.438",
@@ -14497,5 +14506,18 @@
     },
     "tests": "Cas 2 (apporteur Grimaldi, 2×Pro+IDC30E+colonne, rem 25%): commercial once=136 (kits seuls) ✓ · v=2 net 7668,75 (public 10225) ✓ · v=1 prix masqués + bloc installateur ✓ · vente directe once=10361 ✓ · 3 mois offerts partout ✓.",
     "webhook_etape5_branche_materiel": "Si matLines: AVEC apporteur -> facture Pennylane matériel NET sur le customer INSTALLATEUR + expédition; SANS -> matériel au one-time client. Dans les deux cas: crédit 3 mois supervision (1res échéances offertes) si hasBorne."
+  },
+  "configurateur_v2_retours_marie_estelle_2026_07_15": {
+    "test_utilisateur": "Premier test reel Marie-Estelle — 7 retours, tous traites, deploye staging, teste Playwright, zero erreur JS.",
+    "corrections": [
+      "1. Maintenance: bouton i violet a cote du selecteur -> MODAL avec le tableau N1-N4 complet + encart 60% (composant modal generique #ovl cree)",
+      "2. AC/DC: bouton i sur chaque ligne de bornes -> modal 2 cartes (AC normale <=22kW usage quotidien / DC rapide rotation courte + mention AFIR 50kW)",
+      "3. Assistance 24/7: FONCTIONNAIT (teste: 'vos 3 PDC Essential' OK — probable cache navigateur ME). Durci: option desormais TOUJOURS visible, grisee + 'reservee au forfait Essential' quand aucun PDC Essential",
+      "4. Reporting avance: PLUS une option cochable -> ligne verte '3 premiers mois offerts' (ou 'inclus avec le CSM') + tipbox. Backend a implementer: trial J+90 + e-mail upsell 15 EUR/mois -> item Monday REPORT-01 cree (backlog)",
+      "5. Barre flottante centree (.barin max-width 880 centre — verifie 200px de marge symetrique)",
+      "6. RECAP CASSE repare — cause racine: regle CSS .rc td:last-child {nowrap + Space Mono} s'appliquait aux td[colspan] (note MES longue) -> table explosee en largeur. Fix: .rc td[colspan]{white-space:normal;font DM Sans;text-align:left} declaree apres. Verifie: table 798px dans carte 840px",
+      "7. Logos references agrandis: base 32px max 150 · Renault 44 · CPAM 38 · Bonifacio 38 · Spar 34 · Eurotyre 32 · Utile 30 · Europcar 24 (Weldom/Leclerc inchanges, juges bons)"
+    ],
+    "todo_backend": "REPORT-01 (Monday backlog): webhook ecrit reporting_trial_end=activation+90j; automation J+90 e-mail admins avec lien abonnement 15 EUR/mois SEPA; comptes CSM exclus (inclus en continu)."
   }
 }
