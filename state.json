@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.442",
+    "version": "1.443",
     "updated": "2026-07-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-15",
+        "version_from": "1.442",
+        "version_to": "1.443",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CHIFFRE FINAL: supervision 10,36 EUR/PDC (2 615,67 / 252 PDC), MRR recurrent consolide 5 858,25 EUR/mois (4 canaux: abos Pennylane annuels+mensuels GoCardless, factures simples annuelles, wallet Monta). Le 3,61 ignorait les factures annuelles (960 EUR/mois) et divisait par 525.",
+          "DECOUVERTE: Homair paie 4 340 EUR/an pour 5 campings classes 'Forfait Zero' -> la liste des gratuits est a reverifier.",
+          "MAPPING: 59 teams Monta ont recu partnerExternalId=PL:{customer_id} (regle permanente pour toute nouvelle team). 96 restantes en revue manuelle (MAP-01)."
+        ]
+      },
       {
         "date": "2026-07-15",
         "version_from": "1.441",
@@ -14550,6 +14561,18 @@
     "INCOHERENCE_D": "15 clients PAIENT via Pennylane mais n'ont AUCUN abonnement Monta (54+14 PDC): Comepa, ELC Invest/Tafani, 3 parkings + voirie Bonifacio, Marinca, Arinella/Vignale, Moulin des Oliviers, Station VITO, Balesi-VO, CP Immobilier/Borgo, Port de Porto Vecchio, Domaine Pey Blanc, OEHC. -> ni tracabilite plan, ni feature group applicable.",
     "A_TRAITER_B": "39 PDC / 16 clients sans aucune trace de facturation: ETS Groupe ADF Magny les Hameaux (10), Chateau Pimo (3), Spar Ghisonaccia, Marina Rossa, Marina di Favone, Poissonerie Lucchini, Lago Verde, Les Dunes Sartene, Camping La Vetta, Rouby Cuers, Residence Saint Jacques, Rouby Eguilles, Centre Medical Prunelli, Mairie Algajola, Gualtieri Electricite, Home Terra Marina.",
     "rapport": "/mnt/user-data/outputs/ozecar-crosscheck-facturation-2026-07-15.txt",
-    "correctif_structurel": "Ecrire customer_id Pennylane dans partnerExternalId de chaque team Monta (deja decide, non fait) — tant que non fait, tout rapprochement reste manuel. Le dashboard parc-clients doit etre recalcule sur la base 'PDC factures' et non 'PDC supervises'."
+    "correctif_structurel": "Ecrire customer_id Pennylane dans partnerExternalId de chaque team Monta (deja decide, non fait) — tant que non fait, tout rapprochement reste manuel. Le dashboard parc-clients doit etre recalcule sur la base 'PDC factures' et non 'PDC supervises'.",
+    "CHIFFRE_FINAL_TOUS_CANAUX": "SUPERVISION REELLE = 10,36 EUR/PDC/mois HT (2 615,67 EUR / 252 PDC). Le 3,61 du dashboard etait faux sur DEUX plans: (1) denominateur = 525 PDC supervises au lieu des PDC reellement factures; (2) il ignorait le canal FACTURES SIMPLES ANNUELLES (960,14 EUR/mois de supervision sur 57 PDC — ex. Homair 4 340 EUR HT en juin 2026 pour 5 campings classes 'Forfait Zero', Nova Energie 6 678 EUR, Commune Bonifacio, Ville d'Ajaccio, Gard rhodanien).",
+    "MRR_RECURRENT_CONSOLIDE": "5 858,25 EUR/mois HT = supervision 2 615,67 (abos 1 655,53 + factures annuelles 960,14) + maintenance 2 182,20 (abos 1 606,25 + factures 575,95) + assistance 160,18 + data 182,85 + payter 265,93 + wallet Monta 451,43. (Dashboard affichait 3 501,38.)",
+    "ONE_SHOT_12M": "Materiel 143 827,31 EUR HT/an + pose/MES 14 295,02 = 158 122 EUR HT/an (Autel, KEBA, Zaptec, DazeBox, pieds, branchements) — non MRR.",
+    "4_CANAUX_CONFIRMES_DOMINIQUE": "ANNUEL: abonnements Pennylane annuels + factures simples annuelles. MENSUEL: GoCardless (via abos Pennylane) + wallet Monta. Tout calcul de MRR doit agreger les QUATRE.",
+    "DECOUVERTE_PAYEURS_GROUPE": "Payeurs multi-sites: HOMAIR VACANCES paie pour 5 campings (Acqua e Sole, Anghione, Kalliste, Erba Rossa, Sole di Sari) tous classes 'Forfait Zero' dans Monta -> ILS NE SONT PAS GRATUITS, ils sont factures au niveau groupe par facture annuelle. NOVA ENERGIE paie pour 4 teams. CALA DI GRECO 2, A 2M 2. La liste 'Forfait Zero' du 2026-07-13 doit etre reverifiee a cette aune."
+  },
+  "MAPPING_PARTNEREXTERNALID_2026_07_15": {
+    "REGLE_ABSOLUE": "Toute team Monta creee doit recevoir partnerExternalId = 'PL:{customer_id Pennylane}' DES SA CREATION (decision Dominique 2026-07-15). C'est la seule cle de rapprochement fiable: les noms ne matchent pas (team 'Balesi - VO' vs 'BALESI AUTOMOBILE', 'OEHC Corse' vs 'OFFICE EQUIPEMENT HYDRAULIQUE CORSE'). Valeur 'PL:NONE' si non payant/technique.",
+    "fait": "59 teams mappees automatiquement le 2026-07-15 via PATCH /teams/{id} body {partnerExternalId}: email exact 47, domaine unique 9, nom exact 3. Verifie en relecture. Fuzzy (2) exclus volontairement.",
+    "reste": "96 teams / 307 PDC sans mapping -> /mnt/user-data/outputs/ozecar-teams-sans-mapping.txt (revue manuelle Dominique/Marie-Estelle). Monday MAP-01.",
+    "methode_technique": "Le proxy ozecar.fr/api/monta.php supporte method+body: {\"path\":\"/teams/{id}\",\"method\":\"PATCH\",\"body\":{\"partnerExternalId\":\"PL:123\"}} -> retourne l'objet team modifie.",
+    "a_automatiser": "(1) le webhook post-signature du configurateur ecrit partnerExternalId a la creation de la team; (2) controle mensuel des teams sans mapping."
   }
 }
