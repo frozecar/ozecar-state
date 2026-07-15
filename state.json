@@ -1,12 +1,25 @@
 {
   "_meta": {
-    "version": "1.448",
+    "version": "1.449",
     "updated": "2026-07-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-15",
+        "version_from": "1.448",
+        "version_to": "1.449",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "NOUVEAU DEAL: Sungrow / appel d'offre 5 PDC 480 kW poids lourds (armoire + 5 satellites) contre Bump (clé-en-main). OZECAR = la couche supervision qui manque a Sungrow. Section deal_sungrow_480kW_2026_07_15 creee.",
+          "Deck dedie livre: OZECAR-Sungrow-Station-480kW (7 slides) — offre conjointe, schema armoire 16 modules de 30 kW + 2 scenarios de repartition sur 5 satellites, exploitation, monetique/AFIR, chiffrage 79,50 €/mois, references + suite.",
+          "Materiel Sungrow verifie: IDC480E satellite = modules de 30 kW, repartition dynamique par pas de 30 kW (ne pas confondre avec IDC480E-C = modules de 40 kW).",
+          "LECON: 7 slides max, une idee par slide. Etablir la cible et l'usage du deck AVANT de produire.",
+          "RESTE: l'offre commerciale chiffree (maintenance, terminal AFIR, conditions d'encaissement) est a produire par Dominique."
+        ]
+      },
       {
         "date": "2026-07-15",
         "version_from": "1.447",
@@ -9269,7 +9282,8 @@
       "slide_04": "Icone violette 26px ajoutee sur chacune des 6 cartes du perimetre (les deux decks).",
       "slide_statique_vs_dynamique": "NOUVELLE SLIDE (transport 08, client final 12). Schema ORIGINAL OZECAR (aucune reprise du visuel fournisseur): 2 panneaux avec barre empilee batiment/bornes/inutilise a l'echelle reelle (60 A), 3 chips bornes (10 A vs 16 A), trait de limite du site, bandeau +60% + 3 reglages (algorithmes, priorite/plages, equilibrage par phase). Genere en FORMES NATIVES pptx -> editable dans Slides. Geometrie verifiee au pdfplumber: 75,3pt=12A · 190,5pt=30A · 113,7pt=18A · 305,7pt=48A. Fonction reutilisable loadPanel() dans lib.js.",
       "decks": "Les deux decks passent de 15 a 16 slides. Renumerotation automatique des pieds de page (script patch.js). QA: 0 hors cadre, 0 chevauchement, 0 fuite."
-    }
+    },
+    "LECON_2026_07_15_deck_trop_charge": "RETOUR DOMINIQUE (a retenir): les decks derivaient vers trop de slides et trop d'info -> 'le prospect se perd'. Un deck qui vend = 7 slides max, une idee par slide, un visuel qui porte l'argument. Les slides denses (4 cartes + bandeau + notes) sont illisibles. AUSSI: toujours demander/etablir A QUI et POUR QUOI sert le deck AVANT de produire — le deck 'transport' generique etait hors sujet, la vraie cible etait Sungrow sur un appel d'offre precis contre un concurrent integre. Le deck transport generique (16 slides) est CONSERVE comme base mais n'a pas de destinataire identifie."
   },
   "maintenance_plans_monta": {
     "constat_api": "POST /plans = 405 METHOD_NOT_ALLOWED. L'API partenaire supervision est READ-ONLY sur /plans (creation impossible par API). /subscriptions existe (affectation team<->plan, facturation recurrente nextPurchaseAt). Les plans se creent dans le DASHBOARD operateur uniquement.",
@@ -11363,5 +11377,17 @@
       "equilibrage_par_phase": "3 phases L1/L2/L3, 100 A disponibles SUR CHAQUE phase. Sans phase-awareness, un vehicule qui charge sur L1 bloque L2 et L3 -> capacite gachee. Le basculement de phase est gere par la plateforme (elle 'trompe' le vehicule au branchement), pas par la borne. C'est le vehicule qui decide de ses phases. Argument fort pour les parcs avec des vehicules mono-phase.",
       "exemple_pedagogique_deck": "Site 60 A, batiment mesure a 12 A la nuit, 3 bornes. Statique: reserve 30 A -> 10 A/borne, 18 A inutilises. Dynamique: pool 60-12=48 A -> 16 A/borne. Soit +60% de vitesse de charge, meme installation. Chiffres declares 'exemple pedagogique' sur la slide."
     }
+  },
+  "deal_sungrow_480kW_2026_07_15": {
+    "contexte": "Sungrow (fournisseur qui envoie regulierement des prospects a OZECAR) demande une OFFRE + PRESENTATION pour un appel d'offre: 5 points de charge 480 kW (armoire de puissance + 5 satellites a 1 PDC), cible transport/poids lourds. Envoi demande pour le soir du 2026-07-15.",
+    "concurrence": "Bump se positionne avec une solution CLE-EN-MAIN (borne + installation + supervision). Sungrow n'a que l'installateur + les bornes: il lui MANQUE la supervision. OZECAR = la couche manquante qui permet a Sungrow de presenter une offre aussi integree que Bump.",
+    "positionnement_deck": "Offre conjointe Sungrow (materiel + conception + installation + garantie) + OZECAR (supervision, pilotage energie, encaissement, maintenance, hotline 24/7) = 'une station qui tourne'. Bump n'est PAS nomme dans le deck ('un acteur integre'). Le client garde la propriete des bornes, ses tarifs et ses recettes.",
+    "materiel_Sungrow_verifie": "IDC480E (version satellite) = power unit + dispensers, 360 ou 480 kW, modules de 30 kW, repartition dynamique par pas de 30 kW, plage 200-1000 V. A ne pas confondre avec l'IDC480E-C (compact, modules de 40 kW, configs 240/320/360/400/480 kW). 480 kW = 16 modules de 30 kW. Sources: electrive, PRNewswire, Mobility Portal.",
+    "visuel_signature": "Slide 03: armoire dessinee avec ses 16 modules de 30 kW + 2 scenarios de repartition sur 5 satellites (22h30: 240/240/0/0/0 · 05h00: 120/120/90/90/60 — les deux somment a 480 kW et tous les paliers sont multiples de 30). Pictogrammes de bornes en formes natives (corps + ecran + cable). REMPLACE le schema 'barre d'amperes 3 couleurs' juge banal.",
+    "partage_des_roles_argument": "L'armoire repartit ses modules entre les satellites (materiel Sungrow). OZECAR decide ce que le site peut donner a l'armoire a chaque instant: sous la puissance souscrite, aux heures creuses, pour quel vehicule, a quel tarif. Ne JAMAIS revendiquer la repartition interne de l'armoire: c'est du hardware Sungrow.",
+    "chiffrage_deck": "Supervision Business DC 15,90 € HT/PDC/mois x 5 = 79,50 € HT/mois. Activation 79 € offerte. Kit 49 € site + 29 €/satellite. Maintenance + terminal AFIR = 'chiffres dans l'offre jointe' (l'offre commerciale reste a produire par Dominique). Conditions d'encaissement/itinerance: offre commerciale uniquement, jamais dans le deck.",
+    "AFIR_argument_cle": "Les 5 PDC a 480 kW ouverts au public = terminal CB / sans contact OBLIGATOIRE (le QR seul ne suffit pas au-dela de 50 kW), paiement a l'acte sans abonnement, prix affiche avant la session. C'est un differenciateur: Sungrow seul ne fournit pas la monetique conforme.",
+    "fichier": "OZECAR-Sungrow-Station-480kW.pptx + .pdf — 7 slides. Source: build-sungrow.js (+ lib.js). QA: 0 hors cadre, 0 chevauchement, 0 fuite, 16 modules et 10 satellites verifies au pdfplumber.",
+    "RESTE_A_FAIRE": "L'OFFRE COMMERCIALE chiffree (devis PandaDoc) n'est PAS produite: maintenance (niveau a arbitrer), terminal de paiement, conditions d'encaissement et d'itinerance. A faire par Dominique avant envoi."
   }
 }
