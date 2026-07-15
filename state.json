@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.446",
+    "version": "1.447",
     "updated": "2026-07-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-15",
+        "version_from": "1.446",
+        "version_to": "1.447",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "NOUVELLE SECTION pilotage_energetique_2026_07_15: modele en 4 couches (limite / quand / solaire / ecretage) + prerequis materiel de mesure + seuil 1,4 kW + champs API (smartChargeSetting, scheduleId, /schedules).",
+          "CONSTAT: sur 100 PDC du parc, smartChargeSetting='off' sur 99 et 0 schedule actif -> capacite reelle mais jamais activee. Opportunite d'upsell / risque d'absence de reference interne. A arbitrer.",
+          "Slide 'Pilotage energetique' refaite dans les 2 decks (transport 07 + client final 11), pptx + PDF regeneres, QA propre.",
+          "A VERIFIER: gating des plans Hub vs couches (load management et ecretage sont gates chez le fournisseur). Effacement reseau = DK/SE/UK/IE uniquement, ne pas vendre en France."
+        ]
+      },
       {
         "date": "2026-07-15",
         "version_from": "1.445",
@@ -9236,7 +9248,8 @@
       "fichiers": "OZECAR-Transport-Prestations.pptx + .pdf (meme source). build-transport.js + lib.js (helpers partages avec build.js)."
     },
     "BUG_CORRIGE_ticks_2026_07_15": "Le helper ticks() sous-estimait le nombre de lignes: il calculait les caracteres/ligne avec la largeur en PX alors que la fontSize est en PT (facteur 0.75 oublie) -> puces qui se chevauchent. Corrige dans lib.js ET build.js: cpl = (w-15)*0.75/(size*0.5). Le deck client final v5 (pptx) a ete REGENERE — la version poussee avant 18h00 le 2026-07-15 avait des chevauchements sur 3 slides.",
-    "QA_PROGRAMMATIQUE_deck": "Le rendu d'images n'etant pas toujours inspectable, QA outillee obligatoire: 1) validate.py (schema/relations) 2) soffice -> PDF 3) pdfplumber: mots hors cadre (x<20, x>W-20, bottom>H-8) + chevauchements (bbox qui s'intersectent a moins de 14pt d'ecart vertical) 4) markitdown + regex pour l'audit de fuites. Les 3 polices de marque (DM Sans, Space Mono, Instrument Serif) doivent etre installees dans ~/.fonts depuis github.com/google/fonts sinon le PDF LibreOffice substitue."
+    "QA_PROGRAMMATIQUE_deck": "Le rendu d'images n'etant pas toujours inspectable, QA outillee obligatoire: 1) validate.py (schema/relations) 2) soffice -> PDF 3) pdfplumber: mots hors cadre (x<20, x>W-20, bottom>H-8) + chevauchements (bbox qui s'intersectent a moins de 14pt d'ecart vertical) 4) markitdown + regex pour l'audit de fuites. Les 3 polices de marque (DM Sans, Space Mono, Instrument Serif) doivent etre installees dans ~/.fonts depuis github.com/google/fonts sinon le PDF LibreOffice substitue.",
+    "maj_smart_charging_2026_07_15": "Slide pilotage energetique refaite sur le modele en 4 couches (voir section pilotage_energetique_2026_07_15). Les deux pptx regeneres + QA (0 hors cadre, 0 chevauchement). Marque blanche verifiee: aucun nom produit fournisseur (SmartCharge/SolarCharge/PowerBank/Perific/MQTT/ModBus) ne sort dans le texte client."
   },
   "maintenance_plans_monta": {
     "constat_api": "POST /plans = 405 METHOD_NOT_ALLOWED. L'API partenaire supervision est READ-ONLY sur /plans (creation impossible par API). /subscriptions existe (affectation team<->plan, facturation recurrente nextPurchaseAt). Les plans se creent dans le DASHBOARD operateur uniquement.",
@@ -11313,5 +11326,15 @@
     "bandeau": "Bandeau jaune au-dessus du tableau: source+date du cross-check, avertissement que les MRR par fiche viennent du CRM et restent sous-evalues tant que le mapping n'est pas fini, alerte payeurs groupe (Homair 5 campings 'Forfait Zero').",
     "REGLE_ABSOLUE": "Le EUR/PDC ne se calcule JAMAIS en divisant par les PDC supervises — uniquement par les PDC FACTURES. Commentaire pose dans parc.php.",
     "a_refaire": "Regenerer facturation-reelle.json apres completion du mapping (MAP-01); ideal = script planifie recalculant les 4 canaux."
+  },
+  "pilotage_energetique_2026_07_15": {
+    "source": "Croisement API partenaire (proxy ozecar.fr/api/monta.php) + doc energie publique du fournisseur CPMS. Recherche faite pour retravailler la slide smart charging des decks.",
+    "modele_en_4_couches_VALIDE": "Architecture reelle, a reutiliser partout (deck, site, devis): 1) LOAD MANAGEMENT = fixe le plafond du site (statique = part fixe par borne; dynamique = repartition temps reel selon la conso reelle, necessite une mesure externe) · 2) SMART CHARGING = choisit QUAND la session se place SOUS ce plafond (heure de depart, demarrage differe, regles par plage/jour, seuil de prix, CO2, part renouvelable) · 3) SOLAIRE = ajuste la puissance en temps reel sur le surplus · 4) DEMAND CONTROL / ECRETAGE = plafonne la pointe appelee. REGLE STRUCTURANTE: chaque couche s'execute a l'interieur de la contrainte posee par la precedente. C'est ce qui rend l'argumentaire credible.",
+    "prerequis_materiel_site": "Mesure temps reel = pinces amperemetriques, compteur communicant, compteur raccorde a la borne (ModBus via OCPP DataTransfer), ou compteur MQTT. SANS mesure -> repartition statique uniquement (ca marche, c'est moins fin). Solaire: surplus reel (pinces/compteur/onduleur compatible) OU mode previsionnel sans aucun materiel (meteo + historique). Seuil physique: sous ~1,4 kW (6 A) de surplus, la charge se met en pause (mode surplus seul) ou bascule sur le reseau (mode surplus + reseau).",
+    "gating_a_verifier": "Chez le fournisseur, le load management est gate sur les plans Pro/Business/Enterprise et le demand control est Enterprise. Nos forfaits ne sont PAS ses plans -> A VERIFIER avant de promettre l'ecretage: quel plan Hub porte quelle couche. En attendant, les decks disent 'qualifie lors de l'audit de parc' pour la couche 4.",
+    "hors_France": "Le programme d'effacement/demand response du fournisseur (pause de charge pour soulager le reseau) n'est disponible qu'au DK/SE/UK/IE. NE PAS le vendre en France.",
+    "champs_API_utiles": "charge-points[].smartChargeSetting (valeurs vues: 'off', 'optional') · charge-points[].scheduleId · /schedules/{id} = entries[{dayOfWeek, from, to, visibility, priceGroupId}] + selectedChargePointIds + selectedSiteIds -> permet de basculer visibilite ET groupe de prix par plage horaire et par jour. C'est le mecanisme qui porte 'prive la nuit pour la flotte / public le jour au plein tarif'.",
+    "CONSTAT_PARC_OZECAR": "Sur 100 PDC echantillonnes: smartChargeSetting = 'off' sur 99, 'optional' sur 1. scheduleId non nul: 0. AUCUN pilotage energetique ni aucune regle horaire n'est active sur le parc aujourd'hui. On vend une capacite reelle mais non exploitee -> OPPORTUNITE (upsell + argument de differenciation) ET RISQUE (premier client qui la demande = mise en place a faire, pas de reference interne). A arbitrer par Dominique.",
+    "decks_impactes": "Slide 'Pilotage energetique' refaite dans les deux decks (transport slide 07, client final slide 11): 4 cartes = les 4 couches avec la contrainte de chacune en pied de carte, + bandeau 'Ce qu'il faut sur le depot/site' (mesure temps reel / sans mesure = statique / solaire previsionnel sans materiel). Remplace 4 cartes generiques (equilibrage/heures creuses/solaire/batterie) jugees 'pas assez travaillees' par Dominique. La carte 'batterie tampon' a ete RETIREE: non verifiee dans la stack."
   }
 }
