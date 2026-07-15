@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.440",
+    "version": "1.441",
     "updated": "2026-07-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-15",
+        "version_from": "1.440",
+        "version_to": "1.441",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Assistance 24/7 deplacee en option de SITE (2 EUR x PDC Essential du site, tipbox, sous-total site). Logo Bonifacio retire, 8 logos sur une ligne."
+        ]
+      },
       {
         "date": "2026-07-15",
         "version_from": "1.439",
@@ -14518,6 +14527,7 @@
       "6. RECAP CASSE repare — cause racine: regle CSS .rc td:last-child {nowrap + Space Mono} s'appliquait aux td[colspan] (note MES longue) -> table explosee en largeur. Fix: .rc td[colspan]{white-space:normal;font DM Sans;text-align:left} declaree apres. Verifie: table 798px dans carte 840px",
       "7. Logos references agrandis: base 32px max 150 · Renault 44 · CPAM 38 · Bonifacio 38 · Spar 34 · Eurotyre 32 · Utile 30 · Europcar 24 (Weldom/Leclerc inchanges, juges bons)"
     ],
-    "todo_backend": "REPORT-01 (Monday backlog): webhook ecrit reporting_trial_end=activation+90j; automation J+90 e-mail admins avec lien abonnement 15 EUR/mois SEPA; comptes CSM exclus (inclus en continu)."
+    "todo_backend": "REPORT-01 (Monday backlog): webhook ecrit reporting_trial_end=activation+90j; automation J+90 e-mail admins avec lien abonnement 15 EUR/mois SEPA; comptes CSM exclus (inclus en continu).",
+    "correction_assistance_site_2026_07_15": "ASSISTANCE 24/7 DEPLACEE: option de COMPTE -> option de SITE (correction Dominique). Checkbox dans 'Options de ce site', visible uniquement si le site a des PDC Essential, prix 2,00 EUR x PDC Essential DU site (s.opts.assist), tipbox explicative, comptee dans le sous-total du site, listee dans le recap du site. Retiree de la section compte. Teste: 59,50 -> 65,50 (3 PDC ess x 2 EUR) exact, absente sur site full Business, zero erreur JS. INCIDENT REPARE au passage: un regex de suppression avait avale var cc/recC/ch + function line() -> ReferenceError, reinsere proprement. LOGOS: Bonifacio retire, 8 logos officiels sur UNE ligne (nowrap, gap 10px, space-between; wrap re-autorise <=700px mobile)."
   }
 }
