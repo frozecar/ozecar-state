@@ -1,12 +1,23 @@
 {
   "_meta": {
-    "version": "1.442",
+    "version": "1.443",
     "updated": "2026-07-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-15",
+        "version_from": "1.442",
+        "version_to": "1.443",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Deck client final livre aussi en .pptx editable (pptxgenjs, validate.py PASSED) pour import Google Slides — Dominique fait les modifs lui-meme.",
+          "Chaine de prod deck gravee: deck.html (Chromium -> PDF) + build.js (pptxgenjs -> pptx), meme grille 1280x720, u(px)=px/96.",
+          "DEMANDE OUVERTE Dominique: exports HD des captures (app, portail, tarification, stickers) — les crops actuels viennent d'un montage 1034x842 et sont pixelises."
+        ]
+      },
       {
         "date": "2026-07-15",
         "version_from": "1.441",
@@ -12559,7 +12570,16 @@
       "JAMAIS afficher le nombre de PDC supervises dans une presentation.",
       "Logo: SVG officiel obligatoire. Fond sombre = remap #121A28->#F5F0EB ET #FEFEFE->#0F141E. Un recolor PNG global detruit la tete dormante.",
       "Details tarifaires fins (options, prix de maintenance) = devis, pas deck."
-    ]
+    ],
+    "v5_pptx_2026_07_15": {
+      "statut": "LIVRE — .pptx editable (15 slides) genere avec pptxgenjs, valide (validate.py PASSED). Destine a l'import Google Slides par Dominique.",
+      "raison": "Dominique veut faire les modifs lui-meme + les captures d'ecran integrees sont pixelisees (source = montage BD 1034x842, irrecuperable).",
+      "chaine_de_prod": "deck.html (rendu Chromium -> PDF de reference) + build.js (pptxgenjs -> pptx editable). Les deux partagent la meme grille 1280x720 px, u(px)=px/96 -> 13.333x7.5 in. Layout custom 'OZ' defini avant addSlide.",
+      "import_google_slides": "Drive -> deposer le .pptx -> clic droit -> Ouvrir avec Google Slides. Polices a activer dans Slides (Autres polices): DM Sans, Space Mono, Instrument Serif — sinon substitution.",
+      "captures_a_remplacer": "Slides 6, 7, 8, 9 (kit, phone, tarification, dashboard). Notes orateur + mentions ajoutees sur les slides concernees. DEMANDE OUVERTE A DOMINIQUE: exports HD des ecrans app + portail + tarification + stickers.",
+      "gotchas_pptxgenjs_appris": "pres.layout AVANT addSlide · couleurs hex SANS # et sans alpha · ne jamais partager un objet d'options entre deux add* (mutation en place) · rectRadius uniquement sur roundRect · pas de gradient natif (les halos de la cover ne sont PAS reproduits en pptx) · letterSpacing -> charSpacing · texte: margin:0 pour aligner sur une forme.",
+      "ecarts_pptx_vs_pdf": "Halos radiaux de la cover absents (gradients non supportes). Puces = carres jaunes dessines en formes. Le reste est fidele."
+    }
   },
   "maintenance_plans_monta": {
     "constat_api": "POST /plans = 405 METHOD_NOT_ALLOWED. L'API partenaire supervision est READ-ONLY sur /plans (creation impossible par API). /subscriptions existe (affectation team<->plan, facturation recurrente nextPurchaseAt). Les plans se creent dans le DASHBOARD operateur uniquement.",
