@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.451",
+    "version": "1.452",
     "updated": "2026-07-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -1496,160 +1496,6 @@
       "ETAPE_2ter_BLOC_VENTE_2026_07_13": "Bloc 'Comprendre cette offre' remplace par composants de VENTE (critique Dominique: piece maitresse): 2 cartes forfaits cote a cote (Essential vs Business borde violet + badge LE PLUS CHOISI, listes ✓/✗), bandeau noir 60% en Space Mono 34px jaune + phrase choc, TABLEAU maintenance N1-N4 a progression visuelle (4 prestations cumulatives ●/—, colonne N4 surlignee, prix en pied), 2 cartes AC/DC avec badges couleur et cas d'usage. Deploye, zero erreur JS, calculs intacts. REORDONNE (3 corrections Dominique): frais de service integres DANS la carte Business (sous-bloc dedie, plus de section a part) · 60% integre en tete de la carte maintenance (violet lisible, plus de bandeau noir) · section ENGAGEMENT deplacee EN DERNIER (apres mise en place, juste avant la barre). Ordre final: en-tete client -> sites -> options compte -> cartes forfaits (frais inclus) -> maintenance (60% + tableau N1-N4) -> AC/DC -> mise en place -> engagement+prepay -> barre totale. Zero erreur JS.",
       "ETAPE_2quater_2026_07_13": "3 corrections Dominique: options du compte deplacees APRES les cartes forfaits · tooltips explicatifs (title + ⓘ) sur assistance/flotte/CSM/reporting · REMBOURSEMENT RECHARGES A DOMICILE en section dediee mise en avant (carte bordee violet, 2 plans cote a cote fin-de-mois 5,90 / INSTANTANE 7,90 wallet provisionne, steppers salaries [-n+], prix par plan). Ordre final: client -> sites -> forfaits(frais inclus) -> maintenance(60%+tableau) -> AC/DC -> options compte -> domicile -> mise en place -> engagement -> barre. Tests: +2 domB = 25,70 exact, zero erreur. + MES domicile 29 €/borne (once, teste 3 bornes = 136 exact) + tooltips remplaces par bulles CLIQUABLES visibles (bouton i violet -> tipbox, fonctionne mobile), testes."
     },
-    "configurateur_v2_flux_installateur_2026_07_14": {
-      "cas_dominique": "Devis envoye a un installateur qui le transfere au client final (contact ajoute au deal) + flux inverse post-signature: si le client n'a pas pris la MES sur site, router la MES vers l'installateur.",
-      "implemente_configurateur": "st.apporteur={name} serialise dans l'URL (transferable tel quel). Champ 'Apporteur / Installateur' salesonly dans la fiche (masque cote client). Bandeau client: 'Offre transmise par votre installateur : X'. Recap: si AUCUNE MES sur site -> ligne 'installation par vos soins avec le kit, ou par votre installateur X / un installateur de notre reseau (sur devis)'. Teste modes commercial+client, zero erreur.",
-      "spec_webhook_etape5_AJOUT": "(a) Associer au deal la societe cliente + contact (fiche) ET la societe installateur en role APPORTEUR (association label ou propriete ozecar_apporteur) — base du calcul de commission partenaire (bareme = programme partenaire, hors configurateur). (b) FLUX INVERSE MES: si un site signe a opts.mes=false -> si apporteur installateur present: tache HubSpot/Monday 'Proposer la MES a {installateur}' (prestation via futur portail pro, commission OZECAR); sinon: tache 'Proposer un installateur du reseau au client'. La MES refusee devient un lead installateur.",
-      "V2_ulterieure": "Lien generateur propre a chaque installateur (portail pro.ozecar.fr): l'installateur configure lui-meme le devis de son client avec son tag apporteur permanent. Rattacher a PART-01 (contrat Grimaldi) et au programme revendeur.",
-      "a_trancher_dominique": "Bareme commission apporteur sur les deals transmis (le programme partenaire a des grilles Installateur/Revendeur/Distributeur — laquelle s'applique au simple transfert de lien ?) + l'apporteur voit-il le prix client final (actuellement oui, il transfere le lien tel quel).",
-      "CAS_1_2_STRATEGIE_VALIDEE_2026_07_14": {
-        "cas_1_supervision_seule": "L'installateur pose SON materiel, ajoute la supervision OZECAR. Le plus repandu. Lien configurateur transfere tel quel, MEME PRIX pour installateur et client final. L'installateur peut preremplir la fiche (societe, nom, email) avant transfert (fiche editable en mode client). A ajouter (webhook/etape 5): bouton 'Envoyer au client par e-mail' au lieu du copier-coller.",
-        "cas_2_devis_materiel": {
-          "probleme": "Devis bornes (Zaptec/Sungrow) avec prix public + remise quantite -> l'installateur integre le materiel dans SON devis et mentionne la supervision 'accessoirement'. Consequence: OZECAR vend du one-shot a marge faible, le MRR devient une ligne remplacable dans le devis d'un tiers, et le client final n'existe pas dans le CRM.",
-          "levier_2_double_vue": "Le devis materiel = lien configurateur a DOUBLE VUE: vue installateur (prix nets, remise — salesonly existant) / vue client final (prix public materiel + supervision presentee par le configurateur). L'installateur garde sa marge sur le delta; OZECAR capture le client final dans HubSpot des le devis. Prerequis: reprendre la section Materiel de l'ancien configurateur (catalogue Zaptec AC + Sungrow DC, prix du state v1.178-1.179) dans la v2 — ETAPE DE PORTAGE DUE.",
-          "levier_3_bounty": "Prime one-shot par PDC active (grille partner_program validee 2026-05-14, proprietes partner_bounty_* HubSpot existantes) — JAMAIS de retrocession recurrente (MRR deja a 3,61/PDC).",
-          "regle_or": "Materiel OZECAR => supervision offerte les premiers mois. C'est l'argument que l'installateur met dans SON devis pour justifier la supervision OZECAR plutot qu'un CPMS tiers — l'avantage client fait le verrouillage, pas la remise.",
-          "CORRECTION_catalogue": "Catalogue materiel v2: Zaptec = AC · Sungrow = DC UNIQUEMENT (la borne AC Sungrow type AC22E de l'ancien catalogue v1.178 NE DOIT PAS etre reprise — OZECAR ne revend que le DC Sungrow).",
-          "levier_1_mois_offerts": "PAS de bonus de remise lie a la supervision (corrige Dominique). Le mecanisme d'alignement existe deja: PREMIERS MOIS DE SUPERVISION OFFERTS au client final SI le materiel vient d'OZECAR (regle historique configurateur v1.179: 3 mois offerts auto des qu'une borne est au panier — confirmer si toujours 3). L'incitatif client pousse le combo materiel+supervision; l'incitatif installateur = remise quantite simple + bounty one-shot."
-        },
-        "FACTURATION_CAS_2_MODELE_V1": {
-          "principe": "Deux factures, deux relations, un seul configurateur. AUCUN flux d'argent triangulaire en V1.",
-          "flux": [
-            "Bornes (prix remise palier): OZECAR -> facture l'INSTALLATEUR (Pennylane, virement ou lien Stripe a la commande). Drop-ship possible chez le client final.",
-            "Materiel + pose (prix public ou le sien): l'INSTALLATEUR -> facture le client final. Sa marge, sa garantie de pose, sa responsabilite.",
-            "Supervision + kits + options: OZECAR -> facture le CLIENT FINAL (mandat SEPA a la signature configurateur, flux normal).",
-            "Bonus supervision: OZECAR -> installateur via BOUNTY partenaire (verse apres activation, jamais en avoir sur la facture materiel — pas d'avoirs conditionnels ingerables)."
-          ],
-          "contrat": "Le contrat signe au configurateur ne porte QUE supervision/kits/options. Le materiel y figure a titre indicatif, marque 'fourni et pose par {installateur} — facture par votre installateur'. Recap en DEUX BLOCS distincts: 'Facture par OZECAR' / 'Fourni par votre installateur'. Zero ambiguite juridique, zero responsabilite de pose.",
-          "webhook_etape5_branche": "Line items materiel marques 'facturation installateur' -> facture Pennylane sur le customer INSTALLATEUR; supervision/kits -> flux normal client final; bounty -> partner_bounty_amount + tache versement apres activation.",
-          "V2_ulterieure": "Modele tout-en-un (OZECAR facture tout au client final, reverse la marge installateur) = chantier portail pro / Stripe Connect (reversements, auto-facturation commissions, BFR materiel). A ouvrir quand le volume du cas 2 le justifie, pas avant."
-        },
-        "a_trancher_dominique_marge": "Montant bounty par PDC active pour le transfert de lien (grille partner_program a confirmer) + confirmer la duree des mois offerts (3 mois selon v1.179 ?)."
-      }
-    },
-    "configurateur_v2_lot_completude_2026_07_14": {
-      "critique_pm": "Revue a froid de l'ecran: manquants bloquants identifies (recap final, fiche client, reassurance, preuve sociale, remise commerciale) + retraits (cartes AC/DC redondantes, sous-total salaries a 0).",
-      "livre": [
-        "RECAP 'Votre offre en resume' (#recap, rendu dans R()): une ligne par site (detail lignes+options), options compte, salaries, remise, total abonnement, puis one-time detaille (kits/MES/SIM/Apollo/bornes domicile) + mentions legales (HT TVA 20%, facturation a la mise en service, preavis 3 mois, validite 30j, options 30j SEPA)",
-        "FICHE CLIENT (#fiche): raison sociale, SIREN, contact, e-mail facturation -> st.client, editables aussi en mode client (RO), serialises dans l'URL c= -> le webhook aura tout",
-        "Bloc 'Et apres votre signature ?' 4 etapes (kits prepares/expedies 48h/configuration/supervision active) + contact support",
-        "Preuve sociale: references (Renault Group, Ibis, Weldom, Gedimat, Eurotyre, URSSAF, CPAM, Ville d'Ajaccio) + 59% infra publique Corse",
-        "REMISE COMMERCIALE: input % (max 30) dans Engagement, classe .salesonly masquee en mode client, appliquee sur le recurrent, tracee dans st.remise + ligne dediee au recap",
-        "RETIRES: cartes AC/DC du bas (info conservee en tooltip sur les badges de ligne), sous-total salaries masque a 0"
-      ],
-      "tests": "Playwright: scenario 2 sites + options + CSM + 4 salaries + remise 5% -> 382,85 EUR/mois et 1 076,50 EUR once verifies a la main au centime. Mode client: remise masquee, fiche editable. 0 erreur JS.",
-      "restant_configurateur": "CTA client reel (webhook eSignatures, etape 5 brief) · ecran avant/apres avenant (etape 3) · forfait par defaut au niveau site (proposition non tranchee)",
-      "ajout_contenu_kits": "Bloc 'Mise en service et activation': 2 encarts detaillant le contenu (source state pricing_canonical + products.OZKM/OZKU.contents) — Kit OZECAR 49e (SIM multi-operateurs, QR de paiement, carte RFID OZECARD, etiquettes d'identification, notice, 1re borne incluse) · Kit Borne 29e (carte RFID OZECARD, QR de paiement, etiquette). Meme detail en small dans le recap sous la ligne Kits.",
-      "logos_references_nb": "Barre de logos OFFICIELS en noir et blanc (CSS grayscale, jamais de logo fabrique — regle absolue) remplacant la ligne texte: Renault, E.Leclerc, Europcar, Weldom, Eurotyre, CPAM, Spar, Ville de Bonifacio, Utile — 9 fichiers officiels de la mediatheque WP prod (uploads/2024/11 + 2025/02), tous verifies 200 + chargement runtime OK. MANQUANTS (pas de fichier officiel en mediatheque, non fabriques): Ibis, Gedimat, URSSAF, Ville d'Ajaccio -> Dominique upload les fichiers officiels si voulus dans la barre. Homair exclu (format vertical casse la barre).",
-      "responsive_mobile": "Audit PM: overflow horizontal a 390px detecte (en-tete de site: input+select+bouton). Corrige par media query <=700px: grids 1 colonne, shead wrap, lignes/steppers adaptes, barre compacte, logos reduits. Verifie: plus d'overflow, desktop intact."
-    },
-    "configurateur_v2_materiel_double_vue_2026_07_14": {
-      "livre": "Section 'Matériel — fourniture OZECAR' codée, déployée staging, testée Playwright 4 vues, zéro erreur JS.",
-      "catalogue": "15 réf. (prix state): Zaptec AC (Pro 1325 · GO2 890 · colonnes 325/410/530) · Sungrow DC UNIQUEMENT (IDC30E MID 7250 · MID+TPE 8150 · IDC60E 9500 · IDC80E 10538 · IDC120/180+armoires SUR DEVIS) · accessoires (piédestaux 295/520, CMS 832, DLM 390, badges lot10 49). PAS d'AC Sungrow (correction Dominique). Payter Apollo reste en option de site (pas dupliqué).",
-      "logique": {
-        "trois_mois_offerts": "FREE_MONTHS=3 (décision 2026-06-23): dès qu'une borne (non-accessoire) qty>0 -> encart vert section + ligne verte récap avec valeur = 3× supervision mensuelle (supT).",
-        "remise_materiel": "st.matRem (0-40%, salesonly), sur le matériel uniquement — distincte de la remise abonnement.",
-        "facturation": "AVEC apporteur: matériel HORS one-time client, sous-total 'facturé à {installateur}' au NET; récap client = bloc 'Fourni et posé par votre installateur' sans prix. SANS apporteur (vente directe): matériel NET ajouté au one-time client + ligne récap détaillée.",
-        "vues": "Commerciale: catalogue complet + steppers + remise + bouton 'Copier le lien devis installateur'. v=2 INSTALLATEUR: titre dédié, prix publics + remise −X% + NET visibles, CTA 'Commander le matériel' (placeholder webhook). v=1 CLIENT: uniquement lignes qty>0, prix 'via votre installateur' si apporteur (sinon prix publics), jamais de remise visible."
-      },
-      "tests": "Cas 2 (apporteur Grimaldi, 2×Pro+IDC30E+colonne, rem 25%): commercial once=136 (kits seuls) ✓ · v=2 net 7668,75 (public 10225) ✓ · v=1 prix masqués + bloc installateur ✓ · vente directe once=10361 ✓ · 3 mois offerts partout ✓.",
-      "webhook_etape5_branche_materiel": "Si matLines: AVEC apporteur -> facture Pennylane matériel NET sur le customer INSTALLATEUR + expédition; SANS -> matériel au one-time client. Dans les deux cas: crédit 3 mois supervision (1res échéances offertes) si hasBorne."
-    },
-    "configurateur_v2_retours_marie_estelle_2026_07_15": {
-      "test_utilisateur": "Premier test reel Marie-Estelle — 7 retours, tous traites, deploye staging, teste Playwright, zero erreur JS.",
-      "corrections": [
-        "1. Maintenance: bouton i violet a cote du selecteur -> MODAL avec le tableau N1-N4 complet + encart 60% (composant modal generique #ovl cree)",
-        "2. AC/DC: bouton i sur chaque ligne de bornes -> modal 2 cartes (AC normale <=22kW usage quotidien / DC rapide rotation courte + mention AFIR 50kW)",
-        "3. Assistance 24/7: FONCTIONNAIT (teste: 'vos 3 PDC Essential' OK — probable cache navigateur ME). Durci: option desormais TOUJOURS visible, grisee + 'reservee au forfait Essential' quand aucun PDC Essential",
-        "4. Reporting avance: PLUS une option cochable -> ligne verte '3 premiers mois offerts' (ou 'inclus avec le CSM') + tipbox. Backend a implementer: trial J+90 + e-mail upsell 15 EUR/mois -> item Monday REPORT-01 cree (backlog)",
-        "5. Barre flottante centree (.barin max-width 880 centre — verifie 200px de marge symetrique)",
-        "6. RECAP CASSE repare — cause racine: regle CSS .rc td:last-child {nowrap + Space Mono} s'appliquait aux td[colspan] (note MES longue) -> table explosee en largeur. Fix: .rc td[colspan]{white-space:normal;font DM Sans;text-align:left} declaree apres. Verifie: table 798px dans carte 840px",
-        "7. Logos references agrandis: base 32px max 150 · Renault 44 · CPAM 38 · Bonifacio 38 · Spar 34 · Eurotyre 32 · Utile 30 · Europcar 24 (Weldom/Leclerc inchanges, juges bons)"
-      ],
-      "todo_backend": "REPORT-01 (Monday backlog): webhook ecrit reporting_trial_end=activation+90j; automation J+90 e-mail admins avec lien abonnement 15 EUR/mois SEPA; comptes CSM exclus (inclus en continu).",
-      "correction_assistance_site_2026_07_15": "ASSISTANCE 24/7 DEPLACEE: option de COMPTE -> option de SITE (correction Dominique). Checkbox dans 'Options de ce site', visible uniquement si le site a des PDC Essential, prix 2,00 EUR x PDC Essential DU site (s.opts.assist), tipbox explicative, comptee dans le sous-total du site, listee dans le recap du site. Retiree de la section compte. Teste: 59,50 -> 65,50 (3 PDC ess x 2 EUR) exact, absente sur site full Business, zero erreur JS. INCIDENT REPARE au passage: un regex de suppression avait avale var cc/recC/ch + function line() -> ReferenceError, reinsere proprement. LOGOS: Bonifacio retire, 8 logos officiels sur UNE ligne (nowrap, gap 10px, space-between; wrap re-autorise <=700px mobile)."
-    },
-    "configurateur_v2_textes_2026_07_14": {
-      "fichier": "staging /wp-content/uploads/ozecar/configurateur-v2-dev.html",
-      "changements": [
-        "Frais de service Business reformules: 'frais d'operateur 10% du CA' + 'frais d'itinerance 5% + 0,07 EUR/kWh' (suppression des mentions ~90%/~84% conserves)",
-        "Options salaries (recharge domicile A/B) sorties du sous-total 'options du compte' -> sous-total propre 'Sous-total option salaries' dans la section (var recDom; rec+=recC+recDom, total global inchange)",
-        "'Mise en place' -> 'Mise en service et activation' (bloc recap one-time)"
-      ]
-    },
-    "configurateur_deux_modes_client_2026_07_07": {
-      "modele_valide": "Deux canaux convergent sur la meme page 'Votre offre': (1) GUIDE = commercial pre-configure -> client en lecture seule (view-locked) signe. (2) SELF-SERVICE / INSTALLATEUR = client arrive via QR d'activation (pas de config 'c') -> il choisit son forfait.",
-      "self_service_implemente": "CLIENT sans param 'c' -> mode self-service: forfait PRO pre-selectionne (recommande, decision Dominique), PDC/stations pre-remplis depuis l'URL (kit active), selecteurs ACTIFS (pas de view-locked) pour ajuster + decouvrir les options, sous-titre 'Votre borne est installee. Choisissez votre formule de supervision, puis signez pour l'activer.'",
-      "bloc_et_apres": "Ajoute sous le CTA (les 2 modes): 01 Kit prepare (48h) -> 02 Kit expedie (suivi email) -> 03 Configuration (visio ou sur site) -> 04 Supervision active + contact support@ozecar.fr. Reassurance post-signature demandee par Dominique.",
-      "titre": "Client: 'Votre offre Supervision, Monetique & Maintenance'. Commercial: 'Configurez votre offre...' (override JS si SALES).",
-      "modele_installateur": "Materiel: OZECAR -> installateur (shop, remises, kits pre-configures). Supervision: OZECAR -> client final (abonnement, SEPA). Pont = kit QR: installateur pose + scanne (cree groupe/station/PDC) puis invite le client par email (un proprietaire du groupe est REQUIS) -> client arrive sur 'Votre offre' -> signe + s'abonne -> devient proprietaire. Verrouille: pas de vente sans abonnement (borne inutilisable sans proprietaire abonne). Respecte la confidentialite Izitek/Soleco (le client saisit lui-meme ses infos).",
-      "a_verrouiller_plus_tard": "(1) QR du kit doit encoder l'INSTALLATEUR -> attribution/commission + deal supervision rattache a l'installateur referent. (2) Programme partenaire: roles (OZECAR supervise, installateur garde la relation) + no-poach ecrit. (3) Pro+/Transit restent 'sur devis' -> bouton 'besoin sur-mesure' bascule vers le guide (cree un lead). (4) Tarif supervision standard dans les 2 canaux; la remise installateur porte sur le MATERIEL.",
-      "reste": "Affichage progressif des options (offre reco visible, options depliables) cote client. Puis STRIPE (kit one-time + abonnement recurrent). Puis notifications d'etapes (kit expedie...). URL propre (ozecar.fr/mon-offre/) via rewrite WP au passage en prod.",
-      "bugfix_page_blanche": "BUG (page ne chargeait pas / vide en vue client): enterClientView() forcait showStep(1) -> affichait l'etape Materiel (masquee en dur) => contenu vide. FIX: enterClientView ne force plus showStep; le bloc de masquage materiel decide (showStep(1) si materiel, sinon masque l'etape 1 + wmin=2 + showStep(2)). Verifie en Playwright headless: self-service (Pro pre-selectionne, pdc=4, onglets 1/2, prev masque, 3660px de contenu) + guide (devis Julien, 8 PDC Essential) -> 0 erreur JS.",
-      "affichage_progressif": "LIVRE. Vue client: l'etape Supervision montre le FORFAIT seul (Pro pre-selectionne en self-service), puis un bouton depliable 'Decouvrez ce que la supervision permet' (#discloseBtn/#discloseBody) qui revele Options PDC + Options compte + Maintenance + Mise en service. Replie par defaut. Deplie AUTO si l'offre pre-configuree contient deja des options (state.opts.size>0 || qty>0 || mes) -> on ne cache jamais ce que le commercial a mis. Vue commerciale: bouton masque (#discloseWrap display:none), tout deplie. Verifie Playwright: self-service replie+clic deplie OK; sales bouton masque+deplie OK; 0 erreur JS.",
-      "et_apres_corrige": "Delais corriges (fait valide par Dominique: KIT EXPEDIE SOUS 48H, pas 'prepare sous 48h'). Deux versions selon le parcours: GUIDE = 01 Kit prepare (des la signature) / 02 Kit expedie (sous 48h, suivi email) / 03 Configuration (visio ou sur site) / 04 Supervision active. SELF-SERVICE (QR, borne deja posee) = 01 Contrat signe / 02 Compte cree (acces par email) / 03 Borne rattachee (proprietaire) / 04 Supervision active. Switch via CLIENT && !q.get('c'). Verifie Playwright, 0 erreur.",
-      "critique_affichage_progressif": "Auto-critique Claude (partagee avec Dominique): l'affichage progressif est cosmetique. (1) Le libelle 'Decouvrez ce que la supervision permet' promet de la pedagogie mais revele des cases a cocher avec prix = tiroir de tarification. (2) Vocabulaire interne ('Options liees au PDC/compte') au lieu de benefices client ('vos utilisateurs paient par carte', 'intervention sous 24h'). (3) Contradiction self-service: on dit 'Pro recommande' mais on affiche un comparatif 4 colonnes x 15 lignes (vente assistee, pas auto-service). A FAIRE: reformuler la decouverte en benefices, sortir les prix de la 'decouverte', et en self-service afficher Pro seul + lien discret 'comparer les formules'."
-    },
-    "configurateur_vue_client_2026_07_07": {
-      "titre": "Client: 'Votre offre Supervision, Monétique & Maintenance' (id heroTitle). Commercial: 'Configurez votre offre...' (override JS si SALES).",
-      "lecture_seule_guide": "Vue client guidee (arrivee via lien commercial c=): body.view-locked -> [data-sup]/[data-step]/[data-mnt] pointer-events:none. Le client consulte l'offre figee, ne peut plus la modifier. Corrige le probleme UX (client se perd / defait la config, retour PandaDoc).",
-      "bloc_et_apres": "Sous la zone signature: 'Et apres votre signature?' = 5 etapes (Contrat signe / Kit prepare & expedie / Configuration visio-ou-site / Activation / Supervision active). Reassurance B2B avant de signer + notification des prochaines etapes.",
-      "deux_modes_client": {
-        "guide": "c= present -> lecture seule (offre pre-configuree par le commercial).",
-        "self_service": "arrivee par QR/activation (pas de c=, PDC connu du kit). Forfait recommande PRO PAR DEFAUT + options depliables (affichage progressif = decouverte) + mensuel/annuel. A CONSTRUIRE avec le pont QR/activation (fournit PDC/station). Pro+/Transit 'sur devis' -> bouton bascule vers le guide (lead).",
-        "tarif": "Supervision reste standard (5,90/14,90) dans les deux modes. La remise installateur porte sur le materiel, pas sur l'abonnement client."
-      },
-      "modele_installateur_valide": "Shop = cible INSTALLATEURS (kits/bornes pre-configures, remises, au nom de l'installateur, sans infos client). Pont: installateur pose + scan QR -> active (cree groupe/station/PDC backend) -> invite le client par email (PROPRIETAIRE requis pour activer) -> client arrive sur 'Votre offre' -> saisit infos + choisit forfait (Pro defaut) + signe + s'abonne -> devient proprietaire. Regle: confidentialite installateur respectee (client saisit lui-meme), pas de materiel orphelin (borne inutilisable sans proprietaire+abonnement), devis materiel au nom installateur. A verrouiller: cadrage partenaire (roles/no-poach) + QR encode l'installateur (attribution/commission). Cas reels: Izitek, Soleco.",
-      "reste": "1) Stripe (paiement kit+abonnement). 2) Pont QR/activation + mode self-service Pro. 3) Affichage progressif options cote client. 4) Envoi PDF signe."
-    },
-    "devis_configurateur_2026_06_18": {
-      "_note": "Flux devis post-visio: configurateur HTML -> HubSpot (deal) -> PandaDoc (clic 'Create Document' natif) -> signature. Decide 2026-06-18.",
-      "architecture": {
-        "trigger": "webhook Make custom (configurateur POST payload structure complet)",
-        "etape2_make": "parse payload -> getDeal par deal_id -> Iterator items[] -> createALineItem (recurrence mensuelle si recurring sinon one-time, associe au deal) -> updateDeal (forfait/maintenance/mode/totaux/pdc/stations/amount/devis_json). Garde-fou si deal_id absent ou multiple.",
-        "etape3_pandadoc": "clic manuel 'Create Document' (integration native, 0 EUR). Workflows HubSpot ecartes (Sales Hub Pro ~90-100$/siege + 1500$ onboarding). API PandaDoc ecartee (Enterprise, sur devis).",
-        "connexions_make": {
-          "hubspotcrm": 6538723,
-          "pandadoc": 3207704
-        }
-      },
-      "deal_properties_created_2026_06_18": [
-        "ozecar_forfait",
-        "ozecar_maintenance",
-        "ozecar_mode_paiement",
-        "ozecar_total_recurrent_ht",
-        "ozecar_total_unique_ht",
-        "ozecar_nb_stations",
-        "ozecar_devis_json"
-      ],
-      "configurateur_review_2026_06_18": {
-        "prix_vs_canonical": "CONFORMES a pricing_canonical_2026_06_17 (forfaits, kits, mise en service, options, maintenance N0-N4).",
-        "ecarts_a_corriger": [
-          "CSM (responsable_client_dedie) marque 'inclus Transit' dans le configurateur; canonical = 'option globale par compte', PAS d'inclusion Transit.",
-          "Module Flotte 10 vehicules marque 'inclus Transit'; canonical ne l'inclut pas sur Transit.",
-          "Option Wallet sur Essential: frais operateur 12,5% (canonical) NON affiche dans le configurateur."
-        ],
-        "bloquant_avant_hosting": "deal_id/contact_id non portes par le configurateur (ni URL ni payload) -> requis pour lier le deal en etape 2.",
-        "fichier": "ozecar-configurateur-devis.html (a corriger puis heberger sur staging)"
-      },
-      "status": "Etape 2 en preparation (scenario Make pas encore cree). 7 proprietes deal creees. Configurateur a corriger + heberger.",
-      "configurateur_v2_2026_06_18": {
-        "changements": [
-          "Options scindees en 2: liees au PDC vs liees au compte",
-          "Infos detaillees sur chaque option + chaque element mise en service",
-          "Total par section",
-          "SIM/RFID/Routeur 4G = quantite selectionnable",
-          "Routeur: modele Teltonika RUT240/241 + garantie 24 mois (A CONFIRMER par Dominique)",
-          "Forfaits & maintenance selectionnables sur toute la colonne + survol colonne",
-          "deal_id/contact_id lus depuis l'URL et inclus dans le payload",
-          "Wallet/Essential: frais operateur 12,5% desormais affiche",
-          "MAKE_WEBHOOK ajoute (vide, a renseigner) en plus du fallback formulaire HubSpot"
-        ],
-        "ecarts_resolus": "CSM + Flotte10 inclus Transit = confirme par Dominique, canonical mis a jour (configurateur etait correct).",
-        "a_confirmer": "Garantie routeur 4G (24 mois mis par defaut).",
-        "fichier": "ozecar-configurateur-devis.html v2 genere, a heberger sur staging apres validation visuelle."
-      }
-    },
     "devis_contrat_flow": {
       "statut": "architecture verrouillee 2026-06-18",
       "configurateur_public": "ABANDONNE - decision Dominique: ne pas se positionner sur le prix avant la demo, ne pas exposer la grille tarifaire",
@@ -1833,39 +1679,6 @@
         "reste": "Auto-envoi de l'email INSTALLATEUR (email-installateur.html) a cabler dans le flux de prep devis (quand le devis est envoye a l'installateur) - pour l'instant le commercial envoie le lien vue installateur. Puis PandaDoc (signature) + signature->Pennylane+activation."
       }
     },
-    "devis_deux_boutons_et_envoi_auto_2026_07_06": {
-      "decision_2_boutons": "Vue commerciale = 2 boutons distincts sur la fiche: 'Éditer le devis' (ozecar_devis_edit_url, ?sales&deal_id, pre-rempli, editable) + 'Voir le devis client' (ozecar_devis_client_url, ?client&deal_id&c=, vue exacte envoyee). L'overlay devis-status.php protege: si deal pas en Devis-contrat envoye -> client voit 'en cours de modification'. Labels HubSpot mis a jour.",
-      "envoi_auto_client_CABLE": {
-        "generation": "configurateur genClientLink() POST -> devis-save-link.php: stocke ozecar_devis_client_url + ozecar_devis_client_sent='pending' (si pas deja 'sent').",
-        "declenchement": "Scenario Make 11 (id 6458109, poll 120s, ACTIF): searchDeals dealstage=5215721690 (Devis-contrat envoye) AND ozecar_devis_client_sent EQ 'pending' -> HTTP devis-send-client.php.",
-        "envoi": "devis-send-client.php: lit ozecar_devis_client_url + email contact client (exclut installateur t3) -> email charte OZECAR 'Votre devis est pret' + lien -> flag='sent' + note + notif #devis. Idempotent (skip si sent). Si pas d'email client -> notif #devis, pas marque envoye.",
-        "anti_doublon": "devis-transfer.php (chemin installateur) pose aussi flag='sent' apres envoi -> le scenario 11 ne renvoie pas. Filtre EQ 'pending' (evite piege null).",
-        "teste": "deal temp Devis-contrat envoye + pending + contact client -> envoi OK, flag->sent, 2e appel skip."
-      },
-      "reste": "Ajouter les 2 boutons au 'À propos' de la fiche (Dominique, comme le reste). Note 'apercu client' optionnelle. Reouverture haute-fidelite (payload complet) deja couverte via ozecar_devis_client_url (contient c=).",
-      "affichage_liens_fiche": {
-        "resolu": "HubSpot rend cliquables les proprietes type STRING/TEXT (pas textarea). Consolidation sur 2 proprietes text: ozecar_devis_edit_url ('Éditer le devis', ?sales) + ozecar_devis_url ('Voir le devis client', ?client, son usage d'origine). Propriete textarea ozecar_devis_client_url SUPPRIMEE. Note epinglee supprimee.",
-        "endpoints": "devis-save-link.php + devis-send-client.php repointes sur ozecar_devis_url (au lieu du textarea).",
-        "nettoyage": "25 deals avaient un ?sales errone dans ozecar_devis_url (backfill precedent) -> vides. 'Voir le devis client' se remplit a la generation. 'Éditer le devis' rempli partout. Julien: les 2 poses (edit ?sales + client ?client) pour demo.",
-        "a_faire_dominique": "Epingler 'Éditer le devis' + 'Voir le devis client' dans le 'À propos' -> liens cliquables."
-      }
-    },
-    "devis_email_unique_et_tracking_vues_2026_07_06": {
-      "doublon_email_resolu": "CAUSE: scenario 08 (Configurateur->MAJ deal) envoyait deja l'email 'devis-pret' (ACTE) a la generation ET mon scenario 11 envoyait ma version au card-move = 2 mails. FIX: scenario 08 module email (3) SUPPRIME -> 08 = MAJ deal seule. devis-send-client.php reecrit pour utiliser le template ACTE 'devis-pret' (au lieu de ma version inline). Resultat: UN seul email (devis-pret) au passage en 'Devis-contrat envoye' (card-move, que Dominique a valide).",
-      "tracking_vues": {
-        "endpoint": "devis-viewed.php (GET ?deal_id): incremente ozecar_devis_views + set ozecar_devis_statut='Envoyé · vu N fois'. Ne compte QUE si ozecar_devis_client_sent='sent' (pas les brouillons/previews).",
-        "ping": "configurateur checkEditLock() (vue CLIENT reelle uniquement, pas SALES/preview): si devis affiche (stage sent) -> fetch devis-viewed.php. Overlay si pas sent.",
-        "proprietes": "ozecar_devis_statut (text) = 'Envoyé' -> 'Envoyé · vu N fois'. ozecar_devis_views (number). Teste: 2 pings -> 'Envoyé · vu 2 fois', draft non compte.",
-        "a_faire_dominique": "Epingler 'Statut du devis' (ozecar_devis_statut) dans le 'À propos' pour voir 'Envoyé · vu N fois'."
-      }
-    },
-    "devis_etats_et_ux_2026_07_06": {
-      "backfill_bouton": "ozecar_devis_edit_url backfille sur 25 deals (via GET liste, contourne le 500 du search POST).",
-      "Q1_accepter_signer": "'Accepter et signer' = bouton de la VUE CLIENT. Quand le commercial genere le devis, le configurateur bascule en apercu client (enterClientView) -> il voit ce que le client verra, dont son bouton signer. C'est l'action du CLIENT, pas du commercial. Le commercial n'signe pas, il envoie le lien. Amelioration possible: note '(apercu client)' dans la preview commerciale.",
-      "Q2_email_client": "Chemin INSTALLATEUR: email envoye au clic 'Transferer a mon client' (devis-transfer.php). Chemin DIRECT commercial: PAS d'auto-envoi aujourd'hui. L'ancien scenario 09 envoyait sur changement de stade mais il est deprecated/inactif. Deplacer la carte en 'Devis-contrat envoye' N'ENVOIE RIEN actuellement. A CABLER: Make poll deals 'Devis-contrat envoye' sans flag -> endpoint envoie email client (necessite email client + lien/payload sur le deal).",
-      "Q3_materiel_masque": "FAIT. Vue client: si aucun materiel (aucun item qty>0), l'etape Materiel (onglet + wstep data-w=1) est masquee, le wizard demarre sur Supervision. Deploye.",
-      "Q4_rebascule_overlay": "RESOLU. devis-status.php cree (prod, a le token; staging n'a pas hubspot.php -> fetch pointe vers URL absolue ozecar.fr). Retourne 'sent' si stade Devis-contrat envoye (5215721690)/Gagne (5215721691)/pipeline Livraison, sinon 'draft'. Le configurateur (checkEditLock) affiche l'overlay 'en cours de modification' si !=sent. Donc rebascule en 'Devis a faire' -> client voit l'overlay, PAS le devis actif. Retour en 'Devis-contrat envoye' -> devis reapparait. Teste Julien (Devis a faire -> draft)."
-    },
     "ecran_offre_client_2026_07_10": {
       "statut": "MAQUETTE VALIDEE (staging: /wp-content/uploads/ozecar/offre-bardinet2.html). A porter dans le vrai configurateur.",
       "principe": "L'ecran repond D'ABORD a la demande du client (son prix, en haut, gros), puis OUVRE. Pas de tunnel a 2 ecrans: si l'ecran 1 ne convainc pas, personne ne clique 'Suivant'. Restitution explicite de sa demande en tete ('voici exactement cela, rien de plus').",
@@ -1898,24 +1711,6 @@
         "Le bouton 'ajouter' data = recalcul immediat; maintenance = choix direct (plus de demande de rappel)."
       ]
     },
-    "prefill_configurateur_2026_07_06": {
-      "brique_1_client_HubSpot_LIVREE": "api/deal-prefill.php (GET ?deal_id) renvoie la fiche client depuis HubSpot (societe cliente default + contact client default, exclut installateur t1/t3 et fournisseur t5) + config {pdc, stations}. Le configurateur (vue commerciale, deal_id present) fetch cet endpoint et pre-remplit: company/prenom/nom/email/tel/adresse/cp/ville/siret/activite + PDC + stations. PAS le forfait (choix commercial). Teste sur Julien (prenom/nom/email remontent). Ne surcharge pas un champ deja saisi.",
-      "brique_2_granola": "PDC/stations/options viennent du resume Granola. Un endpoint PHP ne peut PAS appeler le MCP Granola -> c'est Claude PM (moi) qui lit Granola + ecrit sur le deal (nombre_pdc, ozecar_nb_stations, options). 2 voies: A) on-demand (Dominique: 'prepare le devis de X depuis la demo' -> je lis Granola + ecris le deal -> configurateur pre-rempli). B) automatisation: proxy api/granola.php (necessite cle API Granola) appele par demo-devis-card.php -> extraction LLM -> ecrit le deal. A trancher.",
-      "options_v2": "Pre-remplissage des OPTIONS = v2: necessite de stocker les options sur le deal (propriete texte liste d'ids) + deal-prefill les renvoie + le configurateur les applique (state.opts). Pour l'instant deal-prefill fait client + pdc + stations.",
-      "reste": "Automatisation Granola impossible (Basic) -> restera on-demand (Claude lit Granola + ecrit le deal). Verifier la sauvegarde retour (scenario 08) a la generation du devis.",
-      "granola_voie_A_actee": "Granola BASIC (pas d'API) -> voie A definitive: Claude PM lit le resume Granola via MCP + ecrit sur le deal. Pas de proxy granola.php.",
-      "test_julien_granola": "Resume Granola '41dd1178... devis deux stations' lu: 8 PDC (Station 1: 3, Station 2: 5), 2 stations, internet requis -> option Data 4G/5G (8 data). Ecrit sur deal 509672888556: nombre_pdc=8, ozecar_nb_stations=2, ozecar_options='data'. Propriete ozecar_options creee (string, ids separes par virgule).",
-      "options_LIVREES": "deal-prefill.php renvoie config.options (parse ozecar_options). Configurateur applique cf.options -> state.opts + render. Verifie: deal-prefill Julien renvoie client + pdc=8 + stations=2 + options=[data]. Le configurateur pre-remplit tout (sauf forfait, choix commercial).",
-      "VALIDE_par_Dominique": "Pre-remplissage configurateur depuis Granola+HubSpot VALIDE par Dominique (test Julien: client + 8 PDC + 2 stations + option Data cochee, forfait libre)."
-    },
-    "nomenclature_et_bouton_devis_2026_07_06": {
-      "bouton_ouvrir_devis": "Propriete deal ozecar_devis_url (texte) = lien configurateur ?sales&deal_id={id}. Backfille sur 25 deals + pose a la creation (demo-booking, oz_create_devis). Dominique doit EPINGLER 'Ouvrir le devis (lien)' dans la fiche deal (colonne gauche / About) -> lien cliquable = 'bouton'. (Starter: pas de UI extension/CRM card, le lien epingle est la meilleure option.)",
-      "reouverture": "Clic sur le lien -> configurateur ?sales&deal_id -> deal-prefill.php restaure client + PDC + forfait + stations + options. Fidelite complete (qty sim/rfid, remises, materiel, prestations) = v2: stocker le payload complet (c=) sur le deal (ozecar_devis_payload) a la generation + restaurer. A faire si besoin.",
-      "nomenclature": "NOUVELLE convention: '{Entreprise} — {Réf chantier/site} — {AAAA-MM}'. JAMAIS de libelle d'etape (Démo/Devis) car le deal traverse les etapes. Repli: pas d'entreprise -> nom contact; pas de ref site -> omise. hs_object_id = ID unique interne. Propriete ozecar_ref_site creee (a remplir pendant demo/devis).",
-      "endpoints_maj": "demo-booking.php + oz_create_devis (slack-bot.php): nom = '{who} — {AAAA-MM}' (plus de 'Démo'/'Devis Supervision Tier') + pose ozecar_devis_url a la creation.",
-      "julien_renomme": "'Julien Nom de famille — Démo' -> 'Julien Nom de famille — 2026-07' (test, pas d'entreprise -> nom contact).",
-      "reste": "Renommer les deals existants vers la nouvelle convention (25 deals ont l'ancien format) - a faire au fil de l'eau ou en batch. Remplir ozecar_ref_site pendant l'enrichissement Granola/devis. Payload complet pour reouverture haute-fidelite (v2)."
-    },
     "cycle_de_vie_post_devis_2026_07_06": {
       "impression_pdf_CORRIGE": "Bug: le devis client s'imprimait vide/tronque sauf sur la derniere etape (le rendu ne se fige qu'a l'etape 3). FIX: bouton Imprimer force render() + showStep(3) + affiche tous les .wstep avant window.print() (puis restaure l'etape). CSS print renforce: break-inside:avoid sur cards/recap/lignes, @page margins, chrome (wnav/prev/next/hints) masque. Deploye.",
       "questions_ouvertes_NON_construites": {
@@ -1932,18 +1727,6 @@
         "proprietes_creees": "ozecar_devis_expire_le (date), ozecar_devis_relances (text).",
         "reste_item_4": "Signature PandaDoc -> Gagne -> creation deal Livraison: PAS fait, depend de l'embed PandaDoc (Dominique)."
       }
-    },
-    "checkout_option_b_2026_07_07": {
-      "DECISION": "OPTION B validee: page checkout OZECAR maison (notre ecran, pas PandaDoc) + Stripe direct. PandaDoc ABANDONNE dans le parcours de vente. Fini les blocages de creation de document.",
-      "engagement": "2 crans: LEGER = acceptation CGV (case + horodatage + IP) + paiement Stripe (contraignant B2B, 0€ e-sign). FORT = + signature Yousign embarquee sur la meme page (iframe, eIDAS, forfait Yousign pas 2€/doc).",
-      "signature_meme_page": "Oui - Yousign embedded signature (iframe) s'affiche dans la page, le client signe sans partir.",
-      "page_finie": "Livree: /mnt/user-data/outputs/ozecar-checkout.html, deployee staging https://staging.ozecar.fr/wp-content/uploads/ozecar/checkout.html (HTTP 200). Brand OZECAR (Ink/Yellow/Violet/Cream, DM Sans + Space Mono, pill 100px, logo officiel). Un seul ecran: recap devis (kit+options one-time + supervision recurrente), toggle mensuel/annuel (annuel=2 mois offerts), zone signature Yousign, case CGV+SEPA, choix SEPA/carte, CTA 'Signer et payer' (actif si signe+CGV). JS toggle/paiement/cgv OK. Zones Stripe+Yousign = placeholders styles, PAS encore cablees.",
-      "reste_a_cabler_apres_validation": [
-        "Stripe: kit one-time + abonnement recurrent (SEPA ou carte), Stripe Elements/Checkout.",
-        "Yousign: creer la demande de signature (API) -> iframe embarquee -> event 'signed'.",
-        "Backend: signe+paye -> HubSpot Gagné + deal Livraison (reutiliser logique pandadoc-signed.php) + Pennylane facture/abonnement.",
-        "Capture acceptation CGV (horodatage+IP)."
-      ]
     },
     "config_variables_centralisees_2026_07_01": {
       "_note": "Fichier variables central, source unique modifiable. Cree suite demande Dominique 2026-07-01 (arreter de retranscrire les valeurs a chaque fois).",
@@ -1968,7 +1751,8 @@
         "scenarios Make lisent ce fichier au lieu de hardcoder"
       ],
       "statut": "Cree. Cablage consommateurs = etape suivante."
-    }
+    },
+    "_archive": "Historique des iterations (14 sous-sections) sorti vers archive.json > purge_2026_07_15 > configurateur. Decisions conservees ci-dessus; le recit du 'comment' est dans l'archive et dans git log."
   },
   "esignature": {
     "panda_templates": {
@@ -2054,62 +1838,6 @@
         "note_montage": "Montage manuel UI PandaDoc requis (pas de connecteur PandaDoc MCP). Build kit fournit tout le contenu à coller."
       }
     },
-    "pandadoc_embedded_signing_2026_07_07": {
-      "decision": "Bascule Form embed -> EMBEDDED SIGNING (API), suite au lien Dominique (embedded-signing-legacy). C'est la seule voie pour un DOCUMENT mis en page signe en place (iframe app.pandadoc.com/s/{session_id}/). La Form fait signer mais 'form-first'.",
-      "construit": {
-        "pandadoc-config.php": "Secret serveur: PANDADOC_API_KEY (vide, a remplir Dominique), PANDADOC_TEMPLATE_UUID=jRNqmMzF3c5eNDcYTQZooY, PANDADOC_ROLE=Client. wp-deploy ne l'ecrase pas s'il existe deja.",
-        "pandadoc-create-session.php": "POST {deal_id} -> cree document depuis le template (recipients=contact client, tokens societe/nom/email/numero_devis/deal_id, metadata deal_id) -> attend document.draft -> cree session -> retourne {session_id, document_id}. Stocke ozecar_pandadoc_doc sur le deal. 503 si cle absente.",
-        "configurateur": "mountPandaDoc bascule: au clic 'Accepter et signer' -> fetch pandadoc-create-session.php -> iframe app.pandadoc.com/s/{session_id}/. Evenement postMessage 'session_view.document.completed' -> ozSigned() -> pandadoc-signed.php (Gagné->Livraison, deja teste).",
-        "propriete": "ozecar_pandadoc_doc creee."
-      },
-      "reste_dominique": "Creer les variables dans la Form (deal_id obligatoire masque + numero_devis/societe/nom/email pre-remplissables) et les LIER au document (avertissement PandaDoc: les reponses n'apparaissent pas tant que les variables ne sont pas inserees dans le modele). Si le rendu reste trop 'formulaire', ajuster la mise en page de la Form cote PandaDoc.",
-      "test_bloque_sur": "cle API (endpoint renvoie 503 tant qu'absente). Une fois la cle en place: Claude teste une session pour Julien + verifie l'iframe.",
-      "REVERT_2026_07_07": "API embedded signing ABANDONNEE: facture ~2€/document des le 1er -> non viable. Retour a la Form PandaDoc (form.pandadoc.com/form/mBdjr3GPsXNgGBxAkheood) = INCLUSE dans le plan (250 docs/an puis $2/reponse). Endpoints pandadoc-create-session.php + pandadoc-config.php SUPPRIMES. Propriete ozecar_pandadoc_doc laissee (inoffensive).",
-      "solution_retenue": "Form PandaDoc embarquee (no API). Configurateur: mountPandaDoc affiche l'iframe form.pandadoc.com avec pre-remplissage via params URL (ozPandaData: deal_id/numero_devis/societe/nom/email). Evenement 'embed.form.completed' -> ozSigned() -> pandadoc-signed.php (Gagné->Livraison, teste). La Form fait la signature. Le pre-remplissage saute l'etape 'champs' -> document + signature."
-    },
-    "pandadoc_lien_public_document_2026_07_07": {
-      "correction_cout": "ERREUR Claude corrigee: le '2$/doc' cite etait le tarif des FORMS au-dela de 250/an, PAS les documents. Generer un DOCUMENT depuis un template + variables est INCLUS (deja fait chez OZECAR via CRM Monday, bascule HubSpot). Pas de cout par document.",
-      "mecanisme_retenu": "LIEN PUBLIC DE TEMPLATE PandaDoc (app.pandadoc.com/request-access-via-public-link/templates/{id}) = document mis en page + signature, SANS API, pre-remplissable via params URL. Dominique en a deja un actif (8yufknwVuboy6BDyXuvw3U). C'est l'idee redirection de Dominique, faite avec un DOCUMENT (pas une Form).",
-      "template_contrat": "ERRteELdLVDKGWEffNndBE (nouveau template document que Dominique veut utiliser).",
-      "plan": "acceptBtn du configurateur -> redirige vers le LIEN PUBLIC du template contrat, pre-rempli (deal_id/societe/nom/email/numero_devis). Client signe le document mis en page. Signature -> webhook pandadoc-webhook.php (deja construit) -> pandadoc-signed.php -> Gagné + deal Livraison.",
-      "reste_dominique": [
-        "Activer le LIEN PUBLIC du template ERRteELdLVDKGWEffNndBE (Partager -> lien public) et me donner l'URL exacte (Claude ne l'active pas: rendre un template public = decision Dominique).",
-        "Confirmer les noms des variables/tokens pour le pre-remplissage (deal_id obligatoire + societe/nom/email/numero_devis).",
-        "Verifier que le lien public supporte le pre-remplissage par params URL (a tester ensemble)."
-      ],
-      "reste_claude": "Recabler le redirect du configurateur vers l'URL du lien public (au lieu de la Form) + garder webhook Gagné->Livraison. Test E2E.",
-      "lien_public_fourni": "https://form.pandadoc.com/form/ruLyyyjADRrNiUpntm63ie (template contrat ERRteELd). NOTE: c'est un lien form.pandadoc.com/form/ -> structurellement une etape 'formulaire guide' precede le document. Redirect configurateur repointe dessus.",
-      "question_form_vs_doc": "Un lien public form.pandadoc.com/form/ a TOUJOURS une etape formulaire. Avec pre-remplissage complet (deal_id/societe/nom/email/numero_devis via params URL) le client ne RE-tape rien, mais il y a possiblement un ecran 'formulaire pre-rempli + Continuer' avant le document mis en page + signature. ZERO etape formulaire (direct dans le document) = uniquement l'embedded signing API (ecarte). A verifier: est-ce que le form auto-skip quand tout est pre-rempli (test a faire, form.pandadoc.com bloque dans l'extension Chrome)."
-    },
-    "pandadoc_flux_final_2026_07_07": {
-      "UX_verrouillee": "Client clique 'Accepter et signer' -> redirection plein ecran vers le DOCUMENT PandaDoc mis en page (app.pandadoc.com/s/{session_id}/) -> signe -> fini. AUCUN manuel. Non negociable (Dominique).",
-      "mecanisme": "API PandaDoc (seule voie pour ce flux fluide: la Form impose son etape, le lien public impose un login). pandadoc-create-session.php cree le document depuis le template ERRteELdLVDKGWEffNndBE (tokens societe/nom/Email/numero_devis remplis depuis le deal, metadata deal_id) + une session -> retourne session_id -> le configurateur redirige vers app.pandadoc.com/s/{session_id}/.",
-      "correction_cout_definitive": "Les ~2€ = tarif des FORMS au-dela de 250/an. Les DOCUMENTS crees par API sont inclus dans le quota du plan. L'API demande un ACCES API (creer une cle), pas un cout par document. VIABLE.",
-      "handoff": "Signature -> webhook pandadoc-webhook.php?key=ozpd_wh_7Kx9mQ2vL8 (trouve deal_id dans metadata) -> pandadoc-signed.php -> Vente en Gagné + creation deal Livraison. Deja teste.",
-      "propriete_numero_devis": "ozecar_numero_devis creee + configurateur la stocke sur le deal a la generation (genClientLink -> devis-save-link).",
-      "gate": "pandadoc-create-session.php renvoie 503 tant que PANDADOC_API_KEY absente dans api/pandadoc-config.php.",
-      "reste_dominique": [
-        "Creer une cle API PandaDoc (Dev Center) et la coller dans api/pandadoc-config.php (PANDADOC_API_KEY). Confirmer que le plan inclut l'acces API.",
-        "Confirmer le nom EXACT du role destinataire du template ERRteELd (defaut 'Client') -> PANDADOC_ROLE.",
-        "Configurer le webhook PandaDoc -> https://ozecar.fr/api/pandadoc-webhook.php?key=ozpd_wh_7Kx9mQ2vL8 sur l'evenement completion."
-      ]
-    },
-    "pandadoc_redirection_signature_2026_07_07": {
-      "solution_finale": "Redirection plein ecran (pas d'iframe, pas d'API). Client clique 'Accepter et signer' -> redirige vers la page PandaDoc de la Form (form.pandadoc.com/form/mBdjr3GPsXNgGBxAkheood) PRE-REMPLIE via params URL (deal_id/numero_devis/societe/nom/email) -> voit le contrat mis en page + signe. Signature detectee par WEBHOOK serveur -> handoff.",
-      "configurateur": "acceptBtn: sendToMake() puis window.location.href vers l'URL Form pre-remplie (ozPandaData). Fini l'iframe/mountPandaDoc (code mort laisse, inoffensif).",
-      "webhook": "api/pandadoc-webhook.php?key=ozpd_wh_7Kx9mQ2vL8 : recoit le webhook PandaDoc, trouve le deal_id (recherche recursive metadata/tokens/fields), sur status 'completed' -> POST pandadoc-signed.php {deal_id} -> Vente en Gagné + creation deal Livraison (deja teste). Protege par cle en query (403 sinon). Teste: mauvaise cle=403, event completed simule -> deal_id extrait + route.",
-      "reste_dominique": [
-        "Form PandaDoc: creer les variables deal_id (obligatoire) + numero_devis/societe/nom/email en pre-remplissables ET les inserer dans le document (modele).",
-        "PandaDoc -> Parametres -> Integrations -> Webhooks: ajouter https://ozecar.fr/api/pandadoc-webhook.php?key=ozpd_wh_7Kx9mQ2vL8 sur l'evenement completion (document completed / form completed). Confirmer que le plan inclut les webhooks (sinon repli: redirect de completion cote client).",
-        "Optionnel UX: dans la Form, definir une redirection de fin vers une page 'merci' sur ozecar.fr."
-      ]
-    },
-    "pandadoc_signature_handoff_2026_07_07": {
-      "embed_integre": "Form PandaDoc (form.pandadoc.com/form/mBdjr3GPsXNgGBxAkheood) integree dans le configurateur (#pandadocEmbed), montee au clic 'Accepter et signer' (mountPandaDoc). Pre-remplissage via l'objet data (params URL JSON.stringify): deal_id, numero_devis (docnum), societe (f_company), nom (f_first+f_last), email (f_email). Variables a creer cote Form PandaDoc: deal_id (obligatoire, mapping), numero_devis, societe, nom, email.",
-      "declencheur_signature": "Evenement 'completed' de la Form (postMessage embed.form.completed) -> ozSigned() -> POST pandadoc-signed.php {deal_id}. Message de confirmation affiche au client.",
-      "handoff_endpoint": "pandadoc-signed.php: passe le deal Vente en Gagné (5215721691) + ozecar_devis_statut='Signé' + ozecar_livraison_cree='true' (idempotent) -> cree le deal Livraison & Activation (pipeline default, stage appointmentscheduled 'Kit a preparer') avec props copiees (deal_type, pdc, forfait, stations, ref_site, options, amount) + ozecar_deal_source=deal Vente + associations societe+contacts + note + notif #devis. Proprietes creees: ozecar_livraison_cree, ozecar_deal_source. Teste OK (Vente->Gagné, Livraison cree, idempotent).",
-      "reste_dominique": "Creer les variables dans la Form PandaDoc (deal_id obligatoire + numero_devis/societe/nom/email en pre-remplissables). Optionnel: ajouter un webhook serveur PandaDoc -> pandadoc-signed.php en filet de secours si le client ferme l'onglet avant l'evenement 'completed' (le declencheur client-side reste le principal)."
-    },
     "pandadoc_decision_finale_no_api_2026_07_07": {
       "API_ABANDONNEE_DEFINITIF": "CONFIRME par email PandaDoc (Fernando Fernandez, Senior AM, 25/06): 'API generation, volume-based pricing starting at $2 per document'. Donc l'API = 2$/doc reel. PAS D'API. Claude s'etait entete a tort sur une mauvaise interpretation (croyait que 2$=Forms). Code API supprime (pandadoc-create-session.php + pandadoc-config.php).",
       "verite_technique": "La redirection in-page vers un document mis en page PRE-REMPLI = uniquement l'API. Sans API: soit Form (etape formulaire, redirect), soit intégration native HubSpot->PandaDoc (vrai document mais ENVOYE par email, pas de redirect temps reel).",
@@ -2149,21 +1877,7 @@
         "reste": "STRIPE (paiement kit one-time + abonnement recurrent) = prochaine grande brique. Option: toggle mensuel/annuel sur le recap (comme le mockup). Puis envoi PDF signe."
       }
     },
-    "esign_subnoto_2026_07_07": {
-      "DECISION": "SUBNOTO retenu pour la signature embarquee (apres comparatif complet + verification doc). Coche tout: embarque + heberge France (confidential computing/TEE, RGPD top-tier) + API/SDK/webhooks + pas cher (5-19 EUR/mois).",
-      "verifie_dans_la_doc": "Embedded signing CONFIRME: POST /public/authentication/create-iframe-token (envelope UUID + signerEmail) -> token 'sit.' (usage unique, expire 1h) -> URL embed app.subnoto.com/embeds/sign#t={token}. HTML pur OK (pas besoin de framework). Domaine d'embed custom dispo (marque blanche). Token cote serveur uniquement. Signataire doit avoir verificationType email/SMS (2FA) sinon RECIPIENT_VERIFICATION_DISABLED. Webhooks signe/complete OK.",
-      "caveat": "eIDAS: SES aujourd'hui (legalement valide UE, suffit B2B). AES/QES prevues 2026 (GitHub montre dev actif). Non bloquant.",
-      "compare_ecarte": "DocuSign (600$+/an, plafonds), Yousign (1248 EUR/an forfait fixe), PandaDoc API (2$/doc), SignWell/BoldSign (embarque + pas cher mais US-heberges). Subnoto gagne sur RGPD (France) a prix equivalent/inferieur.",
-      "plan_integration": [
-        "1. Creer envelope via API (upload contrat PDF + recipient + blocs signature, distributionMethod:none).",
-        "2. Set recipient verificationType=email.",
-        "3. Creer iframe token -> URL embed.",
-        "4. Charger l'iframe dans le modal checkout (remplace le placeholder Yousign).",
-        "5. Webhook 'signe' -> HubSpot Gagné + deal Livraison (logique pandadoc-signed.php reutilisee) + envoi doc signe aux parties.",
-        "Endpoints a creer: subnoto-config.php (cle API serveur), subnoto-create-envelope.php, subnoto-webhook.php."
-      ],
-      "reste_dominique": "Creer un compte Subnoto (sandbox gratuit) + generer une cle API -> la mettre dans api/subnoto-config.php cote serveur (ne pas coller en clair dans le chat). Optionnel plus tard: domaine d'embed custom pour marque blanche."
-    }
+    "_archive": "Historique des iterations (6 sous-sections) sorti vers archive.json > purge_2026_07_15 > esignature. Decisions conservees ci-dessus; le recit du 'comment' est dans l'archive et dans git log."
   },
   "parc_clients": {
     "CROSSCHECK_FACTURATION_2026_07_15": {
@@ -4539,161 +4253,7 @@
         ]
       }
     },
-    "hubspot_schema_write_2026_07_05": {
-      "correction": "L'ancienne note 'creation de propriete/schema HubSpot bloquee (PAT sans crm.schemas.deals.write)' est PERIMEE/FAUSSE. Le token (via api/hubspot.php, API directe api.hubapi.com) A le scope schema write.",
-      "prouve": "Cree propriete deal activation_mode (201) + renomme phases + pipelines + ajoute phase Perdu (200/201) via API directe.",
-      "consequence": "Claude PM peut creer proprietes deals + editer pipelines/phases LUI-MEME. Plus besoin de deleguer ces actions a Dominique."
-    },
-    "pipelines_migration_plan_2026_07_05": {
-      "cle": "Les IDs de phases HubSpot sont STABLES -> renommer une phase ne casse AUCUN code (Make/configurateur/#devis/n1-notify pointent sur les IDs). Migration = renommage + ajouts, pas reecriture. Schema HubSpot (rename/add stages, proprietes) = action Dominique (PAT sans crm.schemas.deals.write).",
-      "mapping_LQ_vers_Vente": {
-        "5215721686": "Formulaire recu -> Nouveau (renommer)",
-        "5215721687": "Lead qualifie -> Qualifie (renommer)",
-        "5215721688": "Demo planifiee -> GARDER (phase, saut possible pour non-demo)",
-        "5215721689": "Demo realisee -> A SUPPRIMER (redondant; le glissement vers Devis a faire = demo faite)",
-        "5584432342": "Devis a faire -> GARDER",
-        "5215721690": "Devis envoye -> Devis-contrat envoye (renommer)",
-        "5215721691": "Kit envoye -> retirer du flux Vente (le kit vit en Livraison)",
-        "AJOUTER": "Gagne + Perdu (L&Q n'en a pas)"
-      },
-      "mapping_Supervision_vers_Livraison": {
-        "appointmentscheduled": "Kit commande -> Kit a preparer (renommer)",
-        "qualifiedtobuy": "Kit expedie -> GARDER",
-        "presentationscheduled": "Activation en cours -> GARDER",
-        "decisionmakerboughtin": "Contrat envoye -> OBSOLETE (contrat est en Vente maintenant)",
-        "contractsent": "Contrat signe -> OBSOLETE",
-        "closedwon": "On-boarding planifie -> Supervision active (renommer)",
-        "5156644039": "Ferme gagne -> GARDER",
-        "5156644040": "Ferme perdu -> GARDER"
-      },
-      "handoff": "deal Vente signe (PandaDoc) -> bascule pipeline Livraison 'Kit a preparer'. Branche sur deal_type: Supervision/Installation -> kit+activation; Vente B2B/Accessoires -> expedition sans activation (ferment 'Gagne' en Vente); Reprise -> Activation directe (pas de kit); Maintenance -> reste en Vente ou tickets.",
-      "ordre_execution": [
-        "1. [Dominique HubSpot Settings] Renommer Formulaire recu->Nouveau, Lead qualifie->Qualifie, Devis envoye->Devis-contrat envoye + AJOUTER Gagne/Perdu a Vente. GARDER Demo planifiee/realisee. PAS de propriete demo_statut. Aucun impact code (IDs inchanges).",
-        "2. [Claude Make] Scenario handoff Vente->Livraison branche deal_type + set deal_type a la creation (#devis/configurateur) + ajuster labels des scenarios existants (05b/01/07 - IDs inchanges).",
-        "3. [Dominique+Claude] Migrer les deals coinces (Kit envoye L&Q, Contrat Supervision) vers les bons stages, PUIS archiver les phases obsoletes une fois vides.",
-        "4. [Claude verif] configurateur/#devis/n1-notify/devis-attr: IDs inchanges (5584432342, 5215721690) -> zero changement de code, juste labels."
-      ],
-      "risque_rollback": "Renommer est reversible. Ne rien SUPPRIMER tant que les deals ne sont pas migres hors des phases obsoletes.",
-      "statut": "PLAN pret, attente go Dominique pour lancer la Phase 1 (ses renames HubSpot).",
-      "REVISION_demo": "REVISE v2: 'Demo realisee' SUPPRIMEE. Trigger devis = glissement manuel du deal Demo planifiee -> Devis a faire (= demo faite). Vente: Nouveau/Qualifie/Demo planifiee/Devis a faire/Devis-contrat envoye/Gagne/Perdu.",
-      "comment_demo_visible": "Meeting booke -> deal en Demo planifiee (05b). Commercial marque meeting Completed -> Make deplace le deal en Demo realisee (visible kanban + declenche le flux devis). No Show/Rescheduled -> reste en Demo planifiee.",
-      "PHASE_1_EXECUTEE": {
-        "date": "2026-07-05 via API (Claude PM)",
-        "vente_3747862733": "Formulaire recu->Nouveau, Lead qualifie->Qualifie, Devis envoye->Devis-contrat envoye, Kit envoye->Gagne (conclue gagnee). AJOUTE Perdu (id 5653384416, conclue perdue). Pipeline renomme 'Vente'. Demo planifiee/realisee + Devis a faire inchanges (IDs stables).",
-        "livraison_default": "Kit commande->Kit a preparer, On-boarding planifie->Supervision active. Pipeline renomme 'Livraison & Activation'. Contrat envoye/signe encore presents (obsoletes, a retirer Phase 3).",
-        "nouveaux_ids": {
-          "Perdu_vente": "5653384416"
-        },
-        "reste": "Phase 2 (Make: transition Demo planifiee->Devis a faire -> carte devis; handoff Gagne->Livraison branche deal_type; set deal_type). Phase 3 nettoyage: supprimer Demo realisee (5215721689) + Contrat envoye (decisionmakerboughtin) + Contrat signe (contractsent) apres deplacement des deals.",
-        "demo_realisee_supprimee": "FAIT 2026-07-06 (204). Reste Phase 3: Contrat envoye (decisionmakerboughtin) + Contrat signe (contractsent) dans Livraison."
-      },
-      "activation_mode_cree": "Propriete deal activation_mode (radio: Visio / Sur site) creee via API."
-    },
-    "pipelines_refonte_proposal_2026_07_05": {
-      "statut": "PROPOSITION - direction validee point par point avec Dominique. Migration a executer apres go global + plan detaille. NE PAS toucher aux IDs de phases sans go (hardcodes partout).",
-      "principe": "Decouper les 2 pipelines par FONCTION (Vente assiste / Livraison fulfillment), brancher l'auto sur la propriete deal_type (existe deja: Supervision / Reprise / Installation / Accessoires / Maintenance / Vente B2B).",
-      "pipeline_1_vente": [
-        "Nouveau (=Formulaire recu)",
-        "Qualifie (=Lead qualifie)",
-        "Devis a faire (preparation configurateur)",
-        "Devis-contrat envoye (PandaDoc a signer)",
-        "Gagne",
-        "Perdu"
-      ],
-      "etape_contrat": "CLARIFICATION Dominique: le 'contrat' = LE MEME document que le devis pre-rempli. Un seul PandaDoc genere depuis le deal HubSpot = devis (quantites/prix/niveau, sorti du configurateur) + termes contractuels (CGV, engagement supervision). Donc 'Devis envoye' et 'Contrat' FUSIONNENT en 1 phase 'Devis-contrat envoye (PandaDoc a signer)'. Signature par le client final (lui-meme, ou via le contact indique par l'installateur = assoc Contact client). Contrat = OZECAR <-> client final (mandat). Signature -> Stripe Subscription + bascule Livraison. Vente assistee uniquement (webshop = abo direct a l'activation, sans PandaDoc).",
-      "demo": "Sortie du chemin bloquant -> propriete/sous-statut (majorite des deal_types la sautent).",
-      "pipeline_2_livraison": [
-        "Kit a preparer (=Kit commande)",
-        "Kit expedie",
-        "Activation en cours",
-        "Supervision active (gagne)",
-        "Sans suite"
-      ],
-      "handoff": "Gagne (Vente) -> bascule le deal en Livraison 'Kit a preparer' (un seul deal, plus de doublon). Webshop = 2e porte d'entree directe en Livraison (deja paye, Make 01 cree deja le deal a 'Kit commande').",
-      "branche_deal_type": {
-        "Supervision / Installation": "Vente -> Contrat -> Gagne -> Livraison (kit->activation->supervision)",
-        "Vente B2B (materiel installateur)": "Vente -> Gagne -> expedition materiel; supervision = deal Supervision separe du client final, lie",
-        "Reprise": "Vente -> Gagne -> Livraison Activation direct (pas de kit)",
-        "Accessoires": "Vente -> Gagne -> expedition (pas d'activation)",
-        "Maintenance": "Vente (Diagnostic=Qualifie -> Devis -> Gagne/facture) ou tickets Support"
-      },
-      "impact_migration": "IDs de phases hardcodes dans Make (05b/01/07), configurateur, #devis (oz_create_devis 5584432342/5215721690), n1-notify, devis-attr + tous les deals existants mappes. Migration coordonnee, ordonnee, a planifier avant execution.",
-      "monta_confirme": "partner-api.monta.com/api/v1 cable dans monta.php (ID+token) -> webhook enregistrable. monta-webhook.php a construire (independant de la refonte).",
-      "onboarding_activation": {
-        "principe": "'Activation en cours' EST la phase d'onboarding - pas de nouvelle phase. On structure ce qui se passe dedans par propriete + evenements (comme la demo).",
-        "mode": "Propriete deal activation_mode: Visio | Sur site.",
-        "onboarding_evenement": "Visio -> meeting HubSpot (re-montre fonctions, tarifs, cartes RFID, invitation users). Sur site -> intervention (tache/evenement Fred ou installateur).",
-        "setup_checklist": "Tarifs + RFID + invitations users = checklist de taches HubSpot sur le deal (rien d'oublie + visibilite avancement).",
-        "pv_reception": "Document (template PandaDoc 'PV de reception') pour config SUR SITE et INSTALLATION (reception/acceptation du materiel pose). Client signe -> signal pour passer en Supervision active.",
-        "passage_supervision_active": "Visio: onboarding realise (meeting Completed) + checklist setup -> glisser. Sur site/installation: PV de reception signe -> glisser. Supervision active = abonnement Pennylane cree + bornes activees (paiement SEPA suit, decouple).",
-        "a_creer": [
-          "Propriete deal activation_mode (Visio/Sur site) - Dominique HubSpot",
-          "Template PandaDoc 'PV de reception' - Dominique",
-          "Checklist onboarding (taches HubSpot) - Claude peut preparer le modele"
-        ]
-      }
-    },
-    "fiche_hubspot_curation_2026_07_06": {
-      "labels_nettoyes": "nombre_pdc->'Points de charge (PDC)', ozecar_nb_stations->'Nombre de stations', ozecar_options->'Options du devis', ozecar_forfait->'Forfait supervision'.",
-      "resume": "Propriete ozecar_resume ('Résumé (dernier échange)') creee + resume Granola ecrit sur Julien. A ecrire a chaque demo (voie A Granola).",
-      "bouton_edition": "Propriete ozecar_devis_edit_url ('Ouvrir le devis (édition)') creee = lien configurateur ?sales&deal_id (reouverture pre-remplie). Endpoints (demo-booking, oz_create_devis) repointes dessus. Julien pose. Backfill vieux deals A FAIRE (search POST 500 sur one-shots - a rebackfiller autrement).",
-      "ATTENTION_devis_url": "ERREUR corrigee: j'ai d'abord backfille ozecar_devis_url (qui existait deja, label 'OZECAR — URL devis client', destine au lien CLIENT) avec le lien sales sur ~25 deals. Peut avoir ecrase des liens client. Projet pre-launch -> probablement vides, mais A VERIFIER (property history) si Dominique en a besoin. Desormais le lien edition va dans ozecar_devis_edit_url, ozecar_devis_url laisse a son usage client.",
-      "curation_a_propos": {
-        "garder_ordonne": [
-          "ozecar_resume (Résumé)",
-          "ozecar_forfait (Forfait supervision)",
-          "nombre_pdc (Points de charge)",
-          "ozecar_nb_stations (Nombre de stations)",
-          "ozecar_options (Options du devis)",
-          "ozecar_ref_site (Réf chantier/site)",
-          "ozecar_devis_edit_url (Ouvrir le devis)",
-          "amount (Montant)",
-          "dealstage (Phase)",
-          "hubspot_owner_id (Propriétaire)",
-          "createdate (Date de création)",
-          "notes_last_updated (Dernière activité)"
-        ],
-        "retirer": [
-          "type_kit",
-          "qr_code_commande (QR Code commandé)",
-          "nombre_de_sim (Nombre de SIM)",
-          "sim_iccid",
-          "tracking",
-          "hs_priority (Niveau de priorité si inutilise)"
-        ],
-        "note": "Entreprise + Contact = cartes d'association (colonne droite), pas des proprietes du 'À propos'. Application = UI (Starter, pas d'API pour le 'À propos' par defaut): ⚙️ section 'À propos' -> Modifier les proprietes -> retirer kit + ajouter garder -> Enregistrer -> Appliquer a toutes les fiches."
-      }
-    },
-    "test_pipeline_vente_2026_07_06": {
-      "date": "Demain avec Marie-Estelle",
-      "automatise": [
-        "Booking demo -> deal 'Demo planifiee' (05b via demo-booking.php)",
-        "Demo -> drag en 'Devis a faire' -> carte #devis avec lien configurateur (scenario 10)",
-        "Configurateur -> MAJ deal (scenario 08 webhook)",
-        "Transfert installateur->client (devis-transfer.php + vue installateur)",
-        "deal_type=supervision par defaut (#devis)"
-      ],
-      "manuel_pour_le_test": [
-        "Drag Devis a faire -> Devis-contrat envoye",
-        "Drag -> Gagne",
-        "Signature PandaDoc (embed pas encore colle)"
-      ],
-      "delai_carte": "~15min apres le drag (poll Make)",
-      "runbook": "Runbook pas-a-pas prepare (OZECAR-test-pipeline-vente.md). Emails plus-addresses: marieestelle+clientA/clientB@ozecar.fr (clients finaux), dominique+installateur@ozecar.fr (installateur SOLECO). 2 parcours: A prospect direct (demo->devis->gagne), B installateur->transfert->client. Points de controle: emails, Slack #devis, HubSpot Vente, Granola, marque blanche. Delai poll 15min signale.",
-      "findings_test": [
-        "Booking demo = nom + prenom + email uniquement (pas de champ societe). Normal: la societe se renseigne en aval (demo/devis). demo-booking.php gere l'absence de societe -> deal nomme '{Prenom Nom} — Démo'. Si societe voulue au booking, ajouter un champ au formulaire (Calendly/HubSpot Meetings).",
-        "Deal Julien (marieestelle+clientA) n'apparaissait pas car 05b n'avait pas encore polle (15min). Le signal etait bon (engagements_last_meeting_booked=07/07, ozecar_demo_confirme=null -> matche le filtre). Deal cree manuellement via demo-booking.php: 509672888556 'Julien Nom de famille — Démo' (Demo planifiee) + email envoye.",
-        "Dominique a glisse le deal en 'Demo realisee' (5215721689) au lieu de 'Devis a faire' -> carte pas declenchee (trigger = Devis a faire). Cause racine: la phase 'Demo realisee' redondante pretait a confusion. FIX applique: deal deplace en Devis a faire + carte declenchee manuellement + PHASE 'Demo realisee' (5215721689) SUPPRIMEE (Phase 3 cleanup avancee). Tunnel Vente: Nouveau->Qualifie->Demo planifiee->Devis a faire->Devis-contrat envoye->Gagne->Perdu."
-      ],
-      "poll_abaisse_test": "05b (6400488), 10 (6452570), 11 (6458109) a 120s pour le test. A REMETTRE a 900s apres.",
-      "demo_realisee_supprimee": "Phase 5215721689 supprimee (204). Vieux deal 504572664045 deplace en Devis a faire. Scenario 07 referencait 5215721689 dans un groupe de filtre -> desormais ce groupe ne matche rien (inoffensif, 07 tourne sur les autres stades). Nettoyer 07 au prochain passage si besoin."
-    },
-    "decision_meeting_notes_granola_vs_hubspot_2026_07_06": {
-      "decision": "ON RESTE SUR GRANOLA (HubSpot Starter). Pas de bascule maintenant.",
-      "fait_verifie": "Le Notetaker HubSpot (enregistrement+transcription+resume natif sur la fiche) exige Sales Hub Pro/Enterprise + 1 siege Sales par commercial (bêta). Indispo en Starter. Cout Pro: ~90-100$/siege/mois + ~1500$ onboarding unique. Starter actuel ~15-20$/siege sans onboarding. (Sources: hubspot.com/pricing/sales, blog.hubspot, cargas, spendbase - avril 2026.)",
-      "declencheur_bascule": "Embauche du 1er commercial. A ce moment -> Sales Hub Pro: Notetaker remplace Granola (natif, auto-join demos, resume sur le deal, zero sync manuel) ET debloque workflows + pipelines multiples + sequences (murs Starter qu'on contourne aujourd'hui via Make/PHP).",
-      "en_attendant": "Granola BASIC = pont pas cher. Claude pousse les resumes sur les deals (voie A, manuel). Plan de bascule Starter->Pro (migration Make->workflows natifs, pipelines, cout par N reps) a preparer le jour venu si Dominique le demande."
-    }
+    "_archive": "Historique des iterations (6 sous-sections) sorti vers archive.json > purge_2026_07_15 > hubspot. Decisions conservees ci-dessus; le recit du 'comment' est dans l'archive et dans git log."
   },
   "pennylane": {
     "pennylane": {
@@ -5192,37 +4752,6 @@
         ]
       }
     },
-    "support_flow_2026_07_03": {
-      "pipeline": "Support (HubSpot id 0). Stages FR: Nouveau(1) / En cours(3) / En attente client(2) / Resolu-Ferme(4). Escalade = bascule MEME ticket vers Maintenance & Intervention (3935127798) / Intervention a prevoir (5625047277).",
-      "reference_ticket": "OZS-{base36(hs_object_id)} (ex OZS-5E6XBE1M). Deterministe (pas de compteur). Inscrite dans: sujet du ticket, objet des mails, corps mail (footer), notif Slack, notes. Recalculable partout depuis l'id.",
-      "logging_ticket": "Question du conducteur loggee en NOTE a l'ouverture; chaque reponse envoyee loggee en NOTE (visible dans le fil du ticket). Fix du bug 'je ne vois pas la reponse/question'.",
-      "expediteur_mail": "Reponses envoyees depuis support@ozecar.fr, nom 'OZECAR Support' (send-mail.php etendu: params from/from_name restreints au domaine @ozecar.fr; MailerSend accepte, verifie).",
-      "proprietaire": "Ticket assigne a Dominique (owner 1714568940) a l'ouverture.",
-      "boutons_slack": "Envoyer (-> En attente client) / Editer / RESOUDRE & CLOTURER (envoi message de cloture + ticket -> Resolu/Ferme stage 4) / Escalader -> intervention / Ignorer. Sur intake ET inbound. Geres dans slack-bot.php handle_interaction (oz_send/oz_edit/oz_resolve/oz_escalate/oz_ignore).",
-      "verifie": "ref OZS dans sujet, owner, note question, 4 boutons Slack, expediteur support@ = OK (test E2E, artefacts supprimes).",
-      "RESTE_A_CONSTRUIRE": {
-        "calendrier_intervention": "A 'Intervention planifiee' (pipeline Maintenance) avec une date -> creer evenement Google Calendar sur le calendrier du proprietaire du ticket (via MCP Google Calendar ou Make). Necessite une saisie de date (propriete ticket date_intervention ou via fiche d'intervention).",
-        "intake_reponses_client": "Reponses email du conducteur -> re-attachees au ticket: necessite HubSpot Conversations sur support@ (ou watch IMAP). Sans ca, on ne detecte pas automatiquement un follow-up client (le sweep se base sur le temps depuis notre reponse)."
-      },
-      "sweep_relance_cloture": {
-        "fichier": "api/support-sweep.php (?key=SECRET [+&dry=1]). Balaye les tickets Support (pipeline 0) en 'En attente client' (stage 2).",
-        "logique": "Etat suivi via NOTES (stable): J+3 sans retour depuis la reponse -> email de relance + note 'Relance auto envoyee' (une seule fois). J+7 -> email de cloture + ticket -> Resolu/Ferme (stage 4) + note. Delais RELANCE_DAYS=3 / CLOSE_DAYS=7 (valides par Dominique).",
-        "expediteur": "support@ozecar.fr 'OZECAR Support', reference OZS en objet + corps.",
-        "verifie": "E2E OK: 2 tickets antidates (J+4->relance, J+8->cloture stage 4), pas de double relance (skip apres), vrai ticket recent ignore. Artefacts supprimes.",
-        "cron": "ACTIF depuis 2026-07-03 (cron Hostinger ajoute par Dominique). Endpoint confirme HTTP 200. Flow support 100% operationnel."
-      },
-      "boucle_entrante": {
-        "fichier": "api/support-inbound.php (?key=SECRET). Recoit une reponse conducteur (JSON simple OU payload MailerSend inbound).",
-        "logique": "Retrouve la ref OZS dans l'objet -> decode base36 -> ticket. Logge la reponse en NOTE. Ticket Support -> stage 3 (En cours / Waiting on us), rouvre si ferme. Repost #support: reponse + brouillon de SUITE (IA) + boutons Envoyer/Editer/Escalader/Clore. Sans ref valide -> notif triage manuel #support (pas de ticket auto).",
-        "verifie": "E2E OK: reponse simulee (objet [OZS-xxx]) -> note loggee, ticket stage 3, Slack brouillon+boutons. Artefacts supprimes.",
-        "boucle_complete": "conducteur repond -> inbound -> ticket En cours + brouillon Slack -> agent clique Envoyer -> mail + ticket En attente client -> (reponse -> boucle) ou relance J+3 / cloture J+7.",
-        "acheminement": "OPERATIONNEL: Dominique a mis un filtre Gmail (dominique@) 'to:support@' -> transfert vers frdobsw0sy7zzsg18die@inbound.mailersend.net (confirmation Google validee via #support). Reponses conducteur -> webhook confirme (log): reponse loggee + ticket En cours + Slack brouillon+boutons. Boucle entrante FERMEE.",
-        "support_alias": "support@ozecar.fr = ALIAS de dominique@ozecar.fr (Google Workspace). Les mails vers support@ arrivent dans dominique@."
-      },
-      "cablage": "",
-      "accuse_reception": "AJOUTE 2026-07-03: support-intake.php envoie un accuse de reception immediat au conducteur (from support@ozecar.fr 'OZECAR Support', objet [OZS-xxx] Nous avons bien recu votre demande, reply-to support@). Corrige le 'pas de mail de confirmation'.",
-      "statut": "FLOW SUPPORT 100% BOUCLE (entrant + sortant + relance/cloture + resolution). Ouverture (+accuse reception) -> reponse -> En attente client -> reponse conducteur -> En cours -> ... -> Resoudre&Cloturer (mail cloture + Ferme) OU relance J+3/cloture J+7 OU Escalade intervention."
-    },
     "intervention_flow_2026_07_03": {
       "planification": {
         "statut": "LIVRE 2026-07-03. Apres 'Escalader -> intervention' (ticket -> Maintenance & Intervention / Intervention a prevoir 5625047277), le message #support garde un bouton 'Planifier l'intervention' (oz_plan).",
@@ -5298,36 +4827,10 @@
         "reste": "Federation v2 fiche_compte (forfait HubSpot + impayes Pennylane) ; lire niveau depuis subscription Monta quand plans crees ; vue tournee preventive Fred."
       }
     },
-    "n1_notification_routing_2026_07_05": {
-      "objectif": "N1 = monitoring 24/7 + notifications d'alerte site routees vers l'installateur reference (donne corps au 'N1 inclus, notifications a l'installateur' du devis partenaire).",
-      "brique_livree_routage": "api/n1-notify.php (secret oz-n1-key.php). POST {secret, deal_id, cp?, status?, message?, installer_email?}. Resout l'installateur via HubSpot: contact 'Contact installateur' (typeId 3) sinon 1er contact de la societe 'Installateur referent' (typeId 1); OU override installer_email direct. Notifie: email installateur (charte OZECAR, AUCUN Monta) + Slack #support-alertes (C0BF00352AC) + note sur le deal. Retry sur lecture assoc (consistance HubSpot). Teste (chemin envoi OK).",
-      "resolution_source": "L'attribution 'Installateur referent' / 'Contact installateur' (construite 2026-07-05) EST la source de verite site->installateur, HubSpot-centric (coherent avec support_maintenance_architecture).",
-      "DEPENDANCES_source_alerte": [
-        "PAS de source temps reel: monta-webhook.php N'EXISTE PAS. A construire: receiver Monta 'charger.state_changed -> offline' (necessite scope/credentials webhook Monta cote Monta - deja flague pending dans le state). Alternative: poller Make/cron sur monta-chargers.php (offline CPs).",
-        "MAPPING charge point -> deal MANQUANT: il faut un lien CP Monta -> deal HubSpot (propriete deal ex monta_charge_point_ids, ou Sites/Parc Ref parc -> deal). Sans ce lien, la source ne sait pas quel deal/installateur notifier.",
-        "Board Sites/Parc (18420503504) quasi vide (1 site) - a peupler si on veut la 2e source de mapping."
-      ],
-      "quand_source_prete": "monta-webhook.php (ou poller) detecte offline -> mappe CP->deal -> appelle n1-notify.php avec deal_id (+ installer_email optionnel). Le routage/livraison est deja pret.",
-      "marque_blanche": "Email installateur = 100% OZECAR, aucun Monta. Interne/B2B."
-    },
-    "aide_conducteur_2026_07_01": {
-      "statut": "LIVREE v2 - page STANDALONE (plus de chrome WordPress).",
-      "url": "https://ozecar.one/aide-conducteur/",
-      "hebergement": "Fichier physique /aide-conducteur/index.html a la racine ozecar.one (prime sur WP via RewriteCond !-d). L'ancienne page WP (id 10835) a ete mise a la corbeille (source unique). Thicme WP = woodmart (commercial, non modifie).",
-      "design": "Page standalone. Header sticky translucide (blur), lockup = pastille jaune + wordmark 'OZECAR' blanc + 'one' en Instrument Serif italic jaune. Nav = pills au survol (fond translucide). Menu burger sur mobile (<820px). Contraste OK.",
-      "email": "support@ozecar.one partout (plus de .fr).",
-      "faq": "Enrichie depuis les sujets Monta Charge (reecrits white-label): demarrer/arreter une charge (app/badge OZECARD/QR), trouver une borne (carte), reserver une borne, Autocharge, borne ne demarre pas (depannage), portefeuille vs carte, moyens de paiement, calcul du prix, remboursement/contestation, retrouver un recu (bouton hub.ozecar.app/public/receipts?operator_id=2257), historique, badge OZECARD activer/perdu, compte.",
-      "formulaire": "Formulaire conducteur (replique du staging SANS les demandes B2B kit/supervision/demo). Types: probleme recharge / paiement-recu / reclamation-remboursement / presse / autre. POST same-origin -> /api/contact.php.",
-      "endpoint_contact": "ozecar.one/api/contact.php : recoit {type,nom,email,borne,message}, valide, REROUTAGE par type (categorie), relaie server-side (curl) vers ozecar.fr/api/send-mail.php (html brut + reply_to=conducteur) vers support@ozecar.one. Teste OK (200/422). TODO futur: creer un ticket HubSpot Support via Make + brouillon IA Slack #support (mode B), et router presse vers une boite dediee.",
-      "marque_blanche": "OK verifie. 'monta' = 'montant' (faux positifs) + bundle ID fr.ozecar.monta.ozecarone (exception privative autorisee, liens app store).",
-      "logo_ozecar_one": "Logo ozecar.one (marque B2C conducteur) = DIFFERENT du logo ozecar.fr. Fichier: logoicon_big_yel_tr.png (pastille RONDE jaune + mascotte OZECAR ink sur cercle blanc). Deploye sur https://ozecar.one/wp-content/uploads/ozecar/logoicon_big_yel_tr.png. Ressort seul sur fond ink -> plus de cartouche blanc. NE PAS utiliser logo_OZe_final.png (celui d'ozecar.fr) sur les surfaces ozecar.one.",
-      "charte_ozecar_one": "IMPORTANT: la charte visuelle d'ozecar.one (site Woodmart B2C) est DISTINCTE d'ozecar.fr. Police = OPEN SANS (pas DM Sans/Instrument Serif/Space Mono, qui sont ozecar.fr). Logo header = LOCKUP en 2 images: icone ronde jaune (wp-content/uploads/2025/03/cropped-logoicon_big_yel_tr.png) + wordmark 'one' (wp-content/uploads/2025/03/642ee133cd275c0e96656e23_logo_one_bw_tr.png). Ne PAS recreer le wordmark en texte/police.",
-      "header": "Header de la page aide-conducteur = REPLIQUE FIDELE du header du site ozecar.one: fond BLANC, logo lockup reel, menu reel (Pour les pros->ozecar.fr, L'entreprise->ozecar.one/lentreprise, Blog->ozecar.fr/blog, Contact->ozecar.one/contact), CTA 'Obtenir ma carte'->https://buy.stripe.com/bIYdTZ4xi9yA8mYcMN. Ne pas inventer de barre flottante/translucide.",
-      "statut_v3": "PAGE INDEPENDANTE maintenue: https://ozecar.one/aide-conducteur/ (FAQ conducteur complete + formulaire support -> /api/contact.php -> support@ozecar.one + bouton recus hub). Repassee CHARTE STAGING (DM Sans/Space Mono/Instrument Serif), logo icone + 'OZECAR One'. La landing /landing/ LIE vers cette page (nav 'Aide & Support' + CTA), elle n'est PAS fondue dans la landing."
-    },
     "aide_conducteur_ozecar_one": {
       "charte": "Alignée charte staging le 2026-07-02: DM Sans poids fixes (opsz variable retiré), fond --bg passé #FBF9F6 -> crème #F5F0EB. Page indépendante à /aide-conducteur/."
-    }
+    },
+    "_archive": "Historique des iterations (3 sous-sections) sorti vers archive.json > purge_2026_07_15 > support. Decisions conservees ci-dessus; le recit du 'comment' est dans l'archive et dans git log."
   },
   "wordpress": {
     "wordpress_refonte": {
@@ -5900,25 +5403,6 @@
         "note": "Nom de l'entreprise rendu required (le form HubSpot l'exige - 0-2 Company.name)"
       }
     },
-    "audit_residus_staging_2026_07_10": {
-      "methode": "Scan DB (post_content, 109 pages/posts publies) des motifs: ancienne grille (5,90/14,90/17,50/24,90/54,90, Pro/Pro+/Pro Plus/Transit), mentions contradictoires (sans engagement, premier mois offert, -15/-25%), et 'monta'. Puis classification contextuelle des hits Monta: TEXTE visible / URL / faux positif (montant, montagne) / bundle Android autorise (fr.ozecar.monta.ozecarone).",
-      "LOT_1_CRITIQUE_marque_blanche": {
-        "supervision-3 (22463)": "6x 'ozecar.hub.monta.app' AFFICHE dans les barres d'URL des mockups dashboard -> remplacer par 'ozecar.app'. Fuite visible plein ecran sur LA page produit.",
-        "activation (22344) + activation-kit-2 (22426)": "12x chacune: 'Station ID Monta' (label de formulaire), 'portail Monta' (texte), et 6x 'wss://ocpp.monta.app' dans les guides OCPP. ATTENTION: l'URL OCPP est TECHNIQUEMENT REELLE (les bornes doivent pointer dessus tant que la migration wss://ocpp.ozecar.app n'existe pas). Trancher avec Dominique: masquer/renommer le label et 'portail OZECAR', mais l'URL OCPP ne peut pas etre inventee.",
-        "recherche (22593) + bornes-compatibles-3 (22465, 823x)": "monta.imgix.net DEJA proxifie via ozecar.fr/api/img-proxy.php?url=... MAIS l'URL Monta reste VISIBLE en clair dans le parametre. Modifier img-proxy pour accepter un id/chemin opaque, ou stocker les images. + 22593 contient des commentaires JS 'guides monta'.",
-        "homepage-2 (22462)": "1x fuite + ANCIENNE GRILLE COMPLETE (5,90/14,90/17,50/Pro Plus/-15%/premier mois offert/sans engagement) -> refaire sa section tarifs comme supervision-3."
-      },
-      "LOT_2_ancienne_grille": {
-        "reprise-supervision (22660)": "5,90 x3 + 14,90 + Pro+ -> nouvelle grille (6,90/9,90).",
-        "bundle-zaptec-pro (22504)": "Pro Plus x2.",
-        "articles support (22605,22607,22611,22613)": "Pro Plus x1-2 chacun -> Business.",
-        "blog loi-lom-flottes-2027 (22600)": "Pro Plus x2.",
-        "ozecar-one (22428)": "-15% (ascii) a verifier + bundle Android OK."
-      },
-      "LOT_3_sans_engagement": "~15 pages avec 'sans engagement' (contradictoire avec l'offre 12/24/36): homepage(1001), homepage-2, supervision(22409), supervision-2, kit-3, contact-5, demo, hotellerie, supermarches, flottes, transport, installateurs(x2), weldom-2, simuler-mon-projet, cpo-2026, electrifier-flotte-2026, devenir-cpo-2026, remboursement-recharge-domicile, reprise-supervision. Remplacer par 'engagement flexible 12 a 36 mois' ou supprimer.",
-      "NON_PROBLEMES": "fr.ozecar.monta.ozecarone (bundle Android, exception autorisee, pages 3148/22428/22462/one). 'montants/montagne/remontait' = faux positifs (22657, 22419, 22429). 5,90 sur remboursement-recharge-domicile = produit distinct legitime. Vieilles pages non liees (22409 supervision, 22344 activation v1, 1001/1002) = verifier si orphelines avant d'investir.",
-      "statut": "RAPPORT LIVRE. Corrections en attente du go Dominique (lot 1 d'abord; question ouverte: URL OCPP reelle dans les guides)."
-    },
     "cookies_consent": {
       "status": "LIVE_STAGING_ONLY",
       "approach": "Bandeau OZECAR natif self-hosted charté pilotant Google Consent Mode v2. CMP tierce (tarteaucitron/Axeptio) écartée: surdimensionnée car 100% du tracking passe par un seul container GTM.",
@@ -6020,12 +5504,6 @@
       },
       "fix_cors_2026_07_04": "Bug 'captcha impossible' = CORS. La page staging.ozecar.fr appelle les endpoints sur ozecar.fr (cross-origin) sans Access-Control-Allow-Origin -> navigateur bloque la lecture du captcha ET le POST. FIX: ajoute CORS (Allow-Origin *, Methods POST/GET/OPTIONS, Headers Content-Type) + gestion preflight OPTIONS (204) sur api/captcha.php ET api/contact-intake.php. Verifie (captcha 200+CORS, OPTIONS intake 204+CORS). En prod (meme origine) le CORS est inoffensif."
     },
-    "contact_page_repair_2026_06_21": {
-      "probleme": "Page contact prod (ancien WP page_id 5322) avait été SUPPRIMÉE → menu 'Contactez-nous' (href ?page_id=5322) renvoyait 404.",
-      "fix_fait": "Dominique a republié une page contact à /contact/ (HTTP 200) avec le formulaire HubSpot natif 'Supervision OZECAR — Clients B2B' + reCAPTCHA.",
-      "reste_a_faire": "MENU: l'item 'Contactez-nous' pointe ENCORE vers ?page_id=5322 (404). Le repointer vers /contact/ dans Apparence > Menus (WP admin). wp-deploy read_page/create_page/update_page sont DÉSACTIVÉS sur la prod → fix manuel WP admin uniquement.",
-      "diagnostic_formulaires_hubspot": "9 formulaires. Nouvel éditeur (Demande de contact 04f412bf, Livres blancs, Newsletter) vs Hérité (Supervision B2B, Kit Installateurs, ozecar.fr_professionnel, _maison_copro, _maison_individuelle). Seul /installateurs/ (form 521913ea, hérité, sans captcha) + /contact/ ont des formulaires live sur la prod."
-    },
     "formulaires_strategie": {
       "principe": ".fr (staging, mere, pros) et .one (fille, particuliers) partagent UN meme composant formulaire charte (coherence visuelle). Strategie commune demandee par Dominique.",
       "constat_staging": "staging /contact-3/ = formulaire HTML custom stylé charte (Tailwind space-y-5: prenom, nom, email, entreprise, 2 selects, message, consentement) MAIS handleSubmit = PLACEHOLDER (masque form + message succes, n'envoie rien). Demo staging = embed HubSpot Meetings (meetings-eu1/ozecar-demo). Pas de form HubSpot embed, pas de transport reel cote contact.",
@@ -6079,72 +5557,6 @@
         "DEPENDANCE_dominique": "AUCUNE. L'Interactivity Request URL est deja slack-bot.php (les boutons Confirmer/Annuler existants marchent deja). Rien a configurer cote Slack."
       }
     },
-    "feedback_staging_me_2026_06_10": {
-      "source": "Google Doc 'Feedback Staging 10-06-2026' (Marie-Estelle), ~70 remarques, ajoute au projet",
-      "regroupement": "6 groupes: G1 liens demo, G2 contraste, G3 prix, G4 liens morts, G5 doublons/slugs, G6 wording/visuels",
-      "decisions_dominique_2026_06_30": {
-        "cta_demo": "tous vers /demo/ (mais /demo/ n'a AUCUN booking -> blocage)",
-        "prix": "canonical: 3 forfaits publics Essential 5,90 / Pro 14,90 / Pro+ sur devis",
-        "doublons": "garder contenu refonte (slugs -3/-5), liberer slugs propres en supprimant vieilles pages (WP admin)",
-        "creneaux": "lundi-vendredi partout"
-      },
-      "G2_contraste_FAIT_2026_06_30": {
-        "statut": "DEPLOYE staging + verifie CSS live",
-        "cause": "textes a tres faible opacite sur fond fonce (rgba 245,240,235 alpha 0.3-0.5)",
-        "fixes": [
-          "banner-announcement (barre nouveaute) 0.5 -> 0.85",
-          "product-pricing-cards sous-titre forfait 0.3 -> 0.72",
-          "product-pricing-cards suffixe /mois 0.4 -> 0.6",
-          "hero-duo-product sous-titre carte sombre 0.4 -> 0.72"
-        ],
-        "reste_contraste": "encadre noir transport + 1er encadre supermarches = PAS de la meme cause (non low-opacity), check visuel a faire"
-      },
-      "constat_archi_cle": "~60% du feedback ME = contenu en base WP (attributs blocs Gutenberg: liens, prix, copy) NON editable via wp-deploy. Options: (a) punch-list WP admin pour Marie-Estelle, (b) auth WP-REST pour find/replace programmatique sur post_content.",
-      "reste": [
-        "G1 (booking URL)",
-        "G3 prix (base ou render.php a verifier)",
-        "G4 liens morts (audit, majoritairement base)",
-        "G5 suppression doublons (WP admin Dominique)",
-        "G6 copy (punch-list ME)"
-      ],
-      "G1_demo_RESOLU_2026_06_30": {
-        "statut": "DEPLOYE staging + verifie",
-        "decouverte": "/demo/ embarque DEJA la prise de RDV: meetings-eu1.hubspot.com/ozecar-demo. Le booking existait, mon 1er check ratait le -eu1.",
-        "vrai_bug": "les CTA demo (attributs blocs en base) pointent vers /supervision#demo = ancre inexistante.",
-        "fix": "JS enqueue assets/js/demo-cta-fix.js (prio 70) qui reecrit tout href #demo -> /demo/ au chargement. Couvre les 11 remarques d'un coup, sans editer la base.",
-        "verifie": "JS 200, enqueue sur flottes/supermarches/hotellerie/transport/supervision-3/home, pages 200 (pas de fatal).",
-        "durable": "a terme, corriger ctaPrimaryUrl en base (editeur WP) puis retirer le JS."
-      },
-      "bugs_mobile_2026_07_02": {
-        "burger_mobile": {
-          "symptome": "menu burger mobile ne s'ouvre pas",
-          "cause": "header.php parent appelle onclick=toggleMobileMenu() mais la fonction n'etait DEFINIE nulle part. CSS OK (.nav-wrap.mobile-open .mobile-menu{translateX(0)}).",
-          "fix": "assets/js/nav-mobile.js (enqueue prio 80) definit window.toggleMobileMenu (toggle .mobile-open sur .nav-wrap) + ferme au clic lien + ferme au resize>1023.",
-          "statut": "DEPLOYE + verifie (JS 200, defini, enqueue sur toutes pages, 200 sans fatal)"
-        },
-        "verifier_ma_borne": {
-          "symptome": "bouton 'Verifier ma borne' ne reagit pas",
-          "cause": "3 boutons href=#compatibilite mais AUCUN id=compatibilite sur la home -> ancre morte.",
-          "fix": "meme JS nav-mobile.js: si #compatibilite absent de la page, reecrit les liens vers /bornes-compatibles-3/ (page verificateur).",
-          "statut": "RESOLU + verifie (href reecrit vers /bornes-compatibles-3/ en navigateur)",
-          "note": "durable: soit remettre une section #compatibilite sur la home, soit corriger href des blocs en base."
-        },
-        "burger_mobile_v2": {
-          "correction_diagnostic": "main.js (theme parent) definissait DEJA toggleMobileMenu (toggle .mobile-open sur #navWrap). CSS + cascade + ordre media = tous corrects a l'analyse statique. Cause runtime non reproductible cote serveur.",
-          "fix_v2_robuste": "nav-mobile.js v1.0.2: ecouteur direct sur #navBurger avec stopPropagation, OUVERTURE FORCEE en style inline !important (display:block + translateX(0)), burger force display:flex en <=1023, override de window.toggleMobileMenu. Contourne cache/cascade/propagation/burger-masque.",
-          "cache": "enqueue bump ver 1.0.0 -> 1.0.2 (bust navigateur + LiteSpeed).",
-          "a_verifier_dominique": "tester sur staging.ozecar.fr en navigation privee ; si toujours KO, envoyer capture + erreur console (debug statique epuise)."
-        },
-        "burger_mobile_RESOLU": {
-          "statut": "RESOLU + PROUVE en navigateur headless (Playwright, viewport 390px)",
-          "cause_racine": "Le header .nav-wrap a 'backdrop-filter: blur(16px)'. Cette propriete fait du header le bloc conteneur des descendants position:fixed. Le .mobile-menu (fixed, DANS le header) se dimensionnait donc sur la hauteur du header (~65px) -> height:0 -> menu ouvert mais invisible (scrollHeight etait bien 1002). Ni le JS ni le CSS n'etaient en cause, c'etait un containing-block CSS.",
-          "fix": "nav-mobile.js v1.0.3: a l'ouverture, force height:calc(100dvh - 64px) !important (dvh/vh = viewport-relative, ignore le bloc conteneur) + display:block + translateX(0). Ecouteur direct + stopPropagation, cache bust ver 1.0.3.",
-          "preuve": "Playwright: menu ouvre a 780px de haut, 1er lien visible y=176, ferme au 2e clic (h=0,x=390), 0 erreur JS, sur home ET flottes.",
-          "refacto_propre_future": "ideal = sortir #mobileMenu du <header> (fixed vs viewport) OU retirer le backdrop-filter du header, mais le fix dvh suffit et est sans risque."
-        }
-      },
-      "G3_prix_note": "Staging supervision-3 affiche Pro=14,49€ et Pro Plus=24,49€. Canonical userMemories = Pro 14,90 / Pro+ sur devis. Divergence a arbitrer en G3 (NON traite, hors scope directive Transit)."
-    },
     "landing_ozecar_one": {
       "url": "https://ozecar.one/landing/ (preview, fichier /landing/index.html — prod intouchée)",
       "charte": "Charte staging ozecar.fr appliquee (DM Sans poids fixes 400-700 SANS opsz, Instrument Serif, Space Mono; fond creme #F5F0EB; accent violet #5F2DFF sur italiques fond clair, jaune sur fond ink). Seul le logo = OZECAR One.",
@@ -6180,17 +5592,6 @@
       "note_stores": "4.6 / 5 (fixée par Dominique 2026-07-02). Appliquée hero + stats band. Coordonnées SVG intactes.",
       "a_verifier_contact_page": "CTA \"Nous contacter\" + footer \"Contact\" pointent vers ozecar.one/contact/ (HTTP 200 = existe, probablement ancienne page WP Woodmart hors charte). A verifier: soit repointer vers /aide-conducteur/ (form charte), soit refondre /contact/ a la charte."
     },
-    "landing_conducteur_ozecar_one_2026_07_01": {
-      "statut": "PROPOSITION v2 deployee en PREVIEW (prod intouchee).",
-      "url": "https://ozecar.one/landing/",
-      "base": "Repart du fichier dev project/ozecar-one.html (structure + contenu + CHARTE). N'a change QUE: mockups CSS -> vraies captures, + lien vers aide-conducteur.",
-      "charte": "Charte STAGING/OZECAR (PAS Open Sans du vieux site Woodmart). Polices: DM Sans (display/body), Space Mono (labels techniques), Instrument Serif italic (accents). Couleurs: --ink #0F141E, --ink-soft #1E2433, --ink-muted #5A6070, --yellow #FAC828, --yellow-deep #D4A800, --cream #F5F0EB, --violet #5F2DFF.",
-      "captures_reelles": "home1.png (hero, wp uploads 2025/07/ozecarone_home1.png), screens1.png (bande 4 ecrans app, 2025/07), ozecard.png (carte, 2025/03). Deja hebergees sur ozecar.one. Marque blanche OK (OZECAR team wallet, Fourni par OZECAR; seul 'monta' = bundle ID fr.ozecar.monta.ozecarone).",
-      "logo": "Lockup = SVG mascotte + 'OZECAR One' (One en jaune-deep), proportions maintenues. NE PAS etirer le wordmark, NE PAS mettre 2 images mal proportionnees.",
-      "badges_stores": "Badges App Store / Google Play = SVG propres (.store-btn) du fichier dev. JAMAIS d'emojis.",
-      "redirection_pro": "Header 'Pour les pros -> ozecar.fr', + section, + footer.",
-      "sections": "Hero (Scannez/Rechargez/Souriez + home1), enseignes, stats, Comment ca marche (3 etapes), L'application (screens1), fonctionnalites, OZECARD (ozecard.png + 9,90 EUR), FAQ + CTA vers aide-conducteur, footer."
-    },
     "ozecar_one_infra_2026_07_01": {
       "hebergement": "ozecar.one = WordPress sur Hostinger (LiteSpeed, PHP 8.2). Docroot /home/u560872904/domains/ozecar.one/public_html/.",
       "wp_deploy": "Proxy wp-deploy.php sur ozecar.one/api (meme Bearer). Actions fichier read/list/write/delete/mkdir/move OK. Allowlist: wp-content/themes/ozecar-one, ozecar-child, wp-content/uploads/ozecar, api, aide-conducteur.",
@@ -6205,12 +5606,6 @@
       "accent_signature": "Les mots-accent en Instrument Serif italic sont colores en VIOLET #5F2DFF (comme staging: 'font-serif-accent text-[#5F2DFF]').",
       "logo_ozecar_one": "Logo different d'ozecar.fr: mascotte + 'OZECAR One' (lockup), assets ozecar.one. Le reste de la charte = staging.",
       "pas_d_or": "AUCUN or (#D4A800) en charte cote client. Accents texte = jaune #FAC828 OU violet #5F2DFF uniquement. Violet sur fond clair, jaune sur fond ink."
-    },
-    "portail_redirection_2026_07_04": {
-      "decision": "Le lien 'Portail OZECAR' (footer) doit passer par la page de redirection /se-connecter/, comme le bouton 'Se connecter' du header — pas de lien direct vers hub.ozecar.app.",
-      "raison": "/se-connecter/ est l'entree white-label propre (propose portail web + app mobile avec badges stores). Coherence + controle du parcours.",
-      "action_faite": "footer.php (ozecar-theme): 'Portail OZECAR' href https://hub.ozecar.app (target=_blank) -> /se-connecter/ (meme onglet). Verifie live.",
-      "reference": "Bouton 'Se connecter' header = nav-cta-portal -> /se-connecter/ (deja en place)."
     },
     "livres_blancs": {
       "logo_svg": {
@@ -6259,7 +5654,8 @@
       "color_black": "#0F141E",
       "color_accent": "#FAC828",
       "color_accent2": "#D4A800"
-    }
+    },
+    "_archive": "Historique des iterations (5 sous-sections) sorti vers archive.json > purge_2026_07_15 > wordpress. Decisions conservees ci-dessus; le recit du 'comment' est dans l'archive et dans git log."
   },
   "make": {
     "make_scenarios": {
@@ -6434,100 +5830,6 @@
       },
       "credits_fix_2026_07_12": "Credits epuises en 2j: 3 pollers a 120s (2min) = ~4800 ops/2j chacun. 05b(6400488) booking demo, 10(6452570) demo->devis, 11(6458109) devis-contrat->email passes a interval 900 (15min) => burn /7,5. 04 LinkedIn(5323747) reste a 900s (modere). Daily 07/12 et webhooks 01/08 = OK. FIX DURABLE a prevoir: convertir 05b/10/11 en webhook-driven (comme 01/08) pour eliminer le burn au repos (webhook-first principle)."
     },
-    "make_scenario_05_2026_06_21": {
-      "id": 6219549,
-      "name": "05 - Booking démo → Email confirmation + Deal L&Q",
-      "teamId": 197685,
-      "etat": "ACTIF (corrigé + réactivé 2026-06-21 ~17:18). Tunnel démo→email branded+deal L&Q+association+marquage opérationnel.",
-      "trigger": "Polling HubSpot SearchContacts (interval 900s), filtre: engagements_last_meeting_booked HAS_PROPERTY AND ozecar_demo_confirme NEQ true. Connexion HubSpot Make 6538723.",
-      "flow": "1.SearchContacts → 2.HTTP send-mail.php (template 05-confirmation-demo, vars prenom/demo_date/demo_time via formatDate Europe/Paris) → 3.createDeal compact (pipeline 3747862733 L&Q, dealstage 5215721688 Démo planifiée, dealname 'Démo OZECAR — {firstname} {lastname}') → 4.CreateAssociation definitionId 3 (Deal→Contact, from {{3.id}} to {{1.id}}) → 5.updateContact compact (ozecar_demo_confirme=true, idempotency).",
-      "test": "Run responsive sur contact 1212 dé-confirmé temporairement = SUCCESS. Email envoyé, deal créé+associé (num_associated_contacts 1), contact re-marqué true. 4 deals de test renommés [TEST – à supprimer] (507510492380, 507566609612, 507512107247, 507548723387) → Dominique à supprimer.",
-      "note_activation": "ATTENTION: activer le scénario déclenche un run immédiat. Lors du test, activation + run manuel simultanés ont créé 2 deals en double (race: les 2 runs lisent le contact non-confirmé avant que module 5 ne marque). En fonctionnement normal (schedule 15min séquentiel) pas de doublon. À l'activation réelle: laisser tourner sur schedule, ne pas lancer de run manuel en parallèle.",
-      "a_faire": "GO activation Dominique → scenarios_activate(6219549). Vérifier rendu date email (formatDate).",
-      "fix_email_422": "Le 422 (received_to vide) venait de formatDate dans le payload JSON du module 2 (guillemets imbriqués cassaient le JSON → to/template vides). FIX: (1) formatage date côté serveur — send-mail.php dérive demo_date/demo_time depuis demo_iso brut (DateTime Europe/Paris); (2) module 2 payload propre (plus de formatDate, juste {{1.properties.email/firstname/engagements_last_meeting_booked}}); (3) garde-fou filtre email HAS_PROPERTY (un contact sans email ne déclenche jamais l'envoi); (4) module 2 handleErrors=false (si l'email échoue, le run s'arrête et réessaie au lieu de créer un deal sans email). Run de test 17:15:45 = status 1, operations 5 (email module PASSÉ). Réactivé.",
-      "update_2026_07_01_05b": {
-        "probleme_constate": "Au debut de session, scenarios_get(6219549) = isinvalid:true, islinked:false, isActive:false, et module 2 envoyait encore demo_iso (pas demo_date/demo_time). L'etat 'ACTIF corrige' du 21/06 ne correspondait plus a la realite (connexion HubSpot deliee + regression blueprint).",
-        "solution": "Recreation instance propre 05b id=6400488 via scenarios_create(confirmed:true) => connexions re-liees, isinvalid:false. ACTIVEE 2026-07-01 ~11:07.",
-        "garde_fou": "filtre SearchContacts: engagements_last_meeting_booked GTE {{now}} AND ozecar_demo_confirme NEQ true AND email HAS_PROPERTY. limit 5. Ne traite QUE les demos futures => 0 rattrapage du passif (verifie: 0 contact en attente a l'activation).",
-        "ancien_05_6219549": "INACTIF, invalid (connexion), A PURGER manuellement.",
-        "reste_dominique": "Decocher confirmation native HubSpot page round-robin (garder rappel). Supprimer 4 deals test. Surveiller 1ere execution reelle (rendu date).",
-        "rappel_j1": "Confirmation=05b charte (actif). Rappel J-1=natif HubSpot (recoche). TODO: rappel charte J-1 via Make plus tard."
-      }
-    },
-    "make_scenario_07_relances_2026_06_21": {
-      "what": "Notifications de transition — reco #1 du diagnostic tunnel lead→mise en service",
-      "scenario_id": 6276389,
-      "status": "ACTIVE - quotidien",
-      "finding_16_dormant_deals": {
-        "count": 16,
-        "all_stage": "Devis envoyé (5215721690)",
-        "since": "~2026-05-27 (certains 04-16/06)",
-        "interpretation": "Fuite phase 3 (devis→relance) confirmée: 16 devis envoyés sans aucune relance. C'est exactement la déperdition que le diagnostic pointait.",
-        "ids_noms": [
-          "Comepa",
-          "Les Terrasses d'Arsella",
-          "Serpollet Aromazone",
-          "Agriel/Lelycenter",
-          "Client NOVA Zaptec",
-          "NOVA Zaptec",
-          "Serpollet St Alban",
-          "Entreprise Natali",
-          "Marion Strazzabosco",
-          "EIG Zaptec",
-          "EIB Zaptec AO 05/2026",
-          "EIB AO 05/2026",
-          "EIB 05/26",
-          "Camping Arinella Bianca",
-          "Rossi Diffusion Prunete",
-          "Benjamin Piazza d'Olmo"
-        ]
-      },
-      "next_reco": "#2 PandaDoc CPQ (devis+e-signature) = la vraie réponse structurelle à cette fuite phase 3."
-    },
-    "phase2_make_audit_2026_07_05": {
-      "deal_type_set": "oz_create_devis (#devis) pose desormais deal_type='supervision' par defaut a la creation. Valeurs deal_type: supervision/reprise/installation/accessoires/maintenance/vente_b2b.",
-      "audit_scenarios_make": {
-        "05_05b_booking_demo": "INACTIFS + EN ERREUR (05: 36 erreurs, 05b: 6 erreurs, polling 15min). => les demos bookees ne creent RIEN actuellement. Funnel demo->deal CASSE. A traiter.",
-        "09_devis_email_ouvrir_devis": "INACTIF. C'est l'ANCIEN flux qui emailait 'Ouvrir devis' comme si l'installateur etait le client (le probleme signale par Dominique). Notre flux transfert (devis-transfer.php + vue installateur) le REMPLACE. Doit rester OFF.",
-        "08_configurateur_maj_deal": "ACTIF (webhook 3270135). Le configurateur poste dessus pour MAJ le deal.",
-        "01_shopify_hubspot": "ACTIF (webhook). Webshop -> deal Livraison.",
-        "07_relances_LQ": "ACTIF (poll quotidien).",
-        "02_03_04exp": "INACTIFS/invalides (anciens flux activation/expedition)."
-      },
-      "workflows_hubspot": "NON accessibles: le PAT n'a pas le scope 'automation' (403 requires automation-access). Tier compte = payant. Workflows natifs = besoin (a) scope automation sur le PAT + (b) plan qui inclut les workflows (Pro+). A confirmer.",
-      "decision_trigger_phase2": "Pour demo->devis card (transition Demo planifiee->Devis a faire) + handoff Gagne->Livraison: 2 options. A) Ajouter scope 'automation' au PAT -> workflows HubSpot natifs (instant, zero cout polling) - le plus propre. B) Make (polling = couteux, cf 09 qui a brule 6562 ops/13.8M transfer; ou trigger instant Make HubSpot). Reco: A si le plan inclut les workflows.",
-      "reste": "Phase 2 restante: demo->devis card (transition Demo planifiee->Devis a faire -> carte #rdv-demo) + handoff Gagne->Livraison branche deal_type. Meme pattern (Make poll -> endpoint PHP).",
-      "05b_REPARE": {
-        "cause": "Modules HubSpot natifs de Make: CreateAssociation -> [405] (endpoint deal<->contact KO), SearchContacts properties en chaine -> [400] (corrige dans 05b), + 503 intermittents sur HTTP email.",
-        "fix": "Sortie de toute la logique CRM fragile de Make vers api/demo-booking.php (API directe, robuste). Blueprint 05b simplifie: SearchContacts (poll 15min, filtre demo bookee future + ozecar_demo_confirme!=true) -> 1 appel HTTP demo-booking.php. Modules createDeal/CreateAssociation/updateContact supprimes.",
-        "demo_booking_php": "Cree deal '{Client} — Démo' (Vente 3747862733, stade Demo planifiee 5215721688, deal_type=supervision) + associe contact (+societe si connue) + set ozecar_demo_confirme=true + email confirmation charte. Idempotent (reutilise deal existant si deja en Demo planifiee). Teste OK.",
-        "statut": "05b REACTIVE. 0 contact en attente (aucun traitement perime). Booking demo -> deal restaure.",
-        "pattern_etabli": "Make = poll fin -> appel HTTP a un endpoint PHP OZECAR qui fait tout le CRM (robuste, testable). A appliquer aux autres triggers (demo->devis card, handoff Gagne->Livraison)."
-      },
-      "demo_devis_card_LIVRE": {
-        "scenario": "Make '10 - Demo->Devis carte #devis' (id 6452570, poll 15min, ACTIF). searchDeals dealstage=5584432342 (Devis a faire) AND ozecar_devis_card_sent EQ 'false' -> HTTP demo-devis-card.php.",
-        "endpoint": "api/demo-devis-card.php: poste carte dans #devis (C0BF8UB8457, bot membre - #rdv-demo refuse car bot pas membre, manque channels:join) avec URL edit-mode configurateur (?sales&deal_id+pdc+tier+installer) + bouton Voir le deal + set ozecar_devis_card_sent=true. Idempotent. Teste OK (posted:true).",
-        "flag": "Propriete ozecar_devis_card_sent (booleancheckbox) creee. #devis-direct (oz_create_devis) pose 'true' (carte propre deja postee). demo-booking.php pose 'false' a la creation -> chemin demo carte au passage en Devis a faire. Filtre EQ 'false' (pas NEQ) pour eviter le piege HubSpot null.",
-        "anti_doublon": "Les anciens deals (flag null) ne sont PAS cartes (EQ 'false' exclut null). Seuls les NOUVEAUX deals demo (flag='false') sont cartes. 0 deal perime au lancement.",
-        "delai": "Carte apparait jusqu'a 15min apres le drag en Devis a faire (poll). Pour le test, prevenir Marie-Estelle de ce delai.",
-        "option_rdv_demo": "Si Dominique veut la carte dans #rdv-demo plutot que #devis: inviter le bot ozecarbot dans #rdv-demo (/invite @ozecarbot), puis rebasculer le canal."
-      }
-    },
-    "make_credit_optimisation_2026_07_04": {
-      "date": "2026-07-04",
-      "constat": "~9,5k/10k ops sur le plan Core avant tout go-live, uniquement du polling a vide (aucune vraie data).",
-      "top_consommateurs": {
-        "09_devis_polling": "6544 ops/mois (searchDeals 15min + re-GET deals du stage)",
-        "04_linkedin_polling": "2880 ops/mois (WatchBoardItems monday 15min)"
-      },
-      "actions": [
-        "09 desactive, logique email repliee dans 08 (webhook) => ~6544 ops/mois liberees.",
-        "04 LinkedIn: laisse de cote (a refondre, pas de strategie definie) - Dominique."
-      ],
-      "principe_valide": "Webhook-first: tout scenario dont la source supporte un webhook (HubSpot, Calendly, monday, Shopify) doit etre event-driven, jamais polling 15min. Chaque polling actif = ~2880 ops/mois de cout fixe.",
-      "a_surveiller": "05 et 05b (booking demo) sont en polling 15min - actuellement inactifs. Si reactivation pour vrais bookings, les passer en webhook Calendly/HubSpot avant, sinon +2880 ops/scenario.",
-      "cout_par_evenement_reel": "commande Shopify ~10 ops, devis configurateur ~2-3 ops, booking ~4 ops, relance quotidienne 07 ~3 ops. La vraie data est bon marche; le risque etait le polling, pas le volume."
-    },
     "email_system_2026_06_21": {
       "standard_design": "Le template 05-confirmation-demo (VALIDÉ par Dominique) est le MASTER design pour tous les emails OZECAR : logo officiel centré dans cartouche blanc sur header ink, filet jaune, structure sandwich ink/cream, pills .sec-tag, signature + footer. Pour les prochains templates : garder ce design, adapter UNIQUEMENT le texte.",
       "moteur_template": "send-mail.php étendu : POST {secret,to,subject,template,vars:{token:valeur}} → charge project/email-templates/{template}.html, remplace les {{tokens}}, nettoie les tokens restants. Réutilisable pour les 6 templates. Fallback HTTP si fichier disque absent.",
@@ -6555,16 +5857,7 @@
         "api/send-mail.php.bak-20260621-175804"
       ]
     },
-    "mailersend_reactivation_2026_06_21": {
-      "statut": "✅ OPÉRATIONNEL 2026-06-21. Compte réactivé + send-mail.php authentifie et envoie via SMTP MailerSend. Test d'envoi réussi (ok:true, HTTP 200).",
-      "blocage_resolu": "MailerSend exigeait CAPTCHA ou validateur email + preuve. reCAPTCHA (Google v2 invisible via HubSpot) activé sur le formulaire de contact.",
-      "preuve_url": "https://ozecar.fr/contact/ — badge 'protected by reCAPTCHA' visible au-dessus du bouton submit",
-      "formulaire_contact": "HubSpot legacy 'Supervision OZECAR — Clients B2B' (formId f4b47a3c-2200-4ab8-b10c-e04cd349b9c4), embarqué sur /contact/",
-      "mecanisme_captcha_hubspot": "Editeur HÉRITÉ: onglet Formulaire > panneau gauche bas > 'Autres éléments de formulaire (Captcha...)' > glisser CAPTCHA > Mettre à jour. Editeur NOUVEAU: +add > Other > Security & Privacy > glisser reCAPTCHA. Pas de toggle dans Options/Paramètres.",
-      "caveat_critique": "Une fois CAPTCHA activé sur un formulaire, les soumissions via l'API Forms sont REFUSÉES (FORM_HAS_RECAPTCHA_ENABLED). N'activer le CAPTCHA QUE sur les formulaires remplis par des humains, jamais sur un formulaire alimenté par Make/API.",
-      "next": "Confirmer délivrabilité (réception inbox). Puis reprendre l'ordre: rebuild démo scénario 05 → PandaDoc → activation Monta (scénario 02) → relances/Slack → onboarding.",
-      "fix_smtp": "OZ_SMTP_USER contenait par erreur un password (mssp.…). Corrigé avec le vrai username MailerSend (format MS_xxxx@ozecar.fr). Host smtp.mailersend.net:587 STARTTLS, From hello@ozecar.fr. Secrets jamais stockés dans le state."
-    }
+    "_archive": "Historique des iterations (5 sous-sections) sorti vers archive.json > purge_2026_07_15 > make. Decisions conservees ci-dessus; le recit du 'comment' est dans l'archive et dans git log."
   },
   "infra": {
     "infra": {
@@ -7079,23 +6372,6 @@
         "statut": "DEVIS REÇU — BLOQUÉ sur la contradiction steering. Relance à envoyer."
       }
     },
-    "g22_4_deeplinks_diagnosis": {
-      "date": "2026-05-13",
-      "status": "RESOLVED_BY_qr_redirect_white_label - voir cette section",
-      "context": "4 QR codes physiques BE300020-23 imprimés avec slugs c174231-234. Verification API Monta directe : ces 4 slugs n'existent PAS en base Monta. Test https://ozecar.app/d/c174231 = HTTP 200 page portail Monta vide.",
-      "blocker_technique": "Monta API génère les slugs SERVER-SIDE. POST /deeplinks crée un deeplink mais retourne un slug aléatoire (test: c208529). Impossible de forcer c174231-234.",
-      "next_actions": [
-        "Option 1 : Lors prochaine commande QR physiques, recycler les 4 références monday en les ré-associant à un autre QR physique disponible avec un slug Monta valide",
-        "Option 2 : Réimprimer 4 nouveaux QR codes physiques avec les bons slugs Monta (créés juste avant)"
-      ],
-      "monday_items_updated": [
-        "BE300020",
-        "BE300021",
-        "BE300022",
-        "BE300023"
-      ],
-      "resolution_date": "2026-05-15"
-    },
     "dettes_techniques": {
       "prix_kits_obsoletes_2026_05_27": {
         "date_detection": "2026-05-27",
@@ -7109,7 +6385,8 @@
         "action": "Search & replace global sur ozecar-kit.html et pages staging : 19€ → 49€ (Kit Master), 9€ → 29€ (Kit Unit). Attention à ne pas toucher au prix supervision Starter (19€/borne/mois) qui reste valide.",
         "status": "TODO"
       }
-    }
+    },
+    "_archive": "Historique des iterations (1 sous-sections) sorti vers archive.json > purge_2026_07_15 > infra. Decisions conservees ci-dessus; le recit du 'comment' est dans l'archive et dans git log."
   },
   "strategy": {
     "business_expansion": {
@@ -8151,133 +7428,6 @@
         "Designer le prochain pays cible (declenche creation country_pack vide a remplir)"
       ]
     },
-    "positioning_hero_2026_05_14": {
-      "_note": "Decision Dominique 2026-05-14 : abandon de 'supervisees en 10 minutes' en hero homepage. Repositionnement vers 'OZECAR garde vos bornes en marche' (promesse de continuite reseau via OZRT). Version prudente : pas de promesse de notification client tant que le scenario Make notif n'est pas en place.",
-      "decision_par": "Dominique Manfredi",
-      "decision_date": "2026-05-14",
-      "context_brief": "Feedback : 'supervisees en 10 minutes' parle uniquement a l'installateur (et meme pour lui, la configuration peut prendre 1 jour pour 10 bornes). Client final exploitant ne vit jamais la pose, il veut de l'operationnel quotidien. Contrainte : equipe de 3 personnes, telephone deja sature, ne peut pas promettre de hotline humaine temps reel.",
-      "positionnement_socle": {
-        "categorie_revendiquee": "Operateur IRVE complet (pas editeur de logiciel)",
-        "differenciateurs_durables": [
-          "Routeur OZRT actif (detection + relance auto) - peu de concurrents font ca",
-          "Modele integre borne+kit+routeur+supervision en un seul guichet, une seule facture",
-          "Marque blanche : client n'a affaire qu'a OZECAR"
-        ],
-        "ce_qu_on_promet": [
-          "Continuite de la connectivite reseau (relance auto OZRT)",
-          "Bornes pre-configurees livrees",
-          "Activation installateur en quelques minutes (pas 'mise en service' complete)"
-        ],
-        "ce_qu_on_ne_promet_PAS_encore": [
-          "Notification client post-reconnexion (pas automatisee a ce jour)",
-          "Hotline qui decroche (non tenable a 3 personnes)",
-          "Zero panne / disponibilite garantie chiffree (pas de SLA contractualise)"
-        ]
-      },
-      "hero_recommande_v1": {
-        "titre": "OZECAR garde vos bornes en marche.",
-        "accroche": "Vos points de charge restent connectes, meme en cas de coupure reseau. La supervision relance ce qui doit l'etre, automatiquement. Vous ne touchez a rien.",
-        "cta_primary": "Demarrer un projet",
-        "cta_secondary": "Voir comment ca marche"
-      },
-      "bandeau_installateur": {
-        "titre": "Installateurs : activez chaque borne en quelques minutes.",
-        "accroche": "Recevez la borne pre-configuree OZECAR. Scannez, saisissez, testez la charge pour votre PV de reception. Pas de parametrage cloud a faire de votre cote.",
-        "cta": "Devenir installateur certifie"
-      },
-      "trajectoire_v2_apres_notif_make": {
-        "_prerequis": "Make scenario notification client post-reconnexion en place",
-        "hero_upgrade": "OZECAR garde vos bornes en marche. Et vous previent quand c'est fait.",
-        "accroche": "En cas de coupure reseau, la supervision relance la connexion automatiquement. Vous recevez un recap, vous n'avez rien a gerer."
-      },
-      "livrable_complet": "OZECAR-HERO-POSITIONNEMENT.md (livre 2026-05-14, 188 lignes, 8 sections)",
-      "anti_patterns": [
-        "Ne pas promettre temps precis sans contexte (10 minutes, etc)",
-        "Ne pas mettre 'hotline' / 'support 24/7'",
-        "Ne pas faire du SaaS-speak generique (plateforme tout-en-un, tableau de bord 360)",
-        "Ne pas mentionner Monta",
-        "Ne pas promettre 'zero panne' sans SLA contractualise"
-      ],
-      "application_wp": "Hors perimetre PM direct - releve du chat wp_refonte quand il s'inscrira au bus. Le document sert de reference pour validation freelance/agence en attendant.",
-      "next_actions": [
-        "[Dominique] Lire OZECAR-HERO-POSITIONNEMENT.md, valider proposition A ou choisir une autre",
-        "[PM ou chat make] Specifier puis implementer le scenario Make notif client post-reconnexion auto (prerequis upgrade hero v2.0)",
-        "[Bus inter-chat] Annoncer le nouveau hero au chat wp_refonte quand il s'inscrira"
-      ],
-      "hero_decide_v1": {
-        "_note": "Decision finale Dominique 2026-05-14 apres benchmark europeen (Spirii, Driveco, Electra, Allego, Mer, Plugsurfing). Aucun concurrent n'utilise 'pilotage automatique' / 'autopilot' - terrain libre. Approche : francais net en facade B2B + reserve 'Autopilot' comme nom de feature pour v2.",
-        "titre": "Vos bornes en pilotage automatique.",
-        "accroche": "Connectivite, supervision, depannage a distance : OZECAR gere, vous encaissez.",
-        "cta_primary": "Demarrer un projet",
-        "cta_secondary": "Voir comment ca marche",
-        "rationale": [
-          "Aucun CPO francais/europeen n'a pose ce drapeau (benchmark 2026-05-14 : Spirii 'powerful connections', Driveco 'expert depuis 2010', Electra 'ultra-fast infrastructure', tous froids et interchangeables)",
-          "Reconcilie les deux cibles : installateur entend 'ca pilote tout seul apres ma pose', client final entend 'je ne touche a rien'",
-          "Antithese mnemotechnique 'OZECAR pilote, vous encaissez' = slogan implicite",
-          "Francais net pour cible B2B francaise (foncieres, supermarches, hoteliers, flottes) majoritairement non-anglophone marketing",
-          "Tenable techniquement : OZRT gere deja la relance auto (continuite reseau), pas de surpromesse de notification"
-        ],
-        "anti_patterns_evites": [
-          "Pas de chiffre precis (10 minutes faux pour la config)",
-          "Pas de hotline (3 personnes equipe, non tenable)",
-          "Pas de SaaS-speak generique (plateforme 360, tableau de bord)",
-          "Pas d'anglicisme en hero (reserve pour feature dediee post-v2)",
-          "Jamais Monta (marque blanche)"
-        ]
-      },
-      "ozecar_autopilot_reserve": {
-        "_note": "Decision Dominique 2026-05-14 : 'OZECAR Autopilot' devient le nom de la future feature de notification client automatisee post-reconnexion. A deployer apres mise en place du scenario Make v2 (cf positioning_hero_2026_05_14.trajectoire_v2_apres_notif_make).",
-        "nom_feature": "OZECAR Autopilot",
-        "ou_apparait": "Page dediee /autopilot ou section dans la page produit supervision, accessible une fois v2 notif Make en place",
-        "prerequis_avant_communication_publique": [
-          "Scenario Make 'notification client post-reconnexion auto' en production",
-          "Webhook Monta (ou OZRT) verifie comme stable",
-          "Premier groupe de clients test pour valider que les notifications sont effectivement bien recues et bien percues"
-        ],
-        "promise_v2_quand_autopilot_active": "OZECAR Autopilot : votre supervision repare avant que vous appeliez. En cas de coupure reseau, la connexion est relancee automatiquement et vous recevez un recap par email. Vous n'avez rien a gerer.",
-        "interdiction_avant_v2": "Ne JAMAIS utiliser le mot 'Autopilot' sur les surfaces publiques OZECAR tant que la chaine notification client n'est pas automatisee. Communiquer 'Autopilot' sans le tenir transformerait la promesse en mensonge."
-      },
-      "application_staging_2026_05_29": {
-        "_note": "Application des 5 modifications du hero homepage validees, executee par chat wp_refonte (PM + WP combine).",
-        "executed_at": "2026-05-29T21:07Z",
-        "page_modifiee": "staging.ozecar.fr/ (page WP id 22462, slug homepage-2)",
-        "method": "wp-deploy.php update_page action",
-        "backup_serveur": "wp-content/uploads/ozecar/page-backups/page-22462-20260529-210702.html",
-        "backup_local": "api/backups/page22462-home-2026-05-29-2104.html (sur Hostinger)",
-        "commit_sha_avant": "<REDACTED_HEX>",
-        "commit_sha_apres": "<REDACTED_HEX>",
-        "modifications_appliquees": [
-          "Zone 1 - Hero H1 : 'Vos bornes supervisees en 10 minutes. Sans technicien.' -> 'Vos bornes en pilotage automatique.'",
-          "Zone 1 - Hero P : 'Portail temps reel...' -> 'Connectivite, supervision, depannage a distance : OZECAR gere, vous encaissez.'",
-          "Zone 2 - Live counter '1 284 bornes supervisees en France ce mois' : SUPPRIME entierement",
-          "Zone 3 - Section Kit Installateur P : reformulee avec 'Activez chaque borne en quelques minutes... PV de reception... pas de parametrage cloud'",
-          "Zone 4 - Bloc temoignage Weldom remplace par Renault Retail : H2 '5 concessions, 38 points de charge, un seul portail.' + citation generique sans signature + 4 KPIs (38 PDC / 3 sem / 1 portail PLACEHOLDER / 5 concessions) + signataire 'Renault Retail / Automobile · Multi-sites' (initiales RR au lieu de JM)",
-          "Zone 5 - Meta description : Yoast a auto-regenere l'og:description avec le nouveau contenu, aucune action manuelle requise"
-        ],
-        "kpi_3_placeholder": {
-          "_warning": "Le KPI 3 (slot jaune) a ete mis en placeholder neutre '1 portail / supervision centralisee' car Dominique a demande de remplacer le -80% par un pourcentage d'impact qu'il devait confirmer mais ne l'a pas encore fourni. A METTRE A JOUR quand le % d'impact est confirme.",
-          "valeur_placeholder_actuelle": "1 portail / supervision centralisee",
-          "action_user_attendue": "Dominique doit confirmer un % d'impact (gain temps reporting, baisse couts support, hausse usage, etc) pour remplacer ce placeholder"
-        },
-        "verifications_post_deploiement": {
-          "pilotage_automatique_present": true,
-          "10_minutes_residuel": 0,
-          "supervisees_en_residuel": 0,
-          "1_284_bornes_residuel_dans_live_counter": 0,
-          "jean_marc_residuel": 0,
-          "renault_retail_present": true,
-          "5_concessions_present": true,
-          "38_pdc_present": true,
-          "pv_reception_present": true,
-          "url_verifiee": "https://staging.ozecar.fr/"
-        },
-        "residus_hors_scope_observes_garde_intentionnellement": [
-          "2x 'Weldom' dans le carousel logos clients (Weldom est toujours un client OZECAR, son logo reste dans le ticker)",
-          "2x 'Weldom Marseille' / 'Weldom Centre' dans des mockups de portail (decoration captures d'ecran, hors scope hero)",
-          "1x '1 284' dans un autre module trust en bas de page (different du live counter supprime, a evaluer separement plus tard)"
-        ]
-      }
-    },
     "methode_vente_duo_am_vp_2026_07_09": {
       "date": "2026-07-09",
       "auteur": "Claude PM (claude.ai)",
@@ -8300,575 +7450,7 @@
       "prochaine_etape": "Ne rien construire tant que la condition d'activation n'est pas remplie. Pas de script, pas de seuil, pas de playbook prématuré.",
       "condition_activation": "Marie-Estelle opérationnelle sur le premier temps commercial (qualification + relance) et volume de deals suffisant pour justifier une escalade sélective vers le Président. Revue au lancement rentrée (semaine du 1er sept 2026)."
     },
-    "investor_report_2026_05": {
-      "_note": "Données consolidées pour reporting semestriel investisseurs historiques (deadline 22 mai 2026). Demande: comptes 2024 def + 2025 projet, CA à date, % budget, cadrage pivot SaaS.",
-      "created": "2026-05-21",
-      "monta_real_data": {
-        "_source": "API Monta via proxy ozecar.fr/api/monta.php — pagination corrigée (query string ?page=N&perPage=100, le proxy ignore params{})",
-        "pdc_uniques": 514,
-        "sites_uniques": 181,
-        "mix_ac_dc": {
-          "ac": 469,
-          "dc": 45
-        },
-        "activation_par_annee": {
-          "2024": 261,
-          "2025": 160,
-          "2026_a_date": 79
-        },
-        "energie_cumulee_compteurs_gwh": 1.76,
-        "energie_cumulee_sessions_gwh": 1.52,
-        "sessions_cumulees": 90635,
-        "gmv_cumulee_estimee_eur": "491700-737551 (mid 614625) — GMV = price utilisateur, PAS revenu OZECAR",
-        "panier_moyen_eur": 6.78,
-        "pct_sessions_payantes": 51,
-        "marques_distinctes": "20+ (Keba 199, Zaptec 75, Circontrol 34, Alfen 28...)",
-        "caveat_data": "Échantillon charges ne couvre que fév+mai 2026 (pagination date limitée). GMV non ventilable par année. Compteur capte léger historique pré-supervision."
-      },
-      "liasse_fiscale": {
-        "_source": "Liasse 2033-B-SD 2025 (N) + N-1 2024, SIREN 902757202, lue depuis PDF officiel uploadé 2026-05-21",
-        "exercice_2024": {
-          "ventes_marchandises": 116689,
-          "production_vendue_biens": 348635,
-          "production_vendue_services": 62255,
-          "subventions": 0,
-          "autres_produits": 15490,
-          "total_produits_exploitation": 543069,
-          "total_charges_exploitation": 513604,
-          "resultat_exploitation": 29465,
-          "resultat_net": 28991
-        },
-        "exercice_2025": {
-          "ventes_marchandises": 33694,
-          "production_vendue_biens": 249347,
-          "production_vendue_services": 173489,
-          "subventions": 36128,
-          "autres_produits": 23591,
-          "total_produits_exploitation": 516250,
-          "total_charges_exploitation": 653855,
-          "resultat_exploitation": -137605,
-          "resultat_net": -138089,
-          "deficit_reportable": 138078
-        },
-        "lecture_cle": {
-          "pivot_services": "Production vendue services +179% (62k->173k) = signature pivot SaaS réelle",
-          "biens_reste_dominant": "Production vendue biens 249k = 1er poste 2025 (installation/intégration), -28% vs 2024. OZECAR encore majoritairement installateur, pas pure SaaS",
-          "perte_2025_origine": "Perte -138k due à HAUSSE CHARGES (+27%: achats MP 3k->167k, charges externes 177k->271k), PAS à chute CA (-5% seulement)",
-          "marketplace_monta": "PAS de ligne CA recharge identifiable dans liasse 2025. Au mieux noyé dans 173k services. Affirmation 'marketplace déjà dans liasse' À VÉRIFIER avec EC",
-          "capital": "Dominique Manfredi 82.16%, 1 personne morale associée"
-        }
-      },
-      "pivot_framing": "Baisse CA = conséquence assumée du pivot SaaS. Sacrifice du négoce one-shot pour bâtir du récurrent. Prouvé par +178% services dans liasse.",
-      "decisions_dominique": {
-        "volume_bornes": "GMV séparée du revenu OZECAR (le plus honnête)",
-        "format": "Chiffres d'abord, format choisi après",
-        "mrr_reel": "EN ATTENTE",
-        "budget_2026": "EN ATTENTE"
-      },
-      "open_questions": [
-        "MRR consolidé réel?",
-        "Budget 2026 + CA à date?",
-        "Validation chiffres liasse?"
-      ],
-      "livrable": {
-        "status": "LIVRÉ 2026-05-21",
-        "fichiers": [
-          "Rapport_OZECAR_Investisseurs_Mai2026.docx",
-          ".pdf"
-        ],
-        "ca_2026_a_date_reel": 124764,
-        "carnet_commandes_securise": 99000,
-        "budget_2026_scenarios": {
-          "prudent": 465000,
-          "cible": 550000,
-          "objectif_etendu": 600000
-        },
-        "marketplace_net_jan_avr": 26646,
-        "saisonnalite": "70% du CA recharge sur juin-sept",
-        "perte_2025_explication": "Coûts plateforme supervision (Monta) = investissement pivot. Charges +27% sur CA -5%.",
-        "points_ouverts_pour_dominique": [
-          "Faire régulariser par l'EC les 21k€ de CA acquis non facturé (livré 2026)",
-          "Confirmer avec l'EC le traitement comptable du marketplace Monta (brut/net) pour 2026",
-          "Joindre les 2 liasses (2024 déf + 2025 projet) à l'envoi investisseurs",
-          "Vérifier ventilation exacte des 94k€ charges externes si les investisseurs creusent"
-        ],
-        "corrections_v2": {
-          "maintenance_annuelle": "31k€ signés (14k facturés 31/05)",
-          "arr": "~50k€ dans services 2025 + ~30k€ ARR sécurisé (200 PDC sept) = ~80k€ base récurrente",
-          "sessions_2026_a_date": "~20k sessions en mai (40% du total 2025) AVANT haute saison",
-          "belgique": "8 PDC publics, ~3k€/mois - preuve export",
-          "ajaccio": "20 PDC marché public supervision pure, déployés janv 2026",
-          "balagne": "30 PDC en discussion",
-          "part_marche_corse": "59% bornes publiques (en nombre)",
-          "note": "Belgique+Ajaccio déjà dans les 514 PDC, présentés comme preuve réplicabilité"
-        },
-        "annexes": "v3: Note méthodo + Annexe A (charges 2025), B (marketplace mois/mois 2026), C (engagements anonymisés). 6 pages."
-      }
-    },
-    "parcours_vente_etat_2026_07_09": {
-      "guide_construit": "Commercial configure -> devis envoye (email unique, vues trackees, expiration J+30, relances J-7/J-2, overlay 'en cours de modification') -> client lit en lecture seule -> 'Accepter et signer' -> modal signature eSignatures (code email, SES) -> webhook contract-signed -> deal Gagné + creation deal Livraison. TESTE.",
-      "guide_manquant": [
-        "PAIEMENT (Stripe): kit one-time + abonnement recurrent (SEPA/carte). Bloquant pour encaisser.",
-        "Envoi du contrat signe (PDF) aux parties (signataire, payeur, contact technique, copie OZECAR).",
-        "Notifications d'etapes (kit prepare/expedie/config/actif) promises dans le bloc 'Et apres ?'.",
-        "URL propre ozecar.fr/mon-offre (rewrite WP au passage en prod)."
-      ],
-      "self_service_reporte": "DECISION Dominique: on se concentre sur le guide. Le self-service depend du KIT D'ACTIVATION: l'installateur invite le client final -> c'est A L'INVITATION que le deal_id sera cree -> le parcours reprend ensuite le fil normal (signature, onboarding, setup final). Donc le 'trou dossier client' du self-service se resoudra par l'invitation installateur, pas par un formulaire de creation dans le configurateur.",
-      "prochaine_brique": "STRIPE (sert les deux parcours)."
-    },
-    "refonte_offre_2026_07_09": {
-      "statut": "GRILLE VALIDEE par Dominique (naming + prix + variable + DC). Remises et seuil de rentabilite: en discussion.",
-      "naming": "Essential / Business / Enterprise (convention marche, valide). Abandonne: Pro, Pro+, Transit, Socle/Flux/Reseau. Pro+ et Transit ne sont PAS des forfaits mais des conditions negociees -> vivent derriere Enterprise 'sur devis'.",
-      "grille": {
-        "Essential": {
-          "AC": "6,90 €/PDC/mois",
-          "DC": "9,90 €",
-          "contenu": "supervision temps reel, controle a distance, badges RFID locaux, alertes. PAS de transaction."
-        },
-        "Business": {
-          "AC": "9,90 €",
-          "DC": "15,90 €",
-          "contenu": "+ monetique (QR/CB/app), refacturation, groupes tarifaires, itinerance entrante ET sortante, smart charging",
-          "recommande": true
-        },
-        "Enterprise": {
-          "prix": "Sur devis (~50 €/PDC/mois)",
-          "contenu": "+ API/exports, multi-sites/sous-comptes, marque conducteur, CSM dedie, SLA renforce, frais variables reduits. Echange: engagement de volume contre baisse du variable."
-        }
-      },
-      "variable": {
-        "transaction_locale": "10 % (Enterprise 5 %). Cout Monta 2 % -> marge nette 8 % / 3 %. Justifie: Freshmile et les operateurs qui ciblent le client final sont ~10 %; les concurrents a 2,5 % ciblent des revendeurs.",
-        "itinerance_entrante": "0,05 €/kWh + 4 % (Enterprise 0,025 €/kWh + 4 %). Le % couvre EXACTEMENT le cout Monta (4 %), les centimes sont la marge -> marge garantie 0,05 (ou 0,025) €/kWh quel que soit le prix du kWh. IMPORTANT: ne jamais facturer un % inferieur au cout (inversion de marge sur DC a 0,87 €/kWh).",
-        "itinerance_sortante": "A DEFINIR - cout Monta inconnu (demande a Dominique).",
-        "regle": "Frais operateur/itinerance JAMAIS sur les pages publiques - devis uniquement."
-      },
-      "ratio_DC": "~1,65x l'AC (marche: Charge-Keeper 1,55x, e-flux 1,89x). Maintenance TOUJOURS en sus.",
-      "roaming_inclus": "L'itinerance devient une CAPACITE incluse dans Business (activable), monetisee au variable - pas une option a +5 €/PDC. Raison: le roaming coute proportionnellement a l'usage, pas au nombre de PDC. 'Ouvrir au public' = interrupteur gratuit qui active roaming entrant + conformite AFIR + hotline conducteur 24/7.",
-      "assistance_24_7": "DEUX choses distinctes: (1) hotline CONDUCTEUR 24/7 = standard marche (incluse chez e-flux des Essential, Charge-Keeper des Starter) -> incluse quand 'public' est active, inutile pour une flotte de service. (2) INTERVENTION technique sous SLA = niveau de maintenance N1-N4, FACTUREE (Vaylens la vend en add-on 6,90 €). Ne jamais melanger les deux.",
-      "economie": {
-        "couts_fixes": "5 000 €/mois (3 500 marque blanche + 500 API + 1 000 plateforme) + 4,50 €/socket variable.",
-        "parc_actuel": "~700 sockets -> le fixe pese 7,14 €/socket -> COUT COMPLET 11,64 €/socket/mois.",
-        "constat": "Seul Business DC (15,90) couvre le cout complet. Essential AC (6,90) ne couvre que 59% et ne genere AUCUN variable (pas de transaction).",
-        "contribution": "Essential AC 2,40 | Business AC 5,40 | Essential DC 5,40 | Business DC 11,40 | Enterprise 45,50.",
-        "seuil": "Mix realiste (60/25/10/5) -> contribution moyenne 4,20 €/socket -> il faut ~1 190 sockets pour couvrir le fixe avec l'abonnement seul. A 700 sockets: deficit ~2 060 €/mois a combler par le variable (≈25 700 € de transactions locales ou ≈41 000 kWh d'itinerance).",
-        "leviers": "(1) CROISSANCE = levier n°1 (le 3 500 € ne scale pas: 5 €/socket a 700, 2,33 € a 1 500). Objectif 1 200 sockets. (2) Pousser Business par defaut (equilibre a 926 sockets si 100% Business AC vs 2 083 si 100% Essential AC). (3) Renegocier les 3 500 € (70% du fixe)."
-      },
-      "remises_reco": "Cout socket = 65% du prix d'Essential -> une remise % attaque directement la marge (pas un coussin comme en SaaS ou le COGS est ~20%). Grille actuelle (-15% annuel / -25% biannuel) DETRUIT Essential (contribution 0,68 € en biannuel, -72%). RECO: annuel -10%, biannuel -15%, Essential exclu du biannuel (annuel -5% max). A VALIDER.",
-      "alerte_forfait_zero": "L'offre de migration Forfait Zero est 'Pro a -50%' calee sur Pro=14,90 -> 7,45 €. Avec Business a 9,90, '-50%' donnerait 4,95 € = SOUS le cout socket (4,50). REECRIRE en PRIX FIXE 7,45 €, jamais en pourcentage.",
-      "a_repercuter": "Configurateur (forfaits+prix+DC), page tarifs publique (3 plans, dernier sur devis), devis, CGV, deck. Ancienne grille (Essential 5,90 / Pro 14,90 / Pro+ 24,90 / Transit 54,90) OBSOLETE.",
-      "prix_definitifs": {
-        "principe": "Les prix valides (6,90 / 9,90 / 15,90) sont les prix ANNUELS. Le mensuel est derive AU-DESSUS.",
-        "Essential": {
-          "AC": "mensuel 7,90 · annuel 6,90 · biannuel 6,90 (pas de remise biannuelle)",
-          "DC": "mensuel 10,90 · annuel 9,90 · biannuel 9,90"
-        },
-        "Business": {
-          "AC": "mensuel 10,90 · annuel 9,90 · biannuel 9,30",
-          "DC": "mensuel 17,90 · annuel 15,90 · biannuel 15,20",
-          "recommande": true
-        },
-        "Enterprise": "Sur devis (3e plan, regle des 3 plans respectee)",
-        "remises": "Annuel -10% · Biannuel -15% (calcule sur le mensuel). ESSENTIAL EXCLU du biannuel (cout socket = 65% du prix -> contribution tomberait a 0,68 €).",
-        "raison": "Une remise % attaque directement la marge car le COGS est 65% du prix (vs ~20% en SaaS classique). L'ancienne grille (-15%/-25%) detruisait Essential."
-      },
-      "configurateur_applique": "LIVRE staging. SUP = 3 forfaits (ess/biz/ent). Selecteur AC/DC (#kind) ajoute a cote du selecteur de frequence. supPrice gere kind+mode+quote. Enterprise affiche 'Sur devis'. SUP_ROWS refait en 3 colonnes (itinerance entrante&sortante incluse en Business; assistance conducteurs 24/7 'avec ouverture publique'; API/multi-sites/CSM en Enterprise; frais d'operateur 10%/5%; itinerance 0,05 €/kWh+4% / 0,025+4%). Options remappees: wallet inclus biz/ent + masque en Essential (pas de transaction), data option partout, csm/flotte inclus Enterprise, loadbal inclus partout. Self-service pre-selectionne Business. Mention legale remises maj. Verifie Playwright: 3 colonnes, 6 combinaisons de prix exactes, 0 erreur JS.",
-      "reste_a_repercuter": "Page tarifs publique, CGV, deck, emails. Migration Forfait Zero -> reecrire en PRIX FIXE 7,45 € (pas -50%). Itinerance sortante: prix a definir (cout Monta inconnu).",
-      "bugfix_kind_persistance": "BUG (introduit par la refonte, corrige): state.kind (AC/DC) n'etait PAS serialise dans le lien devis (genClientLink) ni restaure cote client -> un devis DC affichait les prix AC (9,90 au lieu de 15,90 = -6 €/PDC/mois silencieux). FIX: kind ajoute a config{}, restaure en vue client (c.kind) et en preview/sales (cf.kind). Verifie Playwright: DC/Business -> 15,90 € cote commercial ET cote client.",
-      "engagement_et_itinerance_valides": {
-        "remise_par_engagement": "VALIDE Dominique. 12 mois = plein (7,90/10,90 AC · 10,90/17,90 DC), 24 mois ≈ -5% (7,40/10,40 · 10,40/16,90), 36 mois = prix cible (6,90/9,90 · 9,90/15,90). Facturation MENSUELLE par defaut sur nos rails (SEPA). Prepaiement annuel = option separee -5%. Biannuel supprime. Prix affiche partout = 36 mois ('a partir de 6,90').",
-        "itinerance_entrante": "FORMULE B VALIDEE: 4% + 0,05 €/kWh (Enterprise 0,025). GRANDFATHERING: sites existants restent en A (20%), nouveaux sites en B. Comparatif Assesse (3788 sessions, 26,9 kWh/s, 0,647 €/kWh): A=13 131 € · B=7 715 € · C session=4 331 € -> C rejetee (sous-facture le DC).",
-        "itinerance_sortante": "Cout Monta = 4% -> meme formule: 4% + 0,05 €/kWh (OZECARD sur reseaux tiers).",
-        "mandat_sepa": "SYSTEMATIQUE a la signature (SetupIntent Stripe, 0 € debite), meme pour clients wallet (mandat dort = interrupteur d'independance). SEPA Core. Campagne regularisation parc couplee a la migration Forfait Zero.",
-        "facturation_3_canaux": "(1) Defaut: SEPA mensuel nos rails via Stripe -> facture Pennylane, 0 commission. (2) Sites a recettes (Business/DC/public): wallet Monta, abonnement deduit des recettes, 5% = cout de distribution absorbe, mandat SEPA en reserve. (3) Prepaiement annuel -5%: facture Pennylane. Le VARIABLE n'est jamais facture: retenu a la source avant reversement.",
-        "site_web": "Le prix public = 36 mois. Variable jamais sur le site (devis uniquement). Mention '12/24 mois disponibles, voir devis'."
-      },
-      "configurateur_engagement": "LIVRE staging + verifie Playwright. Selecteur d'engagement 12/24/36 (remplace mensuel/annuel/biannuel), checkbox 'Prepaiement annuel -5%' (#prepay), SUP porte ac:[12,24,36] et dc:[...]. Retrocompat anciens liens: mode monthly->12, biannual->24, annual->36. Toutes combinaisons testees exactes (dont prepay: 6,56/9,40 en AC36). Captures: configurateur-engagement*.png.",
-      "VARIABLE_VERROUILLE_2026_07_10": {
-        "statut": "VERROUILLE par Dominique le 2026-07-10. La grille tarifaire est COMPLETE.",
-        "transaction_locale": "10 % (Enterprise/negocie 5 %)",
-        "itinerance_entrante": "STANDARD 5 % + 0,07 €/kWh (= la moitie du local en %, taux effectif ~15,7 % sur profil Assesse 0,655 €/kWh — quasi iso avec l'existant 16 %). NEGOCIE (Enterprise/gros volume, plancher absolu): 4 % + 0,03 €/kWh (~8,6 % effectif — remise a ne dégainer que contre volume/engagement, elle divise la marge par 2,6).",
-        "itinerance_sortante": "5 % + 0,07 €/kWh (negocie 4 % + 0,03). Cout Monta 4 % les deux sens.",
-        "grandfathering": "Sites existants conservent leurs conditions (ex. Assesse 16 %/8 % plan 4782 'DC Essential (BE)' 10,80 €). Nouvelles conditions pour nouveaux sites uniquement.",
-        "analyse_assesse_complete": "7 743 sessions (10 sept 2025 -> 10 juil 2026, 11 mois calendaires), 4 PDC DC 180 kW, 100 % ITINERANCE (zero local). 187 203 kWh, 122 577 € recettes. Mensuel: 658 sessions, 17 018 kWh, 11 143 €, prix moyen 0,655 €/kWh. Facture itinerance/mois: actuel 16 % = 1 783 € | 5 %+0,07 = 1 748 € | 4 %+0,05 = 1 297 € (rejete, -27 %) | 4 %+0,03 = 956 €.",
-        "ouverture_public": "Activation GRATUITE + FACTURATION MINIMALE 5 €/PDC/mois deduite des recettes d'itinerance (plancher, pas peage): le PDC public actif ne paie rien de plus, le PDC public inactif couvre hotline 24/7 + referencement. Itinerance SORTANTE incluse sans frais fixes (aucun cout par PDC).",
-        "argumentaire_concurrence": "Le '0,03 €/kWh' d'e-flux/Charge-Keeper est un PASS-THROUGH de clearing (ChargePoint: 'we pass through costs without any markup'), pas une commission — ils se remunerent sur plateforme/abonnement/markup CPO. EVesto: roaming 1,25 €/connecteur/mois mais plancher 400 €/mois. ChargePoint mars 2026: frais par session VISIBLES conducteur (0,25-0,99 $) -> bad buzz massif; notre commission est invisible du conducteur (prelevee sur le reversement). REGLE: variable JAMAIS en grille publique; en RDV, presenter en NET: 'vous gardez ~84 % de vos recettes, sans devenir operateur'. Preuve: Assesse ~12 000 €/mois de recettes, le client 'laisse couler parce que ca tourne'.",
-        "positionnement_course": "Deux courses distinctes: (1) course au capital (tiers-invest Electra/Powerdot) = PAS la notre; (2) course a l'OPERATION des bornes obligees par AFIR/LOM/droit a la prise = la notre, la reglementation nous pousse des clients. Duel commercial cle vs tiers-invest: 'Possedez votre borne, gardez ~84 % de vos recettes' vs 'borne gratuite, loyer'. Vulnerabilites: (1) echelle 700->1 190 sockets = LA variable, (2) dependance moteur technique -> mandat SEPA + contrats a notre nom = assurance-vie, (3) concentration Corse -> repliquer Assesse sur continent/Belgique."
-      },
-      "page_tarifs_staging_maj": "LIVRE 2026-07-10. Section #tarifs de /supervision-3/ (post 22463) remplacee en DB via $wpdb (bypass KSES, clean_post_cache). ANCIENNE grille supprimee (Essential 5,90/Pro 14,90/Pro Plus 24,90/Transit, 'annuel -15%', 'sans engagement', 'premier mois offert'). NOUVELLE: 3 cartes Essential/Business(populaire)/Enterprise(sur devis), selecteur ENGAGEMENT 12/24/36 (36=defaut 'meilleur prix') + selecteur AC/DC, prix JS dynamiques (ess ac 7.90/7.40/6.90 dc 10.90/10.40/9.90 · biz ac 10.90/10.40/9.90 dc 17.90/16.90/15.90). Footer: data 2 €, maintenance des 4 € + 60% incidents resolus sans deplacement, ouverture public gratuite, prepaiement -5%. AUCUN frais variable affiche (regle). Verifie Playwright: 4 combinaisons exactes, 0 erreur JS. Captures tarifs-36-ac/dc.png. | REVISION 2026-07-10: selecteur d'engagement 12/24/36 RETIRE du public (decision Dominique — la duree est un outil de negociation, pas un argument de vente: elle revelait la grille de remise, transformait le prix d'appel en asterisque, et n'appartient qu'au devis). GARDE: selecteur AC/DC (decrit le besoin) + mention loyaute 'Prix pour un engagement 36 mois. Engagements 12 et 24 mois disponibles — detail au devis.' Prix affiches = 36 mois (6,90/9,90 AC · 9,90/15,90 DC). Verifie Playwright: 0 bouton engagement, AC/DC fonctionnel, 0 erreur.",
-      "decisions_2026_07_11": {
-        "prepaiement_annuel": "VALIDE Dominique: le -5 % s'applique a TOUT l'abonnement recurrent (forfaits + options data + maintenance). Maquette et configurateur doivent remiser toutes les lignes. Libelle: 'sur l'ensemble de l'abonnement (forfaits et options)'.",
-        "convention_couleurs_AC_DC": "Alignement sur le module bornes-compatibles: AC = fond rgba(95,45,255,0.1) texte violet #5F2DFF · DC = fond rgba(250,200,40,0.15) texte #a07000. Appliquee aux badges du devis. A appliquer partout ou AC/DC apparaissent (configurateur, portail).",
-        "maintenance_par_site_ARCHITECTURE": "REGLE Dominique: les bornes d'un meme site restent ensemble techniquement (une seule team Monta, pas de decoupage artificiel en 2 groupes). RESOLUTION: (1) Facturation par defaut = NOS rails (Stripe/SEPA -> Pennylane): forfaits + options par site vivent dans NOTRE contrat (line items Stripe par site), Monta ne porte que les 4-8 plans forfaits standards attaches aux PDC selon type AC/DC — la granularite par site est native puisque le plan est PAR PDC. Aucun probleme d'architecture. (2) Cas wallet (abonnement preleve sur recettes cote Monta): le plan au PDC doit porter le prix complet forfait+options du site -> plan combine cree MANUELLEMENT a la demande (ex 'Business AC + N3 (site X)'). Friction acceptable: cas minoritaire, sites a recettes souvent uniformes. L'engagement ne cree jamais de plan supplementaire (remise portee par discountPercentage sur l'abonnement)."
-      },
-      "regles_avenants_VALIDEES_2026_07_12": {
-        "principe": "Deal signe = photo immuable. Evolution = nouveau deal d'avenant (stages 'Avenant — envoye/signe' du pipeline Vente) SAUF si delta MRR = 0.",
-        "regle_1_delta_nul": "VALIDE: changement sans impact MRR (ex. mode de paiement) = PAS de deal d'avenant. E-mail recapitulatif au client (fait foi) + note horodatee sur la fiche societe + maj propriete ozecar_paiement.",
-        "regle_2_eligibilite_wallet": "VALIDE: passage au wallet autorise si flux net moyen (recettes locales + itinerance entrante - recharges sortantes) >= 2x l'abonnement mensuel sur les 3 derniers mois (donnees supervision). Sinon refus courtois + rester SEPA.",
-        "regle_3_echec_wallet": "VALIDE: 2 prelevements wallet echoues consecutifs = bascule automatique sur le mandat SEPA dormant + notification client. Le mandat SEPA n'est JAMAIS revoque, meme en wallet.",
-        "bascule_wallet_technique": "Monta: subscriptions des PDC sur plans standards payants (preleves sur wallet, mecanisme natif). Stripe: abonnement reduit aux options (data/maintenance restent TOUJOURS en SEPA); si zero option, abonnement a 0 mais mandat actif. Effet a la prochaine echeance mensuelle (prorata Stripe). ozecar_paiement -> wallet.",
-        "autres_regles_rappel": "Upgrade immediat · downgrade/retrait PDC a date anniversaire · options a 30 j de preavis · engagement porte sur le forfait seul · changement engagement = avenant signe · mensuel<->prepaiement au renouvellement annuel."
-      },
-      "CORRECTION_MODELE_FRAIS_2026_07_12": {
-        "STATUT": "ANNULEE ET REMPLACEE (v1.400). Ma lecture v1.399 etait FAUSSE.",
-        "modele_CONFIRME_par_Dominique": "Les % de la grille OZECAR sont des taux CLIENT TOUT COMPRIS = frais Monta + commission OZECAR. Exemple reel: contrat a 10 % = 2 % 'Monta frais' + 8 % 'OZECAR frais' (deux lignes sur le wallet, un seul taux commercial). Le raisonnement d'origine etait juste: le % couvre le cout Monta, les centimes sont la marge.",
-        "SAISIE_HUB_NETTE": "Les frais operateur saisis dans un plan Hub sont NETS de la part Monta (Monta preleve ses 2 %/4 % automatiquement en sus). GRILLE VERROUILLEE -> SAISIE PLAN: local 10 % client -> saisir 8 % · itinerance 5 % + 0,07 client -> saisir 1 % + 0,07 €/kWh. Confirme par le plan existant: 8 saisi + 2 Monta = 10 client (local), 16 saisi + 4 Monta = 20 client (itinerance Assesse).",
-        "economie": "Marge locale = 8 % du CA. Marge itinerance = 1 % + 0,07 €/kWh (Assesse: ~1 302 €/mois de marge sur 1 748 € factures au taux client 15,7 %). Client conserve: ~90 % en local, ~84 % en itinerance — chiffres du discours commercial.",
-        "devis": "Pas de mention supplementaire de clearing necessaire: le taux affiche au devis EST le taux total supporte par le client. La ligne 'Monta frais' du wallet est une decomposition, pas un supplement (exception CGV Monta ApS couvre l'exposition)."
-      }
-    },
-    "presentations_v2_2026_07_03": {
-      "_note": "Refonte presentations OZECAR v2, scindees par cible (audience). Demande Dominique 2026-07-03.",
-      "date": "2026-07-03",
-      "format": "pptx (pptxgenjs) -> import Google Slides editable. Charte verrouillee Ink/Yellow/Violet/Cream, DM Sans/Instrument Serif/Space Mono, zero or, zero barre d'accent.",
-      "regle_honnete": "Aucun chiffre/cas invente. Seuls chiffres reels: Avere + grille canonique + reprise. Cas clients = placeholder tant que Dominique n'a pas fourni les chiffres valides.",
-      "assets": "logo officiel transparent recolore (ink/cream), mascotte croppee (ink/yellow/cream), mockups app ozecarmock1/2. Zero fuite Monta verifiee.",
-      "cible_1_client_final": {
-        "statut": "LIVRE v2 (14 slides) = template maitre. v2 = vrais screenshots produit integres.",
-        "chiffres_reels": "Avere 194996 PDC publics FR / +17-20%/an / 9% HS +7j / 90% dispo. Tarifs 5,90 Essential / 14,90 Pro / sur devis Pro+. Reprise: audit gratuit, 0e frais, bascule 48h, neutralite.",
-        "placeholder_a_valider": "Slide 9 cas client: 3 stats (PDC supervises, % dispo, delai bascule) + enseigne/secteur/N sites. EN ATTENTE chiffres Dominique.",
-        "trusted_by_noms": "Renault, Carrefour Market, E.Leclerc, Weldom, SPAR, Europcar, Urssaf, Mairie de Bonifacio (noms en texte, repris du deck public actuel).",
-        "screenshots_reels": "Extraits du PDF client (Pre_sentation_supervision_2026): app parcours 4 ecrans, app phone recharge, kit ecosysteme lockup, dashboard etats des bornes, dashboard revenus, calculateur tension/courant. Slides ajoutees: OZECAR Kit + Vos revenus.",
-        "reframe_supervision_first": "Slide guichet: carte 'La borne/Zaptec' -> 'Vos bornes' (deja installees supervisees, 400+ OCPP, materiel AC/DC en option). Bandeau: 'Compatible 400+ modeles OCPP'. Repond au client supervision-seule."
-      },
-      "cible_2_demo": {
-        "statut": "LIVRE (8 slides) + notes orateur par slide",
-        "format": "Version courte presentateur, tremplin vers demo live du hub. Slide 6 = 'Passons au tableau de bord' (bascule live).",
-        "structure": [
-          "cover",
-          "constat punchy (9% HS / 90% dispo)",
-          "categorie OZECAR (operateur complet, marque blanche)",
-          "cote conducteur (parcours 4 ecrans)",
-          "cote exploitant (etats + revenus)",
-          "TREMPLIN demo live",
-          "pourquoi OZECAR (4 raisons)",
-          "CTA audit gratuit"
-        ],
-        "notes_orateur": "Chaque slide a un addNotes (script de demo, transitions, parcours hub recommande sur slide tremplin)."
-      },
-      "cible_3_installateur": {
-        "statut": "A PRODUIRE (prochain)"
-      },
-      "cible_4_revendeur": {
-        "statut": "A PRODUIRE"
-      },
-      "variantes_sectorielles": "Option: swap slides secteurs+cas pour focus sectoriel (distribution/hotellerie/flottes/transport) des chiffres valides -> 2 slides a changer par secteur.",
-      "data_demandee_a_dominique": [
-        "Pour >=1 cas client reel: enseigne, secteur, nb PDC supervises, % dispo mesuree, delai de bascule. Ideal: 1 cas par secteur cible.",
-        "Logos officiels PNG si mur logos graphique souhaite (sinon noms en texte, deja en place)."
-      ],
-      "learning_DKK": "ATTENTION: l'ecran app 'Demarrage de la recharge' du PDF affiche 'Cout cumule 0 DKK' (couronne danoise = tell backend + mauvaise devise FR). NE JAMAIS l'utiliser. Verif OCR systematique DKK/kr/Monta avant d'integrer un screenshot. Ecrans EUR-propres valides: parcours_row, dash_revenue, dash_etats, dash_tension, kit_lockup, phone_kit.",
-      "case_studies_statut": "EN ATTENTE - Dominique met Marie-Estelle sur la collecte des chiffres (enseigne/secteur/PDC/%dispo/delai). Emplacements balises dans client (slide 10).",
-      "learning_faux_positif_marque_blanche": "Un grep binaire 'monta|DKK' sur les .png embarques peut matcher des octets aleatoires du flux compresse (ex 'dkk' 3 lettres). Ce N'EST PAS une fuite. Le vrai controle marque blanche = contenu VISIBLE (OCR) + URLs/metadonnees, pas les octets compresses. Verif faite: 0 'monta' reel, OCR EUR-propre.",
-      "correction_marque_blanche": "Purge de toute mention 'marque blanche/votre marque/invisible' des decks client + demo (etaient un contresens). Client voit OZECAR partout. Voir positioning_marque_blanche_CLARIF_2026_07_03.",
-      "deck_transport_2026_07_15": {
-        "statut": "LIVRE — deck TRANSPORT & LOGISTIQUE, 15 slides, .pptx editable + PDF. Variante 'exploitation seule' (SANS installation).",
-        "cible": "Transporteurs, logistique, location courte duree, navettes, flottes en rotation. Bornes de depot deja posees ou a venir — OZECAR ne vend pas l'installation dans ce deck.",
-        "angle": "La borne est un outil de production. Un vehicule non charge = une tournee manquee. Positionnement: 'Vos bornes. Notre metier.' + 'Nous n'intervenons pas sur votre installation electrique, nous prenons tout ce qui commence apres.'",
-        "structure": [
-          "cover (Vos vehicules ne s'arretent pas / Vos bornes non plus)",
-          "contexte (9% HS>7j · 90% dispo · 24-7)",
-          "notre role (reprise parc / exploitation / encaissement)",
-          "perimetre 6 blocs sans installation",
-          "charge au depot + schema nuit (rotations, priorisation, depart a l'heure)",
-          "portail multi-depots (capture reelle)",
-          "smart charging (angle = abonnement electrique / raccordement)",
-          "itinerance sortante + encart depot vide en journee",
-          "refacturation par groupe (capture reelle) — flotte/sous-traitants/location/public",
-          "maintenance N1-N4 sans prix",
-          "kit / mise en service",
-          "forfaits Essential(depot prive)/Business(refacture ou ouvert)/Enterprise(multi-depots)",
-          "conformite AFIR",
-          "references (Europcar en tete)",
-          "demarrage + timeline ~2 semaines"
-        ],
-        "slide_conformite_AFIR": "Verifiee par recherche web (ministere Transition ecologique + Avere). Contenu: bornes reservees a la flotte = AFIR NE s'applique PAS · ouvert au public = paiement a l'acte + prix avant session · >=50 kW ET accessible au public = TPE/sans contact obligatoire (QR seul insuffisant) · aires de stationnement sures et securisees = 2 points PL fin 2027, 4 fin 2030. Critere = accessibilite reelle, pas propriete du terrain. Source citee (UE 2023/1804) + disclaimer 'ne constitue pas un avis juridique'.",
-        "claims_ECARTES": "'98,6% de disponibilite contractuelle', 'SLA 24-48h', '70% de pannes resolues a distance', '800+ modeles OCPP' — presents sur l'ancienne page ozecar.fr/secteur transport mais NON verifies dans le state. Remplaces par les valeurs validees: 60% resolus des N1, 400+ modeles OCPP, 'delais d'intervention garantis' (N3/N4) sans chiffre. A ARBITRER PAR DOMINIQUE: soit ces claims sont vrais et on les grave dans le state, soit la page publique doit etre corrigee.",
-        "fichiers": "OZECAR-Transport-Prestations.pptx + .pdf (meme source). build-transport.js + lib.js (helpers partages avec build.js)."
-      },
-      "BUG_CORRIGE_ticks_2026_07_15": "Le helper ticks() sous-estimait le nombre de lignes: il calculait les caracteres/ligne avec la largeur en PX alors que la fontSize est en PT (facteur 0.75 oublie) -> puces qui se chevauchent. Corrige dans lib.js ET build.js: cpl = (w-15)*0.75/(size*0.5). Le deck client final v5 (pptx) a ete REGENERE — la version poussee avant 18h00 le 2026-07-15 avait des chevauchements sur 3 slides.",
-      "QA_PROGRAMMATIQUE_deck": "Le rendu d'images n'etant pas toujours inspectable, QA outillee obligatoire: 1) validate.py (schema/relations) 2) soffice -> PDF 3) pdfplumber: mots hors cadre (x<20, x>W-20, bottom>H-8) + chevauchements (bbox qui s'intersectent a moins de 14pt d'ecart vertical) 4) markitdown + regex pour l'audit de fuites. Les 3 polices de marque (DM Sans, Space Mono, Instrument Serif) doivent etre installees dans ~/.fonts depuis github.com/google/fonts sinon le PDF LibreOffice substitue.",
-      "maj_smart_charging_2026_07_15": "Slide pilotage energetique refaite sur le modele en 4 couches (voir section pilotage_energetique_2026_07_15). Les deux pptx regeneres + QA (0 hors cadre, 0 chevauchement). Marque blanche verifiee: aucun nom produit fournisseur (SmartCharge/SolarCharge/PowerBank/Perific/MQTT/ModBus) ne sort dans le texte client.",
-      "maj_visuels_2026_07_15": {
-        "demande": "Dominique: slides 04 et 07 interessantes mais manque d'elements visuels; produire un graphique statique vs dynamique.",
-        "icones": "DECOUVERTE: le design system OZECAR contient deja ~52 icones 24x24 (stroke, currentColor) inline dans les HTML du project knowledge. NE PLUS EN DESSINER. Extraites, rasterisees en PNG transparent 160px x3 couleurs (ink/yellow/violet) via Chromium -> deck/assets/ic_*.png. Mapping: activity=monitoring temps reel · chart=analytics · ocpp=protocole/connectivite · bolt=pilotage de charge · card=paiement · globe=itinerance/reseau · wrench=maintenance · clock=alertes SLA · box=materiel · truck=transport · layers=multi-sites · gauge · swap=migration · euro.",
-        "slide_04": "Icone violette 26px ajoutee sur chacune des 6 cartes du perimetre (les deux decks).",
-        "slide_statique_vs_dynamique": "NOUVELLE SLIDE (transport 08, client final 12). Schema ORIGINAL OZECAR (aucune reprise du visuel fournisseur): 2 panneaux avec barre empilee batiment/bornes/inutilise a l'echelle reelle (60 A), 3 chips bornes (10 A vs 16 A), trait de limite du site, bandeau +60% + 3 reglages (algorithmes, priorite/plages, equilibrage par phase). Genere en FORMES NATIVES pptx -> editable dans Slides. Geometrie verifiee au pdfplumber: 75,3pt=12A · 190,5pt=30A · 113,7pt=18A · 305,7pt=48A. Fonction reutilisable loadPanel() dans lib.js.",
-        "decks": "Les deux decks passent de 15 a 16 slides. Renumerotation automatique des pieds de page (script patch.js). QA: 0 hors cadre, 0 chevauchement, 0 fuite."
-      },
-      "LECON_2026_07_15_deck_trop_charge": "RETOUR DOMINIQUE (a retenir): les decks derivaient vers trop de slides et trop d'info -> 'le prospect se perd'. Un deck qui vend = 7 slides max, une idee par slide, un visuel qui porte l'argument. Les slides denses (4 cartes + bandeau + notes) sont illisibles. AUSSI: toujours demander/etablir A QUI et POUR QUOI sert le deck AVANT de produire — le deck 'transport' generique etait hors sujet, la vraie cible etait Sungrow sur un appel d'offre precis contre un concurrent integre. Le deck transport generique (16 slides) est CONSERVE comme base mais n'a pas de destinataire identifie."
-    },
-    "demo_flow_2026_05_29": {
-      "_note": "Diagnostic et plan correction du flow 'Demander une demo' sur staging.ozecar.fr, signale par Dominique 2026-05-29.",
-      "diagnostic_date": "2026-05-29",
-      "probleme_observe": "Le bouton 'Demander une demo' du hero arrive sur une page avec un tarif au lieu d'un form. Les boutons demo des pages bornes ne redirigent pas correctement.",
-      "root_cause": {
-        "description": "Le widget HubSpot Meetings Modal est embed UNIQUEMENT dans le content de la page Supervision (22463). Le JS hook les liens 'a[href=\"#demo\"]' et ouvre la modal au clic - mais ce JS n'existe pas sur les autres pages. Les liens '/supervision/#demo' depuis la home (5 occurrences) menent vers la page supervision mais l'ancre #demo n'existe pas (le script ne se declenche pas au chargement d'URL, seulement au clic), donc le scroll reste en haut.",
-        "modal_url_meetings": "https://meetings-eu1.hubspot.com/ozecar-demo/1",
-        "modal_html_id": "oz-meetings-overlay",
-        "selecteurs_hookes_par_le_js": "[data-oz-meeting], a[href=\"#demo\"], a[href^=\"#demo-\"]"
-      },
-      "audit_par_page": {
-        "home_22462": "5 liens '/supervision/#demo' ou '/supervision-3/#demo' (CTA hero + sticky + autres) - tous cassés",
-        "supervision_22463": "3 liens '#demo' qui marchent (modal embed dans la page)",
-        "supervision_3_22463": "3 liens '#demo' qui marchent",
-        "bornes_compatibles_22465": "Non audite (erreur SSL temporaire)",
-        "kit_22464": "Aucun lien demo - pas de CTA demo sur la page Kit (manquant)"
-      },
-      "decision_dominique_2026_05_29": {
-        "methode_retenue": "Option A : creer un bloc Gutenberg 'ozecar/meetings-modal' dans le theme child (dossier blocks/)",
-        "actions": [
-          "Niveau 1 : creer le bloc Gutenberg server-rendered qui injecte le widget complet (HTML overlay + CSS + JS) - 1 fois pour toutes les pages",
-          "Niveau 2 : corriger les 5 liens de la home 22462 en remplacant '/supervision/#demo' et '/supervision-3/#demo' par '#demo'",
-          "Phase 3 (plus tard) : ajouter le bloc dans la page Home 22462 via update_page, retirer le bloc duplique de la page Supervision 22463, ajouter le bloc sur kit/bornes/secteurs"
-        ],
-        "ce_qu_on_ne_fait_pas": [
-          "Pas d'injection hardcode via wp_footer hook dans functions.php (Dominique a explicitement refuse 'tu le hardcode pas, tu le mets sur wordpress')",
-          "Pas de Bloc Synced (option B) - approche plus simple et plus modifiable retenue",
-          "Pas de mu-plugin (option C)"
-        ]
-      },
-      "implementation_status": "EN COURS - chat wp_refonte (= meme chat PM) en train d'implementer le bloc Gutenberg",
-      "implementation_2026_06_01": {
-        "executed_at": "2026-06-01T11:50:04Z",
-        "method": "Bloc Gutenberg ozecar/meetings-modal cree dans le theme child + inscrit dans Gutenberg + ajoute sur la home",
-        "fichiers_crees": [
-          "wp-content/themes/ozecar-child/blocks/meetings-modal/block.json (998 bytes)",
-          "wp-content/themes/ozecar-child/blocks/meetings-modal/render.php (3638 bytes)",
-          "wp-content/themes/ozecar-child/blocks/meetings-modal/style.css (1384 bytes)",
-          "wp-content/themes/ozecar-child/blocks/meetings-modal/editor.js (1340 bytes)"
-        ],
-        "fichier_modifie": "wp-content/themes/ozecar-child/inc/gutenberg-blocks.php (ajout 'meetings-modal' dans la liste \\$ozecar_blocks, position 19)",
-        "backup_auto_serveur": "wp-content/themes/ozecar-child/inc/gutenberg-blocks.php.bak-20260601-114752",
-        "modifications_page_home_22462": [
-          "5 liens '/supervision/#demo' et '/supervision-3/#demo' remplaces par 'href=\"#demo\"'",
-          "Ajout du bloc Gutenberg <!-- wp:ozecar/meetings-modal /--> en fin de content",
-          "Backup auto : wp-content/uploads/ozecar/page-backups/page-22462-20260601-114856.html"
-        ],
-        "verifications_post_deploiement": {
-          "modal_hubspot_meetings_chargee_dans_home": true,
-          "url_hubspot_meeting_correcte": "meetings-eu1.hubspot.com/ozecar-demo/1",
-          "js_hook_actif": true,
-          "liens_demo_actifs_dans_home": 3,
-          "occurrences_liens_casses_supervision_demo": 0,
-          "wp_block_ozecar_meetings_modal_rendu_au_frontend": true
-        },
-        "comportement_attendu": "Au clic sur tout lien 'a[href=\"#demo\"]' ou tout element '[data-oz-meeting]' dans la home, la modal HubSpot Meetings s'ouvre avec l'iframe de RDV ozecar-demo/1. La modal contient un Mutation Observer pour hooker les liens ajoutes dynamiquement.",
-        "phase_3_a_planifier_plus_tard": [
-          "Retirer le bloc duplique hardcode dans la page Supervision 22463 (maintenant que le bloc Gutenberg existe, le HTML inline est redondant)",
-          "Ajouter le bloc meetings-modal aux autres pages (kit 22464, bornes-compatibles 22465, supervision 22463, secteurs 22411-22414, installateurs 14622, revendeurs 22417)",
-          "Verifier que les autres pages contiennent bien des CTA 'Demander une demo' avec href=#demo (page Kit n'en a aucun, a corriger)"
-        ]
-      },
-      "rollback_2026_06_01": {
-        "raison": "Le bloc Gutenberg meetings-modal cause un rendu casse de la home (wpautop entoure le HTML du bloc avec des <p> parasites). Restauration de l'etat d'avant modif.",
-        "restored_backup": "wp-content/uploads/ozecar/page-backups/page-22462-20260601-114856.html",
-        "etat_post_rollback": "Home stable, hero 'pilotage automatique' present, liens demo cassent toujours (etat d'avant cette session demo)",
-        "rollback_backup_auto": "wp-content/uploads/ozecar/page-backups/page-22462-20260601-115359.html",
-        "css_du_bloc_reste_charge_globalement": "Inoffensif (display:none par defaut), pourra etre nettoye plus tard",
-        "bloc_gutenberg_meetings_modal_status": "Les 4 fichiers du bloc restent en place dans le theme mais le bloc N'EST PLUS UTILISE. Il est inscrit dans gutenberg-blocks.php (position 19). Soit on le retire plus tard, soit on le garde pour usage futur."
-      },
-      "option_2_2026_06_01": {
-        "decision": "Creation d'une page WP dediee /demo avec form HubSpot embed",
-        "raisons": [
-          "Simple : un vrai endpoint, pas de modal",
-          "Robuste : pas de dependance theme, pas de bloc custom",
-          "Mesurable : URL trackable analytics + UTM, page indexable",
-          "Maintenable : le form HubSpot peut etre modifie dans HubSpot sans toucher au site"
-        ],
-        "form_hubspot_pressenti": "04f412bf-ee4d-4342-98f6-e8ee728b9989 (a verifier)",
-        "url_cible": "staging.ozecar.fr/demo/",
-        "implementation_prevue": [
-          "Creer une nouvelle page WP 'Demo' avec le form HubSpot embed JS",
-          "Ajouter cette page (id new) a la PAGE_ALLOWLIST de wp-deploy.php pour pouvoir l'editer ulterieurement",
-          "Corriger les 5 liens de la home /supervision/#demo et /supervision-3/#demo -> /demo/",
-          "Tester le flow complet (clic home -> page /demo/ -> submit -> deal HubSpot)"
-        ]
-      },
-      "implementation_2026_06_01_v2": {
-        "executed_at": "2026-06-01T12:31:11Z",
-        "approche_finale": "Option 2 validee par Dominique - page WP /demo/ dediee avec form HubSpot embed",
-        "redirection_301_desactivee": "Faite par Dominique dans plugin Redirection (admin WP)",
-        "infrastructure_ajout": {
-          "action_create_page_ajoutee": "wp-deploy.php : nouvelle action 'create_page' ajoutee (slug + title + content, kses disabled, get_page_by_path collision check, sanitize_title)",
-          "fix_applique": "sanitize_title ne pouvait pas etre appele avant wp-load - sanitize maintenant en PHP pur en pre-WP puis re-applique apres wp-load",
-          "backups_wp_deploy": [
-            "api/wp-deploy.php.bak-20260601-121408 (1ere version - sanitize_title bug)",
-            "api/wp-deploy.php.bak-20260601-122821 (apres fix sanitize)",
-            "api/wp-deploy.php.bak-20260601-122925 (apres ajout 22641 a PAGE_ALLOWLIST)"
-          ]
-        },
-        "page_demo_creee": {
-          "page_id": 22641,
-          "slug": "demo",
-          "title": "Demander une demo",
-          "url": "https://staging.ozecar.fr/demo/",
-          "bytes_content": 6145,
-          "structure": "H1 + paragraphe lead + 3 bullets reassurance (Sans engagement / Reponse 24h ouvrees / Demo personnalisee) + 10 logos clients (Renault Retail, E.Leclerc, Carrefour Market, SPAR, Utile, Weldom, Pierre & Vacances, Homair, Europcar, Eurotyre) + form HubSpot embed (04f412bf, portal 143920450, region eu1)",
-          "hubspot_form_id": "04f412bf-ee4d-4342-98f6-e8ee728b9989",
-          "hubspot_portal_id": "143920450"
-        },
-        "page_test_demo_test_a_nettoyer": {
-          "page_id": 22640,
-          "slug": "demo-test",
-          "note": "Page de test creee lors du debug de create_page. A trasher dans WP admin > Pages > Corbeille"
-        },
-        "page_allowlist_mise_a_jour": "Ajout de 22641 dans $PAGE_ALLOWLIST (wp-deploy.php) pour pouvoir editer la page /demo/ via update_page ulterieurement",
-        "home_22462_corrections": {
-          "liens_supervision_demo_corriges": 5,
-          "remplacement": "/supervision/#demo et /supervision-3/#demo -> /demo/",
-          "backup_auto": "wp-content/uploads/ozecar/page-backups/page-22462-20260601-122935.html"
-        },
-        "verifications_finales": {
-          "page_demo_servie_correctement": true,
-          "page_demo_http_200": true,
-          "form_hubspot_embed_charge_dans_html": true,
-          "logos_clients_visibles": true,
-          "bullets_reassurance_visibles": true,
-          "5_liens_home_pointent_vers_demo": true,
-          "aucun_lien_casse_residuel": true
-        },
-        "cleanup_a_faire_eventuel": [
-          "Trasher la page de test demo-test (page_id 22640) via WP admin",
-          "Bloc Gutenberg ozecar/meetings-modal cree precedemment dans le theme child est INUTILISE - peut etre retire si on est sur de ne plus en avoir besoin (4 fichiers dans blocks/meetings-modal + 1 ligne dans inc/gutenberg-blocks.php)",
-          "Le widget hardcode inline dans la page Supervision 22463 (oz-meetings-overlay) reste, mais n'est plus utilise par la home - peut etre retire plus tard"
-        ]
-      },
-      "maj_2026_07_01": {
-        "page_demo_wp_id": 22641,
-        "ancien_lien": "meetings-eu1.hubspot.com/ozecar-demo/1 (perso Dominique)",
-        "nouveau_lien": "meetings-eu1.hubspot.com/ozecar-demo/demo-ozecar (round-robin Dominique+Marie-Estelle)",
-        "mecanisme_actuel": "bloc meetings-modal SUPPRIME 2026-06-01. Desormais: JS assets/js/demo-cta-fix.js redirige a[href*=#demo] vers /demo/ (page 22641) qui embed HubSpot Meetings (meetings-iframe-container data-src).",
-        "propage": true
-      }
-    },
-    "granola_demo_devis_flow_2026_07_04": {
-      "objectif": "Chaque demo realisee -> resume Granola dans #demos -> carte bot OZECAR (resume + quantites PDC/stations/bornes extraites + lien deal HubSpot) -> boutons 'Creer devis' (configurateur pre-rempli) + 'Envoyer' -> deal change de phase. Tous les membres du channel peuvent creer un devis depuis une demo.",
-      "forme_validee": "ENRICHI (Pipe A) - valide Dominique 2026-07-04.",
-      "architecture": {
-        "trigger": "Granola native folder->Slack auto-post rule: folder partage 'Demos OZECAR' -> channel #demos. Chaque commercial met sa note de demo dans ce folder -> post auto. Requiert Granola Business (14$/user/mois) + compte email Google Workspace (pas Gmail perso) par employe.",
-        "enrichissement_bot": "slack-bot.php ecoute message.channels sur #demos, detecte le post Granola (app bot), lit resume + attendees, matche le deal L&Q (email attendee -> contact -> deal au stage Demo planifiee 5215721688), extrait PDC/stations/bornes via Claude, ecrit une note structuree sur la fiche deal, poste une carte en thread avec 2 boutons.",
-        "boutons": {
-          "creer_devis": "oz_devis_create -> lien configurateur staging ?sales&deal_id=X + quantites pre-remplies (POST scenario 08 pour persister) ; deal -> stage preparation devis",
-          "envoyer": "oz_devis_send -> scenario 09 (6301518, email client 'Ouvrir mon devis') ou PandaDoc ; deal -> Devis envoye 5215721690"
-        },
-        "reutilise": [
-          "configurateur-devis.html (deal_id via URL + scenario 08 updateDeal actif)",
-          "scenario 09 id 6301518 (INACTIF, a activer apres test)",
-          "slack-bot.php handle_interaction (pattern oz_* eprouve sur support/intervention)"
-        ]
-      },
-      "stages_LQ": {
-        "confirmes_operationnel": {
-          "5215721688": "Demo planifiee",
-          "5215721690": "Devis envoye"
-        },
-        "a_confirmer_live_avant_cablage": "Demo realisee = 5215721689 (probable). ATTENTION: la map '5215721688=Demo realisee / 5215721690=Kit envoye' presente ailleurs dans le state est PERIMEE/contradictoire - ne pas s'y fier. Confirmer via API HubSpot avant de hardcoder les transitions.",
-        "pipeline": "Leads et Qualification 3747862733"
-      },
-      "deps_dominique": [
-        "Aucune dep bloquante pour demarrer (plus besoin de Granola Business, ni Workspace, ni nouveau channel).",
-        "Confirmer le mode de trigger voulu: (a) notif Make auto sur 'Demo realisee' qui me ping, ou (b) tu me dis 'demo X finie'.",
-        "Phase 2 (bridge supervision): creer propriete deal ozecar_ref_lq (creation schema = action Dominique).",
-        "Decision: corriger le bug stage booking 5215721687->5215721688 (je peux le faire si tu me donnes le go make_scenarios)."
-      ],
-      "build_claude": [
-        "Confirmer stages L&Q live (5215721689?).",
-        "Handlers slack-bot.php: listener message.channels #demos + detection post Granola + match deal + extraction Claude PDC/stations/bornes + write note deal + post carte boutons.",
-        "handle_interaction: oz_devis_create (URL configurateur pre-rempli + move stage) + oz_devis_send (scenario 09 + move Devis envoye).",
-        "Configurateur: accepter quantites pre-remplies via params URL (pdc/stations/bornes).",
-        "Fallback carte 'deal non trouve' avec selecteur manuel."
-      ],
-      "risques": [
-        "Matching note Granola -> deal (via attendees/nom societe) = point fragile. Mitigation: convention titre note 'Demo OZECAR - {Societe}' + match sur deal au stage Demo planifiee ; fallback selecteur manuel dans la carte.",
-        "Extraction des quantites depend de la prise de note du commercial. Mitigation: configurateur reste entierement editable cote commercial."
-      ],
-      "marque_blanche": "Resume Granola = interne (Slack = backend) -> Monta peut y apparaitre, OK. Le devis envoye au client (configurateur/PandaDoc) reste white-label, deja propre.",
-      "status": "Archi v2 VERROUILLEE 2026-07-04 (deal_id thread + push MCP, 0 EUR, #rdv-demo existant). Build handlers boutons demarrable immediatement.",
-      "REVISION_2026_07_04b": "Archi revue suite retours Dominique: (1) fil conducteur = deal_id L&Q (existe deja des le booking), (2) push Granola->Slack SANS Granola Business, via MCP (moi), pas via l'integration native.",
-      "stages_LQ_AUTORITATIF_live_2026_07_04": {
-        "pipeline": "Leads et Qualification 3747862733",
-        "5215721686": "Formulaire recu",
-        "5215721687": "Lead qualifie",
-        "5215721688": "Demo planifiee",
-        "5215721689": "Demo realisee",
-        "5584432342": "Devis a faire",
-        "5215721690": "Devis envoye",
-        "5215721691": "Kit envoye",
-        "source": "GET hubspot.php?path=/crm/v3/pipelines/deals (live). REMPLACE toutes les maps contradictoires anterieures."
-      },
-      "pipeline_supervision_default": {
-        "stages": "appointmentscheduled=Kit commande, qualifiedtobuy=Kit expedie, presentationscheduled=Activation en cours, decisionmakerboughtin=Contrat envoye, contractsent=Contrat signe, closedwon=On-boarding planifie, 5156644039=Ferme gagne, 5156644040=Ferme perdu",
-        "note": "Pipeline SEPARE (kit/activation, ne du Shopify via Make 01). Le deal L&Q et le deal Supervision sont 2 fiches distinctes."
-      },
-      "fil_conducteur_id": {
-        "principe": "Le deal_id L&Q est l'ID unique du dossier de Demo planifiee -> Demo realisee -> Devis a faire -> Devis envoye -> Kit envoye (une seule fiche). Le configurateur (?deal_id), scenarios 08/09 sont deja keyes dessus.",
-        "matching_deterministe": "Au signal 'Demo realisee', 1 deal a ce stade pour ce contact -> son deal_id. Fini le matching flou par nom.",
-        "bridge_supervision_phase2": "Pour tracer jusqu'a la bascule supervision (2e deal, pipeline default), ajouter une propriete de correlation (ex ozecar_ref_lq) sur le deal Supervision, remplie a sa creation. Necessite creation propriete (action Dominique) + que la commande porte la ref L&Q. Phase 2."
-      },
-      "architecture_v2_no_business": {
-        "channel": "#rdv-demo EXISTANT (C0BB057AP2S) - PAS de nouveau channel. Le Make de booking y poste deja.",
-        "trigger_gratuit": "Deal L&Q passe en 'Demo realisee' (5215721689). Watchable par Make -> ping #rdv-demo '@PM demo a traiter' (optionnel).",
-        "granola_fetch": "Via MCP Granola (list_meetings/get_meeting_transcript), execute par Claude PM en session. PAS l'integration native Slack (qui exige Business + email Google Workspace) ni l'API (Enterprise only).",
-        "enrichissement": "Claude extrait PDC/stations/bornes du resume, ecrit une note structuree sur la fiche deal, poste la carte dans #rdv-demo avec 2 boutons.",
-        "boutons": {
-          "creer_devis": "oz_devis_create -> configurateur ?sales&deal_id=X + quantites pre-remplies ; deal -> 'Devis a faire' 5584432342",
-          "envoyer": "oz_devis_send -> scenario 09 (6301518) email client ; deal -> 'Devis envoye' 5215721690"
-        },
-        "cout": "0 EUR. Dispo maintenant. Contrepartie: pas un daemon 24/7 - tourne quand une session tourne (declenchee par Dominique ou notif Make). 100% mains libres = passer Granola Business plus tard si le volume le justifie.",
-        "bot_role": "slack-bot.php gere seulement les clics boutons (handle_interaction oz_devis_*). La carte est postee par Claude via MCP Slack. Pas besoin d'ecoute message.channels ni de scopes supplementaires."
-      },
-      "bugs_stages_a_flagger": [
-        "Le Make de booking place le deal en 'Demo planifiee' avec l'ID 5215721687 -> or 5215721687 = 'Lead qualifie'. Les demos bookees atterrissent au mauvais stade. A corriger (bon ID = 5215721688). [make_scenarios - coordination]",
-        "Digest scenario 07 filtre 5215721688/89/90 -> rate 5584432342 (Devis a faire) et 5215721691 (Kit envoye). Sous-relance possible. [make_scenarios]"
-      ],
-      "CORRECTION_bug_stage_2026_07_04": "FAUSSE ALERTE: le blueprint LIVE de 05b (6400488) module createDeal utilise DEJA dealstage=5215721688 (Demo planifiee). Le 'bug 5215721687' venait d'une note state perimee, PAS du scenario reel. Aucun correctif de stage necessaire.",
-      "05b_reactive_2026_07_04": "05b (6400488) etait isinvalid:true / isActive:false = flux booking DOWN. Reactive via scenarios_activate -> isinvalid:false, islinked:true, isActive:true, nextExec planifiee. Garde-fou (engagements_last_meeting_booked GTE now + ozecar_demo_confirme NEQ true) => aucun envoi de masse sur le passif.",
-      "funnel_entree_2026_07_04": {
-        "regle_dominique": "2 chemins d'entree distincts.",
-        "chemin_booking": "User booke une demo (widget HubSpot Meetings ozecar-demo) -> 05b (6400488) -> Deal L&Q stage Demo planifiee 5215721688 + email confirmation + (a brancher) post #rdv-demo.",
-        "chemin_info_form": "User remplit le formulaire demande d'info/supervision -> Deal L&Q stage Lead qualifie 5215721687 -> email presentation 'a froid' avec CTA booking demo -> s'il booke -> bascule Demo planifiee (via 05b).",
-        "a_construire": "Le chemin info-form n'existe pas encore (form staging /contact-3/ = handleSubmit PLACEHOLDER). A cabler: form -> Deal L&Q Lead qualifie 5215721687 + declenche email presentation a froid + CTA demo.",
-        "dependance_contenu": "Email 'presentation a froid' = PDF JOINT, en cours de creation dans un AUTRE chat. Attendre qu'il soit finalise + acte dans le state, puis brancher la version finale en piece jointe du scenario email. NE PAS inventer.",
-        "refinement_anti_doublon": "05b fait createDeal (cree toujours). Si un contact vient d'abord par info-form (deal Lead qualifie deja cree) puis booke, 05b cree un 2e deal = DOUBLON. Pour respecter le principe 'un seul deal_id par dossier': 05b doit SearchDeals L&Q associe au contact -> si existe: updateDeal stage->Demo planifiee, sinon createDeal. Edit Make a faire.",
-        "sequencement_build": [
-          "GATE = PDF presentation acte dans le state (autre chat).",
-          "Quand PDF pret: build en UN pass -> (a) transport form staging /contact-3/ -> HubSpot create/update Contact + createDeal L&Q Lead qualifie 5215721687 ; (b) scenario Make email presentation a froid + CTA booking + PDF joint ; (c) refinement 05b anti-doublon (search-then-update-or-create) EN MEME TEMPS pour ne pas toucher 05b deux fois.",
-          "Independant du PDF mais couple (fait dans le meme pass): le refinement 05b + le branchement post #rdv-demo sur 05b (necessite OAuth Slack dans Make)."
-        ],
-        "email_froid_mode": "AUTO-SEND (valide Dominique 2026-07-04). Pas de gate Slack pour ce mail: contenu standard (PDF presentation + CTA demo identique pour tous), le prospect attend une reponse immediate.",
-        "garde_fous_email_froid": [
-          "Email valide (HAS_PROPERTY + format).",
-          "Anti-doublon: ne pas renvoyer la presentation si deja envoyee (flag contact type ozecar_presentation_envoyee).",
-          "Skip si bot/spam evident.",
-          "Notif NON-bloquante #rdv-demo: 'nouveau Lead qualifie + presentation envoyee a X' -> l'equipe voit et peut relancer/personnaliser la suite."
-        ],
-        "gate_slack_reserve_a": "Le gate Slack (mode B boutons Envoyer/Editer/Ignorer) reste pour le SUPPORT (reponse variable) et le flux demo->devis (creer/envoyer devis), PAS ce 1er mail auto."
-      },
-      "signal_demo_realisee_2026_07_05": {
-        "question": "Comment savoir qu'une demo a ete faite (necessaire pour declencher le devis via Granola/Slack)?",
-        "signal_retenu": "hs_meeting_outcome = 'Completed' sur le meeting HubSpot de demo (booke via ozecar-demo). Le commercial le clique en 1 geste apres la demo. DISTINGUE Completed vs No Show / Rescheduled -> un meeting booke != une demo faite. Natif HubSpot, gratuit, watchable par Make.",
-        "rejete": "(a) 'heure du meeting passee' = non fiable (no-shows). (b) 'note Granola existe' = confirme mais detection auto necessite Granola Business ou MCP -> c'est la SOURCE DE CONTENU du devis, pas le declencheur fiable.",
-        "chaine": "Commercial marque le meeting 'Completed' -> Make DEPLACE le deal en phase 'Demo realisee' (5215721689) [visible kanban] -> declenche le flux Granola->devis (carte #rdv-demo + URL edit-mode configurateur). No Show/Rescheduled -> reste en Demo planifiee. NB: la demo reste une PHASE (pas une propriete) - decision revisee 2026-07-05.",
-        "nuance": "Le gate 'demo requise' ne concerne QUE le tunnel de vente standard (prospect -> demo -> devis). Le chemin #devis DIRECT (installateur/Fred depose un prospect) cree un devis SANS demo.",
-        "lien_refonte": "La demo reste en PHASES (Demo planifiee/realisee gardees). Trigger = deal entre en phase 'Demo realisee' (5215721689), pilote par un Make qui watch hs_meeting_outcome=Completed.",
-        "MECANISME_FINAL": "Le commercial fait GLISSER le deal sur 'Devis a faire' une fois la demo terminee. Ce glissement = la confirmation 'demo faite' (un no-show n'est pas glisse -> pas de faux positif, pas besoin de hs_meeting_outcome). Make watch la TRANSITION vers 'Devis a faire' -> poste la carte #rdv-demo (resume Granola + URL configurateur pre-rempli).",
-        "simplification": "Phase 'Demo realisee' (5215721689) SUPPRIMEE (inutile). Vente: Nouveau -> Qualifie -> Demo planifiee -> Devis a faire -> Devis-contrat envoye -> Gagne/Perdu. Demo planifiee = demo a venir; glissement en Devis a faire = demo faite.",
-        "anti_clash": "Le chemin #devis DIRECT cree des deals DIRECTEMENT en 'Devis a faire' (5584432342). Donc le Make du flux demo doit se declencher sur la TRANSITION (Demo planifiee -> Devis a faire), PAS sur 'cree en Devis a faire'. Sinon double carte.",
-        "cas_demo_apres_devis": {
-          "situation": "Installateur (connait deja OZECAR) demande un devis pour SON client inconnu -> devis fait direct (chemin #devis, sans demo). PUIS le client final demande une demo malgre le devis deja fait.",
-          "principe": "La demo = un EVENEMENT (meeting), pas une phase imposee. 'Demo planifiee' ne sert qu'au chemin standard entrant (demo avant devis). Une demo hors-sequence ne fait PAS regresser le deal.",
-          "traitement": [
-            "Ne PAS faire reculer le deal (reste a Devis a faire / Devis-contrat envoye).",
-            "Booker la demo comme MEETING sur le deal EXISTANT (timeline + hs_meeting_outcome). Demo de reassurance/closing, pas de qualification.",
-            "Pas de re-declenchement: le deal a ete cree directement en Devis a faire (#devis) -> aucune transition Demo planifiee->Devis a faire -> le Make ne re-poste pas de carte. Gere tout seul par le trigger sur transition.",
-            "Capter le contact client final a ce moment (assoc Contact client).",
-            "Post-demo -> signature PandaDoc -> Gagne."
-          ],
-          "dedup": "Si le client final contacte OZECAR lui-meme pour la demo (formulaire), RATTACHER au deal existant (match societe/installateur), PAS creer un 2e deal. Etendre la regle find-or-create: 'si un deal L&Q ouvert existe pour cette societe, booker la demo dessus'.",
-          "conclusion": "La demo marche dans les 2 sens (avant OU apres le devis) car decouplee du gating lineaire. Seul le chemin standard la met en phase."
-        }
-      }
-    }
+    "_archive": "Historique des iterations (7 sous-sections) sorti vers archive.json > purge_2026_07_15 > strategy. Decisions conservees ci-dessus; le recit du 'comment' est dans l'archive et dans git log."
   },
   "partenaires": {
     "partner_program": {
@@ -9614,70 +8196,6 @@
       "a_aligner_coordination": "Make scenarios: 05b nomme 'Demo OZECAR — {nom}' -> recommander '{Client ou nom} — Demo'. Make 01 (Kit commande) -> verifier le nom. [make_scenarios - coordination].",
       "usage_equipe_constate": "Marie-Estelle utilise deja de fait '{Client} - {Objet}' (ex 'Comepa - Proposition Supervision', 'NOVA Zaptec - Devis Materiel'). La convention formalise cet usage."
     },
-    "naming_migration_2026_05_10": {
-      "_note": "Decision majeure 2026-05-10 par Dominique : renommer 'Kit Master / Kit Unit' en 'Kit Site / Kit Borne' sur toutes les surfaces client + introduire un produit principal 'Kit OZECAR' avec configurateur PDC sur Shopify. SKU OZKM/OZKU et Kit IDs (URLs activation) restent INCHANGES pour zero casse.",
-      "decision_par": "Dominique Manfredi",
-      "decision_date": "2026-05-10",
-      "context": "Feedback employes + partenaires : vocabulaire Master/Unit pas clair pour la cible installateur. Friction cognitive, perte de leads.",
-      "approche": "Piste A (1 produit configurable) + alignement backend complet (facade client seulement, SKU/Kit IDs preserves)",
-      "brief_de_reference": "OZECAR-NAMING-MIGRATION.md (livre 2026-05-10)",
-      "vocabulaire_officiel": {
-        "produit_principal_shopify": "Kit OZECAR",
-        "ex_kit_master": "Kit OZECAR",
-        "ex_kit_unit": "Kit Borne",
-        "sku_internes_inchanges": [
-          "OZKM",
-          "OZKU"
-        ],
-        "kit_ids_physiques_inchanges_format": "OZKM-XXXX et OZKU-XXXX",
-        "interdits_publics": [
-          "Master",
-          "Unit",
-          "Kit Master",
-          "Kit Unit"
-        ]
-      },
-      "rules_d_or": [
-        "Sur surfaces client (Shopify, emails, factures, notices, doc commerciale, WP) : utiliser 'Kit OZECAR' et 'Kit Borne' UNIQUEMENT",
-        "Sur backend (monday Stock Kits, HubSpot, Make webhooks, base de donnees, code) : SKU OZKM/OZKU restent",
-        "Kit IDs physiques (OZKM-0001, OZKU-0001) restent INCHANGES car ils sont dans les QR codes des kits a imprimer + URLs activation",
-        "Make scenarios doivent lire le SKU (OZKM/OZKU) et non le titre du produit pour ne pas casser apres renommage Shopify"
-      ],
-      "phasage": {
-        "phase_1": {
-          "label": "Vocabulaire + state.json + brief + monday",
-          "qui": "claude.ai PM",
-          "duree_estimee": "jours 1-2"
-        },
-        "phase_2": {
-          "label": "Shopify : configurateur + renommage produits + theme",
-          "qui": "Claude Code Shopify",
-          "duree_estimee": "jours 3-5"
-        },
-        "phase_3": {
-          "label": "Backend : monday labels, HubSpot labels, Make audit, impression templates",
-          "qui": "claude.ai PM",
-          "duree_estimee": "jours 5-7"
-        },
-        "phase_4": {
-          "label": "Front-end pédagogie : page Kit WP, homepage, communication partenaires",
-          "qui": "claude.ai PM",
-          "duree_estimee": "jours 7-10"
-        }
-      },
-      "stock_physique_status": "Confirme par Dominique 2026-05-10 : AUCUN stock physique imprime a ce jour. Aucun risque de casse logistique.",
-      "kit_ozecar_redefinition_2026_06_10": {
-        "date": "2026-06-10",
-        "summary": "Kit OZECAR redefined as the initial pack (1 station + 1 borne), priced 49€ HT. Kit Borne (OZKU) remains 29€ HT for additional bornes.",
-        "impact": [
-          "All staging pages updated: home, /kit-3/, /supervision-3/, /bornes-compatibles-3/, /contact-5/, /installateurs/",
-          "Theme parent header.php and footer.php URLs updated: kit-master -> kit-ozecar",
-          "wp-deploy.php ALLOWED_DIRS extended to include wp-content/themes/ozecar-theme",
-          "Shopify renaming pending in Claude Code brief"
-        ]
-      },
-      "supersession_2026_06_18": "Kit Site remplace DEFINITIVEMENT par Kit OZECAR (decision Dominique 2026-06-18). 'Kit Site' est desormais un terme OBSOLETE/INTERDIT sur toutes surfaces. Conserve en legacy_names uniquement."
-    },
     "inter_chat_bus": {
       "_version": "1.0",
       "_created_at": "2026-05-14",
@@ -9905,7 +8423,8 @@
       "wordpress_prod": "ozecar.fr",
       "gmail_sender": "hello@ozecar.fr (alias de dominique@ozecar.fr)",
       "gmail_connection_id": 6724564
-    }
+    },
+    "_archive": "Historique des iterations (1 sous-sections) sorti vers archive.json > purge_2026_07_15 > ops. Decisions conservees ci-dessus; le recit du 'comment' est dans l'archive et dans git log."
   },
   "monday_boards": {
     "stock_kits": {
