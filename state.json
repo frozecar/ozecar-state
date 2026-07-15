@@ -1,12 +1,24 @@
 {
   "_meta": {
-    "version": "1.449",
+    "version": "1.450",
     "updated": "2026-07-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-15",
+        "version_from": "1.449",
+        "version_to": "1.450",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "AUDIT coherence site vs deck (section audit_coherence_site_vs_deck_2026_07_15). Verdict: site PAS pret a etre lance, mais ne bloque pas l'envoi du deck (la prod n'affiche aucun prix).",
+          "CORRECTION DECK SUNGROW: la slide 07 affirmait 'nous ne vendons pas de bornes' -> FAUX (la prod vend du materiel + LOA, la boutique vend des Zaptec). Reformule en 'sur ce dossier, le materiel et la pose restent chez Sungrow'.",
+          "NUANCE IMPORTANTE: les claims 98,6% / SLA 24-48h / 70% / 800+ ne sont PAS sur les pages prod live (ils venaient des maquettes du project knowledge). L'arbitrage demande precedemment est sans objet pour la prod. En revanche '800+ modeles OCPP' est dans le MENU du staging et contredit le '400+' de la prod et du deck -> a trancher.",
+          "FUITE PROD identifiee: slug wp-content/plugins/monta-hardware-connector/ + id monta-map-canvas visibles dans le code source de la home."
+        ]
+      },
       {
         "date": "2026-07-15",
         "version_from": "1.448",
@@ -11389,5 +11401,23 @@
     "AFIR_argument_cle": "Les 5 PDC a 480 kW ouverts au public = terminal CB / sans contact OBLIGATOIRE (le QR seul ne suffit pas au-dela de 50 kW), paiement a l'acte sans abonnement, prix affiche avant la session. C'est un differenciateur: Sungrow seul ne fournit pas la monetique conforme.",
     "fichier": "OZECAR-Sungrow-Station-480kW.pptx + .pdf — 7 slides. Source: build-sungrow.js (+ lib.js). QA: 0 hors cadre, 0 chevauchement, 0 fuite, 16 modules et 10 satellites verifies au pdfplumber.",
     "RESTE_A_FAIRE": "L'OFFRE COMMERCIALE chiffree (devis PandaDoc) n'est PAS produite: maintenance (niveau a arbitrer), terminal de paiement, conditions d'encaissement et d'itinerance. A faire par Dominique avant envoi."
+  },
+  "audit_coherence_site_vs_deck_2026_07_15": {
+    "declencheur": "Dominique: 'si j'envoie cette presentation, il faudra que le site suive. est-il pret a etre lance ?'",
+    "verdict": "NON, le site n'est pas pret a etre lance. MAIS il ne bloque pas l'envoi du deck Sungrow ce soir: la prod n'affiche AUCUN prix, donc aucune contradiction tarifaire frontale.",
+    "prod_ozecar_fr_etat_reel_verifie": {
+      "pages_live": "/ , /supervision-et-monetique/, /installer-des-bornes/{transport-et-logistique, flotte-dentreprise, supermarches-et-commerces, foncier-et-residentiel}/, /recharge-a-domicile/, /sur-la-route-itinerance/, /installateurs/, /lentreprise/, /blog/. PAS de page tarifs (/tarifs = 404).",
+      "aucun_prix_affiche": "Verifie: 0 occurrence de 5,90/6,90/9,90/14,90 sur la home, /supervision-et-monetique/ et /installer-des-bornes/transport-et-logistique/. L'ancienne grille N'EST PAS exposee en prod.",
+      "claims_reels": "'Plus de 400 modeles de bornes compatibles' (COHERENT avec le deck) · 'Plus de 10 000 utilisateurs'. Les claims 98,6% / SLA 24-48h / 70% a distance / 800+ modeles ne sont PAS sur les pages live: ils venaient des maquettes HTML du project knowledge, pas de la prod. Alerte precedente a nuancer.",
+      "CONTRADICTION_MAJEURE": "La prod vend du MATERIEL et du FINANCEMENT: section /installer-des-bornes/ + 'Une gamme de bornes de recharge complete' + financement LOA / Comptant. Le deck Sungrow slide 07 affirmait 'nous ne vendons pas de bornes' -> FAUX et dangereux (Sungrow verifie en 10 secondes, et OZECAR vend des Zaptec sur la boutique). CORRIGE le 2026-07-15: 'Sur ce dossier, le materiel et la pose restent chez Sungrow'. REGLE: ne jamais ecrire 'on ne vend pas de bornes' — c'est faux.",
+      "fuite_marque_blanche_PROD": "La home charge wp-content/plugins/monta-hardware-connector/assets/css/mhc-style.css et /js/mhc-search.js, + un element id='monta-map-canvas'. Le slug du plugin est visible dans le code source de la page d'accueil. Non visible a l'ecran, mais visible en view-source par une equipe technique (Sungrow en est une).",
+      "vocabulaire": "La prod dit \"Oze'Kit\", le deck et le configurateur disent 'Kit OZECAR'. Incoherence de nommage."
+    },
+    "staging_etat_reel_verifie": {
+      "home": "NOUVELLE grille en place (Essential/Business 6,90/9,90). '5,90 €/mo' dans le menu = produit Recharge a domicile (legitime, pas l'ancienne grille). 'Transit' = faux positif ('transition'). 'monta' = uniquement le bundle Android autorise.",
+      "residus": "'Sans engagement' dans le hero de la home staging -> contredit l'engagement 12/24/36 du deck (Lot 3). '800+ modeles OCPP' dans le menu -> contredit le '400+' de la prod ET du deck: TRANCHER 400 ou 800. supervision-3: 2x '5,90' a requalifier (domicile ou ancienne grille ?).",
+      "reste_avant_lancement": "Lot 1 (marque blanche critique, 4 pages) + Lot 2 (ancienne grille, ~8 pages) + Lot 3 ('sans engagement', ~15 pages) TOUJOURS EN ATTENTE DU GO DOMINIQUE depuis le 2026-07-10. Plus next_steps: GUID formulaire HubSpot, DNS shop.ozecar.fr, tags GTM, sort des 404 livres-blancs/newsletter, nettoyage des doublons WP (1001,1002-1005,11221,3148). Plus la question ouverte wss://ocpp.monta.app dans les guides techniques."
+    },
+    "recommandation_PM": "Ce soir: envoyer le deck + l'offre, NE PAS toucher au site. Le site n'est pas un obstacle a la vente sur ce dossier (la decision se joue sur l'offre conjointe, pas sur ozecar.fr). Si un seul geste est fait avant l'envoi: neutraliser le slug du plugin marque blanche en prod (a arbitrer avec Dominique, prod = go explicite obligatoire)."
   }
 }
