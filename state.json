@@ -1,12 +1,21 @@
 {
   "_meta": {
-    "version": "1.441",
+    "version": "1.442",
     "updated": "2026-07-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
     "session_changelog": [
+      {
+        "date": "2026-07-15",
+        "version_from": "1.441",
+        "version_to": "1.442",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CROSS-CHECK FACTURATION: le 3,61 EUR/PDC etait FAUX -> reel 8,49 EUR/PDC (195 PDC factures, pas 525). Cause: matching par nom captait 17% du MRR + mauvais denominateur. Methode fiable = lignes de facture Pennylane. MRR reel tous canaux 3 805,88 EUR/mois HT. Listes nominatives: 115 PDC Forfait Zero, 39 PDC sans trace, 15 clients payant sans plan Monta."
+        ]
+      },
       {
         "date": "2026-07-15",
         "version_from": "1.440",
@@ -14529,5 +14538,18 @@
     ],
     "todo_backend": "REPORT-01 (Monday backlog): webhook ecrit reporting_trial_end=activation+90j; automation J+90 e-mail admins avec lien abonnement 15 EUR/mois SEPA; comptes CSM exclus (inclus en continu).",
     "correction_assistance_site_2026_07_15": "ASSISTANCE 24/7 DEPLACEE: option de COMPTE -> option de SITE (correction Dominique). Checkbox dans 'Options de ce site', visible uniquement si le site a des PDC Essential, prix 2,00 EUR x PDC Essential DU site (s.opts.assist), tipbox explicative, comptee dans le sous-total du site, listee dans le recap du site. Retiree de la section compte. Teste: 59,50 -> 65,50 (3 PDC ess x 2 EUR) exact, absente sur site full Business, zero erreur JS. INCIDENT REPARE au passage: un regex de suppression avait avale var cc/recC/ch + function line() -> ReferenceError, reinsere proprement. LOGOS: Bonifacio retire, 8 logos officiels sur UNE ligne (nowrap, gap 10px, space-between; wrap re-autorise <=700px mobile)."
+  },
+  "CROSSCHECK_FACTURATION_2026_07_15": {
+    "declencheur": "Dominique conteste le 3,61 EUR/PDC de supervision du dashboard parc — a raison.",
+    "CHIFFRE_CORRIGE": "SUPERVISION REELLE = 8,49 EUR/PDC/mois HT (1 655,53 EUR / 195 PDC reellement factures). Le 3,61 divisait par les 525 PDC supervises alors que 330 ne sont pas factures en supervision.",
+    "cause_racine_2": "Le rapprochement Monta<->Pennylane PAR NOM ne captait que 559 EUR sur 3 354 EUR de MRR reel (17 %). Les noms de teams Monta ne correspondent pas aux raisons sociales Pennylane (team 'Balesi - VO' vs client 'BALESI AUTOMOBILE'; 'OEHC Corse' vs 'OFFICE EQUIPEMENT HYDRAULIQUE CORSE'). METHODE FIABLE ADOPTEE: decomposition par LIGNES de facture Pennylane (/billing_subscriptions/{id}/invoice_lines) — le champ quantity donne le nb de PDC factures, le label donne la categorie.",
+    "MRR_REEL_TOUS_CANAUX_HT": "3 805,88 EUR/mois = Pennylane supervision 1 655,53 + maintenance 1 606,25 + data 56,00 + assistance 27,50 + payter 9,17 + Monta wallet 451,42 HT (541,71 TTC).",
+    "ratios": "Supervision 8,49 EUR/PDC (195 PDC) · Maintenance 12,55 EUR/PDC (128 PDC) · prix unitaire supervision: min 4,50 / mediane 7,50 / max 26,50.",
+    "repartition_525_PDC": "195 factures supervision (Pennylane SEPA) · 88 factures via wallet Monta · 115 Forfait Zero/gratuit (36 clients) · 39 SANS AUCUNE TRACE (16 clients) · 11 comptes techniques.",
+    "cle_plans_monta": "Les plans Pro (67 abos), Pro annuel (36), Essentiel (29), Pro Plus (9) sont a 0 EUR dans Monta = ils ne facturent RIEN, la facturation vit dans Pennylane. Seuls ~43 abos Monta ont un montant > 0 (Nova 5,88 · Forfait Standard 10,80 · Pro mensuel 17,88 · etc).",
+    "INCOHERENCE_D": "15 clients PAIENT via Pennylane mais n'ont AUCUN abonnement Monta (54+14 PDC): Comepa, ELC Invest/Tafani, 3 parkings + voirie Bonifacio, Marinca, Arinella/Vignale, Moulin des Oliviers, Station VITO, Balesi-VO, CP Immobilier/Borgo, Port de Porto Vecchio, Domaine Pey Blanc, OEHC. -> ni tracabilite plan, ni feature group applicable.",
+    "A_TRAITER_B": "39 PDC / 16 clients sans aucune trace de facturation: ETS Groupe ADF Magny les Hameaux (10), Chateau Pimo (3), Spar Ghisonaccia, Marina Rossa, Marina di Favone, Poissonerie Lucchini, Lago Verde, Les Dunes Sartene, Camping La Vetta, Rouby Cuers, Residence Saint Jacques, Rouby Eguilles, Centre Medical Prunelli, Mairie Algajola, Gualtieri Electricite, Home Terra Marina.",
+    "rapport": "/mnt/user-data/outputs/ozecar-crosscheck-facturation-2026-07-15.txt",
+    "correctif_structurel": "Ecrire customer_id Pennylane dans partnerExternalId de chaque team Monta (deja decide, non fait) — tant que non fait, tout rapprochement reste manuel. Le dashboard parc-clients doit etre recalcule sur la base 'PDC factures' et non 'PDC supervises'."
   }
 }
