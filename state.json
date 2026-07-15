@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.452",
+    "version": "1.453",
     "updated": "2026-07-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -31,7 +31,44 @@
       "Si une section depasse ~20 Ko, c'est qu'elle contient du narratif : garder la decision, jeter le recit.",
       "Le relay lit via l'API git/blobs : plus de limite a 1 Mo. Mais viser < 400 Ko pour le confort de lecture."
     ],
-    "archive": "archive.json (meme repo) : changelog historique 2026 + narratif des sessions. Lire via {\"action\":\"read\",\"file\":\"archive.json\"}."
+    "archive": "archive.json (meme repo) : changelog historique 2026 + narratif des sessions. Lire via {\"action\":\"read\",\"file\":\"archive.json\"}.",
+    "PROTOCOLE_DE_TRAVAIL": {
+      "_pourquoi": "Une session longue renvoie TOUT l'historique a chaque tour : c'est le premier poste de consommation, loin devant la difficulte des taches. Ces regles valent pour TOUS les chats OZECAR.",
+      "1_UN_CHAT_UN_CHANTIER": "Levier n1. Le state est la memoire : un nouveau chat demarre pour ~2 000 tokens (index + section utile) au lieu de trainer 200 000 de contexte. Des qu'on change de sujet -> nouveau chat. Ne jamais enchainer 6 chantiers dans un fil (session 2026-07-15 : parc + options + configurateur + PDF + crosscheck + restructuration = a faire en 6 chats).",
+      "2_PROTOCOLE_DE_DEMARRAGE": [
+        "a) {\"action\":\"read\",\"index\":true} -> carte des 21 themes (~500 tokens)",
+        "b) {\"action\":\"read\",\"section\":[\"x\",\"y\"]} -> UNIQUEMENT les themes du chantier",
+        "c) travailler. Ne JAMAIS lire le fichier entier (223 000 tokens) sauf restructuration."
+      ],
+      "3_CHOIX_DU_MODELE": {
+        "axe": "PAS 'reflexion vs code' (erreur corrigee 2026-07-15). Sonnet 5 est de premier plan en raisonnement ET en code. Le bon axe = DIFFICULTE et ENJEU.",
+        "Sonnet 5": "le defaut. Executer, patcher, deployer, tester, backfiller, purger, appliquer une decision deja prise.",
+        "Opus 4.8": "trancher, arbitrer, auditer, detecter une erreur de methode, architecture, negociation, tout ce qui coute cher si c'est faux.",
+        "Fable 5": "quand seule la meilleure reponse compte et que l'enjeu le justifie.",
+        "Haiku 4.5": "volume et routine (routage, classification, extraction).",
+        "note_plans": "Sur Max, Sonnet et Opus ont des reservoirs SEPARES -> basculer le mecanique sur Sonnet ne coute rien au budget Opus. Sur Pro, pool partage. A verifier sur support.claude.com."
+      },
+      "4_REGLES_POUR_DOMINIQUE": [
+        "Donner le contexte plutot que me le faire chercher : 'section configurateur du state, fichier sur staging' economise 5 appels.",
+        "Batcher les retours : les 7 points de Marie-Estelle d'un coup ont coute 3x moins que 7 messages.",
+        "Annoncer le chantier en ouvrant le chat -> je charge la bonne section directement.",
+        "Si le chat depasse ~20 echanges ou change de sujet : ouvrir un nouveau chat, le state fait le relais."
+      ],
+      "5_REGLES_POUR_CLAUDE": [
+        "Lire l'index avant tout ; ne charger que les sections utiles.",
+        "Pas de boucle exploratoire : planifier les appels, puis executer (la purge /api a pris 8 allers-retours au lieu de 2).",
+        "Captures ciblees sur le bloc modifie, jamais la page entiere (~2 000 tokens la capture pleine page).",
+        "Batcher les appels d'API et les patchs ; un seul script plutot que dix.",
+        "Rendre compte en fin de chantier avec le lien + ce qui reste, pas a chaque micro-etape."
+      ],
+      "6_TENUE_DU_STATE": [
+        "state.json repond a 'QU'EST-CE QUI EST VRAI MAINTENANT', jamais a 'ce qui s'est passe' (-> git log + archive.json).",
+        "JAMAIS de section datee. Un theme = UNE section editee sur place ; la date vit dans le message de commit.",
+        "Lire frais avant d'ecrire (plusieurs chats ecrivent), fusionner, incrementer la version, redacter les tokens.",
+        "Section > 20 Ko = du narratif s'y est glisse : garder la decision, jeter le recit -> archive.json.",
+        "Viser < 400 Ko (aujourd'hui 657 Ko). Le relay lit via git/blobs : plus de limite a 1 Mo."
+      ]
+    }
   },
   "_index": {
     "pricing": "grille tarifaire canonique (forfaits x engagement), frais variables, options site/compte/materiel, regles de remise. REGLES ABSOLUES tarif_transit + fees_internes incluses",
