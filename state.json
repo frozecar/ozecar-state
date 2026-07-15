@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.453",
+    "version": "1.454",
     "updated": "2026-07-15",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -67,7 +67,20 @@
         "Lire frais avant d'ecrire (plusieurs chats ecrivent), fusionner, incrementer la version, redacter les tokens.",
         "Section > 20 Ko = du narratif s'y est glisse : garder la decision, jeter le recit -> archive.json.",
         "Viser < 400 Ko (aujourd'hui 657 Ko). Le relay lit via git/blobs : plus de limite a 1 Mo."
-      ]
+      ],
+      "1bis_CLAUDE_SIGNALE_LE_MOMENT": {
+        "regle": "C'est a CLAUDE de reperer et d'annoncer le moment d'ouvrir un nouveau chat — Dominique n'a pas a y penser. Des qu'un declencheur est atteint, je le dis en fin de reponse, en une ligne, et je fournis le PROMPT PRET A COLLER.",
+        "declencheurs": [
+          "CHANGEMENT DE SUJET : la demande n'a aucun lien avec le chantier en cours (ex. on code le configurateur et Dominique demande un audit de facturation) -> nouveau chat, systematiquement.",
+          "CHANTIER LIVRE : un chantier vient d'etre boucle et valide -> point de sortie naturel, le suivant part au propre.",
+          "PARENTHESE QUI DEVIENT CHANTIER : une question annexe declenche plus de 3-4 echanges ou du code (ex. 'peut-on mettre un lien Pennylane dans HubSpot ?' -> backfill de 135 fiches) -> sortir dans un nouveau chat.",
+          "FIL LONG : au-dela de ~20 echanges, meme sujet -> proposer de repartir au propre en resumant l'etat dans le state d'abord.",
+          "GROS MORCEAU ANNONCE : Dominique annonce un chantier lourd (webhook, avenant, cockpit, refonte) -> nouveau chat des le depart."
+        ],
+        "quand_NE_PAS_le_faire": "Ne pas interrompre un chantier en cours pour une micro-question (une correction, une verification, un chiffre). Ne pas le repeter si Dominique choisit de continuer : il decide, je signale une fois.",
+        "format_de_la_relance": "Une ligne + le prompt pret a coller. Exemple : '↗ Nouveau chantier — je conseille un nouveau chat (celui-ci porte deja X). Prompt a coller : [bloc]'. Le prompt contient TOUJOURS : le chantier, le protocole de demarrage (index -> sections utiles), les sections du state a lire, le contexte minimal, la methode (staging -> go).",
+        "avant_de_fermer": "Toujours graver l'etat du chantier dans le state AVANT de basculer, pour que le nouveau chat reprenne sans perte."
+      }
     }
   },
   "_index": {
