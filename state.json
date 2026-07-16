@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.472",
+    "version": "1.473",
     "updated": "2026-07-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-16",
+        "version_from": "1.472",
+        "version_to": "1.473",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "BASCULE SUSPENDUE — revue produit Dominique: 15 chantiers de finition identifies (kit vocabulaire obsolete, cas-clients non termine, bundle, activation, guides morts, demo module invisible, double bandeau supervision, secteurs incomplets, adresse contact, commissions revendeurs non validees, titres SEO, refonte navigation). Backlog OZ-27 grave. Lecon: l'audit technique ne remplace pas le controle produit visuel — methode Playwright gravee."
+        ]
+      },
       {
         "date": "2026-07-16",
         "version_from": "1.471",
@@ -5991,6 +6000,34 @@
         ],
         "controles_finaux": "Crawl 198/198 en 200 · 0 CSS/JS nu · robots staging noindex actif · robots prod inchange · demo Meetings OK · landings hsforms OK · exposition .bak prod 404 · cockpit/boamp 403 (protection par cle, normal) · relay prod OK · logo servi · api/ et uploads/ozecar synchronises."
       }
+    },
+    "OZ27_FINITION_SITE_BACKLOG_2026_07_16": {
+      "statut": "BASCULE SUSPENDUE par Dominique — le site n'est pas editorialement pret. L'audit OZ-26 etait un audit technique (liens, codes HTTP, markup, securite) et n'a PAS controle le produit (contenu a jour, modules rendus visuellement, pages terminees). Lecon de methode gravee ci-dessous.",
+      "LECON_METHODE": "Un audit de lancement DOIT inclure: (1) controle VISUEL reel de chaque page (Playwright/screenshots, pas seulement le DOM), (2) controle de contenu contre le state (pricing canonique, vocabulaire, concepts supprimes — ex: Kit Master/Kit Unit encore affiches sur /kit/ alors que supprimes v1.5), (3) test fonctionnel des modules interactifs (RDV, formulaires, configurateurs) en rendu navigateur, (4) verification que chaque CTA mene a une vraie destination.",
+      "BACKLOG_P0_bloquants": [
+        "KIT (/kit/): purger vocabulaire Kit Master/Kit Unit (concepts supprimes v1.5 — sticker QR + carte RFID uniquement), afficher les logos constructeurs, mettre la FAQ a jour (source: state kits + catalogue_prix).",
+        "CAS CLIENTS (/cas-clients/): page non terminee. Chaque cas doit etre cliquable vers une VRAIE page de cas (Weldom pointe actuellement vers un PNG). Logos de reference sur toutes les cartes.",
+        "BUNDLE (/bundle-zaptec-pro/): bornes Zaptec non affichees, page non terminee, VIEUX FORFAITS presents — aligner sur la grille canonique.",
+        "ACTIVATION (/activation/): plus du tout a jour — refonte contre le parcours kit actuel (state).",
+        "GUIDES (/guides-irve/): aucun guide ne mene a une page — relier chaque carte a /guides/<slug>/.",
+        "DEMO (/demo/): module HubSpot Meetings ne S'AFFICHE pas a l'ecran (le loader est dans le HTML mais le rendu visuel echoue — a debugger en navigateur reel). Logos references non affiches visuellement (probable probleme CSS/SVG — fill/viewBox des SVG Wikimedia a auditer au rendu).",
+        "SUPERVISION (/supervision/): DOUBLE bandeau logos (celui insere par Claude doublonne un existant plus bas — retirer un des deux), testimonial incomplet avec placeholder 'prenom et nom', selecteur AC/DC du module prix mal style (pas centre, pleine largeur).",
+        "SECTEURS (supermarches, flottes, hotellerie, transport): toutes manquent d'icones, de logos references, testimonials incomplets, lien 'cas Weldom' pointe vers un PNG.",
+        "CONTACT (/contact/): l'adresse affichee est TOUJOURS la mauvaise (recuperer l'adresse officielle du siege dans le state section entreprise/legal, sinon demander).",
+        "REVENDEURS (/revendeurs/): affiche des COMMISSIONS non validees publiquement — retirer la grille en attendant decision Dominique.",
+        "TITRES SEO: title de la home = 'Accueil - OZECAR...' — reecrire les title/meta description de toutes les pages en logique SEO (mot-cle + benefice, ~60 car)."
+      ],
+      "BACKLOG_P1_navigation": [
+        "Nos solutions: 2 colonnes + icones sur tous les items (certains n'en ont pas).",
+        "Ressources: reordonner completement — Contact et Guides sont introuvables.",
+        "Navigation globale jugee non aboutie par Dominique — refonte d'ensemble a maquetter sur staging puis go."
+      ],
+      "METHODE_OZ27": "Installer Playwright/Chromium dans le container Claude -> screenshot de CHAQUE page publiee -> revue visuelle + grille de controle par page (contenu vs state, modules fonctionnels, CTA, placeholders) -> corrections -> re-screenshot -> validation Dominique par lots.",
+      "DECISIONS_ATTENDUES_DOMINIQUE": [
+        "Adresse officielle a afficher sur /contact/ (si absente du state)",
+        "Revendeurs: retirer les commissions ou les remplacer par 'sur demande' ?",
+        "Nav: valider le principe 2 colonnes + icones avant maquette"
+      ]
     }
   },
   "make": {
