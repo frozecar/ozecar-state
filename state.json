@@ -1,8 +1,8 @@
 {
   "_meta": {
-    "version": "1.462",
+    "version": "1.463",
     "updated": "2026-07-16",
-    "updated_by": "Claude PM (claude.ai)",
+    "updated_by": "Claude PM (claude.ai) — OZ-25 Cockpit",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-16",
+        "version_from": "1.462",
+        "version_to": "1.463",
+        "author": "Claude PM (claude.ai) — OZ-25",
+        "changes": [
+          "Cockpit v1: maquette staging livree (cockpit.html), agregateur api/cockpit.php (cache 600s), cron maitre api/cron.php (boamp_daily + cockpit_warm, teste OK), snapshot cockpit-data.json. Cles hors state. En attente go Dominique + activation cron Hostinger."
+        ]
+      },
       {
         "date": "2026-07-16",
         "version_from": "1.461",
@@ -9263,6 +9272,16 @@
       "ce_qui_existe_deja_et_n_a_pas_de_face": "api/boamp-veille.php (veille + bouton deal Slack) · fichier des 1086 amenageurs enrichis + 395 cibles ABM · api/parc.php + facturation-reelle.json · api/monta.php · HubSpot pipelines. Le manque n'est pas la matiere, c'est la surface et l'ordonnanceur.",
       "VERITE_SUR_L_AUTOPILOT": "Claude ne tourne pas en tache de fond entre deux messages. L'autopilot = des crons + Make + Slack qui appellent des endpoints PHP. Modele retenu: UN SEUL cron maitre Hostinger sur api/cron.php?key=... qui dispatche tous les jobs (veille BOAMP, refresh du parc, detection de dormance, refresh des cibles). Une seule action admin de Dominique, une fois, pour toujours.",
       "perimetre_v1": "Une page unique (staging d'abord), un agregateur api/cockpit.php avec cache, et des widgets qui repondent au plan de vol 3000 PDC: trajectoire reelle vs objectif · pipeline de reprise (bases operateurs, cibles, bascules en cours) · signaux du jour (BOAMP, parc dormant, bornes tombees) · actions a un clic (creer le deal, pousser en sequence). PAS un tableau de bord de routine matinale (design deja rejete)."
+    },
+    "LIVRAISON_V1_2026_07_16": {
+      "statut": "MAQUETTE STAGING LIVREE — en attente go/no-go Dominique",
+      "page": "https://staging.ozecar.fr/wp-content/uploads/ozecar/cockpit.html (cle API embarquee dans la page)",
+      "api_cockpit": "ozecar.fr/api/cockpit.php?key=<COCKPIT_KEY dans le fichier> — agregateur, cache 600s (.cockpit-cache.json), ?refresh=1 force. Sources: facturation-reelle.json + cockpit-data.json + boamp-veille dry 21j + supervision live (etats bornes pagines page=0..N, anciennete des deconnexions). CORS ouvert. Cle jamais au state (pattern boamp).",
+      "api_cron": "ozecar.fr/api/cron.php?key=<meme cle> — cron maitre. Jobs: boamp_daily (fenetre 07-09h UTC, 1x/jour, dedup interne au veilleur) + cockpit_warm (chaque passage). Journal .cron-log.json (50 runs). TESTE 2026-07-16 08:32 UTC: boamp_daily 200 + cockpit_warm 200. ACTION DOMINIQUE: 1 ligne cron Hostinger TOUTES LES HEURES: curl -s 'https://ozecar.fr/api/cron.php?key=...' > /dev/null",
+      "cockpit_data_json": "wp-content/uploads/ozecar/cockpit-data.json (ozecar.fr) = snapshot vivier/bases/cibles ABM/bascules/actions/mesures. Rafraichi manuellement par le PM pour l'instant; a automatiser (jobs futurs du cron: refresh cibles mensuel sur maj data.gouv, snapshot HubSpot).",
+      "contenu_page": "Trajectoire 525/3000 (piste + position + activations/mois vs requis ~130) · Pipeline reprise 3 etages (bases: Freshmile n1, Enerstock hors Leclerc, Raiden, Waat, Bouygues / cibles ABM 395 dont 69 P3 / bascules: OEHC J-22 deal 510334425321, Bardinet 16 PDC hors CRM, Veterinaire BFC, Comepa) · Signaux: BOAMP live 5 opportunites 21j + bornes tombees <48h (38) / zombies (18) / en charge (55) · Actions a un clic (liens HubSpot ou bouton copie d'ordre PM) · Instruments: MRR 6323, 10,38 EUR/PDC, 127 PDC sans abo, CA recharge, treso.",
+      "verifs": "cockpit.php: 403 sans cle, froid ~15s, cache 0,15s. cron.php: 403 sans cle. Page HTTP 200.",
+      "reste": "1) go Dominique sur la maquette 2) cron Hostinger (Dominique, 1 fois) 3) jobs suivants: refresh auto cockpit-data (cibles/HubSpot), detection dormance, integration facturation planifiee 4) import 69 cibles P3 HubSpot"
     }
   }
 }
