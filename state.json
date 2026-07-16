@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.460",
+    "version": "1.461",
     "updated": "2026-07-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,16 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-16",
+        "version_from": "1.460",
+        "version_to": "1.461",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "cockpit.dossier_ENERSTOCK_LECLERC: intel Dominique verifiee dans l'IRVE. Enerstock 844 PDC dont 507 Leclerc. Bascule vers le reseau propre E.Leclerc deja amorcee (4 magasins avec les deux operateurs). Meme classe produit 22 kW AC, couverture Leclerc sur 19 des 22 depts Enerstock -> moitie Leclerc perdue.",
+          "TROUVAILLE: le residu Enerstock hors Leclerc = 337 PDC / 51 amenageurs (25 en bande 5-25 = 232 PDC), Intermarche/concession/hotel/golf/clinique sur 30-34-83-84, non protege par un reseau de mouvement. Classe n2 apres Freshmile."
+        ]
+      },
       {
         "date": "2026-07-16",
         "version_from": "1.459",
@@ -9209,6 +9219,17 @@
       "LIMITE_LINKEDIN": "Une company list LinkedIn Ads exige ~300 entreprises appariees cote LinkedIn pour etre activable. 395 en entree -> probablement 250-280 appariees = sous le seuil ou juste dessus. Leviers : (1) elargir la bande a 3-40 PDC = 1843 amenageurs (au lieu de 867), (2) resoudre les 590 non identifies, (3) completer companywebsite (absent de l'API entreprises, c'est le champ qui fait le taux d'appariement LinkedIn). Domaine email disponible pour 180/395 seulement (champ contact_amenageur de l'IRVE).",
       "bandes_alternatives": "hors Leclerc/OZECAR : 5-25 PDC = 867 amenageurs / 8393 PDC · 3-40 = 1843 / 14229 · 5-60 = 983 / 12651 · 2-100 = 3429 / 22202.",
       "reproductible": "Script d'enrichissement non deploye (tourne dans le conteneur de session). A porter en api/ si on veut le rejouer mensuellement sur la mise a jour data.gouv."
+    },
+    "dossier_ENERSTOCK_LECLERC": {
+      "verdict": "Dominique a raison : la moitie Leclerc du parc Enerstock est perdue d'avance, et la bascule a DEJA commence. Mais l'autre moitie est prenable et personne ne la regardait.",
+      "parc_enerstock": "844 PDC / 108 stations / 82 amenageurs. Donnee fraiche (96,6% des lignes majournees en 2026) = parc actif, pas dormant. Geographie: 34 (185 PDC), 40 (98), 30 (84), 83 (81), 11 (52), 13 (43), 64 (35), 82 (30), 84 (27), 47 (20) + poche Lorraine 54 (42) et 55 (28).",
+      "part_leclerc": "507 PDC sur 844 chez des magasins Leclerc (le '800 PDC' de Dominique = 844 dont 507 Leclerc). Top: Frouard 42, Saint-Paul-les-Dax 42, Saint-Aunes 39, Verdun 28, Arles 26, Hyeres 26, Limoux 24, Soustons 24.",
+      "PREUVE_DE_LA_BASCULE": "4 magasins ont DEJA les deux operateurs sur le meme code postal, avec un parc Enerstock important et une tete de pont E.Leclerc: Limoux 11300 (Enerstock 24 / E.Leclerc 2) · Saint-Paul-les-Dax 40990 (42 / 4) · Saint-Maur 36250 (22 / 8) · Marignane 13700 (14 / 4). Signature d'une reprise en interne qui demarre.",
+      "pourquoi_c_est_perdu": "(1) Le reseau propre E.Leclerc = 3253 PDC / 404 stations / 83 departements, dont 19 des 22 departements d'Enerstock : aucun trou de couverture ne protege Enerstock. (2) Meme classe de produit : Enerstock 785/844 PDC en 11-22 kW AC, E.Leclerc 2912/3253 en 11-22 kW AC = substitut direct, pas complementaire. (3) L'amenageur est un adherent du mouvement : on devrait battre un reseau interne sur un compte captif.",
+      "date_expiration": "INTROUVABLE en open data : contrat prive entre adherents Leclerc et Enerstock, rien au BOAMP. Le seul signal datable est la tete de pont E.Leclerc magasin par magasin.",
+      "LA_PRISE_REELLE": "337 PDC / 51 amenageurs chez Enerstock ne sont PAS des Leclerc. En bande 5-25 PDC: 25 amenageurs / 232 PDC. Composition = ICP exact OZECAR: Intermarche x13 (Courbessac 20, Lunel 14, La Seyne 12, Valence 11, Vacquerolles 11, Sommieres 10, Hagetmau 10, Toulon 10, Bollene 10, Frontignan 9...), Golf de Massane 19, Hotel de Verchant 11, Renault Frejus 10, Intersport x2, Ugecam x2 cliniques, LFI fonciere 8. Concentre sur 30/34/83/84 = une seule tournee. Et Intermarche n'a PAS de reseau de mouvement interne : rien ne les protege.",
+      "nuance_Herault": "Dept 34 : Enerstock 185 PDC, reseau propre E.Leclerc = 0 PDC. Idem 66 et 81. Les 4 magasins Leclerc du 34 (69 PDC) n'ont pas d'alternative interne installee a ce jour. Fenetre, pas plan.",
+      "ordre_de_chasse": "1) FRESHMILE 390 cibles / 3598 PDC (base n1). 2) ENERSTOCK hors Leclerc 25 cibles / 232 PDC (concentre, non protege). 3) Leclerc-Enerstock 507 PDC : abandonner."
     }
   }
 }
