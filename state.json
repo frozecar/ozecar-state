@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.455",
+    "version": "1.456",
     "updated": "2026-07-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,19 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-16",
+        "version_from": "1.455",
+        "version_to": "1.456",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "cockpit: CORRECTION Dominique. La reprise = surtout des entreprises qui changent d'operateur (5-20 PDC/client), donc un funnel a volume pilotable au quotidien (~2 bascules/mois). Le mega-deal n'est pas le pain quotidien.",
+          "cockpit: wss OCPP fonctionnel et assume officiellement -> BLOCAGE_UNIQUE perime.",
+          "cockpit: TEST DECISIF - COMEPA/BARDINET/OEHC absents du fichier IRVE. Le marche reel (parcs prives/pro) est invisible des jeux de donnees publics. La liste de cibles se fabrique, elle ne se telecharge pas.",
+          "cockpit: 3 canaux de ciblage valides - BOAMP (public, prouve via OEHC), installateurs, ABM via recherche-entreprises.api.gouv.fr (1053 hotels en 2A).",
+          "ALERTE: avis BOAMP Office d'Equipement Hydraulique de Corse, date limite de reponse 2026-08-07 10:00."
+        ]
+      },
       {
         "date": "2026-07-16",
         "version_from": "1.454",
@@ -9059,7 +9072,7 @@
     "ARBITRAGE_2026_07_16": "Objectif = 80% REPRISE / 20% organique. Consequence structurelle: la reprise est GRUMELEUSE (1 deal = 200-800 PDC), donc un objectif mensuel lisse (30 PDC/mois +15-20% compose) ne decrit PAS ce business. On ne pilote pas des PDC/mois ni des taux de conversion: on pilote un PIPELINE DE CIBLES NOMMEES.",
     "trajectoire_reelle": "3000 PDC fin 2027 = +2486 sur ~18 mois. 80% reprise = ~2000 PDC = 5 a 7 deals de 300-400 PDC = 1 deal tous les 2,5-3 mois. Les 20% organiques = ~6 PDC/mois = ~1,5 chantier/mois (se pilote dans HubSpot une fois la migration finie, pas besoin de cockpit).",
     "baseline_activations_reelle": "PDC actives/mois (source supervision, activeAt): 2026-02:39 · 03:22 · 04:6 · 05:12 · 06:13 · 07:3. Moyenne ~16, tendance DESCENDANTE. Les deux robinets sont fermes: organique (site en refonte + CRM en migration) et reprise (bloquee sur OCPP marque blanche).",
-    "BLOCAGE_UNIQUE": "Marque blanche OCPP (wss://ocpp.ozecar.app). Sans elle, zero reprise possible: la borne du concurrent basculerait en revelant le fournisseur. C'est LA ligne n1 du cockpit.",
+    "BLOCAGE_UNIQUE": "PERIME (2026-07-16). Le wss est fonctionnel et assume officiellement par Dominique. Le blocage restant est l'ABSENCE DE LISTE DE CIBLES, pas la technique.",
     "vivier_marche_2026_07_16": "Fichier consolide national IRVE (data.gouv, 160 Mo, 228644 lignes): 163408 PDC publics, 359 operateurs. OZECAR = 269 PDC publics / 525 supervises (le reste est prive, hors fichier). 66 operateurs entre 150 et 900 PDC = 26985 PDC = le vivier de reprise. OZECAR a besoin de ~2000 = 7% du vivier.",
     "cibles_identifiees_2026_07_16": {
       "e-motum (sas)": "111 PDC nationaux dont 66 en CORSE (54 stations). Donnees gelees depuis 2024-09-12 (22 mois) = signal parc dormant. Cible n1: territoire OZECAR.",
@@ -9085,6 +9098,13 @@
     },
     "mesures_2026_07_16": "CA recharge 15/07: 4633,33 EUR (marge 3356,20 · 489 sessions · 8765 kWh). 14/07: 3983,42. 08/07: 3817,62. Solde Caisse d'Epargne principal: 14670,34 EUR (synchro Pennylane 13/07, ~3j de retard).",
     "HubSpot_en_migration": "ATTENTION: HubSpot ET le staging sont en cours de migration (info Dominique 2026-07-16). Tout chiffre de funnel lu dans HubSpot aujourd'hui est NON SIGNIFICATIF (27 deals depuis janvier, 201 contacts sur 212 en source OFFLINE = import). Le funnel organique n'est pas mesurable avant le lancement du site.",
-    "next": "Construire le pipeline de chasse (vivier -> cible -> contact -> nego -> signature -> migration OCPP) + action du jour sur UNE cible. Support de donnees: JSON dedie tant que HubSpot migre, portable vers HubSpot ensuite."
+    "next": "Fabriquer la liste de cibles par les 3 canaux (BOAMP public / installateurs / ABM par NAF+departement). Pilotage: ~2 bascules de ~12 PDC par mois. Action immediate a arbitrer: avis OEHC, reponse avant le 07/08/2026 10:00.",
+    "CORRECTION_DOMINIQUE_2026_07_16": "DEUX erreurs corrigees par Dominique. (1) La reprise n'est PAS seulement le mega-deal 200-800 PDC. Le pain quotidien = des ENTREPRISES qui changent d'operateur, 5-10-20 PDC par client (COMEPA 10 PDC, Bardinet 16 PDC non encore gagne, OEHC...). Donc la reprise EST un funnel a volume et SE PILOTE quotidiennement: 24 PDC/mois = ~2 bascules de ~12 PDC/mois. (2) Le wss OCPP marque blanche est FONCTIONNEL (teste). Non confirme contractuellement par Monta, mais Dominique l'assume officiellement et a l'impression. => CE N'EST PAS UN BLOCAGE. Annule et remplace 'BLOCAGE_UNIQUE'.",
+    "LIMITE_MAJEURE_DU_VIVIER_IRVE": "TEST DECISIF 2026-07-16: COMEPA, BARDINET, OEHC => 0 ligne dans le fichier IRVE national. Le fichier ne couvre QUE le public/itinerance. Le marche reel d'OZECAR (parcs prives/pro: flottes, entreprises, hotels, campings) est INVISIBLE dans tout jeu de donnees public. => La carte des 359 operateurs / 66 cibles reste valable pour les MEGA-DEALS de reprise de reseau public, mais elle NE CARTOGRAPHIE PAS le coeur de business. La liste de cibles ne se telecharge pas: elle se FABRIQUE.",
+    "TROIS_CANAUX_DE_CIBLAGE_REELS": {
+      "1_BOAMP_secteur_public": "PROUVE. L'Office d'Equipement Hydraulique de Corse (client OZECAR) a publie un avis le 08/07/2026, DATE LIMITE DE REPONSE 07/08/2026 10:00. 136 avis 'recharge' en 2026 au national. C'est LE canal pour collectivites/etablissements publics/SDIS/hopitaux. Gratuit, sans auth, automatisable ce soir.",
+      "2_installateurs": "Les installateurs voient les parcs prives que personne ne declare. Cf. strategy.ozecar_2_0.moteur_installateur.",
+      "3_ABM_ads_self_identification": "On ne peut pas lister qui possede des bornes privees => on fait lever la main. La liste des ENTREPRISES, elle, est constructible gratuitement: https://recherche-entreprises.api.gouv.fr/search?activite_principale=<NAF>&departement=<dep> renvoie SIREN, nom, commune, tranche d'effectif. Exemple valide: NAF 55.10Z (hotels) departement 2A = 1053 entreprises. => input direct pour une LinkedIn Matched Audience par liste de societes. PREREQUIS: une landing page vivante (site en refonte)."
+    }
   }
 }
