@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.456",
+    "version": "1.457",
     "updated": "2026-07-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,19 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-16",
+        "version_from": "1.456",
+        "version_to": "1.457",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "cockpit: ARBITRAGE 2 - la borne publique est dans le scope (recurrent+variable+itinerance) ; la Corse sort du ciblage, focus CONTINENT.",
+          "cockpit: carte continent - 232 amenageurs 5-25 PDC = 2232 PDC = ~186 bascules-equivalent = ~7 ans de pipeline. Le volume n'est pas le probleme.",
+          "cockpit: strategie - chasser les BASES CLIENTS des operateurs de second rang (RAIDEN 51 cibles, SGA 29, WAAT 18) plutot que 232 clients un par un.",
+          "cockpit: ICP confirme par la donnee - concessions auto, loueurs, parkings, flottes (BMW France, Zenpark, Envergure, Premium Auto...) = coherent avec COMEPA/Bardinet.",
+          "cockpit: DEAL CREE 510334425321 OEHC (BOAMP 26-67021, limite 07/08/2026) en Qualifie. Dominique ne connaissait pas l'avis -> veille BOAMP validee."
+        ]
+      },
       {
         "date": "2026-07-16",
         "version_from": "1.455",
@@ -9098,13 +9111,19 @@
     },
     "mesures_2026_07_16": "CA recharge 15/07: 4633,33 EUR (marge 3356,20 · 489 sessions · 8765 kWh). 14/07: 3983,42. 08/07: 3817,62. Solde Caisse d'Epargne principal: 14670,34 EUR (synchro Pennylane 13/07, ~3j de retard).",
     "HubSpot_en_migration": "ATTENTION: HubSpot ET le staging sont en cours de migration (info Dominique 2026-07-16). Tout chiffre de funnel lu dans HubSpot aujourd'hui est NON SIGNIFICATIF (27 deals depuis janvier, 201 contacts sur 212 en source OFFLINE = import). Le funnel organique n'est pas mesurable avant le lancement du site.",
-    "next": "Fabriquer la liste de cibles par les 3 canaux (BOAMP public / installateurs / ABM par NAF+departement). Pilotage: ~2 bascules de ~12 PDC par mois. Action immediate a arbitrer: avis OEHC, reponse avant le 07/08/2026 10:00.",
+    "next": "1) Veilleur BOAMP (national, pas seulement Corse) -> push Slack + bouton deal. 2) Fabrique de cibles: 232 amenageurs continent enrichis SIREN via recherche-entreprises.api.gouv.fr -> audience LinkedIn + sequence. 3) Attaquer par base client d'operateur (RAIDEN en tete).",
     "CORRECTION_DOMINIQUE_2026_07_16": "DEUX erreurs corrigees par Dominique. (1) La reprise n'est PAS seulement le mega-deal 200-800 PDC. Le pain quotidien = des ENTREPRISES qui changent d'operateur, 5-10-20 PDC par client (COMEPA 10 PDC, Bardinet 16 PDC non encore gagne, OEHC...). Donc la reprise EST un funnel a volume et SE PILOTE quotidiennement: 24 PDC/mois = ~2 bascules de ~12 PDC/mois. (2) Le wss OCPP marque blanche est FONCTIONNEL (teste). Non confirme contractuellement par Monta, mais Dominique l'assume officiellement et a l'impression. => CE N'EST PAS UN BLOCAGE. Annule et remplace 'BLOCAGE_UNIQUE'.",
     "LIMITE_MAJEURE_DU_VIVIER_IRVE": "TEST DECISIF 2026-07-16: COMEPA, BARDINET, OEHC => 0 ligne dans le fichier IRVE national. Le fichier ne couvre QUE le public/itinerance. Le marche reel d'OZECAR (parcs prives/pro: flottes, entreprises, hotels, campings) est INVISIBLE dans tout jeu de donnees public. => La carte des 359 operateurs / 66 cibles reste valable pour les MEGA-DEALS de reprise de reseau public, mais elle NE CARTOGRAPHIE PAS le coeur de business. La liste de cibles ne se telecharge pas: elle se FABRIQUE.",
     "TROIS_CANAUX_DE_CIBLAGE_REELS": {
       "1_BOAMP_secteur_public": "PROUVE. L'Office d'Equipement Hydraulique de Corse (client OZECAR) a publie un avis le 08/07/2026, DATE LIMITE DE REPONSE 07/08/2026 10:00. 136 avis 'recharge' en 2026 au national. C'est LE canal pour collectivites/etablissements publics/SDIS/hopitaux. Gratuit, sans auth, automatisable ce soir.",
       "2_installateurs": "Les installateurs voient les parcs prives que personne ne declare. Cf. strategy.ozecar_2_0.moteur_installateur.",
       "3_ABM_ads_self_identification": "On ne peut pas lister qui possede des bornes privees => on fait lever la main. La liste des ENTREPRISES, elle, est constructible gratuitement: https://recherche-entreprises.api.gouv.fr/search?activite_principale=<NAF>&departement=<dep> renvoie SIREN, nom, commune, tranche d'effectif. Exemple valide: NAF 55.10Z (hotels) departement 2A = 1053 entreprises. => input direct pour une LinkedIn Matched Audience par liste de societes. PREREQUIS: une landing page vivante (site en refonte)."
-    }
+    },
+    "ARBITRAGE_2_2026_07_16": "Dominique tranche: (1) la borne PUBLIQUE interesse OZECAR (recurrent + variable + itinerance) -> le vivier IRVE redevient pertinent. (2) La CORSE n'est pas un marche qui convertit -> concentration CONTINENT. Le biais Corse est abandonne (sauf clients existants et avis en cours type OEHC).",
+    "CARTE_CONTINENT_2026_07_16": "Fichier IRVE hors Corse/DOM: 162970 PDC · 4779 amenageurs · 353 operateurs. CIBLES 5-25 PDC = 232 amenageurs = 2232 PDC = ~186 bascules-equivalent (a 12 PDC). Besoin = 2 bascules/mois = 24/an => le vivier represente ~7 ans de pipeline. Le volume n'est PAS le probleme.",
+    "STRATEGIE_DE_CHASSE": "NE PAS chasser les 232 clients un par un: chasser les BASES CLIENTS des operateurs de second rang. Concentration (clients dans la cible 5-25 PDC): RAIDEN 51 cibles/439 PDC (850 PDC, 169 clients, 60 depts, maj 2026-04-20 = ACTIF, pas dormant) · SGA Industries 29 cibles/249 PDC (344 PDC, 56 clients) · WAAT Umbrella-Copro 18 cibles/216 PDC (actif, maj 07/2026) · TotalEnergies Marketing 17 cibles · C4Energies 11 · SEVDEC 9 (maj 2025-10) · Virta 8 · CAR2PLUG 7.",
+    "ICP_LU_DANS_LA_DONNEE": "Les clients de RAIDEN revelent l'ICP: CONCESSIONS AUTO, LOUEURS, PARKINGS, entreprises a flotte. Exemples: Zenpark France 20 PDC · BAIKOWSKI 16 (maj 2021) · BAUER PARIS 16 · SERMOOV 16 · BERGER SERVICES LOCATION 15 · ENVERGURE LA ROCHE-SUR-YON 15 · DBF Bordeaux Premium 14 (maj 2021) · PREMIUM AUTO DISTRIBUTION 14 · BMW France S.A. 13 · STERLING AUTOMOBILES 12. => COHERENT avec les deals reels de Dominique (COMEPA 10 PDC, Bardinet 16 PDC): des entreprises avec flotte. Le segment est confirme par la donnee ET par le pipeline.",
+    "VIGILANCE_VENTE": "Un operateur a maj recente (RAIDEN 04/2026, WAAT 07/2026) n'est PAS un parc abandonne: on ne ramasse pas, on ARRACHE un client a un concurrent actif. Il faut une raison de basculer (prix, service, bornes hors ligne, app, itinerance). Ne pas confondre les deux ventes.",
+    "DEAL_CREE_2026_07_16": "HubSpot deal 510334425321 'OEHC — Renouvellement marche recharge (BOAMP 26-67021)', pipeline Vente 3747862733, etape Qualifie 5215721687, closedate 2026-08-07, associe a la company 435804089589. Detecte par la veille BOAMP. Dominique ne connaissait pas cet avis => la veille est VALIDEE."
   }
 }
