@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.470",
+    "version": "1.471",
     "updated": "2026-07-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-16",
+        "version_from": "1.470",
+        "version_to": "1.471",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "OZ-26 Phase 3 PREPAREE: largeurs harmonisees (reprise/demo 1300px + template-wide), carte 301 (27 regles, testees), 11 legacy depubliees, URLs relativisees, api/ prod (52 fichiers) + uploads/ozecar + logo_OZe_final.png synchronises vers staging. Le push Hostinger est pret — action Dominique (backup manuel puis Deploy staging->prod), verifs post-push par Claude."
+        ]
+      },
       {
         "date": "2026-07-16",
         "version_from": "1.469",
@@ -5942,6 +5951,24 @@
           "Scan final: 0 page avec CSS/JS nu. Crawl 198/198 en 200."
         ],
         "REGLE_PERMANENTE": "Dans les scripts serveur non authentifies (wp-load via HTTP): JAMAIS wp_update_post/wp_insert_post sur du contenu riche (KSES strip <style>/<script>). Toujours $wpdb->update + clean_post_cache. Pour renommer un slug: $wpdb->update(post_name) + add_post_meta _wp_old_slug manuel. Pour depublier: $wpdb->update(post_status) direct."
+      },
+      "PHASE3_PRETE_2026_07_16": {
+        "statut": "STAGING PRET POUR LE PUSH. Tout est prepare pour que la bascule Hostinger soit un geste unique et sur. Crawl final 198/198 en 200.",
+        "largeurs_harmonisees": "reprise-supervision + demo passees en template-wide + les 8 blocs Gutenberg .oz-* (columns-flexible, product-pricing-cards, logo-grid, comparison-2col, hero-standard, steps-3, cta-inline-cream, schema-master-units) harmonises 1100px -> 1300px (standard V5).",
+        "carte_301": "27 redirections implementees dans functions.php enfant (template_redirect, domain-agnostic, survivent au push): toutes les URLs indexees prod sans equivalent direct + anciens slugs -3/-5. Testees en 301 sur staging. 49/58 slugs prod existent tels quels sur staging (0 redirect necessaire).",
+        "legacy_depubliees": "11 pages legacy prod encore publiees sur staging passees en draft via wpdb (supervision-et-monetique, lentreprise, recharge-a-domicile, sur-la-route-itinerance [contenait 1 fuite Monta], politique-de-confidentialite, activation-kit, installer-des-bornes + 4 sous-pages). 2 pages SEO local CONSERVEES publiees (aix-en-provence, bouches-du-rhone — contenu sain).",
+        "urls_relativisees": "29 contenus + 4 menu items: https://staging.ozecar.fr supprime (liens et src relatifs) — immunise contre un search-replace incomplet du push.",
+        "sync_api": "52 fichiers api/ prod copies vers staging (cockpit, boamp-veille, slack-bot, github-relay, cron, monta.php, img-proxy, devis-*, pennylane, esignatures, etc.). Fichiers critiques verifies taille identique. staging/api est un SUPERSET de prod/api -> le push preserve tout le back-office. Non copies (403 extensions): logs (.jsonl/.log) et .bak historiques — se regenerent ou non critiques.",
+        "sync_uploads_ozecar": "uploads/ozecar synchronise prod->staging: fichiers racine (cockpit-data.json, liste-appel.json, state-archive, logo-ozecar-officiel.svg) + logo_OZe_final.png (copie server-to-server, 272286 octets, verifie servi) + cibles/ (3) + clients/ (5). Non copies: .bak ristorcelli (historiques).",
+        "sitemap": "Plugin google-sitemap-generator actif sur staging (sitemap.xml 200) — se regenerera avec les nouvelles URLs apres bascule.",
+        "PROCEDURE_PUSH_DOMINIQUE": [
+          "1. hPanel -> Backups -> creer un backup manuel COMPLET de ozecar.fr (fichiers+DB) = rollback",
+          "2. hPanel -> ozecar.fr -> Staging -> Publier/Deploy staging vers production (fichiers + base de donnees)",
+          "3. Me prevenir immediatement: j'execute les verifications post-push (crawl prod complet, chasse Monta, 301, formulaires, GTM/consent, endpoints api/, logo, cron)",
+          "4. Search Console: soumettre https://ozecar.fr/sitemap.xml apres mon feu vert",
+          "5. Plus tard (non bloquant): DNS shop.ozecar.fr avant reactivation des CTA boutique"
+        ],
+        "risques_residuels_acceptes": "Medias uploades en prod apres la creation du staging (improbable, prod gelee) seraient perdus — couverts par le backup manuel. Arbitrage /aide vs /support non tranche: les deux partent en prod (non bloquant)."
       }
     }
   },
