@@ -1,8 +1,8 @@
 {
   "_meta": {
-    "version": "1.467",
+    "version": "1.468",
     "updated": "2026-07-16",
-    "updated_by": "Claude PM (claude.ai) — audit lancement",
+    "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
@@ -83,6 +83,16 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-16",
+        "version_from": "1.467",
+        "version_to": "1.468",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "OZ-26 Phases 1+2 executees sur staging: Lots 1-2-3, 400+, 23 doublons depublies, blog raccroche (25 articles), tous liens casses corriges, slugs canoniques renommes (supervision/kit/bornes-compatibles/contact/blog), GA en dur desactive (conformite CNIL), marque blanche img-proxy forme opaque ?p=. Crawl final 198/198 en 200.",
+          "Ajout wordpress.AUDIT_LANCEMENT_2026_07_16.EXECUTION_2026_07_16"
+        ]
+      },
       {
         "date": "2026-07-16",
         "version_from": "1.466",
@@ -5859,7 +5869,35 @@
         "phase_3_bascule": "Carte 301 (anciennes URLs prod -> nouvelles) + sauvegarde api/ + uploads/ozecar + push + restauration + smoke test (crawl post-launch) + verif marque blanche prod (plugin monta-hardware-connector!) + Search Console/sitemap.",
         "phase_4_post_launch": "Landing conducteur, livres blancs, tag retargeting (chantier ads), puis DEBUT PROSPECTION."
       },
-      "sequence_avec_prospection": "Ordre valide par la logique Dominique: site lance -> ads armables -> prospection alternant (05/10). Fenetre: lancement cible avant fin aout = 5 semaines de marge avant l'onboarding."
+      "sequence_avec_prospection": "Ordre valide par la logique Dominique: site lance -> ads armables -> prospection alternant (05/10). Fenetre: lancement cible avant fin aout = 5 semaines de marge avant l'onboarding.",
+      "EXECUTION_2026_07_16": {
+        "statut": "PHASES 1+2 EXECUTEES sur staging — crawl final 198/198 URLs en 200, zero lien casse",
+        "phase_1_contenu_FAIT": [
+          "Lots 1-2-3 appliques. Lot1 marque blanche: buffer functions.php reecrit desormais en forme OPAQUE img-proxy.php?p=<path> (le domaine monta.imgix.net n'apparait plus nulle part dans le HTML, ni en querystring). Verifie fiche borne + home = 0 mention.",
+          "Lot2 ancienne grille: les pages Starter/legacy (supervision 22409, kit 22410, installateurs-2, etc.) DEPUBLIEES. Pages vivantes verifiees conformes (5,90=Essential annuel legitime, 9,90=OZECARD legitime, grille home Essential/Business 6,90-9,90 conservee telle quelle).",
+          "Lot3 'sans engagement': badge hero home remplace par 'Activation offerte' (vrai: frais activation offerts). Occurrences restantes = toutes qualifient l'audit/demo gratuit (legitimes), conservees.",
+          "Claim 400+ applique: pages 22465/22504/22506/22609 + descriptions menu items 22537/22564 (800+ -> 400+).",
+          "22 doublons liste A depublies (draft): 1001,1002,1003,1004,1005,3148,14606,22426,22382,22416,22427,22429,22640,11187,11190,6861,9,10,14594,14615,10511,22409 + 22420 contact-3 + 22410 kit legacy.",
+          "Blog raccroche: shortcode [oz_blog_articles] cree (functions.php enfant) + injecte dans la page Blog -> les 25 articles publies sont dans le graphe. Lien /secteurs/transport/ corrige -> /transport/.",
+          "Liens casses corriges: archive-guide.php /guides/recherche/ -> /guides-irve/recherche/ · 3 pages SEO (cpo-2026, electrifier-flotte-2026, devenir-cpo-2026) /politique-confidentialite -> /confidentialite/ · lien CGU inexistant retire de ozecar-one · page recherche 22593: fragment JS corrompu par KSES repare via wpdb (cartes guides affichent a nouveau les images).",
+          "Pages reliees: nav V5 + menu mobile (header.php) + footer.php enrichis avec Reprise de supervision, App OZECAR One, Activation, Preparation, Supprimer mon compte (footer legal). Banniere cookies: lien mort # -> /confidentialite/ (option cky_banner_template).",
+          "RENOMMAGE SLUGS CANONIQUES (decision PM, avant carte 301): supervision-3->supervision, kit-3->kit, bornes-compatibles-3->bornes-compatibles, contact-5->contact, blog-2->blog. Occupants legacy renommes (supervision-legacy-v3, kit-legacy-v4, bornes-compatibles-old, contact-old) + page archive posts 107 blog->blog-archive. Tous liens internes reecrits (post_content x7, menus, footer.php, header.php mobile, nav-render.php cles icones). _wp_old_slug poses.",
+          "Footer: copyright 2025->2026."
+        ],
+        "phase_2_conformite_FAIT": [
+          "Plugin ga-google-analytics DESACTIVE (chargeait gtag.js en dur avant consentement = non conforme CNIL). Architecture restante: Consent Mode v2 default DENIED (consent-mode.php) + GTM-M593SGD pilote par consentement + CookieYes. Verifie: 0 gtag.js hors GTM.",
+          "GUID formulaire HubSpot livres-blancs: DEJA REEL et fonctionnel (475bf5db-0201-47e5-ad52-e1c540c9d6d5, teste via API = form existe, champs requis email+entreprise, redirect PDF apres submit + champ white_paper_source). Rien a faire.",
+          "Formulaire newsletter HubSpot: reel et fonctionnel (0028bc7f-fdfd-4560-af3a-8776af8f5df7, origine_ozecar=formulaire_newsletter)."
+        ],
+        "decouvertes": [
+          "Le plugin monta-hardware-connector est ACTIF sur staging aussi mais AUCUN de ses assets n'est charge sur les pages rendues (0 slug visible). La fuite slug plugin reste un sujet PROD uniquement — disparait mecaniquement a la bascule.",
+          "Deux pages politique de confidentialite coexistent: /confidentialite/ (22502, moderne V5, cible du footer) et /politique-de-confidentialite/ (10816, ancienne prod, liste B 301). Coherent pour la bascule.",
+          "/aide/ (Centre d'aide) ET /support/ (Support) coexistent, toutes deux modernes et volumineuses — DOUBLON A ARBITRER par Dominique avant bascule.",
+          "Le rapport du script de rename a affiche '1234' au lieu de 22422 pour blog — verifie: etat final correct (22422 slug=blog)."
+        ],
+        "reste_phase_3_bascule": "NON EXECUTEE (go Dominique requis): carte 301 (simplifiee par le renommage: /supervision-et-monetique/->/supervision/, /installer-des-bornes/*->secteurs, /recharge-a-domicile/->/remboursement-recharge-domicile/, /sur-la-route-itinerance/->?, /lentreprise/->/a-propos/) + sauvegarde api/+uploads/ozecar + push Hostinger + re-crawl + chasse Monta prod + Search Console/sitemap.",
+        "backups": "Contenus pre-modification: uploads/ozecar/oz26-backup-20260716-113342.json. Fichiers themes: .bak-20260716-* (functions.php, footer.php, header.php, archive-guide.php, nav-render.php)."
+      }
     }
   },
   "make": {
