@@ -1,8 +1,8 @@
 {
   "_meta": {
-    "version": "1.466",
+    "version": "1.467",
     "updated": "2026-07-16",
-    "updated_by": "Claude PM (claude.ai) — OZ-25 Cockpit",
+    "updated_by": "Claude PM (claude.ai) — audit lancement",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
     "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-16",
+        "version_from": "1.466",
+        "version_to": "1.467",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Audit lancement site: crawl 142 URLs (3 cassees seulement), 57 orphelines categorisees (doublons/301/blog/a-relier), plan 4 phases grave dans wordpress.AUDIT_LANCEMENT_2026_07_16. Decisions Dominique: go Lots 1-2-3 + mecanisme bascule."
+        ]
+      },
       {
         "date": "2026-07-16",
         "version_from": "1.465",
@@ -5838,7 +5847,20 @@
       "color_accent": "#FAC828",
       "color_accent2": "#D4A800"
     },
-    "_archive": "Historique des iterations (5 sous-sections) sorti vers archive.json > purge_2026_07_15 > wordpress. Decisions conservees ci-dessus; le recit du 'comment' est dans l'archive et dans git log."
+    "_archive": "Historique des iterations (5 sous-sections) sorti vers archive.json > purge_2026_07_15 > wordpress. Decisions conservees ci-dessus; le recit du 'comment' est dans l'archive et dans git log.",
+    "AUDIT_LANCEMENT_2026_07_16": {
+      "declencheur": "Dominique: terminer le site et lancer AVANT la prospection. 'Beaucoup de pages cassees' -> MESURE par crawl complet.",
+      "crawl_reel": "142 URLs atteignables depuis la home, 139 en 200. SEULEMENT 3 cassees: /politique-confidentialite/ (404, 3 pages pointent dessus — la page EXISTE en /politique-de-confidentialite/ id 10816: slug mismatch, enjeu CNIL) · /guides/recherche/ (2 refs) · /guides-irve/recherche/${href}/ (bug template literal JS non echappe). Le graphe navigable est SAIN — le probleme n'est pas les liens casses.",
+      "orphelines_57": "109 pages+posts publies, 57 HORS graphe. Repartition: (A) ~20 doublons/legacy a depublier: homepage 1001, supervision-2 1002, kit-2 1003, bornes-compatibles-2 1004, contact-4 1005, home 3148, activation1, activation-kit-2, guide-zaptec-2, installateurs-2, preparation-2, weldom-2, demo-test, contrat-de-spervision (typo), fonctionnalites, maintenance, checkout/my-account/commande (Woo vestiges), ajouter-votre-borne, simuler-mon-projet. (B) ~10 anciennes URLs de PROD encore publiees (installer-des-bornes/* x5, supervision-et-monetique, recharge-a-domicile, sur-la-route-itinerance, lentreprise) = LA carte des redirections 301 au lancement (URLs indexees Google). (C) ~20 articles blog SEO a raccrocher au blog (pagination). (D) pages a RELIER: reprise-supervision 22660 (page coeur de business, orpheline!), supprimer-compte-ozecar 11173 (requis Google Play), ozecar-one, aide, activation, preparation, guide-zaptec, politique-de-confidentialite.",
+      "plan_lancement_4_phases": {
+        "phase_0_decisions_Dominique": "1) GO Lots 1-2-3 (attendu depuis le 10/07): Lot1 marque blanche 4 pages, Lot2 ancienne grille ~8 pages, Lot3 'sans engagement' ~15 pages. 2) Mecanisme de bascule: recommandation PM = push Hostinger staging->prod AVEC protocole de sauvegarde/restauration de api/ (boamp-veille + etats) et uploads/ozecar (facturation-reelle, cockpit-data) — moins de risque d'oublis que la migration selective. 3) Claim modeles: 400+ (canonique) — J'APPLIQUE sans demander.",
+        "phase_1_contenu": "Lots 1-2-3 + slug politique-confidentialite + 2 recherches guides + relier les pages D + depublier les ~20 doublons A + raccrocher le blog C + vocab Oze'Kit->Kit OZECAR.",
+        "phase_2_conformite_plomberie": "Bandeau consentement CNIL (GA bloque avant consentement) + GUID formulaire HubSpot livres-blancs + tags GTM + tri 404 livres-blancs/newsletter.",
+        "phase_3_bascule": "Carte 301 (anciennes URLs prod -> nouvelles) + sauvegarde api/ + uploads/ozecar + push + restauration + smoke test (crawl post-launch) + verif marque blanche prod (plugin monta-hardware-connector!) + Search Console/sitemap.",
+        "phase_4_post_launch": "Landing conducteur, livres blancs, tag retargeting (chantier ads), puis DEBUT PROSPECTION."
+      },
+      "sequence_avec_prospection": "Ordre valide par la logique Dominique: site lance -> ads armables -> prospection alternant (05/10). Fenetre: lancement cible avant fin aout = 5 semaines de marge avant l'onboarding."
+    }
   },
   "make": {
     "make_scenarios": {
