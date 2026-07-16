@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.463",
+    "version": "1.464",
     "updated": "2026-07-16",
     "updated_by": "Claude PM (claude.ai) — OZ-25 Cockpit",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-16",
+        "version_from": "1.463",
+        "version_to": "1.464",
+        "author": "Claude PM (claude.ai) — OZ-25",
+        "changes": [
+          "Cockpit it.2: page light + cockpit-action.php (clic = vraie tache Monday + Slack + ordre PM, anti-doublon 24h). Verite campagnes ads gravee (armement 1 clic oui, diffusion API non). Cron Hostinger actif."
+        ]
+      },
       {
         "date": "2026-07-16",
         "version_from": "1.462",
@@ -9282,6 +9291,14 @@
       "contenu_page": "Trajectoire 525/3000 (piste + position + activations/mois vs requis ~130) · Pipeline reprise 3 etages (bases: Freshmile n1, Enerstock hors Leclerc, Raiden, Waat, Bouygues / cibles ABM 395 dont 69 P3 / bascules: OEHC J-22 deal 510334425321, Bardinet 16 PDC hors CRM, Veterinaire BFC, Comepa) · Signaux: BOAMP live 5 opportunites 21j + bornes tombees <48h (38) / zombies (18) / en charge (55) · Actions a un clic (liens HubSpot ou bouton copie d'ordre PM) · Instruments: MRR 6323, 10,38 EUR/PDC, 127 PDC sans abo, CA recharge, treso.",
       "verifs": "cockpit.php: 403 sans cle, froid ~15s, cache 0,15s. cron.php: 403 sans cle. Page HTTP 200.",
       "reste": "1) go Dominique sur la maquette 2) cron Hostinger (Dominique, 1 fois) 3) jobs suivants: refresh auto cockpit-data (cibles/HubSpot), detection dormance, integration facturation planifiee 4) import 69 cibles P3 HubSpot"
+    },
+    "ITERATION_2_2026_07_16": {
+      "feedback_Dominique": "Interface light (pas dark) · les actions doivent faire quelque chose de reel · cron Hostinger ACTIVE par Dominique.",
+      "fait": "Page refaite en light (Cream/blanc, encre, jaune, violet). NOUVEAU api/cockpit-action.php: POST {key, action_id} -> registre serveur (7 actions) -> cree un item Monday (board 18411921057, groupe En cours) avec contexte + notifie Slack #veille-marches + renvoie l'ordre PM a coller quand l'action m'est destinee. Anti-doublon 24h (.cockpit-actions.json). Teste: tache 12548202375 creee (bornes <48h -> Fred), doublon detecte, 403 sans cle.",
+      "actions_registre": "oehc_repondre (Dominique) · freshmile_go (ordre PM) · import_p3 (ordre PM) · fred_bornes (Fred) · bande_linkedin (decision Dominique) · linkedin_prep (armement campagne ABM) · display_prep (armement retargeting GTM).",
+      "VERITE_CAMPAGNES_ADS": "Diffusion LinkedIn Ads en 1 clic par API = NON aujourd'hui (Marketing API restreinte + compte pub non connecte). Google Display idem (compte Ads + validation). Ce qui EST en 1 clic: ARMEMENT (audience CSV a jour, annonces, budget, tag remarketing GTM-M593SGD) via tache + ordre PM; la diffusion reste un clic manuel de Dominique dans Campaign Manager / Google Ads. Prerequis dur des deux: landing vivante (site en refonte).",
+      "limite_slack": "Bot sans channels:read/join -> notifs des taches postees dans #veille-marches (seul canal ou il est invite). Option: /invite @ozecarbot dans un canal #cockpit dedie.",
+      "cron": "ACTIVE cote Hostinger par Dominique le 16/07."
     }
   }
 }
