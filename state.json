@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.464",
+    "version": "1.465",
     "updated": "2026-07-16",
     "updated_by": "Claude PM (claude.ai) — OZ-25 Cockpit",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-16",
+        "version_from": "1.464",
+        "version_to": "1.465",
+        "author": "Claude PM (claude.ai) — OZ-25",
+        "changes": [
+          "Cockpit it.3: auto-critique appliquee (treso/CA jour + compteur deals retires), widget manquant = liste d'appel du jour. NOUVEAU: alternant bizdev Rocket School demarre 05/10 — plan d'onboarding grave. Clarification import = carte, contacts = Dropcontact/SalesNav etape 2. Monday = trace PM only, URL corrigee."
+        ]
+      },
       {
         "date": "2026-07-16",
         "version_from": "1.463",
@@ -9299,6 +9308,21 @@
       "VERITE_CAMPAGNES_ADS": "Diffusion LinkedIn Ads en 1 clic par API = NON aujourd'hui (Marketing API restreinte + compte pub non connecte). Google Display idem (compte Ads + validation). Ce qui EST en 1 clic: ARMEMENT (audience CSV a jour, annonces, budget, tag remarketing GTM-M593SGD) via tache + ordre PM; la diffusion reste un clic manuel de Dominique dans Campaign Manager / Google Ads. Prerequis dur des deux: landing vivante (site en refonte).",
       "limite_slack": "Bot sans channels:read/join -> notifs des taches postees dans #veille-marches (seul canal ou il est invite). Option: /invite @ozecarbot dans un canal #cockpit dedie.",
       "cron": "ACTIVE cote Hostinger par Dominique le 16/07."
+    },
+    "ITERATION_3_2026_07_16": {
+      "auto_critique_appliquee": "Retire du cockpit: tresorerie + CA recharge du jour (= routine matinale, le design rejete qui se reinvitait en bas de page) + compteur '25 deals ouverts' (bruit CRM en migration). Gardes: MRR, EUR/PDC facture, PDC sans abo (fuite de MRR = economie de la trajectoire).",
+      "manque_identifie": "LE widget manquant = LA LISTE D'APPEL DU JOUR (5 prochaines cibles: qui, angle, decideur, telephone). Un pipeline se pilote par les next actions, pas par les stocks. Depend de: import cibles + enrichissement contacts. Aussi manquant: delta depuis la derniere visite, PDC signes non actives (altitude engagee vs reelle).",
+      "clarification_import": "L'import HubSpot = la CARTE (qui a quel parc chez quel operateur, quel angle), PAS le carnet d'adresses. Contacts joignables = etape 2 via Dropcontact (~29 EUR/mois, RGPD, integrable HubSpot, emails nominatifs verifies) + LinkedIn Sales Navigator (~99 EUR/mois, trouve le decideur) + Kaspr (mobile depuis profil LinkedIn). Sequence type: J1 email nominatif / J3 invitation LinkedIn / J7 relance / J10 appel. Les ads ABM rechauffent, ne remplacent pas.",
+      "monday_semantique": "Dominique ne regarde JAMAIS Monday. Monday = registre de suivi PM inter-chats uniquement. Canal humain = Slack. URL de base corrigee: https://ozecar.monday.com/ (etait ozecar-sas)."
+    },
+    "ALTERNANT_BIZDEV_2026_10_05": {
+      "fait": "Alternant business developer signe (Rocket School Marseille), demarrage 2026-10-05. Il devient l'operateur du pipeline de reprise quotidien (volume 5-25 PDC). Dominique garde mega-deals + closing. Marie-Estelle: admin des deals signes.",
+      "plan_onboarding": {
+        "septembre_preparer": "1) Stack: HubSpot avec cibles importees/priorisees + sequences email ecrites + Sales Nav + Dropcontact + numero Ringover (chantier SUP-NUMERO existant). Budget outil poste ~130 EUR/mois. 2) Playbook: ICP, angles par segment (concession/parking/hotel/camping), objections types, grille tarifaire, demo OZECAR One. 3) Sa vue cockpit: liste d'appel du jour + ses stats.",
+        "rampe_3_mois": "M1 (oct): apprentissage produit + 20 appels/j sur liste fournie + shadowing Dominique. M2 (nov): 10 RDV qualifies/mois. M3+ (dec): prospection autonome, cible 2 bascules/mois sourcees (closing Dominique).",
+        "quotidien_type": "Matin 2h calls (liste du jour generee), aprem enrichissement + LinkedIn + relances sequences.",
+        "principe": "Rocket School lui donne la methode d'appel; OZECAR lui donne la matiere (cibles qualifiees). La cause n1 d'echec d'un alternant BD = pas de liste propre — c'est exactement ce que la fabrique de cibles + le cockpit resolvent."
+      }
     }
   }
 }
