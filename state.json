@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.459",
+    "version": "1.460",
     "updated": "2026-07-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,17 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-16",
+        "version_from": "1.459",
+        "version_to": "1.460",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "cockpit.fabrique_de_cibles cree: 1086 amenageurs continent 5-25 PDC enrichis SIREN/NAF/CA/effectif/dirigeants via recherche-entreprises.api.gouv.fr. 395 entreprises ABM actionnables / 3887 PDC.",
+          "CORRECTION MAJEURE cockpit.CARTE_CONTINENT: '232 amenageurs / 2232 PDC' etait un artefact du groupage par SIREN (61% des lignes IRVE n'en ont pas). Chiffre reel: 1086 amenageurs / 10627 PDC (4,7x).",
+          "CORRECTION MAJEURE cockpit.STRATEGIE_DE_CHASSE: la base client n1 est FRESHMILE (390 cibles / 3598 PDC), pas RAIDEN (51). RAIDEN etait un artefact du meme biais."
+        ]
+      },
       {
         "date": "2026-07-16",
         "version_from": "1.458",
@@ -9153,7 +9164,7 @@
     },
     "mesures_2026_07_16": "CA recharge 15/07: 4633,33 EUR (marge 3356,20 · 489 sessions · 8765 kWh). 14/07: 3983,42. 08/07: 3817,62. Solde Caisse d'Epargne principal: 14670,34 EUR (synchro Pennylane 13/07, ~3j de retard).",
     "HubSpot_en_migration": "ATTENTION: HubSpot ET le staging sont en cours de migration (info Dominique 2026-07-16). Tout chiffre de funnel lu dans HubSpot aujourd'hui est NON SIGNIFICATIF (27 deals depuis janvier, 201 contacts sur 212 en source OFFLINE = import). Le funnel organique n'est pas mesurable avant le lancement du site.",
-    "next": "1) FAIT: veilleur BOAMP national (api/boamp-veille.php + bouton deal Slack) — reste le /invite du bot et le cron. 2) Fabrique de cibles: 232 amenageurs continent enrichis SIREN via recherche-entreprises.api.gouv.fr -> audience LinkedIn + sequence. 3) Attaquer par base client d'operateur (RAIDEN 51 cibles).",
+    "next": "1) FAIT: veilleur BOAMP (cockpit.veilleur_BOAMP) — reste le cron. 2) FAIT: fabrique de cibles (cockpit.fabrique_de_cibles) — reste l'import HubSpot + la decision LinkedIn (bande 5-25 ou 3-40). 3) Attaquer la base client FRESHMILE (390 cibles / 3598 PDC), pas RAIDEN.",
     "CORRECTION_DOMINIQUE_2026_07_16": "DEUX erreurs corrigees par Dominique. (1) La reprise n'est PAS seulement le mega-deal 200-800 PDC. Le pain quotidien = des ENTREPRISES qui changent d'operateur, 5-10-20 PDC par client (COMEPA 10 PDC, Bardinet 16 PDC non encore gagne, OEHC...). Donc la reprise EST un funnel a volume et SE PILOTE quotidiennement: 24 PDC/mois = ~2 bascules de ~12 PDC/mois. (2) Le wss OCPP marque blanche est FONCTIONNEL (teste). Non confirme contractuellement par Monta, mais Dominique l'assume officiellement et a l'impression. => CE N'EST PAS UN BLOCAGE. Annule et remplace 'BLOCAGE_UNIQUE'.",
     "LIMITE_MAJEURE_DU_VIVIER_IRVE": "TEST DECISIF 2026-07-16: COMEPA, BARDINET, OEHC => 0 ligne dans le fichier IRVE national. Le fichier ne couvre QUE le public/itinerance. Le marche reel d'OZECAR (parcs prives/pro: flottes, entreprises, hotels, campings) est INVISIBLE dans tout jeu de donnees public. => La carte des 359 operateurs / 66 cibles reste valable pour les MEGA-DEALS de reprise de reseau public, mais elle NE CARTOGRAPHIE PAS le coeur de business. La liste de cibles ne se telecharge pas: elle se FABRIQUE.",
     "TROIS_CANAUX_DE_CIBLAGE_REELS": {
@@ -9162,8 +9173,8 @@
       "3_ABM_ads_self_identification": "On ne peut pas lister qui possede des bornes privees => on fait lever la main. La liste des ENTREPRISES, elle, est constructible gratuitement: https://recherche-entreprises.api.gouv.fr/search?activite_principale=<NAF>&departement=<dep> renvoie SIREN, nom, commune, tranche d'effectif. Exemple valide: NAF 55.10Z (hotels) departement 2A = 1053 entreprises. => input direct pour une LinkedIn Matched Audience par liste de societes. PREREQUIS: une landing page vivante (site en refonte)."
     },
     "ARBITRAGE_2_2026_07_16": "Dominique tranche: (1) la borne PUBLIQUE interesse OZECAR (recurrent + variable + itinerance) -> le vivier IRVE redevient pertinent. (2) La CORSE n'est pas un marche qui convertit -> concentration CONTINENT. Le biais Corse est abandonne (sauf clients existants et avis en cours type OEHC).",
-    "CARTE_CONTINENT_2026_07_16": "Fichier IRVE hors Corse/DOM: 162970 PDC · 4779 amenageurs · 353 operateurs. CIBLES 5-25 PDC = 232 amenageurs = 2232 PDC = ~186 bascules-equivalent (a 12 PDC). Besoin = 2 bascules/mois = 24/an => le vivier represente ~7 ans de pipeline. Le volume n'est PAS le probleme.",
-    "STRATEGIE_DE_CHASSE": "NE PAS chasser les 232 clients un par un: chasser les BASES CLIENTS des operateurs de second rang. Concentration (clients dans la cible 5-25 PDC): RAIDEN 51 cibles/439 PDC (850 PDC, 169 clients, 60 depts, maj 2026-04-20 = ACTIF, pas dormant) · SGA Industries 29 cibles/249 PDC (344 PDC, 56 clients) · WAAT Umbrella-Copro 18 cibles/216 PDC (actif, maj 07/2026) · TotalEnergies Marketing 17 cibles · C4Energies 11 · SEVDEC 9 (maj 2025-10) · Virta 8 · CAR2PLUG 7.",
+    "CARTE_CONTINENT_2026_07_16": "CORRIGE 2026-07-16 (2e passe). Le chiffre '232 amenageurs / 2232 PDC' etait FAUX PAR CONSTRUCTION : il groupait par siren_amenageur, or 61% des lignes IRVE n'ont pas de SIREN declare. Groupage par nom_amenageur (methode correcte) : continent hors Corse/DOM = 229417 lignes, 4846 amenageurs. Cibles 5-25 PDC = 1086 amenageurs / 10627 PDC, soit 4,7x le chiffre precedent. Hors Leclerc (compte national) et hors OZECAR : 867 amenageurs / 8393 PDC = ~700 bascules-equivalent a 12 PDC. Le vivier ne represente pas 7 ans de besoin mais ~29 ans : la contrainte n'a jamais ete la taille du vivier, c'est la capacite a contacter.",
+    "STRATEGIE_DE_CHASSE": "CORRIGE 2026-07-16. Chasser les BASES CLIENTS des operateurs de second rang, pas les cibles une par une. Classement REEL (cibles 5-25 PDC continent, groupage par nom) : FRESHMILE 390 cibles / 3598 PDC (n1 de tres loin, 7,6x RAIDEN) · E.LECLERC 206/2134 (compte national, exclu de l'ABM : Leclerc opere ses propres bornes) · RAIDEN 51/439 · WAAT 49/483 · ENERSTOCK 47/529 · IZIVIA 44+24 · BOUYGUES E&S 39/427 · SGA INDUSTRIES 25/234 · TOTALENERGIES 17/163 · GREENSPOT 16/149. RAIDEN n'est PAS la cible n1 : c'etait un artefact du groupage par SIREN. Priorite = FRESHMILE.",
     "ICP_LU_DANS_LA_DONNEE": "Les clients de RAIDEN revelent l'ICP: CONCESSIONS AUTO, LOUEURS, PARKINGS, entreprises a flotte. Exemples: Zenpark France 20 PDC · BAIKOWSKI 16 (maj 2021) · BAUER PARIS 16 · SERMOOV 16 · BERGER SERVICES LOCATION 15 · ENVERGURE LA ROCHE-SUR-YON 15 · DBF Bordeaux Premium 14 (maj 2021) · PREMIUM AUTO DISTRIBUTION 14 · BMW France S.A. 13 · STERLING AUTOMOBILES 12. => COHERENT avec les deals reels de Dominique (COMEPA 10 PDC, Bardinet 16 PDC): des entreprises avec flotte. Le segment est confirme par la donnee ET par le pipeline.",
     "VIGILANCE_VENTE": "Un operateur a maj recente (RAIDEN 04/2026, WAAT 07/2026) n'est PAS un parc abandonne: on ne ramasse pas, on ARRACHE un client a un concurrent actif. Il faut une raison de basculer (prix, service, bornes hors ligne, app, itinerance). Ne pas confondre les deux ventes.",
     "DEAL_CREE_2026_07_16": "HubSpot deal 510334425321 'OEHC — Renouvellement marche recharge (BOAMP 26-67021)', pipeline Vente 3747862733, etape Qualifie 5215721687, closedate 2026-08-07, associe a la company 435804089589. Detecte par la veille BOAMP. Dominique ne connaissait pas cet avis => la veille est VALIDEE.",
@@ -9186,6 +9197,18 @@
       "BLOQUANT_SCOPE_SLACK": "RESOLU 2026-07-16: /invite @ozecarbot fait par Dominique dans #veille-marches. Le bot n'a toujours pas channels:join -> refaire un /invite a chaque nouveau canal, ou ajouter le scope dans l'app Slack.",
       "cron_a_activer": "Hostinger, 1x/jour 8h: curl -s 'https://ozecar.fr/api/boamp-veille.php?key=...&mode=daily' > /dev/null",
       "gisement_reel": "136 avis 'recharge' publies en 2026 au national, ~164 avec le filtre elargi = ~14/mois bruts, ~7/mois qualifies. Ce n'est PAS le canal de volume (2 bascules/mois demandees) mais le canal a preuve: OEHC (client OZECAR) detecte le 08/07 avec limite 07/08."
+    },
+    "fabrique_de_cibles": {
+      "statut": "LIVRE 2026-07-16. Deux fichiers produits, en attente d'exploitation (LinkedIn + HubSpot).",
+      "methode": "IRVE consolide (data.gouv, 229826 lignes) -> filtre continent (hors CP 20/97/98) -> groupage par nom_amenageur -> bande 5-25 PDC -> enrichissement recherche-entreprises.api.gouv.fr (par SIREN si declare, sinon nom+code_postal avec score de similarite difflib, seuil 0,6) -> mapping NAF -> ICP -> exclusions -> priorisation.",
+      "resultat": "1086 amenageurs traites. 496 apparies a une entreprise reelle (222 par SIREN, 274 par nom). 590 NON IDENTIFIES = le nom_amenageur est un nom de site ('Rungis_Barcelone_Public', 'Palm Beach'), pas une raison sociale : 226 sont chez Freshmile, 199 chez Leclerc.",
+      "ABM_actionnable": "395 entreprises / 3887 PDC apres exclusions. Priorite 3 (ICP coeur) = 69 : concessions auto 45, parkings 14, garages 6, loueurs PL 2, transport 2. Priorite 2 (ICP proche) = 139 : immobilier/foncier 63, hotellerie 36, grande distribution 18, sante 9, camping/hebergement 8, gestion immobiliere 5. Priorite 1 (prive a qualifier) = 187.",
+      "exclusions": "231 Leclerc (compte national, opere ses bornes) · 50 secteur public (-> canal BOAMP) · 37 entreprises cessees (etat_administratif=C) · 13 deja clients OZECAR.",
+      "enrichissement_disponible": "SIREN, raison sociale, NAF, categorie (PME/ETI/GE), tranche d'effectif, CA du dernier exercice, resultat net, adresse et ville du siege, nombre d'etablissements ouverts, dirigeants, etat administratif. Gratuit, sans cle.",
+      "fichiers": "ozecar-cibles-continent-enrichi.csv (1086 lignes, toutes colonnes) et ozecar-linkedin-audience.csv (395 lignes au format company list LinkedIn Ads). Produits dans la session du 16/07, a deposer sur un stockage durable (Drive ou api/).",
+      "LIMITE_LINKEDIN": "Une company list LinkedIn Ads exige ~300 entreprises appariees cote LinkedIn pour etre activable. 395 en entree -> probablement 250-280 appariees = sous le seuil ou juste dessus. Leviers : (1) elargir la bande a 3-40 PDC = 1843 amenageurs (au lieu de 867), (2) resoudre les 590 non identifies, (3) completer companywebsite (absent de l'API entreprises, c'est le champ qui fait le taux d'appariement LinkedIn). Domaine email disponible pour 180/395 seulement (champ contact_amenageur de l'IRVE).",
+      "bandes_alternatives": "hors Leclerc/OZECAR : 5-25 PDC = 867 amenageurs / 8393 PDC · 3-40 = 1843 / 14229 · 5-60 = 983 / 12651 · 2-100 = 3429 / 22202.",
+      "reproductible": "Script d'enrichissement non deploye (tourne dans le conteneur de session). A porter en api/ si on veut le rejouer mensuellement sur la mise a jour data.gouv."
     }
   }
 }
