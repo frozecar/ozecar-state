@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.469",
+    "version": "1.470",
     "updated": "2026-07-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-16",
+        "version_from": "1.469",
+        "version_to": "1.470",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "OZ-26 incident KSES (renames du matin) repare depuis revisions + deltas reappliques via wpdb. Collateral: 3 landings livres-blancs reparees (gate email HubSpot mort depuis creation — loader strippe) + page recherche. Bandeau logos clients ajoute sur supervision+kit. Scan 0 CSS/JS nu, crawl 198/198. REGLE gravee: jamais wp_update_post non authentifie sur contenu riche."
+        ]
+      },
       {
         "date": "2026-07-16",
         "version_from": "1.468",
@@ -5922,6 +5931,17 @@
           "Typo 'conceins equipes' corrigee. Tous les liens shop.ozecar.fr retires des surfaces globales (header bandeau + menu mobile + footer + CTA home) -> /kit/ en attendant le DNS. Les CTA d'achat DANS /kit/ et /bundle-zaptec-pro/ pointent encore shop: DNS shop.ozecar.fr = PREREQUIS de lancement.",
           "Crawl post-modifs: 198/198 en 200."
         ]
+      },
+      "INCIDENT_KSES_REPARE_2026_07_16": {
+        "incident": "Le renommage des slugs canoniques (matin) est passe par wp_update_post en contexte HTTP non authentifie -> KSES a strippe les balises <style>/<script> des 5 pages canoniques + 7 drafts (CSS/JS affiches en texte). Signale par Dominique sur /supervision/. MA faute — la regle KSES etait connue et documentee.",
+        "reparation": [
+          "5 pages canoniques restaurees depuis leurs revisions WP saines + re-application de tous les deltas du jour via $wpdb uniquement: liens propres, 400+, proxy opaque ?p= (bornes-compatibles), section tarifs actuelle re-portee avec <script> configurateur re-enveloppe (supervision), shortcode [oz_blog_articles] (blog).",
+          "7 drafts legacy restaures depuis revisions. Drafts sans revision saine (11221, 11064, 1001-1005, 3148, etc.): laisses strippes — legacy destines a disparaitre, contenu texte intact.",
+          "DECOUVERTE COLLATERALE: 4 pages etaient strippees AVANT aujourd'hui (creation par wp_insert_post non authentifie par un chat anterieur): page recherche 22593 (restauree depuis rev 22594 du 07/05) + les 3 landings livres blancs 22654/55/56 (AUCUNE revision -> reconstruction: CSS re-enveloppe par delimitation :root->premier tag, hbspt.forms.create re-enveloppe + LOADER js-eu1.hsforms.net REINJECTE — il avait ete strippe integralement, donc LE GATE EMAIL DES LIVRES BLANCS N'A JAMAIS FONCTIONNE jusqu'ici).",
+          "Bandeau logos clients (9 logos, meme traitement que la home: 28px grayscale) ajoute sur /supervision/ et /kit/ apres le hero (bloc autonome .oz-clients-band, CSS scope).",
+          "Scan final: 0 page avec CSS/JS nu. Crawl 198/198 en 200."
+        ],
+        "REGLE_PERMANENTE": "Dans les scripts serveur non authentifies (wp-load via HTTP): JAMAIS wp_update_post/wp_insert_post sur du contenu riche (KSES strip <style>/<script>). Toujours $wpdb->update + clean_post_cache. Pour renommer un slug: $wpdb->update(post_name) + add_post_meta _wp_old_slug manuel. Pour depublier: $wpdb->update(post_status) direct."
       }
     }
   },
