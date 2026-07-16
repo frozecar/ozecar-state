@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.468",
+    "version": "1.469",
     "updated": "2026-07-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-16",
+        "version_from": "1.468",
+        "version_to": "1.469",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "OZ-26 revue home+nav (decisions Dominique): quote signee Matteo Saignie, 9 logos clients officiels normalises, section Reprise sur home, claims retires (1200 avis, comptages PDC), bloc options tarifs supprime (devis uniquement), nav reordonnee (Reprise #2, Boutique retiree, prix hors menu). Crawl 198/198."
+        ]
+      },
       {
         "date": "2026-07-16",
         "version_from": "1.467",
@@ -5897,6 +5906,22 @@
         ],
         "reste_phase_3_bascule": "NON EXECUTEE (go Dominique requis): carte 301 (simplifiee par le renommage: /supervision-et-monetique/->/supervision/, /installer-des-bornes/*->secteurs, /recharge-a-domicile/->/remboursement-recharge-domicile/, /sur-la-route-itinerance/->?, /lentreprise/->/a-propos/) + sauvegarde api/+uploads/ozecar + push Hostinger + re-crawl + chasse Monta prod + Search Console/sitemap.",
         "backups": "Contenus pre-modification: uploads/ozecar/oz26-backup-20260716-113342.json. Fichiers themes: .bak-20260716-* (functions.php, footer.php, header.php, archive-guide.php, nav-render.php)."
+      },
+      "REVUE_HOME_NAV_2026_07_16": {
+        "decisions_dominique": [
+          "Renault Retail RESTE affiche (client reel: concession Renault a Porto Vecchio — ne jamais citer le lieu ni le nom de la concession Balesi). Quote signee 'Matteo Saignie, Directeur technique · Renault Retail'.",
+          "Homair Vacances utilisable comme etude de cas TOURISME (nomme).",
+          "REGLE reaffirmee: ne JAMAIS afficher le nombre de bornes/PDC supervisees par OZECAR (personne ne le fait). Applique: mock dashboard home passe a l'echelle d'UN client (38 PDC / 5 sites, coherent avec le cas Renault Retail), '530+ PDC supervises' retire de livres-blancs.",
+          "'★4.8 — 1200+ avis' app: SUPPRIME (invérifiable).",
+          "Tarifs: PandaDoc a les ANCIENS prix, les ignorer — la grille site (Essential 6,90 / Business 9,90 / Enterprise, engagement 36 mois affiche) fait foi pour le site. Le bloc options sous la grille (Data 2€, Maintenance 4€, prepaiement -5%) SUPPRIME de home + supervision: options/prepaiement/biannuel = DEVIS UNIQUEMENT, jamais affiches.",
+          "Nav Nos solutions: Reprise en position 2 · Boutique RETIREE (DNS shop.ozecar.fr pas pose) · prix retire de la desc Recharge a domicile · doublon Bornes compatibles (22564) supprime."
+        ],
+        "execution": [
+          "Ticker clients: 9 logos officiels sources (Wikimedia/sites officiels) uploades dans uploads/ozecar/logos-clients/ (weldom, leclerc, europcar, renault-retail RRG, pierre-vacances, spar, homair, eurotyre en SVG + carrefour-market en SVG wrapper PNG). Normalisation: height 28px, grayscale+opacity uniformes (CSS .client-logo img). 'Utile' retire du ticker (aucun logo propre trouvable — a reintegrer si Dominique fournit le fichier).",
+          "Section REPRISE ajoutee sur la home entre cas client et tarifs (bloc sombre: 'Deja equipe, mal supervise ?' + audit gratuit / migration sans coupure / 0 EUR frais de reprise -> /reprise-supervision/).",
+          "Typo 'conceins equipes' corrigee. Tous les liens shop.ozecar.fr retires des surfaces globales (header bandeau + menu mobile + footer + CTA home) -> /kit/ en attendant le DNS. Les CTA d'achat DANS /kit/ et /bundle-zaptec-pro/ pointent encore shop: DNS shop.ozecar.fr = PREREQUIS de lancement.",
+          "Crawl post-modifs: 198/198 en 200."
+        ]
       }
     }
   },
