@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.461",
+    "version": "1.462",
     "updated": "2026-07-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,16 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-16",
+        "version_from": "1.461",
+        "version_to": "1.462",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "cockpit.DECISION_2026_07_16_COCKPIT_DABORD: le cockpit devient le chantier absorbant. Freshmile/ABM/veille = des lignes dedans, plus des chats separes.",
+          "ops.registre_chats: OZ-24 clos (veilleur BOAMP + fabrique de cibles + dossier Enerstock livres), OZ-25 COCKPIT ouvert."
+        ]
+      },
       {
         "date": "2026-07-16",
         "version_from": "1.460",
@@ -8566,19 +8576,35 @@
       "_pourquoi": "Dominique se perd entre les chats claude.ai. Le titre d'un chat est genere a partir du PREMIER message : donc tout prompt d'ouverture commence par sa ligne de titre, et le chat porte le bon nom sans intervention.",
       "CONVENTION_TITRE": "OZ-NN · CODE-CHANTIER — objet court. Ex: 'OZ-24 · CHASSE-REPRISE — veilleur BOAMP + fabrique de cibles'. NN = numero incremente ici meme, jamais reutilise. Le prompt pret a coller commence TOUJOURS par cette ligne, en tete, seule.",
       "REGLE_CLAUDE": "Avant de fournir un prompt pret a coller: lire ops.registre_chats, prendre compteur+1, ecrire l'entree (code, titre, statut 'ouvert', sections du state a lire), pousser le state, PUIS donner le prompt. A la cloture d'un chantier: passer le statut a 'clos' et pointer la section du state qui porte le resultat.",
-      "compteur": 24,
+      "compteur": 25,
       "chats": [
+        {
+          "n": 25,
+          "titre": "OZ-25 · COCKPIT — l'interface unique, tout le reste dedans",
+          "statut": "ouvert",
+          "ouvert_le": "2026-07-16",
+          "sections_state": [
+            "cockpit",
+            "strategy",
+            "parc_clients",
+            "hubspot",
+            "infra"
+          ],
+          "resultat": "",
+          "note": "Chantier absorbant : Freshmile, ABM, import HubSpot, veille = des lignes DANS le cockpit, plus jamais des chats separes."
+        },
         {
           "n": 24,
           "titre": "OZ-24 · CHASSE-REPRISE — veilleur BOAMP + fabrique de cibles",
-          "statut": "ouvert",
+          "statut": "clos",
           "ouvert_le": "2026-07-16",
           "sections_state": [
             "cockpit",
             "strategy",
             "hubspot"
           ],
-          "resultat": "veilleur BOAMP livre (cockpit.veilleur_BOAMP). Reste: fabrique de cibles 232 amenageurs -> SIREN."
+          "resultat": "Veilleur BOAMP livre (cockpit.veilleur_BOAMP) + fabrique de cibles livree (cockpit.fabrique_de_cibles) + dossier Enerstock/Leclerc tranche (cockpit.dossier_ENERSTOCK_LECLERC). Corrections majeures du vivier: 1086 amenageurs et non 232, Freshmile base n1 et non RAIDEN.",
+          "clos_le": "2026-07-16"
         }
       ],
       "note_renommage": "Claude ne peut pas renommer un chat existant : le titre appartient a l'interface. Les chats anterieurs a OZ-24 sont a renommer a la main par Dominique s'il le souhaite, ou a laisser mourir."
@@ -9230,6 +9256,13 @@
       "LA_PRISE_REELLE": "337 PDC / 51 amenageurs chez Enerstock ne sont PAS des Leclerc. En bande 5-25 PDC: 25 amenageurs / 232 PDC. Composition = ICP exact OZECAR: Intermarche x13 (Courbessac 20, Lunel 14, La Seyne 12, Valence 11, Vacquerolles 11, Sommieres 10, Hagetmau 10, Toulon 10, Bollene 10, Frontignan 9...), Golf de Massane 19, Hotel de Verchant 11, Renault Frejus 10, Intersport x2, Ugecam x2 cliniques, LFI fonciere 8. Concentre sur 30/34/83/84 = une seule tournee. Et Intermarche n'a PAS de reseau de mouvement interne : rien ne les protege.",
       "nuance_Herault": "Dept 34 : Enerstock 185 PDC, reseau propre E.Leclerc = 0 PDC. Idem 66 et 81. Les 4 magasins Leclerc du 34 (69 PDC) n'ont pas d'alternative interne installee a ce jour. Fenetre, pas plan.",
       "ordre_de_chasse": "1) FRESHMILE 390 cibles / 3598 PDC (base n1). 2) ENERSTOCK hors Leclerc 25 cibles / 232 PDC (concentre, non protege). 3) Leclerc-Enerstock 507 PDC : abandonner."
+    },
+    "DECISION_2026_07_16_COCKPIT_DABORD": {
+      "arbitrage_Dominique": "Dominique tranche : il ne veut pas une collection de chantiers, il veut SON interface, actionnable, en autopilot. Les prospects trouves sans interface pour les porter = du bruit qui l'embrouille.",
+      "decision": "Le cockpit devient le chantier absorbant. Freshmile, ABM, import HubSpot, veille ne sont plus des chantiers : ce sont des lignes DANS le cockpit. Un seul chat: OZ-25.",
+      "ce_qui_existe_deja_et_n_a_pas_de_face": "api/boamp-veille.php (veille + bouton deal Slack) · fichier des 1086 amenageurs enrichis + 395 cibles ABM · api/parc.php + facturation-reelle.json · api/monta.php · HubSpot pipelines. Le manque n'est pas la matiere, c'est la surface et l'ordonnanceur.",
+      "VERITE_SUR_L_AUTOPILOT": "Claude ne tourne pas en tache de fond entre deux messages. L'autopilot = des crons + Make + Slack qui appellent des endpoints PHP. Modele retenu: UN SEUL cron maitre Hostinger sur api/cron.php?key=... qui dispatche tous les jobs (veille BOAMP, refresh du parc, detection de dormance, refresh des cibles). Une seule action admin de Dominique, une fois, pour toujours.",
+      "perimetre_v1": "Une page unique (staging d'abord), un agregateur api/cockpit.php avec cache, et des widgets qui repondent au plan de vol 3000 PDC: trajectoire reelle vs objectif · pipeline de reprise (bases operateurs, cibles, bascules en cours) · signaux du jour (BOAMP, parc dormant, bornes tombees) · actions a un clic (creer le deal, pousser en sequence). PAS un tableau de bord de routine matinale (design deja rejete)."
     }
   }
 }
