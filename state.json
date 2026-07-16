@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.471",
+    "version": "1.472",
     "updated": "2026-07-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-16",
+        "version_from": "1.471",
+        "version_to": "1.472",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "OZ-26 pre-vol final: robots.txt Disallow physique neutralise (aurait tue le SEO prod), admin_email corrige, FAILLE .bak/.deleted exposes en prod fermee (rotation tokens Slack recommandee), RDV /demo/ repare (loader Meetings via injection DOM), largeurs 1300px partout. Staging PRET pour le push."
+        ]
+      },
       {
         "date": "2026-07-16",
         "version_from": "1.470",
@@ -5969,6 +5978,18 @@
           "5. Plus tard (non bloquant): DNS shop.ozecar.fr avant reactivation des CTA boutique"
         ],
         "risques_residuels_acceptes": "Medias uploades en prod apres la creation du staging (improbable, prod gelee) seraient perdus — couverts par le backup manuel. Arbitrage /aide vs /support non tranche: les deux partent en prod (non bloquant)."
+      },
+      "PREVOL_FINAL_2026_07_16": {
+        "contexte": "Second passage de verification demande par Dominique avant push — 5 problemes reels trouves et corriges. Le staging est maintenant REELLEMENT pret.",
+        "corriges": [
+          "1. robots.txt staging etait un fichier PHYSIQUE 'Disallow: /' qui serait parti en prod (deref totale). Remplace par un robots.txt physique version PROD (Allow + Sitemap sitemap.xml) + noindex staging via PHP domain-aware (X-Robots-Tag + wp_robots si host contient staging.) — survit au push, s'eteint automatiquement en prod.",
+          "2. admin_email staging etait dominique@staging.ozecar.fr (invalide) -> remis dominique@ozecar.fr.",
+          "3. FAILLE SECURITE PROD FERMEE: les fichiers .bak/.deleted de api/ etaient servis EN TEXTE BRUT publiquement (boamp-veille.php.bak, slack-bot.php.bak 60Ko avec tokens, cockpit*.bak, _join/_whoami/_z.deleted). 8 fichiers purges en prod (404 verifie) + 159 purges sur staging. ROTATION RECOMMANDEE des tokens presents dans slack-bot/boamp-veille/cockpit-action (token bot Slack xoxb, webhooks) — exposes ~18h.",
+          "4. DECOUVERTE: le 'delete' de wp-deploy.php RENOMME en .deleted-<ts> au lieu de supprimer -> les fichiers restent servis en clair. REGLE: apres tout delete wp-deploy, purger les .deleted par unlink PHP. A corriger dans wp-deploy.php (vrai unlink) — chantier futur.",
+          "5. Prise de RDV /demo/ etait MORTE: loader HubSpot Meetings strippe (KSES historique) puis re-supprime au rendu par une couche de blocage server-side (auto-block cookies, insensible a data-cky-ignore). Fix: injection DOM depuis un script inline (immune au blocage). Verifie au rendu. Ticker demo converti en logos images au passage.",
+          "6. Yoast est INACTIF sur staging (sitemap = google-sitemap-generator). Apres push: sitemap_index.xml (Yoast) mourra -> Search Console devra pointer https://ozecar.fr/sitemap.xml (deja annonce par le robots.txt)."
+        ],
+        "controles_finaux": "Crawl 198/198 en 200 · 0 CSS/JS nu · robots staging noindex actif · robots prod inchange · demo Meetings OK · landings hsforms OK · exposition .bak prod 404 · cockpit/boamp 403 (protection par cle, normal) · relay prod OK · logo servi · api/ et uploads/ozecar synchronises."
       }
     }
   },
