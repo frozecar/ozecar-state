@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.458",
+    "version": "1.459",
     "updated": "2026-07-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,16 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-16",
+        "version_from": "1.458",
+        "version_to": "1.459",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "ops.registre_chats cree: convention de titre 'OZ-NN · CODE-CHANTIER — objet', compteur, registre des chats ouverts/clos. Tout prompt pret a coller commence par sa ligne de titre (le titre du chat est genere depuis le 1er message).",
+          "cockpit.veilleur_BOAMP: maquette poussee avec succes dans #veille-marches apres /invite du bot (10 opportunites + 6 attributions)."
+        ]
+      },
       {
         "date": "2026-07-16",
         "version_from": "1.457",
@@ -8530,7 +8540,28 @@
       "gmail_sender": "hello@ozecar.fr (alias de dominique@ozecar.fr)",
       "gmail_connection_id": 6724564
     },
-    "_archive": "Historique des iterations (1 sous-sections) sorti vers archive.json > purge_2026_07_15 > ops. Decisions conservees ci-dessus; le recit du 'comment' est dans l'archive et dans git log."
+    "_archive": "Historique des iterations (1 sous-sections) sorti vers archive.json > purge_2026_07_15 > ops. Decisions conservees ci-dessus; le recit du 'comment' est dans l'archive et dans git log.",
+    "registre_chats": {
+      "_pourquoi": "Dominique se perd entre les chats claude.ai. Le titre d'un chat est genere a partir du PREMIER message : donc tout prompt d'ouverture commence par sa ligne de titre, et le chat porte le bon nom sans intervention.",
+      "CONVENTION_TITRE": "OZ-NN · CODE-CHANTIER — objet court. Ex: 'OZ-24 · CHASSE-REPRISE — veilleur BOAMP + fabrique de cibles'. NN = numero incremente ici meme, jamais reutilise. Le prompt pret a coller commence TOUJOURS par cette ligne, en tete, seule.",
+      "REGLE_CLAUDE": "Avant de fournir un prompt pret a coller: lire ops.registre_chats, prendre compteur+1, ecrire l'entree (code, titre, statut 'ouvert', sections du state a lire), pousser le state, PUIS donner le prompt. A la cloture d'un chantier: passer le statut a 'clos' et pointer la section du state qui porte le resultat.",
+      "compteur": 24,
+      "chats": [
+        {
+          "n": 24,
+          "titre": "OZ-24 · CHASSE-REPRISE — veilleur BOAMP + fabrique de cibles",
+          "statut": "ouvert",
+          "ouvert_le": "2026-07-16",
+          "sections_state": [
+            "cockpit",
+            "strategy",
+            "hubspot"
+          ],
+          "resultat": "veilleur BOAMP livre (cockpit.veilleur_BOAMP). Reste: fabrique de cibles 232 amenageurs -> SIREN."
+        }
+      ],
+      "note_renommage": "Claude ne peut pas renommer un chat existant : le titre appartient a l'interface. Les chats anterieurs a OZ-24 sont a renommer a la main par Dominique s'il le souhaite, ou a laisser mourir."
+    }
   },
   "monday_boards": {
     "stock_kits": {
@@ -9152,7 +9183,7 @@
         "attribution": "Resultat de marche -> pas de bouton, sert de veille concurrentielle (titulaire + montant extraits du blob eForms) et alimente state['vivier'] du fichier .boamp-veille.json."
       },
       "bouton_creer_le_deal": "action_id oz_boamp_deal, gere dans api/slack-bot.php (fonction oz_handle_boamp_action). Cree un deal pipeline 3747862733 (Vente) etape 5215721687 (Qualifie), closedate = date limite de reponse, description + note HubSpot avec le lien BOAMP, rattachement auto a la company si un nom proche existe. Repond dans le message Slack avec le lien HubSpot. oz_boamp_ignore = classe sans suite.",
-      "BLOQUANT_SCOPE_SLACK": "Le bot ozecarbot (U0BDB9M3GG5) n'a pas le scope channels:join -> conversations.join echoue, chat.postMessage renvoie not_in_channel sur un nouveau canal. Contournement retenu: /invite @ozecarbot dans le canal. Alternative durable: ajouter channels:join dans l'app Slack.",
+      "BLOQUANT_SCOPE_SLACK": "RESOLU 2026-07-16: /invite @ozecarbot fait par Dominique dans #veille-marches. Le bot n'a toujours pas channels:join -> refaire un /invite a chaque nouveau canal, ou ajouter le scope dans l'app Slack.",
       "cron_a_activer": "Hostinger, 1x/jour 8h: curl -s 'https://ozecar.fr/api/boamp-veille.php?key=...&mode=daily' > /dev/null",
       "gisement_reel": "136 avis 'recharge' publies en 2026 au national, ~164 avec le filtre elargi = ~14/mois bruts, ~7/mois qualifies. Ce n'est PAS le canal de volume (2 bascules/mois demandees) mais le canal a preuve: OEHC (client OZECAR) detecte le 08/07 avec limite 07/08."
     }
