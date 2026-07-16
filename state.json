@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "version": "1.454",
-    "updated": "2026-07-15",
+    "version": "1.455",
+    "updated": "2026-07-16",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
@@ -81,7 +81,25 @@
         "format_de_la_relance": "Une ligne + le prompt pret a coller. Exemple : '↗ Nouveau chantier — je conseille un nouveau chat (celui-ci porte deja X). Prompt a coller : [bloc]'. Le prompt contient TOUJOURS : le chantier, le protocole de demarrage (index -> sections utiles), les sections du state a lire, le contexte minimal, la methode (staging -> go).",
         "avant_de_fermer": "Toujours graver l'etat du chantier dans le state AVANT de basculer, pour que le nouveau chat reprenne sans perte."
       }
-    }
+    },
+    "session_changelog": [
+      {
+        "date": "2026-07-16",
+        "version_from": "1.454",
+        "version_to": "1.455",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "NOUVELLE section 'cockpit' + entree _index (chantier COCKPIT CEO).",
+          "ARBITRAGE Dominique: 80% reprise / 20% organique -> le cockpit devient un PIPELINE DE CIBLES, pas un funnel de taux.",
+          "Baseline reelle gravee: activations 39/22/6/12/13/3 (fev->juil 2026), tendance descendante.",
+          "Vivier cartographie via fichier IRVE national: 359 operateurs, 66 cibles 150-900 PDC = 26985 PDC. Cible n1 = e-motum (66 PDC Corse, data gelee depuis 09/2024).",
+          "Capteurs sourcing valides: IRVE, BODACC, BOAMP (gratuits, sans auth). GA4 depriorise (20% organiques seulement).",
+          "Verdict legacy: dashboard-api.php et pilot-api.php morts. 'dashboard employe Phase 1' n'a jamais existe au state.",
+          "PIEGES API supervision graves: pagination page=0 ; fromDate/toDate exigent ISO+Z sinon filtre silencieusement ignore.",
+          "HubSpot + staging en migration -> aucun chiffre de funnel exploitable aujourd'hui."
+        ]
+      }
+    ]
   },
   "_index": {
     "pricing": "grille tarifaire canonique (forfaits x engagement), frais variables, options site/compte/materiel, regles de remise. REGLES ABSOLUES tarif_transit + fees_internes incluses",
@@ -104,7 +122,8 @@
     "slack_bot": "bot Slack interne",
     "pilotage_energetique_2026_07_15": "[autre chat] modele de pilotage energetique en 4 couches",
     "deal_sungrow_480kW_2026_07_15": "[autre chat] appel d'offre Sungrow 5 PDC 480 kW",
-    "audit_coherence_site_vs_deck_2026_07_15": "[autre chat] audit coherence site vs deck"
+    "audit_coherence_site_vs_deck_2026_07_15": "[autre chat] audit coherence site vs deck",
+    "cockpit": "cockpit CEO = plan de vol reprise : arbitrage 80/20, trajectoire, vivier IRVE 359 operateurs, cibles, capteurs sourcing (BODACC/BOAMP/IRVE), pieges API supervision, verdict legacy"
   },
   "pricing": {
     "pricing": {
@@ -9034,5 +9053,38 @@
       "reste_avant_lancement": "Lot 1 (marque blanche critique, 4 pages) + Lot 2 (ancienne grille, ~8 pages) + Lot 3 ('sans engagement', ~15 pages) TOUJOURS EN ATTENTE DU GO DOMINIQUE depuis le 2026-07-10. Plus next_steps: GUID formulaire HubSpot, DNS shop.ozecar.fr, tags GTM, sort des 404 livres-blancs/newsletter, nettoyage des doublons WP (1001,1002-1005,11221,3148). Plus la question ouverte wss://ocpp.monta.app dans les guides techniques."
     },
     "recommandation_PM": "Ce soir: envoyer le deck + l'offre, NE PAS toucher au site. Le site n'est pas un obstacle a la vente sur ce dossier (la decision se joue sur l'offre conjointe, pas sur ozecar.fr). Si un seul geste est fait avant l'envoi: neutraliser le slug du plugin marque blanche en prod (a arbitrer avec Dominique, prod = go explicite obligatoire)."
+  },
+  "cockpit": {
+    "_objet": "Cockpit CEO = plan de vol vers les objectifs investisseurs. PAS un tableau de bord de la routine matinale (design rejete par Dominique 2026-07-16).",
+    "ARBITRAGE_2026_07_16": "Objectif = 80% REPRISE / 20% organique. Consequence structurelle: la reprise est GRUMELEUSE (1 deal = 200-800 PDC), donc un objectif mensuel lisse (30 PDC/mois +15-20% compose) ne decrit PAS ce business. On ne pilote pas des PDC/mois ni des taux de conversion: on pilote un PIPELINE DE CIBLES NOMMEES.",
+    "trajectoire_reelle": "3000 PDC fin 2027 = +2486 sur ~18 mois. 80% reprise = ~2000 PDC = 5 a 7 deals de 300-400 PDC = 1 deal tous les 2,5-3 mois. Les 20% organiques = ~6 PDC/mois = ~1,5 chantier/mois (se pilote dans HubSpot une fois la migration finie, pas besoin de cockpit).",
+    "baseline_activations_reelle": "PDC actives/mois (source supervision, activeAt): 2026-02:39 · 03:22 · 04:6 · 05:12 · 06:13 · 07:3. Moyenne ~16, tendance DESCENDANTE. Les deux robinets sont fermes: organique (site en refonte + CRM en migration) et reprise (bloquee sur OCPP marque blanche).",
+    "BLOCAGE_UNIQUE": "Marque blanche OCPP (wss://ocpp.ozecar.app). Sans elle, zero reprise possible: la borne du concurrent basculerait en revelant le fournisseur. C'est LA ligne n1 du cockpit.",
+    "vivier_marche_2026_07_16": "Fichier consolide national IRVE (data.gouv, 160 Mo, 228644 lignes): 163408 PDC publics, 359 operateurs. OZECAR = 269 PDC publics / 525 supervises (le reste est prive, hors fichier). 66 operateurs entre 150 et 900 PDC = 26985 PDC = le vivier de reprise. OZECAR a besoin de ~2000 = 7% du vivier.",
+    "cibles_identifiees_2026_07_16": {
+      "e-motum (sas)": "111 PDC nationaux dont 66 en CORSE (54 stations). Donnees gelees depuis 2024-09-12 (22 mois) = signal parc dormant. Cible n1: territoire OZECAR.",
+      "DRIVECO Partner Network": "84 PDC en Corse, maj 2026-06-25 = concurrent ACTIF, pas une cible dormante.",
+      "parcs_dormants_nationaux_100_900_PDC": "12 operateurs dont la donnee data.gouv n'a pas bouge depuis >12 mois: RossiniEnergy 873, EVzen (SMEG Dev) 552, Green To Wheel 472, Bouygues Energies et Services 357, UBITRICITY 332, e-totem 319, SIEGE 27 269, Zephyre 255, ZEBORNE 244, Seolis 221, LUMI'IN 114, e-motum 111.",
+      "_caveat": "Donnee gelee = signal FAIBLE (peut n'etre qu'un defaut de declaration). A qualifier, jamais a prendre pour une preuve d'abandon."
+    },
+    "capteurs_sourcing_valides": {
+      "IRVE_consolide": "https://www.data.gouv.fr/fr/datasets/r/eb76d20a-8501-400e-b336-d85724de5435 (CSV 160 Mo). Colonnes cles: nom_operateur, nom_amenageur, siren_amenageur, id_pdc_itinerance, date_maj, consolidated_code_postal. = la carte des parcs de France. Public/itinerance uniquement.",
+      "BODACC": "https://bodacc-datadila.opendatasoft.com/api/explore/v2.1/catalog/datasets/annonces-commerciales/records (gratuit, sans auth). familleavis=collective = procedures collectives = parc potentiellement orphelin.",
+      "BOAMP": "https://boamp-datadila.opendatasoft.com/api/explore/v2.1/catalog/datasets/boamp/records (gratuit, sans auth). 1623 avis 'recharge electrique'. PREUVE 2026-07-16: l'Office d'Equipement Hydraulique de Corse (client OZECAR) a publie un avis le 08/07 — non detecte a l'epoque.",
+      "GA4": "G-15HETB1C73 + GTM-M593SGD installes sur ozecar.fr. API fermee: necessite un service account Google (action Dominique). PRIORITE BASSE: ne sert que les 20% organiques."
+    },
+    "verdict_legacy_2026_07_16": {
+      "api/dashboard-api.php": "MORT. N'a jamais tourne (allowlist IP = 127.0.0.1 seulement + getenv() de tokens jamais definis sur Hostinger). A supprimer.",
+      "api/pilot-api.php": "MORT fonctionnellement. Repond, mais mesure 'CA deals gagnes' et 'objectif 40 PDC' = faux par construction pour du recurrent. Sa seule valeur (OAuth Monta, pagination) existe deja en mieux dans monta.php. A supprimer.",
+      "dashboard_employe_Phase_1": "N'a JAMAIS ete grave au state. Ce qui existe reellement = api/parc.php + facturation-reelle.json + parc-clients.html."
+    },
+    "PIEGES_API_SUPERVISION": {
+      "pagination": "REGLE: les endpoints sont pagines a partir de page=0. Un page=1 naif perd les 100 premiers enregistrements (425 au lieu de 525 PDC). Toujours boucler de 0 a meta.totalPageCount-1.",
+      "filtre_date_charges": "fromDate/toDate exigent un ISO COMPLET avec Z (2026-07-15T00:00:00Z). Une date seule (2026-07-15) est SILENCIEUSEMENT IGNOREE et renvoie tout l'historique (108043 charges). Piege majeur: le resultat a l'air valide.",
+      "etat_bornes": "state='disconnected' brut = 82 bornes = du bruit. Segmenter par anciennete: 24 fraiches (<48h) = actionnable Fred · 41 zombies (>30j, certains depuis aout 2024) = menage mensuel, pas du quotidien."
+    },
+    "mesures_2026_07_16": "CA recharge 15/07: 4633,33 EUR (marge 3356,20 · 489 sessions · 8765 kWh). 14/07: 3983,42. 08/07: 3817,62. Solde Caisse d'Epargne principal: 14670,34 EUR (synchro Pennylane 13/07, ~3j de retard).",
+    "HubSpot_en_migration": "ATTENTION: HubSpot ET le staging sont en cours de migration (info Dominique 2026-07-16). Tout chiffre de funnel lu dans HubSpot aujourd'hui est NON SIGNIFICATIF (27 deals depuis janvier, 201 contacts sur 212 en source OFFLINE = import). Le funnel organique n'est pas mesurable avant le lancement du site.",
+    "next": "Construire le pipeline de chasse (vivier -> cible -> contact -> nego -> signature -> migration OCPP) + action du jour sur UNE cible. Support de donnees: JSON dedie tant que HubSpot migre, portable vers HubSpot ensuite."
   }
 }
