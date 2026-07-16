@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.465",
+    "version": "1.466",
     "updated": "2026-07-16",
     "updated_by": "Claude PM (claude.ai) — OZ-25 Cockpit",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-16",
+        "version_from": "1.465",
+        "version_to": "1.466",
+        "author": "Claude PM (claude.ai) — OZ-25",
+        "changes": [
+          "GO execute: fabrique de cibles rejouee et deposee durablement (1084 enrichis, ABM 316, P3 64), 64 P3 importees HubSpot (tag [CIBLE REPRISE P3 2026-07]), liste d'appel du jour livree (json + API + widget cockpit). Reste: Dropcontact (Dominique), sequences, refresh hebdo."
+        ]
+      },
       {
         "date": "2026-07-16",
         "version_from": "1.464",
@@ -9323,6 +9332,14 @@
         "quotidien_type": "Matin 2h calls (liste du jour generee), aprem enrichissement + LinkedIn + relances sequences.",
         "principe": "Rocket School lui donne la methode d'appel; OZECAR lui donne la matiere (cibles qualifiees). La cause n1 d'echec d'un alternant BD = pas de liste propre — c'est exactement ce que la fabrique de cibles + le cockpit resolvent."
       }
+    },
+    "GO_EXECUTION_2026_07_16": {
+      "go_Dominique": "GO import P3 + Dropcontact essai + liste d'appel. Alternant: 'si tout est guide et prepare, tres bien'.",
+      "fabrique_regeneree": "Les CSV du 16/07 etaient dans une session morte -> pipeline REJOUE integralement (IRVE 229826 lignes du jour -> continent -> groupage nom -> bande 5-25 = 1084 amenageurs/10606 PDC -> enrichissement recherche-entreprises 403 apparies -> ICP -> exclusions Leclerc 236/public 55/cessees 21/clients 12/non-identifies 444). RESULTAT: ABM 316 entreprises/3037 PDC · P3=64/626 PDC (concessions-garages 49, parkings 11, loueurs 2, transport 2). Ecart vs 395/69 du 16/07 matin = appariement plus strict + donnee du jour.",
+      "depot_durable": "ozecar.fr/wp-content/uploads/ozecar/cibles/ : ozecar-cibles-continent-enrichi.csv.txt (130 Ko, 1084 lignes) + ozecar-linkedin-audience.csv.txt (316) + generateur-cibles.py.txt (script rejouable). Extension .csv interdite par wp-deploy -> .csv.txt.",
+      "import_hubspot_FAIT": "64/64 companies creees le 16/07 (10 via MCP + 54 via hubspot.php batch/create). Marquage: description commence par [CIBLE REPRISE P3 2026-07] -> filtrable/supprimable en un coup. Donnees en description (PDC, operateur actuel, segment, maj IRVE, dirigeant, effectif, contact IRVE) car creation de proprietes custom = action manuelle Dominique (scope PAT). DECOUVERTE: beaucoup de contact_amenageur IRVE sont NOMINATIFS (ex maude.verceux@emilfrey.fr, kamel.fekhart@gringhub.com).",
+      "liste_appel_LIVREE": "uploads/ozecar/liste-appel.json (top 10 P3, score = PDC + parc dormant + operateur 2nd rang + contact nominatif, angle d'appel par cible) -> exposee par cockpit.php (liste_appel) -> widget table dans la page cockpit (societe->fiche HubSpot, parc, operateur, decideur, contact avec badge NOMINATIF, angle, fiche annuaire). C'est le futur ecran quotidien de l'alternant.",
+      "reste": "1) Dominique: essai Dropcontact 14j + integration HubSpot native (enrichit auto les 64 fiches: emails nominatifs dirigeants). 2) Sequences email + playbook (chantier onboarding alternant, aout-sept). 3) Job cron 'refresh liste-appel' hebdo. 4) Freshmile: prochaine base a injecter (390 cibles) une fois le circuit P3 valide."
     }
   }
 }
