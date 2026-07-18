@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.497",
+    "version": "1.498",
     "updated": "2026-07-18",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-18",
+        "version_from": "1.497",
+        "version_to": "1.498",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "OZ-27 LOT18 : /revendeurs/ retrait 'White-label disponible' (breach règle), /bundle-zaptec-pro/ forfaits canoniques Essential/Pro/Pro Plus + badge 2025, sweep backlog P0 (5 items résolus confirmés)"
+        ]
+      },
       {
         "date": "2026-07-18",
         "version_from": "1.496",
@@ -6253,6 +6262,14 @@
       ],
       "verif": "Playwright staging : 4 <a>.cat-card, 4 ancres, 14 liens articles, clic carte scrolle (y=775), 0 erreur JS, article portail HTTP 200. Screenshot validé visuellement. Backup auto oz27-22509-20260718-075134.html",
       "restant_chantier": "Aucun des 4 points du brief. Éventuel futur : compteurs dynamiques si nouveaux articles (penser à MAJ les chiffres en dur des cat-cards)."
+    },
+    "OZ27_LOT18_REVENDEURS_BUNDLE_2026_07_18": {
+      "revendeurs_22417": "BREACH RÈGLE corrigé : la carte Distributeur affichait 'White-label disponible' (la marque blanche n'est PAS une offre client — règle permanente). Ligne retirée, 0 occurrence servie. Backup oz27-22417-20260718-080822. Note : les commissions affichent déjà 'sur demande' partout — le P0 'retirer commissions non validées' du backlog 07-16 était déjà résolu.",
+      "bundle_22504": "Vieux forfaits purgés : Business->Pro, Enterprise->Pro Plus (kickers + noms + 'Tout X +'). Features Pro Plus alignées sur pricing.pro_plus du state : Tarification dynamique + Recommandé bornes rapides DC ; 'Responsable de compte dédié' RETIRÉ (Transit uniquement) ; 'Accès API & multi-sites' et 'SLA renforcé' retirés (non canoniques). Badge 'Nouveauté 2025' -> 'Nouveauté'. Aucun montant ni fee affiché (règle). Vérifié servi : 0 Business/Enterprise, 0 erreur JS. Backup oz27-22504-20260718-081103.",
+      "SWEEP_BACKLOG_P0_status_2026_07_18": {
+        "resolus_depuis_0716": "/kit/ (0 Kit Master/Unit), /cas-clients/ (Weldom -> vraie page /cas-clients/weldom/ 200), /demo/ (iframe HubSpot Meetings rend 554x695), /contact/ (adresse Aix présente), /revendeurs/ commissions (sur demande)",
+        "restants_probables": "/activation/ (refonte parcours kit à confirmer — ocpp.ozecar.app y apparaît 10x, à auditer marque blanche + contenu), titres SEO toutes pages, secteurs (icônes/logos/testimonials), supervision (double bandeau? à re-vérifier), nav P1"
+      }
     }
   },
   "make": {
