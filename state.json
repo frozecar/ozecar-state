@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.499",
+    "version": "1.500",
     "updated": "2026-07-18",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-18",
+        "version_from": "1.499",
+        "version_to": "1.500",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "pricing.supervision RE-SYNCHRONISÉ depuis /supervision/#tarifs : Essential 6,90 AC / 9,90 DC · Business 9,90 AC / 15,90 DC · Enterprise sur devis. Engagement affiché 36 mois. Pro/Pro Plus/Transit supprimés définitivement."
+        ]
+      },
       {
         "date": "2026-07-18",
         "version_from": "1.498",
@@ -337,129 +346,62 @@
       "all_prices_excl_tax": true,
       "vat_rate_fr": 0.2,
       "supervision": {
-        "_note": "4 forfaits supervision OZECAR. Engagement 12 mois minimum sur tous les forfaits. 3 modes de paiement: mensuel, annuel (1 paiement à la signature), biannuel (1 paiement à la signature, remise -15%).",
+        "_note": "Grille CANONIQUE re-synchronisée 2026-07-18 depuis staging.ozecar.fr/supervision/#tarifs (source de vérité). 3 plans affichés client : Essential / Business / Enterprise (sur devis). Pro / Pro Plus / Transit N'EXISTENT PLUS (ancienne grille supprimée). Prix HT / point de charge / mois. Prix affiché = engagement 36 mois ; 12 et 24 mois disponibles, détail au devis. Frais d'activation offerts, prélèvement mensuel.",
+        "_source": "staging.ozecar.fr/supervision/#tarifs",
+        "currency": "EUR",
+        "all_prices_excl_tax": true,
+        "engagement_display_months": 36,
+        "engagement_options_months": [
+          12,
+          24,
+          36
+        ],
+        "activation_fee": 0,
         "essential": {
-          "label": "Essential (privé)",
-          "description": "Supervision pour bornes privées (parkings non ouverts au public)",
-          "price_monthly": 4.9,
-          "price_yearly": 4.9,
-          "price_biennial": 4.165,
-          "price_biennial_discount_pct": 15,
-          "operator_fees_pct": 0,
-          "roaming_fees_pct": 0,
-          "wallet_option_monthly": 5,
-          "wallet_option_operator_fees_pct": 12.5,
+          "label": "Essential",
+          "description": "Bornes privées, sans transaction : flotte de service, copropriété.",
+          "price_ac_36m": 6.9,
+          "price_dc_36m": 9.9,
           "features_included": [
-            "Surveillance des états des bornes",
-            "Contrôle à distance",
-            "Accès à la borne (QR code, badges RFID, app mobile)",
+            "Supervision temps réel & alertes",
+            "Contrôle à distance (reset, déblocage)",
+            "Accès QR / RFID / app mobile",
+            "Équilibrage de charge",
             "Rapport de consommation mensuel",
-            "Support technique email J+1",
-            "Assistance Lun-Ven 9-18h",
-            "Gestion des droits par collaborateur"
-          ],
-          "features_excluded": [
-            "Tarification par utilisateur",
-            "Tarification par groupe",
-            "Tarification dynamique",
-            "Interopérabilité (Hubject, Gireve)",
-            "Affichage applications mobiles tierces",
-            "Référencement Google Maps Apple Maps",
-            "Acceptation cartes recharge tierces",
-            "Account manager dédié"
+            "Support e-mail J+1"
           ]
         },
-        "pro": {
-          "label": "Pro (public)",
-          "description": "Supervision pour bornes publiques avec transaction",
-          "price_monthly": 14.9,
-          "price_yearly": 14.9,
-          "price_biennial": 12.665,
-          "price_biennial_discount_pct": 15,
-          "operator_fees_pct": 10,
-          "roaming_fees_pct": 20,
-          "data_4g_5g_included": true,
-          "ai_maintenance_included": true,
+        "business": {
+          "label": "Business",
+          "popular": true,
+          "description": "Salariés, résidents, clients : transactions, refacturation, itinérance.",
+          "price_ac_36m": 9.9,
+          "price_dc_36m": 15.9,
           "features_included": [
-            "Tout le forfait Essential",
+            "Tout Essential",
             "Monétisation des recharges",
-            "Plateforme de paiement (CB, Apple Pay, Google Pay)",
-            "Facturation automatique et reporting",
-            "Assistance 24h/7",
-            "Gestion de flotte",
-            "Interopérabilité (Hubject, Gireve)",
-            "Affichage sur applications mobiles tierces",
-            "Référencement Google Maps Apple Maps",
-            "Acceptation cartes recharge tierces",
-            "Tarification par utilisateur",
-            "Tarification par groupe"
-          ],
-          "features_excluded": [
-            "Tarification dynamique",
-            "Account manager dédié"
+            "Paiement CB / Apple Pay / Google Pay",
+            "Refacturation & groupes tarifaires",
+            "Itinérance entrante & sortante",
+            "Smart charging & tarifs horaires",
+            "Assistance conducteurs 24/7",
+            "Référencement Maps + apps tierces"
           ]
         },
-        "pro_plus": {
-          "label": "Pro Plus (public)",
-          "description": "Supervision pour bornes publiques + flottes d'entreprises. Recommandé pour bornes rapides DC avec +2000 kWh/mois/PDC",
-          "price_monthly": 24.9,
-          "price_yearly": 24.9,
-          "price_biennial": 21.165,
-          "price_biennial_discount_pct": 15,
-          "operator_fees_pct": 8,
-          "roaming_fees_pct": 16,
-          "data_4g_5g_included": true,
-          "ai_maintenance_included": true,
+        "enterprise": {
+          "label": "Enterprise",
+          "description": "Multi-sites, gros volumes, exploitation intensive.",
+          "price": "sur devis",
           "features_included": [
-            "Tout le forfait Pro",
-            "Tarification dynamique"
-          ],
-          "features_excluded": [
-            "Account manager dédié"
+            "Tout Business",
+            "Accès API & exports",
+            "Multi-sites & sous-comptes",
+            "Frais de service réduits",
+            "Responsable de compte dédié",
+            "SLA renforcé"
           ]
         },
-        "transit": {
-          "label": "Transit (public)",
-          "description": "Supervision haute fréquentation et bornes DC. Recommandé pour +4000 kWh/mois/PDC",
-          "price_monthly": 54.9,
-          "price_yearly": 54.9,
-          "price_biennial": 46.665,
-          "price_biennial_discount_pct": 15,
-          "operator_fees_pct": 6,
-          "roaming_fees_pct": 12,
-          "data_4g_5g_included": true,
-          "ai_maintenance_included": true,
-          "features_included": [
-            "Tout le forfait Pro Plus",
-            "Tarification dynamique",
-            "Account manager dédié"
-          ]
-        },
-        "engagement_min_months": 12,
-        "renewal_default": "tacite avec préavis 30 jours",
-        "advenir_engagement_months": 36,
-        "_note_advenir": "Si le client bénéficie d'une prime ADVENIR, l'engagement est de 36 mois minimum (cahier des charges AVERE France)",
-        "payment_modes": {
-          "monthly": {
-            "label": "Mensuel",
-            "engagement_months": 12,
-            "discount_pct": 0,
-            "method": "Prélèvement automatique mensuel"
-          },
-          "yearly": {
-            "label": "Annuel",
-            "engagement_months": 12,
-            "discount_pct": 0,
-            "method": "Paiement unique à la signature, virement bancaire ou CB"
-          },
-          "biennial": {
-            "label": "Biannuel",
-            "engagement_months": 24,
-            "discount_pct": 15,
-            "method": "Paiement unique à la signature, virement bancaire ou CB"
-          }
-        },
-        "_note_modes": "Pas de formule triennale dans le process actuel OZECAR (envisagée mais non retenue v1.10)"
+        "_deprecated_grille": "Pro (14,90) / Pro Plus (24,90) / Transit (54,90) + operator_fees/roaming_fees par plan = SUPPRIMÉS. Ne jamais réafficher."
       },
       "products": {
         "ozkm": {
@@ -694,8 +636,7 @@
       },
       "display_rule": "Toutes les pages tarifs affichent 3 plans : Essential, Pro, Pro+ (dernier = Sur devis)",
       "last_updated": "2026-06-15",
-      "_SUPERSEDED_BY": "pricing_canonical_2026_06_17 (validation 2026-06-17). Ne plus utiliser ces prix.",
-      "_FLAG_PERIME_2026_07_18": "ATTENTION : cette grille (Essential/Pro/Pro Plus/Transit) NE reflète PLUS les forfaits actuels. Dominique (2026-07-18) : Pro / Pro Plus / Transit N'EXISTENT PLUS. La grille client affichée sur staging (page bundle 22504, etc.) = Essential / Business / Enterprise. NE PAS corriger une page live sur la base de cette section tant qu'elle n'est pas re-validée. Demander à Dominique la grille canonique à jour avant tout travail tarifaire."
+      "_SUPERSEDED_BY": "pricing_canonical_2026_06_17 (validation 2026-06-17). Ne plus utiliser ces prix."
     },
     "pricing_canonical_2026_06_17": {
       "_note": "GRILLE TARIFAIRE CANONIQUE — validée ligne par ligne par Dominique le 2026-06-17. SOURCE DE VÉRITÉ unique. Prime sur pricing / catalogue_prix antérieurs (marqués superseded). Tous prix HT.",
