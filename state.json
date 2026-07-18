@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.501",
+    "version": "1.502",
     "updated": "2026-07-18",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-18",
+        "version_from": "1.501",
+        "version_to": "1.502",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Adresse siège retirée du footer (footer.php) et des mentions légales (10808). RCS + numéro conservés."
+        ]
+      },
       {
         "date": "2026-07-18",
         "version_from": "1.500",
@@ -6245,6 +6254,13 @@
       },
       "verif": "Scan DB (search + SQL titres+contenus) = 0 ; HTML servi revendeurs/livres-blancs/devenir-cpo-2026 = 0. Backups oz27-*-20260718-0824*.",
       "note": "J'avais d'abord réécrit le palier Argent avec un seuil '100 bornes' inventé — corrigé (chiffre non sourcé retiré)."
+    },
+    "OZ27_LOT20_SIEGE_RETIRE_2026_07_18": {
+      "demande": "Ne pas afficher l'adresse du siège en public.",
+      "footer": "footer.php (ozecar-theme) : '© 2026 OZECAR SAS — Siège : 395 chemin des Horizons Verts, 20240 Ghisonaccia — RCS Bastia 902 757 202' -> '© 2026 OZECAR SAS — RCS Bastia 902 757 202'. Backup deploy 20260718-084408.",
+      "mentions_legales": "Page 10808 : suppression de ', dont le siège social est situé au 395 chemin des Horizons Verts, 20240 Ghisonaccia, France' dans le paragraphe éditeur. Raison sociale, capital, RCS et numéro conservés. Backup oz27-10808-20260718-084329.",
+      "verif": "Servi footer + /mentions-legales/ : 0 'Siège'/'395 chemin'/'Ghisonaccia', RCS 902 757 202 conservé.",
+      "note_conformite": "L'adresse du siège n'est légalement obligatoire ni sur le footer ni forcément détaillée ; raison sociale + RCS + immatriculation suffisent à identifier l'éditeur. Si un jour besoin légal d'une adresse, préférer une domiciliation/BP plutôt que l'adresse physique."
     }
   },
   "make": {
