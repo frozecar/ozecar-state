@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.503",
+    "version": "1.504",
     "updated": "2026-07-18",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-18",
+        "version_from": "1.503",
+        "version_to": "1.504",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Nav restructurée : Ressources allégé (Guides&contenus + Support), nouveau top-level Entreprise (L'entreprise/Carrières/Contact/Newsletter/Revendeurs). Desktop (menu WP natif term 1603) + mobile (header.php) synchronisés."
+        ]
+      },
       {
         "date": "2026-07-18",
         "version_from": "1.502",
@@ -6275,6 +6284,14 @@
       "seo_titres": "Audit des 38 pages racine : la home a DÉJÀ un vrai SEO title Yoast (le 'Accueil - OZECAR' du backlog 0716 était le post_title, pas le <title> rendu). La majorité des pages ont un SEO title propre. Rempli le SEO title/desc de /activation/ (22344) et /mentions-legales/ (10808) qui étaient vides (rendaient 'X - OZECAR'). Pages légales restantes vides (confidentialité, cookies, privacy-policy, se-connecter, supprimer-compte) : non prioritaires SEO, laissées.",
       "audit_secteurs": "Les 4 pages (supermarchés, flottes, hôtellerie, transport) sont en bon état contrairement au backlog 0716 : 0 placeholder, 0 image cassée, ~42 SVG (icônes présentes), lien Weldom -> /cas-clients/weldom/ (plus de PNG), titres SEO OK. Testimonial supermarchés attribué (Weldom / Direction technique). LOTS précédents avaient déjà traité l'essentiel.",
       "FLAG_chiffre_a_valider": "Page supermarchés affiche 'Weldom — −80 % de coûts de support' (non modifié par moi). À faire confirmer par Dominique : ce chiffre est-il réel et communicable ? Idem citation Weldom."
+    },
+    "OZ27_LOT22_NAV_RESTRUCTURE_2026_07_18": {
+      "decision_dominique": "Alléger Ressources (fourre-tout de 15 items en 4 colonnes) : garder Guides & contenus + Support ; sortir Entreprise + Partenaires vers un nouvel item top-level 'Entreprise'.",
+      "mecanique": "Le méga-menu desktop = MENU WP NATIF (emplacement 'primary', term_id 1603), rendu par ozecar_render_main_nav() dans wp-content/themes/ozecar-child/inc/nav-render.php. Structure gérée en BASE (wp-admin > Menus), pas en code. Menu mobile = hardcodé dans ozecar-theme/header.php.",
+      "desktop_changes": "En base (via oz27-edit) : colonne 'Entreprise' (item 22547) remontée en top-level custom '#' titrée 'Entreprise', menu_order 14 (après Cas clients, avant Ressources). Ses enfants (L'entreprise 22548, Carrières 22549, Contact 22550, Newsletter 22551) suivent. Revendeurs (22563) déplacé sous Entreprise. Colonne 'Partenaires' (22562) passée en draft. Ressources ne garde que colonnes Guides&contenus (22552) + Support (22558). Ordre top-level : Nos solutions / Secteurs / Tarifs / Cas clients / Entreprise / Ressources.",
+      "mobile_changes": "header.php : accordéon Ressources réduit à Guides/Blog/Livres blancs/Cas clients/Centre d'aide/Activation/Contact support/Guide OCPP ; nouvel accordéon Entreprise (L'entreprise/Carrières/Contact/Newsletter/Revendeurs). Backup deploy 20260718-092259.",
+      "verif": "HTML servi desktop : Ressources = 2 colonnes (Guides&contenus + Support), Entreprise dropdown = 5 items, 0 colonne Entreprise/Partenaires résiduelle. Mobile : 4 accordéons cohérents, 0 erreur JS.",
+      "note": "Item 22687 'Préparer votre installation' (/preparation/) laissé en draft (retiré au LOT14, page interne stock). Colonne Partenaires 22562 en draft = réversible si besoin."
     }
   },
   "make": {
