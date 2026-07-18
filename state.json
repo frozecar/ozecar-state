@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.507",
+    "version": "1.508",
     "updated": "2026-07-18",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-18",
+        "version_from": "1.507",
+        "version_to": "1.508",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Page /tarifs/ : template-wide appliqué (largeur alignée sur les autres pages) + 3 cartes prix alignées (même hauteur/rangée) + comparatif aligné à 1100px. Apprentissage : nouvelles pages WP -> set template-wide."
+        ]
+      },
       {
         "date": "2026-07-18",
         "version_from": "1.506",
@@ -6338,6 +6347,13 @@
       "probleme": "Table comparative /tarifs/ : min-width 640px dans conteneur ~292px sur mobile -> scroll horizontal pénible (overflow-x auto masquait la casse mais UX mauvaise).",
       "fix": "Bascule responsive dans #comparatif : .oz-comp-desktop (la table, >=768px) / .oz-comp-mobile (cartes empilées, <768px). Chaque carte = un plan (Essential/Business populaire/Enterprise) avec features groupées par catégorie, ✓ vert. Business en bordure violette + badge 'Le plus populaire'. Même matrice cumulative que la table (source state pricing.supervision).",
       "verif": "Mobile 390px : desktop display:none, mobile block, 3 cartes (6/13/18 features conformes au cumul), 0 overflow horizontal (bodyW==viewW==390), 0 erreur JS. Desktop 1440px : table visible (23 lignes), cartes cachées. Seuil 767px basculé correctement. Backup oz27-22715-20260718-112404."
+    },
+    "OZ27_LOT26_TARIFS_LARGEUR_ALIGNEMENT_2026_07_18": {
+      "probleme": "1) Largeur page /tarifs/ ne matchait pas les autres pages (contenu ~852px au lieu de la largeur standard). 2) Les 3 cartes de prix n'étaient pas alignées (Essential seule sur une rangée, les 2 autres en dessous).",
+      "cause_racine": "La page 22715 utilisait le template PAR DÉFAUT -> wrapper .ozecar-wrap (max-width:900px). /supervision/ et les autres pages larges utilisent page-templates/template-wide.php (article.ozecar-page-wide, pleine largeur). La contrainte 900px compressait la grille 3-col à 772px -> wrap en 2 rangées + désalignement.",
+      "fix": "1) _wp_page_template = page-templates/template-wide.php sur 22715 (même template que /supervision/). Résultat : grille prix repasse à 1100px (3×356px), 3 cartes MÊME HAUTEUR 554px sur la MÊME rangée. 2) Section comparatif ré-alignée sur le pattern #tarifs : conteneur max-w-[1300px] px-6 lg:px-10 + inner max-w-[1100px] mx-auto. Résultat : grille prix et comparatif = 1100px, même bord gauche (170px), alignés au pixel.",
+      "verif": "Desktop 1440 : grid 1100/left170, comp 1100/left170, cartes prix [554,554,554]. Mobile 390 : 0 overflow, 3 cartes empilées, desktop caché, cartes prix pleine largeur 342px. 0 erreur JS. Backups oz27-22715-20260718-1224*.",
+      "apprentissage": "Toute nouvelle page WP créée via oz27-edit hérite du template DÉFAUT (900px). Pour une page pleine largeur type landing, TOUJOURS set _wp_page_template = page-templates/template-wide.php."
     }
   },
   "make": {
