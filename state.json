@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.505",
+    "version": "1.506",
     "updated": "2026-07-18",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-18",
+        "version_from": "1.505",
+        "version_to": "1.506",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Page /tarifs/ : ajout section comparatif détaillé (18 fonctionnalités × 3 plans, 5 catégories, logique cumulative sourcée du state)."
+        ]
+      },
       {
         "date": "2026-07-18",
         "version_from": "1.504",
@@ -6309,6 +6318,12 @@
       "3_ordre_entreprise": "Entreprise (22547) déplacé en dernier (ord 16, après Ressources 15). Ordre final top-level : Nos solutions / Secteurs / Tarifs / Cas clients / Ressources / Entreprise.",
       "verif": "HTML servi desktop conforme ; toggle tarifs OK ; 0 doublon Cas clients ; 0 erreur JS. Backups deploy header.php 20260718-095144.",
       "reserve_PM": "Question de fond non tranchée par Dominique : 'Entreprise' (à-propos/carrières) mériterait peut-être le footer plutôt qu'un slot de nav principale (6 items = haut de fourchette). Laissé en top-level par choix Dominique (LOT22)."
+    },
+    "OZ27_LOT24_TARIFS_COMPARATIF_2026_07_18": {
+      "demande": "Ajouter sur /tarifs/ une section comparant chaque plan avec les fonctionnalités détaillées.",
+      "fait": "Section #comparatif ajoutée après la grille prix sur page 22715. Table responsive (overflow-x mobile), 3 colonnes (Essential dès 6,90 / Business dès 9,90 mis en avant violet / Enterprise sur devis), 18 fonctionnalités groupées en 5 catégories (Supervision & pilotage, Monétisation & paiement, Visibilité & itinérance, Exploitation avancée, Support). ✓ vert / — gris, logique CUMULATIVE (chaque plan inclut le précédent) conforme au state pricing.supervision. CTA démo en bas. Frais activation offerts + engagement 12/24/36 rappelés.",
+      "source_features": "state pricing.supervision (features_included par plan). Aucune feature inventée.",
+      "verif": "Playwright : 23 lignes tbody (5 cat + 18 feat), 37 coches, matrice cellule-par-cellule vérifiée exacte, toggle AC/DC de la section prix non régressé (DC 9,90/15,90), 0 erreur JS. Backup oz27-22715-20260718-100727."
     }
   },
   "make": {
