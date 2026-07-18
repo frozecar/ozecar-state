@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.506",
+    "version": "1.507",
     "updated": "2026-07-18",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-18",
+        "version_from": "1.506",
+        "version_to": "1.507",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Page /tarifs/ comparatif : version mobile refaite (table -> 3 cartes empilées par plan sous 768px, plus de scroll horizontal)."
+        ]
+      },
       {
         "date": "2026-07-18",
         "version_from": "1.505",
@@ -6324,6 +6333,11 @@
       "fait": "Section #comparatif ajoutée après la grille prix sur page 22715. Table responsive (overflow-x mobile), 3 colonnes (Essential dès 6,90 / Business dès 9,90 mis en avant violet / Enterprise sur devis), 18 fonctionnalités groupées en 5 catégories (Supervision & pilotage, Monétisation & paiement, Visibilité & itinérance, Exploitation avancée, Support). ✓ vert / — gris, logique CUMULATIVE (chaque plan inclut le précédent) conforme au state pricing.supervision. CTA démo en bas. Frais activation offerts + engagement 12/24/36 rappelés.",
       "source_features": "state pricing.supervision (features_included par plan). Aucune feature inventée.",
       "verif": "Playwright : 23 lignes tbody (5 cat + 18 feat), 37 coches, matrice cellule-par-cellule vérifiée exacte, toggle AC/DC de la section prix non régressé (DC 9,90/15,90), 0 erreur JS. Backup oz27-22715-20260718-100727."
+    },
+    "OZ27_LOT25_TARIFS_COMPARATIF_MOBILE_2026_07_18": {
+      "probleme": "Table comparative /tarifs/ : min-width 640px dans conteneur ~292px sur mobile -> scroll horizontal pénible (overflow-x auto masquait la casse mais UX mauvaise).",
+      "fix": "Bascule responsive dans #comparatif : .oz-comp-desktop (la table, >=768px) / .oz-comp-mobile (cartes empilées, <768px). Chaque carte = un plan (Essential/Business populaire/Enterprise) avec features groupées par catégorie, ✓ vert. Business en bordure violette + badge 'Le plus populaire'. Même matrice cumulative que la table (source state pricing.supervision).",
+      "verif": "Mobile 390px : desktop display:none, mobile block, 3 cartes (6/13/18 features conformes au cumul), 0 overflow horizontal (bodyW==viewW==390), 0 erreur JS. Desktop 1440px : table visible (23 lignes), cartes cachées. Seuil 767px basculé correctement. Backup oz27-22715-20260718-112404."
     }
   },
   "make": {
