@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.504",
+    "version": "1.505",
     "updated": "2026-07-18",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-18",
+        "version_from": "1.504",
+        "version_to": "1.505",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Nav finitions : doublon Cas clients retiré de Ressources, page /tarifs/ dédiée créée (22715, toggle AC/DC repris) + item Tarifs repointé, Entreprise déplacé en dernier."
+        ]
+      },
       {
         "date": "2026-07-18",
         "version_from": "1.503",
@@ -6292,6 +6301,14 @@
       "mobile_changes": "header.php : accordéon Ressources réduit à Guides/Blog/Livres blancs/Cas clients/Centre d'aide/Activation/Contact support/Guide OCPP ; nouvel accordéon Entreprise (L'entreprise/Carrières/Contact/Newsletter/Revendeurs). Backup deploy 20260718-092259.",
       "verif": "HTML servi desktop : Ressources = 2 colonnes (Guides&contenus + Support), Entreprise dropdown = 5 items, 0 colonne Entreprise/Partenaires résiduelle. Mobile : 4 accordéons cohérents, 0 erreur JS.",
       "note": "Item 22687 'Préparer votre installation' (/preparation/) laissé en draft (retiré au LOT14, page interne stock). Colonne Partenaires 22562 en draft = réversible si besoin."
+    },
+    "OZ27_LOT23_NAV_FINITIONS_2026_07_18": {
+      "contexte": "Sur recommandations PM (3 défauts identifiés dans la nav restructurée au LOT22), exécutées.",
+      "1_doublon_cas_clients": "Item 'Cas clients' dupliqué dans Ressources>Guides&contenus (22557) passé en draft. Cas clients ne reste qu'en top-level (22545). Vérifié : absent de tout dropdown.",
+      "2_page_tarifs_dediee": "Créée page /tarifs/ (ID 22715, publish) reprenant la section #tarifs de /supervision/ (ID 22463) À L'IDENTIQUE : même HTML + même script toggle AC/DC autonome (table prix ess/biz × ac/dc × 12/24/36). Hero sombre ajouté. Vérifié navigateur : AC 6,90/9,90, DC 9,90/15,90, Enterprise sur devis, 0 erreur JS. SEO title/desc remplis. Item nav Tarifs (22544) repointé /supervision/#tarifs -> /tarifs/ (desktop) ; header.php mobile idem (backup 20260718-095144). NB : /supervision/#tarifs reste valide, la nouvelle page est un point d'entrée propre et partageable, meilleur SEO sur requête tarif.",
+      "3_ordre_entreprise": "Entreprise (22547) déplacé en dernier (ord 16, après Ressources 15). Ordre final top-level : Nos solutions / Secteurs / Tarifs / Cas clients / Ressources / Entreprise.",
+      "verif": "HTML servi desktop conforme ; toggle tarifs OK ; 0 doublon Cas clients ; 0 erreur JS. Backups deploy header.php 20260718-095144.",
+      "reserve_PM": "Question de fond non tranchée par Dominique : 'Entreprise' (à-propos/carrières) mériterait peut-être le footer plutôt qu'un slot de nav principale (6 items = haut de fourchette). Laissé en top-level par choix Dominique (LOT22)."
     }
   },
   "make": {
