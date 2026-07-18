@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.502",
+    "version": "1.503",
     "updated": "2026-07-18",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-18",
+        "version_from": "1.502",
+        "version_to": "1.503",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Audit SEO titres (home OK, activation+mentions-légales SEO title remplis) + audit pages secteurs (bon état, backlog 0716 en grande partie déjà résolu). Flag: chiffre '-80% support' Weldom à valider."
+        ]
+      },
       {
         "date": "2026-07-18",
         "version_from": "1.501",
@@ -6261,6 +6270,11 @@
       "mentions_legales": "Page 10808 : suppression de ', dont le siège social est situé au 395 chemin des Horizons Verts, 20240 Ghisonaccia, France' dans le paragraphe éditeur. Raison sociale, capital, RCS et numéro conservés. Backup oz27-10808-20260718-084329.",
       "verif": "Servi footer + /mentions-legales/ : 0 'Siège'/'395 chemin'/'Ghisonaccia', RCS 902 757 202 conservé.",
       "note_conformite": "L'adresse du siège n'est légalement obligatoire ni sur le footer ni forcément détaillée ; raison sociale + RCS + immatriculation suffisent à identifier l'éditeur. Si un jour besoin légal d'une adresse, préférer une domiciliation/BP plutôt que l'adresse physique."
+    },
+    "OZ27_LOT21_SEO_AUDIT_SECTEURS_2026_07_18": {
+      "seo_titres": "Audit des 38 pages racine : la home a DÉJÀ un vrai SEO title Yoast (le 'Accueil - OZECAR' du backlog 0716 était le post_title, pas le <title> rendu). La majorité des pages ont un SEO title propre. Rempli le SEO title/desc de /activation/ (22344) et /mentions-legales/ (10808) qui étaient vides (rendaient 'X - OZECAR'). Pages légales restantes vides (confidentialité, cookies, privacy-policy, se-connecter, supprimer-compte) : non prioritaires SEO, laissées.",
+      "audit_secteurs": "Les 4 pages (supermarchés, flottes, hôtellerie, transport) sont en bon état contrairement au backlog 0716 : 0 placeholder, 0 image cassée, ~42 SVG (icônes présentes), lien Weldom -> /cas-clients/weldom/ (plus de PNG), titres SEO OK. Testimonial supermarchés attribué (Weldom / Direction technique). LOTS précédents avaient déjà traité l'essentiel.",
+      "FLAG_chiffre_a_valider": "Page supermarchés affiche 'Weldom — −80 % de coûts de support' (non modifié par moi). À faire confirmer par Dominique : ce chiffre est-il réel et communicable ? Idem citation Weldom."
     }
   },
   "make": {
