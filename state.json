@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.498",
+    "version": "1.499",
     "updated": "2026-07-18",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-18",
+        "version_from": "1.498",
+        "version_to": "1.499",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "ROLLBACK LOT18 bundle+revendeurs : pages restaurées (forfaits Business/Enterprise sont ACTUELS). Section pricing FLAGGÉE PÉRIMÉE (Pro/Pro Plus/Transit n'existent plus — à re-valider par Dominique)."
+        ]
+      },
       {
         "date": "2026-07-18",
         "version_from": "1.497",
@@ -685,7 +694,8 @@
       },
       "display_rule": "Toutes les pages tarifs affichent 3 plans : Essential, Pro, Pro+ (dernier = Sur devis)",
       "last_updated": "2026-06-15",
-      "_SUPERSEDED_BY": "pricing_canonical_2026_06_17 (validation 2026-06-17). Ne plus utiliser ces prix."
+      "_SUPERSEDED_BY": "pricing_canonical_2026_06_17 (validation 2026-06-17). Ne plus utiliser ces prix.",
+      "_FLAG_PERIME_2026_07_18": "ATTENTION : cette grille (Essential/Pro/Pro Plus/Transit) NE reflète PLUS les forfaits actuels. Dominique (2026-07-18) : Pro / Pro Plus / Transit N'EXISTENT PLUS. La grille client affichée sur staging (page bundle 22504, etc.) = Essential / Business / Enterprise. NE PAS corriger une page live sur la base de cette section tant qu'elle n'est pas re-validée. Demander à Dominique la grille canonique à jour avant tout travail tarifaire."
     },
     "pricing_canonical_2026_06_17": {
       "_note": "GRILLE TARIFAIRE CANONIQUE — validée ligne par ligne par Dominique le 2026-06-17. SOURCE DE VÉRITÉ unique. Prime sur pricing / catalogue_prix antérieurs (marqués superseded). Tous prix HT.",
@@ -6270,6 +6280,11 @@
         "resolus_depuis_0716": "/kit/ (0 Kit Master/Unit), /cas-clients/ (Weldom -> vraie page /cas-clients/weldom/ 200), /demo/ (iframe HubSpot Meetings rend 554x695), /contact/ (adresse Aix présente), /revendeurs/ commissions (sur demande)",
         "restants_probables": "/activation/ (refonte parcours kit à confirmer — ocpp.ozecar.app y apparaît 10x, à auditer marque blanche + contenu), titres SEO toutes pages, secteurs (icônes/logos/testimonials), supervision (double bandeau? à re-vérifier), nav P1"
       }
+    },
+    "OZ27_LOT18_ROLLBACK_2026_07_18": {
+      "erreur": "J'ai réécrit /bundle-zaptec-pro/ (22504) et /revendeurs/ (22417) sur la base de la section state 'pricing' (Essential/Pro/Pro Plus/Transit), en croyant les forfaits Business/Enterprise périmés. FAUX : les pages étaient à jour, c'est la section pricing du state qui est périmée. Cause : j'ai pris le state pour la vérité contre une page live sans confirmer un changement de vocabulaire tarifaire structurant.",
+      "rollback": "22504 et 22417 restaurés à l'identique depuis backups oz27-*-20260718-08{08,11}*. sha256 22504 = a5d9a7f6... (== état pré-modif, vérifié). Servi vérifié : Business x3, Enterprise x2, White-label revenu.",
+      "leçon": "Pour tout écart page-live vs state sur du CONTENU CLIENT (tarifs, forfaits, vocabulaire), la page live prime par défaut ; ne modifier qu'après confirmation Dominique. Section pricing flaggée périmée."
     }
   },
   "make": {
