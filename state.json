@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.510",
+    "version": "1.511",
     "updated": "2026-07-19",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,17 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-19",
+        "version_from": "1.510",
+        "version_to": "1.511",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Migration polling Make -> PHP livree: api/pipeline-poller.php (replique 05b/10/11) + cron.php v2 (job pipeline_poll, cockpit gate horaire)",
+          "Teste bout en bout: cron -> poller -> 3 recherches HubSpot 200, 0 en attente",
+          "Scenarios Make laisses ACTIFS en filet tant que cron Hostinger pas active (bloque chez Dominique)"
+        ]
+      },
       {
         "date": "2026-07-19",
         "version_from": "1.509",
@@ -6554,7 +6565,15 @@
         "constat": "3 scenarios polling 900s (05b/10/11, crees 01-06 juillet) = 576 ops/jour a vide = ~17300 ops/mois. Consommation cumulee au 19/07: 05b 5220 ops, 10 5196 ops, 11 4976 ops. 09 (6562 ops) deja desactive le 23/06.",
         "fix_immediat": "05b passe a 1800s, 10 et 11 a 3600s -> ~5760 ops/mois (÷3)",
         "fix_structurel_propose": "Migrer la logique searchDeals/searchContacts + send-mail.php dans api/cron.php (Hostinger, deja horaire) = 0 ops Make. Ou: demo-booking.php POST direct vers webhook Make (event-driven, ~1 exec par vrai booking).",
-        "regle": "webhook-first — aucun nouveau scenario en polling"
+        "regle": "webhook-first — aucun nouveau scenario en polling",
+        "migration_php_2026_07_19": {
+          "statut": "LIVRE et teste bout en bout (cron v2 -> poller -> 3 recherches HubSpot 200)",
+          "api_pipeline_poller_php": "Replique exactement les 3 blueprints Make: J1 contacts search (engagements_last_meeting_booked GTE now + ozecar_demo_confirme NEQ true + email HAS_PROPERTY) -> demo-booking.php ; J2 deals search (dealstage 5584432342 + ozecar_devis_card_sent EQ false) -> demo-devis-card.php ; J3 deals search (dealstage 5215721690 + ozecar_devis_client_sent EQ pending) -> devis-send-client.php. Cle = CRON_KEY. Mode &dry=1. Log .pipeline-poller-log.json (30 runs).",
+          "cron_php_v2": "Job 3 pipeline_poll a chaque passage ; cockpit_warm gate 1x/heure ; boamp inchange. Backup api/cron.php.bak-20260719-180823. Recommandation Hostinger: */15 min.",
+          "cohabitation": "Endpoints idempotents (flags HubSpot) -> poller + scenarios Make peuvent tourner ensemble sans doublon.",
+          "condition_extinction_make": "Des que le cron Hostinger est actif (2-3 runs reguliers dans .cron-log.json), desactiver les scenarios 6400488, 6452570, 6458109 -> 0 ops Make.",
+          "blocage_dominique": "Cron Hostinger JAMAIS ACTIVE (1 seul run logge = test manuel du 16/07). Ligne a ajouter dans hPanel: */15 * * * * -> curl 'https://ozecar.fr/api/cron.php?key=ckp_5171c7f30dc28282ec096475'"
+        }
       }
     },
     "email_system_2026_06_21": {
