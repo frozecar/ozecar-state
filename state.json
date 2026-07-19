@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "version": "1.508",
-    "updated": "2026-07-18",
+    "version": "1.509",
+    "updated": "2026-07-19",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
@@ -83,6 +83,17 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-19",
+        "version_from": "1.508",
+        "version_to": "1.509",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Brand kit v1.0 livre sur staging /uploads/ozecar/brand/brand-kit.html",
+          "14 declinaisons SVG generees depuis le SVG officiel (positif/negatif/mono, compact mascotte+eclair, wordmark, mascotte x4, eclair x3)",
+          "Nouvelle section state: brand_kit"
+        ]
+      },
       {
         "date": "2026-07-18",
         "version_from": "1.507",
@@ -9891,5 +9902,34 @@
       "liste_appel_LIVREE": "uploads/ozecar/liste-appel.json (top 10 P3, score = PDC + parc dormant + operateur 2nd rang + contact nominatif, angle d'appel par cible) -> exposee par cockpit.php (liste_appel) -> widget table dans la page cockpit (societe->fiche HubSpot, parc, operateur, decideur, contact avec badge NOMINATIF, angle, fiche annuaire). C'est le futur ecran quotidien de l'alternant.",
       "reste": "1) Dominique: essai Dropcontact 14j + integration HubSpot native (enrichit auto les 64 fiches: emails nominatifs dirigeants). 2) Sequences email + playbook (chantier onboarding alternant, aout-sept). 3) Job cron 'refresh liste-appel' hebdo. 4) Freshmile: prochaine base a injecter (390 cibles) une fois le circuit P3 valide."
     }
+  },
+  "brand_kit": {
+    "_desc": "brand kit v1.0 : logos declines, architecture .fr/One/Shop/Pro, papeterie, social, ads, print",
+    "status": "LIVRE STAGING - attente validation Dominique",
+    "url": "https://staging.ozecar.fr/wp-content/uploads/ozecar/brand/brand-kit.html",
+    "assets_dir": "staging wp-content/uploads/ozecar/brand/ (14 SVG + brand-kit.html)",
+    "principe_logos": "toutes declinaisons generees par swap de couleurs sur la geometrie du SVG officiel logo-ozecar-officiel.svg - zero redessin. Anatomie: paths 0-6 mascotte, 7-12 lettres OZECAR, 13 eclair",
+    "combinaisons_officielles": [
+      "logo complet (mascotte+wordmark+eclair jaune)",
+      "compact mascotte+eclair",
+      "wordmark+eclair"
+    ],
+    "versions": [
+      "positif (fonds clairs)",
+      "negatif (blanc+eclair jaune sur ink/violet)",
+      "mono ink"
+    ],
+    "architecture_marque": "suffixe DM Sans 700 apres logo: One=violet #5F2DFF (#9F7DFF sur dark), Shop=jaune, Pro=gris. Jamais de logo different par produit",
+    "cobranding": "OZECAR a gauche, filet vertical, hauteurs capitales egales. Cote client final: label FOURNI PAR + logo. Jamais de logo prestataire infra",
+    "papeterie": "A4 marges 20mm, bande jaune 5mm pied, footer legal Space Mono SIREN 902 757 202, TVA FR93 902 757 202 (calculee depuis SIREN, A VERIFIER sur avis SIE avant usage)",
+    "cmjn_indicatif": "ink 50-34-0-88, jaune 0-20-84-2, violet 63-82-0-0, creme 0-2-4-4 - a caler au premier BAT",
+    "todo_apres_validation": [
+      "exports PNG haute def",
+      "modele Pennylane facture",
+      "modele lettre Word/Docs",
+      "gabarits Canva social",
+      "verif TVA intracom",
+      "EPS/PDF vectoriels pour imprimeur"
+    ]
   }
 }
