@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.509",
+    "version": "1.510",
     "updated": "2026-07-19",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,17 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-19",
+        "version_from": "1.509",
+        "version_to": "1.510",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Audit conso Make: scenarios 05b/10/11 en polling 900s = ~17300 ops/mois a vide",
+          "Intervals reduits via MCP: 05b->1800s, 10->3600s, 11->3600s (conso ÷3)",
+          "Fix structurel propose: migration logique vers api/cron.php (0 ops) ou webhook event-driven"
+        ]
+      },
       {
         "date": "2026-07-19",
         "version_from": "1.508",
@@ -6538,7 +6549,13 @@
         "active": false,
         "status_2026_07_04": "DESACTIVE - logique repliee dans 08 (event-driven). Ancien trigger = searchDeals polling 15min qui re-scannait tous les deals du stage 'Devis envoye' + re-GET chacun => ~6544 ops/mois a vide. Conserve pour rollback, ne pas reactiver."
       },
-      "credits_fix_2026_07_12": "Credits epuises en 2j: 3 pollers a 120s (2min) = ~4800 ops/2j chacun. 05b(6400488) booking demo, 10(6452570) demo->devis, 11(6458109) devis-contrat->email passes a interval 900 (15min) => burn /7,5. 04 LinkedIn(5323747) reste a 900s (modere). Daily 07/12 et webhooks 01/08 = OK. FIX DURABLE a prevoir: convertir 05b/10/11 en webhook-driven (comme 01/08) pour eliminer le burn au repos (webhook-first principle)."
+      "credits_fix_2026_07_12": "Credits epuises en 2j: 3 pollers a 120s (2min) = ~4800 ops/2j chacun. 05b(6400488) booking demo, 10(6452570) demo->devis, 11(6458109) devis-contrat->email passes a interval 900 (15min) => burn /7,5. 04 LinkedIn(5323747) reste a 900s (modere). Daily 07/12 et webhooks 01/08 = OK. FIX DURABLE a prevoir: convertir 05b/10/11 en webhook-driven (comme 01/08) pour eliminer le burn au repos (webhook-first principle).",
+      "_audit_conso_2026_07_19": {
+        "constat": "3 scenarios polling 900s (05b/10/11, crees 01-06 juillet) = 576 ops/jour a vide = ~17300 ops/mois. Consommation cumulee au 19/07: 05b 5220 ops, 10 5196 ops, 11 4976 ops. 09 (6562 ops) deja desactive le 23/06.",
+        "fix_immediat": "05b passe a 1800s, 10 et 11 a 3600s -> ~5760 ops/mois (÷3)",
+        "fix_structurel_propose": "Migrer la logique searchDeals/searchContacts + send-mail.php dans api/cron.php (Hostinger, deja horaire) = 0 ops Make. Ou: demo-booking.php POST direct vers webhook Make (event-driven, ~1 exec par vrai booking).",
+        "regle": "webhook-first — aucun nouveau scenario en polling"
+      }
     },
     "email_system_2026_06_21": {
       "standard_design": "Le template 05-confirmation-demo (VALIDÉ par Dominique) est le MASTER design pour tous les emails OZECAR : logo officiel centré dans cartouche blanc sur header ink, filet jaune, structure sandwich ink/cream, pills .sec-tag, signature + footer. Pour les prochains templates : garder ce design, adapter UNIQUEMENT le texte.",
