@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.516",
+    "version": "1.517",
     "updated": "2026-07-20",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,16 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-20",
+        "version_from": "1.516",
+        "version_to": "1.517",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Décision pricing: -25% sur combos Business+Maintenance (verrouillé durée engagement)",
+          "Migration FZ v3: offre Business+N3 20,90 EUR (remplace Pro -50%), périmètre 106 PDC actifs vérifié Monta, répartition live Dominique/Marie-Estelle/Claude"
+        ]
+      },
       {
         "date": "2026-07-20",
         "version_from": "1.515",
@@ -1349,6 +1359,18 @@
         "infra_note": "Pas de MCP Pennylane connecte. Automatisation future = API Pennylane via proxy custom ou module Make (a verifier). Stripe reste pour Shopify.",
         "impact_design": "Remplace 'signature -> Stripe Subscription' par 'signature -> Pennylane abonnement + SEPA Compte Pro' POUR LE RECURRENT. Le 'Gagne' = signature (pas paiement); activation suit immediatement; paiement SEPA en differe, reconcilie auto dans Pennylane."
       }
+    },
+    "combo_business_maintenance_2026_07_20": {
+      "decision_dominique": "2026-07-20 (live avec Marie-Estelle)",
+      "regle": "-25% sur tout combo Business + Maintenance (N1-N4), verrouillé sur toute la durée d'engagement",
+      "grille_calculee": {
+        "business_N1": "13,90 -> 10,43",
+        "business_N2": "18,90 -> 14,18",
+        "business_N3": "27,90 -> 20,93 (affiché 20,90)",
+        "business_N4": "33,90 -> 25,43"
+      },
+      "usage_campagne_FZ": "Offre de migration Forfait Zéro = Business + N3 à 20,90 EUR/PDC/mois HT (valeur 27,90, -25%)",
+      "remplace": "Proposition Pro -50% (7,45) de la DIRECTIVE_2026_07_07_v2 — caduque (grille Pro supprimée)"
     }
   },
   "products": {
@@ -2732,6 +2754,13 @@
           "version_retenue": "/mnt/user-data/outputs/ozecar-comparatif-zero-vs-pro.html — STATIQUE, base uniquement sur le FIXE (abonnement 0e -> 7,45e) + services inclus. Pas de simulation itinerance/recette, pas d'interactivite.",
           "regle": "Comparatif migration = fixe uniquement (abo + services). Ne pas reintroduire la comparaison basee sur les frais d'itinerance ni de calculateur."
         }
+      },
+      "DIRECTIVE_2026_07_20_v3": {
+        "decision_dominique": "Migration de TOUS les Forfait Zéro vers combo Business + Maintenance N3 à -25% = 20,90 EUR/PDC/mois HT, verrouillé toute la durée d'engagement. Annule Pro -50%.",
+        "perimetre_verifie_monta": "106 PDC actifs plan 2541 (208 subs historiques), tous customerType=charge-point, frais 13% + 0,70/session",
+        "argumentaire": "Aujourd'hui: 12 EUR maintenance corrective + 13% + 0,70/session, sans supervision. Demain: supervision Business + préventif N3 pour 20,90, frais niveau Business (10%), 0,70/session SUPPRIME. A ~28 sessions/PDC/mois (moyenne réseau), la seule suppression du 0,70 rend ~19,60 EUR/PDC/mois -> la plupart des FZ actifs sont gagnants nets.",
+        "occasion": "Bascule adossée au passage facturation électronique. Date cible 2026-10-01 (fin FZ 30/09) — à confirmer Dominique.",
+        "repartition_live_2026_07_20": "Marie-Estelle: payeurs réels + exclusion cas spéciaux (Grimaldi, La Vetta, tiers invest, Pimo) + contacts. Claude PM: pipeline 106 PDC -> clients -> recettes 12m + frais versés -> tableau gagnants + mail merge."
       }
     },
     "migration_abonnements_regles": {
