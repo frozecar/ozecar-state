@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.513",
+    "version": "1.514",
     "updated": "2026-07-20",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-20",
+        "version_from": "1.513",
+        "version_to": "1.514",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Revenus Monta 2026 verifies (49,8k surs + 47,6k a qualifier), CA consolide ~143,6k HT, cout Monta 68k YTD. Plan ecoulement Zaptec 30+80 u."
+        ]
+      },
       {
         "date": "2026-07-20",
         "version_from": "1.512",
@@ -9994,6 +10003,8 @@
     "priorites": "1) Lettrage Pennylane a rattraper puis recouvrement valide (~25k, Balesi en premier). 2) Devis Albizias: echeancier 40/40/20 + clause transfert garanties + maintenance/TPE chiffres (marge OK, rien a retoucher sur les prix). 3) Zaptec: solder 17k a l'acompte, ecouler 30 Pro avant sept, provisionner TVA 20k pour oct. 4) Lancement site sept cale sur acompte + alternant 05/10.",
     "CORRECTIF_2026_07_20_prix_achat_sungrow": "Prix d'achat Sungrow fournis par Dominique (liste officielle): Armoire IDC480E ACH00100 = 42 525 EUR HT. Satellite IDC480E MID A0CH0025 = 7 875 EUR HT (MID+TPE ACH00153 = 8 400). => Cout materiel 6 PDC = 42 525 + 3x7 875 = 66 150 EUR HT. Prix de vente deck (89 212 + 3x25 671) INCLUENT donc deja la marge. MARGE PROJET REELLE ~108k (42%): armoire +46 687, satellites +53 388, Giga +8 009. L'ALERTE_MARGE precedente est ANNULEE (fausse hypothese prix passthrough).",
     "CORRECTIF_impayes_lettrage": "Dominique confirme: Ghisonaccia (6k) et Santi (5,7k) ne doivent RIEN => le lettrage Pennylane n'est pas a jour (paiements encaisses non rapproches). Impayes reels a valider ligne par ligne avec Marie-Estelle avant toute relance. Estimation corrigee ~25k en retard (Balesi 12,4k, OEHC 4,4k, Ajaccio 3,9k + petits), chacun a verifier contre le releve bancaire. ACTION: rattraper le lettrage Pennylane (important aussi pour C2C/audit et la levee).",
-    "CA_2026_verifie": "CA facture HT Pennylane au 20/07/2026: 93 819 EUR (janv 10 290, fev 3 261, mars 4 151, avr 28 328, mai 7 813, juin 34 026, juil 5 948). Hors eventuels revenus factures hors Pennylane (wallet Monta)."
+    "CA_2026_verifie": "CA facture HT Pennylane au 20/07/2026: 93 819 EUR (janv 10 290, fev 3 261, mars 4 151, avr 28 328, mai 7 813, juin 34 026, juil 5 948). Hors eventuels revenus factures hors Pennylane (wallet Monta).",
+    "revenus_monta_2026_verifie": "Wallet operateur OZECAR (id 1088439), 31 625 transactions 2026 analysees. REVENUS SURS: frais operateur (roaming-cpo 28,1k + professional 13,9k + p2p 2,2k + starting fees 1,5k) = ~45,6k HT + abonnements via wallet 4,2k = ~49,8k HT. A QUALIFIER: recettes de charge encaissees sur wallet operateur (charge-professional 28,3k + roaming-cpo-reseller 17,0k + monta_buyer 2,3k) = ~47,6k HT — revenu OZECAR si sites operes en propre, sinon pass-through. Paire wallet-balanced in 168,9k / out 153,6k = mecanique de reversement (pass-through, net +15,2k). Sorties notables: withdraw-wise 71,8k (rapatriement banque), paiements Monta 68k YTD (enterprise 35k + white-label 30k + platform 3k). CA consolide 2026: 93,8k Pennylane + 49,8k Monta sur = ~143,6k HT (jusqu'a ~191k si recettes de charge qualifiees revenu). RISQUE double comptage si des frais Monta sont aussi factures via Pennylane — regle de reconnaissance a fixer pour la levee.",
+    "plan_ecoulement_zaptec": "30 Zaptec Pro (~750/u cout, 22,5k immobilise) + 80 en sept (60k du 15/10). Plan: 1) Option AC parking personnel dans devis Albizias (4-6 u). 2) Offre flash revendeurs/installateurs via grille bounty + Giga Energia, prix agressif avec attach supervision obligatoire. 3) Upsell parc AC existant (hotels/campings achetent a l'automne pour la saison suivante, Homair 5 sites). 4) Pack lancement site sept: borne + kit + 3 mois supervision offerts (fait du bruit + ecoule). 5) Si <20 vendues mi-sept: negocier Zaptec split livraison 40/40 ou report echeance AVANT le 15/10. Objectif: ~33k cash avant le 15/10."
   }
 }
