@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.520",
+    "version": "1.521",
     "updated": "2026-07-20",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-20",
+        "version_from": "1.520",
+        "version_to": "1.521",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CAMPAGNE_MAJ_COMPTE validee: mise a jour de compte pour tout le parc (template staging live), objectifs facturation d'abord/upsell ensuite, matrice N0-N4 (48h/24h), N1 national, N2+ sous couverture, wallet-first, 5 regles clients recents, avenant ajout bornes coterminal, PCA/periode de service, plan S30->01/09 et jauge 80% des 106 PDC"
+        ]
+      },
       {
         "date": "2026-07-20",
         "version_from": "1.519",
@@ -3062,6 +3071,23 @@
           "Valider sur mobile réel + décider passage en prod (URL propre type ozecar.fr/borne ou pro.ozecar.fr)"
         ]
       }
+    },
+    "CAMPAGNE_MAJ_COMPTE_2026_07_20": {
+      "statut": "VALIDE Dominique 2026-07-20 (session live avec Marie-Estelle). Remplace l'approche 'campagne migration FZ seule'.",
+      "concept": "Une seule motion pour TOUT le parc (177 teams) + futures reprises: 'Mise a jour de votre compte' pretextee par la facturation electronique. Pas une offre — une mise a jour administrative qui embarque: bascule nouvelle grille, SEPA/wallet, upsell maintenance optionnel.",
+      "template": "staging.ozecar.fr/wp-content/uploads/ozecar/maj-compte-demo.html (valide). Design system OZECAR, matrice maintenance N0-N4 a points cliquable, pastilles -25%, toggle mensuel SEPA / annuel -5% echeance avril, bandeau economie (ou 'protection renforcee +X' si negatif), CTA -> modal eSignatures (a brancher).",
+      "objectifs_hierarchises": "1) Harmoniser la facturation (Stripe SEPA, ou wallet-first pour les producteurs de recettes si facture Pennylane conforme adossable). 2) Upsell opportuniste, jamais conditionnel.",
+      "regles_produit": {
+        "defaut_iso_service": "Le mapping par defaut reproduit le service actuel (iso-forfait, iso-maintenance). L'upsell est optionnel via le selecteur. Signer 'a l'identique + SEPA' = victoire complete.",
+        "N1_national": "N1 (4 EUR/PDC plein tarif) = upsell par defaut propose a tous les contrats sans maintenance: 100% a distance, cout marginal ~nul, livrable France entiere sans partenaire. Premiere brique du chemin ARPU 20 EUR.",
+        "N2plus_sous_couverture": "N2/N3/N4 vendus uniquement dans les zones couvertes (Corse/PACA via Fred aujourd'hui). Ailleurs: N1 par defaut. Chaque grappe regionale de clients N1 = business case pour recruter un installateur-mainteneur partenaire (grille Installateur Certifie) qui execute les visites ET devient canal d'acquisition.",
+        "matrice_N0_N4": "N0 aucune / N1 a distance (4) / N2 preventif annuel (9) / N3 = N2 + intervention&diagnostic garantis 48h (18) / N4 = 24h, pieces NON incluses (24). Pieces en sus a tous les niveaux. Remise -25% des N2 (N2/N3/N4 — a confirmer pour N4). PERIMETRE CONTRACTUEL A VALIDER AVEC FRED avant tout envoi; texte page = texte contrat.",
+        "segmentation_recents": "5 regles: (1) recent+SEPA+grille actuelle = simple mail info, rien a signer. (2) recent hors SEPA = avenant de paiement seul, contrat/date de fin inchanges. (3) upsell sur contrat existant = avenant coterminal, prorata, echeance inchangee. (4) client demande le combo -25% = SEUL cas de reprise de contrat, 24 mois repartent (la remise s'achete avec l'engagement). (5) PAS d'alignement au 01/01 (falaise de renouvellement = risque churn concentre; dates dispersees = protection structurelle). Exception: annuels saisonniers alignes sur avril (prorata pont).",
+        "avenant_ajout_bornes": "Client sous contrat ajoute des bornes: memes conditions heritees, COTERMINAL (fin avec le contrat, engagement ne repart pas), prorata (prelevement suivant en mensuel / facture pont jusqu'a l'echeance en annuel), one-shot Kit Borne 29 + Kit Site 49 si nouveau site. Mandat SEPA existant couvre (montants variables) -> une signature, zero friction. = revenu d'expansion a CAC zero.",
+        "compta_annuel": "Produit constate d'avance (compte 487): CA reconnu prorata temporis mois par mois, cash encaisse d'avance (BFR negatif), TVA sur encaissement (regime a confirmer expert-comptable). Chaque facture annuelle DOIT porter la periode de service — champ a integrer au webhook Pennylane. Jauges cockpit restent en base contractuelle ARR."
+      },
+      "plan_execution": "S30 (avant 26/07): mapping 410 subs (customs exclus), generateur pages par client, modal eSignatures, webhook signature->Stripe SEPA->Pennylane->Monta->HubSpot, correction 3 teams mixtes. S32: test interne + 5 pilotes gros gagnants (Kalliste, Sole di Sari, Calvi Hotel, Acqua e Sole, Mairie Olmeto). 01/09: envoi masse FZ (relance Make J+10, tel Marie-Estelle J+20, fin de service 30/09 pour non-repondants Zero). Octobre: vague 2 reste du parc (recit 'tarif gele 24 mois'). Objectif: >=80% des 106 PDC FZ signes au 30/09 (~+1200 EUR/mois MRR) — jauge a ajouter au cockpit.",
+      "dependances_dominique": "Cles Stripe (bloquant chaine paiement) + creneau Fred (perimetre N0-N4 contractuel) + appel Renault (independant, visuel pret)."
     }
   },
   "monta": {
