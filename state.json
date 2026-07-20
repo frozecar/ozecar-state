@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.519",
+    "version": "1.520",
     "updated": "2026-07-20",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,16 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-20",
+        "version_from": "1.519",
+        "version_to": "1.520",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Maintenance Site validée (29/site + 10/DC, option flotte +10) — outil comptes directs",
+          "Offre Renault finale: 1123 EUR/an vs 1296 actuel (-173 client), séquence d'appel + règle facturation électronique + plan Zaptec en 3 étapes"
+        ]
+      },
       {
         "date": "2026-07-20",
         "version_from": "1.518",
@@ -1401,6 +1411,12 @@
       },
       "engagement": "24 mois (decision Dominique 2026-07-20, sur reco Claude PM — 36 refusé pour friction)",
       "effet_grille": "N1 plein (13,90) < N2 remisé (14,15) de 0,25 seulement -> N1 economiquement absurde, la grille pousse naturellement vers N2 minimum sans forcer"
+    },
+    "maintenance_site_2026_07_20": {
+      "statut": "VALIDE Dominique 2026-07-20 — outil des comptes traités en DIRECT (pas la campagne de masse, qui reste au combo par PDC)",
+      "formule": "Maintenance Site = 29 EUR/mois par site (jusqu'à 6 bornes AC) + 10 EUR/mois par borne DC. Option flotte: +10 EUR/mois pour bornes flotte privées (incluses tournée + correctif), diagnostic de remise en service offert à la signature.",
+      "perimetre_a_cadrer_fred": "1 tournée préventive/an planifiée par OZECAR hors saison + correctif prioritaire; pièces et déplacements hors tournée selon grille. À cadrer AVANT le premier contrat signé.",
+      "rationale": "Tue l'objection 'pourquoi maintenir la borne qui ne sert pas': on ne facture plus des bornes, on facture le site — aligné sur le coût réel (Fred se déplace par site)."
     }
   },
   "products": {
@@ -2805,7 +2821,12 @@
         "contexte": "Parc 10 PDC: A01 FZ 15%+0,70 (anomalie mise en place rapide, client ne sait pas), A02/A03 Standard 9e 12%, A04 Pro 10%, CSS1/CSS2 DC120 Pro 12% (les 2 seules facturées: 21e/m/PDC = 504e/an), 4 bornes flotte privées déconnectées SUPERVISION OFFERTE (offre de bienvenue, à maintenir).",
         "offre": "Harmonisation (jamais 'migration Zéro'): 6 PDC actifs en Business+N3 -25% = 20,93e/PDC/mois = 1507e/an. Angle: tarif unitaire inchangé (~21e connu du client), parc entier couvert (2->6), frais harmonisés 10% partout (affichés en % SEULEMENT, jamais l'économie en EUR sur son CA), 0,70 supprimé, flotte toujours offerte, préventif prioritaire sur les 2 DC120 (94% de son activité), 24 mois.",
         "vigilance": "Ne JAMAIS mentionner le Forfait Zéro ni l'anomalie A01 au client. Ne pas chiffrer l'économie sur son CA.",
-        "next": "Devis PandaDoc + appel direct Dominique (compte traité hors campagne de masse)."
+        "next": "Devis PandaDoc + appel direct Dominique (compte traité hors campagne de masse).",
+        "facturation_reelle_v3": "AUJOURD'HUI: 4x Standard 9 EUR HT/m (A01-A04: 2x22kW AC + 2x25kW comptés AC) = 432/an + 2x Pro 15 EUR/m (CSS1/CSS2 DC120) = 360/an + 2x maintenance N3 21 EUR/m/PDC DC = 504/an. TOTAL 1296 EUR/an.",
+        "offre_finale_validee": "Business 6 bornes -25% (535/an) + Maintenance Site 29+2x10=49 EUR/m (588/an) = 1123 EUR/an -> ECONOMIE CLIENT -173 EUR/an affichable (fixe, pas CA). Option flotte +120/an -> 1243, toujours -53 sous l'actuel. Frais 10% partout. 24 mois.",
+        "concession_ozecar": "~-173/an fixe + ~-540/an frais (12->10 sur ~27k DC) = ~-700 EUR/an, assumé pour verrou 24 mois + simplification + anomalie A01 effacée. Curseurs si besoin: Site base 39 ou flotte au socle.",
+        "sequence_appel": "1) Valeur: les 2 DC120 protégées (préventif prioritaire, moins cher qu'aujourd'hui). 2) Harmonisation: 1 contrat, 6 bornes, 10% partout, flotte offerte. 3) Closing: facturation électronique = calendrier réglementaire externe, bascule 01/10, une seule facture conforme. Repli si pression: N2. REGLE CAMPAGNE: facturation électronique FERME en appel direct, OUVRE en mail de masse.",
+        "zaptec_seeding": "NE PAS vendre de hardware pendant l'appel harmonisation. Etape 2: le diagnostic flotte (option) crée le moment naturel — si les 4 bornes flotte sont mortes/obsolètes -> devis remplacement Zaptec Pro 22. Etape 3 (après signature, relation ré-ancrée): conversation REVENDEUR — concession vend des VE, package 'borne Zaptec GO 2 + supervision OZECAR' pour ses acheteurs, grille bounty Revendeur 25/100. Gabarit réplicable sur les 49 concessions du fichier P3."
       }
     },
     "migration_abonnements_regles": {
