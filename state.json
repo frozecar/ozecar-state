@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.512",
+    "version": "1.513",
     "updated": "2026-07-20",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-20",
+        "version_from": "1.512",
+        "version_to": "1.513",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CORRECTIF finance: prix achat Sungrow recus (armoire 42 525, satellite 7 875) => marge Albizias reelle ~108k (42%), alerte marge annulee. Lettrage Pennylane pas a jour (Ghisonaccia/Santi soldes) => recouvrement a valider (~25k). CA 2026 YTD 93,8k HT. Plan cash v2 + provision TVA acompte."
+        ]
+      },
       {
         "date": "2026-07-20",
         "version_from": "1.511",
@@ -9980,8 +9989,11 @@
   "finance_tresorerie_2026_07_20": {
     "situation": "Banque -10k. Couts fixes 23k/mois (Monta WL, vehicules, assurance, salaires), revenus ete ~15k/mois => burn -8k/mois (-10k/mois des oct. avec alternant 2k). Dettes: C2C 7k, Zaptec 17k. Zaptec: 30 Pro en stock (~750 EUR/u cout), livraison 80 u. en sept => 60k du au 15/10. Tout ecouler avant livraison.",
     "pennylane_verifie_2026_07_20": "CA HT 2025: 294,5k. CA 2026 YTD: 93,8k. Impayes clients REELS (hors factures test): 36 737 EUR TTC en retard + 5 669 a echoir. Top retards: Balesi Automobile 12,4k (ech. 01/07), Mairie Ghisonaccia 6k, V. Santi 5,7k (>1 an), OEHC 4,4k, Commune Ajaccio 3,9k. Donnees fournisseurs Pennylane inexploitables (notes de frais/avoirs melanges).",
-    "albizias_plan_cash": "Projet 254 325 EUR HT (~305k TTC, client medical = TVA non recuperable). Couts: Giga 80 091 HT (45% commande = 36k debut sept), materiel Sungrow 166 225 (armoire 89 212 + 3 satellites 77 013) paye 60j apres expedition (commande sept => expedition ~oct => paiement ~debut dec). Echeancier client recommande 40/40/20 TTC: 122k commande / 122k a l'expedition materiel (facture 30j => encaissee ~nov, AVANT l'echeance Sungrow de dec) / 61k mise en service. REGLE: aucun bon de commande Giga/Sungrow avant encaissement de l'acompte.",
+    "albizias_plan_cash": "Projet 254 325 HT (~305k TTC). Couts reels: Giga 80 091 (45% commande=36k) + Sungrow 66 150 (60j apres expedition => ~dec) = 146 241. MARGE ~108k. Echeancier client 40/40/20 TTC: 122k signature / 122k a l'expedition materiel (paiement a reception => mi-oct) / 61k mise en service. TVA: acompte sept => ~20k TVA collectee exigible a l'encaissement, a provisionner (echeance declaration = oct, mois deja tendu par Zaptec 60k). Sungrow intracom autoliquide. REGLE: aucune commande fournisseur avant encaissement acompte.",
     "ALERTE_MARGE": "Materiel Sungrow presente au deck AU PRIX FOURNISSEUR (89 212 + 25 671/satellite = prix donnes par Dominique comme 'prix final'). Marge projet actuelle ~8k sur Giga seulement (~3% du projet). A trancher AVANT finalisation du devis: marge materiel 8-12% (=13-20k). TVA Sungrow probablement autoliquidee (intracom, pas d'impact cash).",
-    "priorites": "1) Recouvrement 36,7k impayes (Balesi en premier). 2) Devis Albizias: marge materiel + echeancier 40/40/20 + clause transfert garanties + acompte facture a signature. 3) Zaptec: solder 17k a l'encaissement acompte, ecouler 30 u. avant sept, negocier echeance 60k si besoin. 4) Lancement site cale sur encaissement acompte (sept), pas avant."
+    "priorites": "1) Lettrage Pennylane a rattraper puis recouvrement valide (~25k, Balesi en premier). 2) Devis Albizias: echeancier 40/40/20 + clause transfert garanties + maintenance/TPE chiffres (marge OK, rien a retoucher sur les prix). 3) Zaptec: solder 17k a l'acompte, ecouler 30 Pro avant sept, provisionner TVA 20k pour oct. 4) Lancement site sept cale sur acompte + alternant 05/10.",
+    "CORRECTIF_2026_07_20_prix_achat_sungrow": "Prix d'achat Sungrow fournis par Dominique (liste officielle): Armoire IDC480E ACH00100 = 42 525 EUR HT. Satellite IDC480E MID A0CH0025 = 7 875 EUR HT (MID+TPE ACH00153 = 8 400). => Cout materiel 6 PDC = 42 525 + 3x7 875 = 66 150 EUR HT. Prix de vente deck (89 212 + 3x25 671) INCLUENT donc deja la marge. MARGE PROJET REELLE ~108k (42%): armoire +46 687, satellites +53 388, Giga +8 009. L'ALERTE_MARGE precedente est ANNULEE (fausse hypothese prix passthrough).",
+    "CORRECTIF_impayes_lettrage": "Dominique confirme: Ghisonaccia (6k) et Santi (5,7k) ne doivent RIEN => le lettrage Pennylane n'est pas a jour (paiements encaisses non rapproches). Impayes reels a valider ligne par ligne avec Marie-Estelle avant toute relance. Estimation corrigee ~25k en retard (Balesi 12,4k, OEHC 4,4k, Ajaccio 3,9k + petits), chacun a verifier contre le releve bancaire. ACTION: rattraper le lettrage Pennylane (important aussi pour C2C/audit et la levee).",
+    "CA_2026_verifie": "CA facture HT Pennylane au 20/07/2026: 93 819 EUR (janv 10 290, fev 3 261, mars 4 151, avr 28 328, mai 7 813, juin 34 026, juil 5 948). Hors eventuels revenus factures hors Pennylane (wallet Monta)."
   }
 }
