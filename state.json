@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "version": "1.511",
-    "updated": "2026-07-19",
+    "version": "1.512",
+    "updated": "2026-07-20",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-20",
+        "version_from": "1.511",
+        "version_to": "1.512",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Point financier complet: section finance_tresorerie_2026_07_20 (treso, impayes Pennylane verifies 36,7k, plan cash Albizias 40/40/20, ALERTE marge materiel a prix fournisseur, priorites)."
+        ]
+      },
       {
         "date": "2026-07-19",
         "version_from": "1.510",
@@ -9967,5 +9976,12 @@
       "verif TVA intracom",
       "EPS/PDF vectoriels pour imprimeur"
     ]
+  },
+  "finance_tresorerie_2026_07_20": {
+    "situation": "Banque -10k. Couts fixes 23k/mois (Monta WL, vehicules, assurance, salaires), revenus ete ~15k/mois => burn -8k/mois (-10k/mois des oct. avec alternant 2k). Dettes: C2C 7k, Zaptec 17k. Zaptec: 30 Pro en stock (~750 EUR/u cout), livraison 80 u. en sept => 60k du au 15/10. Tout ecouler avant livraison.",
+    "pennylane_verifie_2026_07_20": "CA HT 2025: 294,5k. CA 2026 YTD: 93,8k. Impayes clients REELS (hors factures test): 36 737 EUR TTC en retard + 5 669 a echoir. Top retards: Balesi Automobile 12,4k (ech. 01/07), Mairie Ghisonaccia 6k, V. Santi 5,7k (>1 an), OEHC 4,4k, Commune Ajaccio 3,9k. Donnees fournisseurs Pennylane inexploitables (notes de frais/avoirs melanges).",
+    "albizias_plan_cash": "Projet 254 325 EUR HT (~305k TTC, client medical = TVA non recuperable). Couts: Giga 80 091 HT (45% commande = 36k debut sept), materiel Sungrow 166 225 (armoire 89 212 + 3 satellites 77 013) paye 60j apres expedition (commande sept => expedition ~oct => paiement ~debut dec). Echeancier client recommande 40/40/20 TTC: 122k commande / 122k a l'expedition materiel (facture 30j => encaissee ~nov, AVANT l'echeance Sungrow de dec) / 61k mise en service. REGLE: aucun bon de commande Giga/Sungrow avant encaissement de l'acompte.",
+    "ALERTE_MARGE": "Materiel Sungrow presente au deck AU PRIX FOURNISSEUR (89 212 + 25 671/satellite = prix donnes par Dominique comme 'prix final'). Marge projet actuelle ~8k sur Giga seulement (~3% du projet). A trancher AVANT finalisation du devis: marge materiel 8-12% (=13-20k). TVA Sungrow probablement autoliquidee (intracom, pas d'impact cash).",
+    "priorites": "1) Recouvrement 36,7k impayes (Balesi en premier). 2) Devis Albizias: marge materiel + echeancier 40/40/20 + clause transfert garanties + acompte facture a signature. 3) Zaptec: solder 17k a l'encaissement acompte, ecouler 30 u. avant sept, negocier echeance 60k si besoin. 4) Lancement site cale sur encaissement acompte (sept), pas avant."
   }
 }
