@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.517",
+    "version": "1.518",
     "updated": "2026-07-20",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,16 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-20",
+        "version_from": "1.517",
+        "version_to": "1.518",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Combo v2: -25% limité à Business+N2 (14,15) et Business+N3 (20,90); N1/N0 plein tarif; engagement 24 mois",
+          "Migration FZ v3.1: choix client N0-N3, pitch 'même budget/double service/prix gelé', saisonnalité = échéance annuelle avril-mai (pas de remise), cadrage N3 avec Fred"
+        ]
+      },
       {
         "date": "2026-07-20",
         "version_from": "1.516",
@@ -1370,7 +1380,16 @@
         "business_N4": "33,90 -> 25,43"
       },
       "usage_campagne_FZ": "Offre de migration Forfait Zéro = Business + N3 à 20,90 EUR/PDC/mois HT (valeur 27,90, -25%)",
-      "remplace": "Proposition Pro -50% (7,45) de la DIRECTIVE_2026_07_07_v2 — caduque (grille Pro supprimée)"
+      "remplace": "Proposition Pro -50% (7,45) de la DIRECTIVE_2026_07_07_v2 — caduque (grille Pro supprimée)",
+      "regle_v2": "-25% UNIQUEMENT sur combos Business+N2 et Business+N3. N1 et N0 = plein tarif, sans remise.",
+      "grille_v2": {
+        "business_N0": "9,90 plein tarif",
+        "business_N1": "13,90 plein tarif (dominé par N2 remisé)",
+        "business_N2_remise": "18,90 -> 14,15",
+        "business_N3_remise": "27,90 -> 20,90"
+      },
+      "engagement": "24 mois (decision Dominique 2026-07-20, sur reco Claude PM — 36 refusé pour friction)",
+      "effet_grille": "N1 plein (13,90) < N2 remisé (14,15) de 0,25 seulement -> N1 economiquement absurde, la grille pousse naturellement vers N2 minimum sans forcer"
     }
   },
   "products": {
@@ -2760,7 +2779,14 @@
         "perimetre_verifie_monta": "106 PDC actifs plan 2541 (208 subs historiques), tous customerType=charge-point, frais 13% + 0,70/session",
         "argumentaire": "Aujourd'hui: 12 EUR maintenance corrective + 13% + 0,70/session, sans supervision. Demain: supervision Business + préventif N3 pour 20,90, frais niveau Business (10%), 0,70/session SUPPRIME. A ~28 sessions/PDC/mois (moyenne réseau), la seule suppression du 0,70 rend ~19,60 EUR/PDC/mois -> la plupart des FZ actifs sont gagnants nets.",
         "occasion": "Bascule adossée au passage facturation électronique. Date cible 2026-10-01 (fin FZ 30/09) — à confirmer Dominique.",
-        "repartition_live_2026_07_20": "Marie-Estelle: payeurs réels + exclusion cas spéciaux (Grimaldi, La Vetta, tiers invest, Pimo) + contacts. Claude PM: pipeline 106 PDC -> clients -> recettes 12m + frais versés -> tableau gagnants + mail merge."
+        "repartition_live_2026_07_20": "Marie-Estelle: payeurs réels + exclusion cas spéciaux (Grimaldi, La Vetta, tiers invest, Pimo) + contacts. Claude PM: pipeline 106 PDC -> clients -> recettes 12m + frais versés -> tableau gagnants + mail merge.",
+        "ajustements_v3_1": {
+          "choix_client": "Le client choisit son niveau maintenance: N3 (20,90) ou N2 (14,15) remisés -25%, ou N1/N0 plein tarif sans remise. Pas de N3 forcé.",
+          "engagement": "24 mois",
+          "positionnement_pitch": "Même budget / double service / prix gelé 24 mois — PAS de promesse d'économie universelle. 'Vous économisez X€' réservé aux comptes où le tableau le prouve.",
+          "saisonnalite": "Pas de remise saisonnière (protège MRR/ARR). Réponse = rythme de PAIEMENT: mensuel SEPA OU annuel à échéance avril/mai (avant saison). + argument: l'hiver est la saison du préventif (tournées Fred hors saison = optimum client ET OZECAR).",
+          "a_cadrer_fred": "Périmètre préventif N3 serré: 1 passage planifié/an en tournée groupée hors saison + diagnostic à distance. Sinon la marge part en déplacements (34 sites corses)."
+        }
       }
     },
     "migration_abonnements_regles": {
