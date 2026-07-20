@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.518",
+    "version": "1.519",
     "updated": "2026-07-20",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,17 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-20",
+        "version_from": "1.518",
+        "version_to": "1.519",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Frais réels = % plan + 2% Monta (FZ 15%, Business cible 10%)",
+          "Correction teams mixtes (Renault 1FZ/10, San Pellegrino, Bonifacio) — 31/34 lignes du tableau N2 valides",
+          "Offre Renault Ajaccio: harmonisation 6 PDC Business+N3 20,93e, tarif unitaire inchangé, flotte offerte maintenue, sans économie CA affichée"
+        ]
+      },
       {
         "date": "2026-07-20",
         "version_from": "1.517",
@@ -2787,6 +2798,14 @@
           "saisonnalite": "Pas de remise saisonnière (protège MRR/ARR). Réponse = rythme de PAIEMENT: mensuel SEPA OU annuel à échéance avril/mai (avant saison). + argument: l'hiver est la saison du préventif (tournées Fred hors saison = optimum client ET OZECAR).",
           "a_cadrer_fred": "Périmètre préventif N3 serré: 1 passage planifié/an en tournée groupée hors saison + diagnostic à distance. Sinon la marge part en déplacements (34 sites corses)."
         }
+      },
+      "FAITS_FRAIS_2026_07_20": "Les % Monta affichés sont HORS 2% Monta. Frais réels client = % plan + 2. FZ 13->15%, Pro 8->10%, Standard/Pro-10 10->12%. Cible Business harmonisée = 10% client (8% plan + 2).",
+      "CORRECTION_TEAMS_MIXTES_2026_07_20": "L'extraction 2025 agrégeait par TEAM. 3 teams ont des PDC hors FZ: Renault Ajaccio (1 FZ/10 PDC — les 28,8k EUR = tout le site, dont 27,1k sur 2 DC120 en Pro; la borne FZ A01 = 580 EUR/78 sess), San Pellegrino (2/3), Mairie Bonifacio (2/4). Les 31 autres lignes du tableau N2 sont justes. CSV livré: uploads/ozecar/migration-fz-economie-n2.csv.txt. Réglage validé implicitement: N2 en masse (24/34 gagnants), N3 upsell ciblé gros trafics (7/34 gagnants en N3).",
+      "OFFRE_RENAULT_AJACCIO_2026_07_20": {
+        "contexte": "Parc 10 PDC: A01 FZ 15%+0,70 (anomalie mise en place rapide, client ne sait pas), A02/A03 Standard 9e 12%, A04 Pro 10%, CSS1/CSS2 DC120 Pro 12% (les 2 seules facturées: 21e/m/PDC = 504e/an), 4 bornes flotte privées déconnectées SUPERVISION OFFERTE (offre de bienvenue, à maintenir).",
+        "offre": "Harmonisation (jamais 'migration Zéro'): 6 PDC actifs en Business+N3 -25% = 20,93e/PDC/mois = 1507e/an. Angle: tarif unitaire inchangé (~21e connu du client), parc entier couvert (2->6), frais harmonisés 10% partout (affichés en % SEULEMENT, jamais l'économie en EUR sur son CA), 0,70 supprimé, flotte toujours offerte, préventif prioritaire sur les 2 DC120 (94% de son activité), 24 mois.",
+        "vigilance": "Ne JAMAIS mentionner le Forfait Zéro ni l'anomalie A01 au client. Ne pas chiffrer l'économie sur son CA.",
+        "next": "Devis PandaDoc + appel direct Dominique (compte traité hors campagne de masse)."
       }
     },
     "migration_abonnements_regles": {
