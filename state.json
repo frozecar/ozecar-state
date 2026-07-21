@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.531",
+    "version": "1.532",
     "updated": "2026-07-20",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,17 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-20",
+        "version_from": "1.531",
+        "version_to": "1.532",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "12 arbitrages CGV tranches par Dominique (Bastia maintenu -> TC Bastia; SLA Premium <24h sur devis ajoute)",
+          "Audit contrat maintenance (clause transfert responsabilite a supprimer, grille delais par niveau, tableau preventif 2.2 conserve)",
+          "Architecture proposee: contrat cadre unique a signature unique"
+        ]
+      },
       {
         "date": "2026-07-20",
         "version_from": "1.530",
@@ -3211,6 +3222,12 @@
           "2.2.8 reformuler 'frais definis par le Client' -> 'selectionnes lors du choix du forfait' + coquilles (supevision, phrase orpheline)"
         ],
         "next": "Chat de build: rediger les projets d'articles pour validation Dominique. RELECTURE AVOCAT RECOMMANDEE avant envoi de masse (106 signatures)."
+      },
+      "DECISIONS_CGV_DOMINIQUE_2026_07_20": {
+        "arbitrages_12_points": "1) Juridiction: BASTIA maintenue par Dominique -> corriger en Tribunal de COMMERCE de Bastia (le TA ne peut pas connaitre un contrat prive, clause sinon reputee non ecrite). 2) Art 3.5 reecrit en SEPA/prelevement (Claude redige). 3) Gel 24 mois puis Syntec: OK. 4) Reformulation frais 2.2.8: OK. 5) Nettoyage en-tetes: OK. 6) Contrat maintenance fourni (PDF uploade) a adapter N1-N4 + delais N3 48h ouvrees / N4 24h ouvrees + NOUVEAU: SLA Premium delai plus court sur conditions et tarifs specifiques (sur devis). 7) Facturation electronique: OK. 8) Remise conditionnelle + exigibilite solde: OK. 9) Avenants: OK. 10) Retractation L221-3: OK. 11) Plafond responsabilite 12 mois de redevances: OK. 12) Reconduction tacite 12 mois post-engagement: OK.",
+        "audit_contrat_maintenance": "PDF 5p fourni. A corriger: coordonnees obsoletes (Ventiseri/RCS Bastia -> Aix, harmoniser); art 1 'transfert de responsabilite de l'installation' = clause ascensoriste DANGEREUSE a supprimer (contradictoire avec 4.2; aligner sur 3.9 supervision = defaut d'entretien seulement); art 3.1 72h ouvrables -> grille par niveau (N2 72h / N3 48h / N4 24h ouvrees + SLA Premium sur devis); structure mono-forfait -> N1 (distance illimite) / N2 (+ visite annuelle = TABLEAU 2.2 CONSERVE tel quel, c'est le perimetre technique de la visite) / N3 / N4; pieces+MO hors visite en sus (deja coherent); exclusions 5.1 conservees; 4.4-4.7 alignes campagne (coterminal supervision, SEPA, gel 24m puis Syntec); ref cassee 'point 2.3'; telecopie -> email/portail; TVA 10% gardee avec attestation.",
+        "architecture_contractuelle_proposee": "CONTRAT CADRE UNIQUE (a valider Dominique): corps commun (duree, SEPA, fact. electronique, resiliation, plafond, TC Bastia) + module Supervision + module Maintenance avec grille de niveaux en annexe. UNE SEULE signature eSignatures sur la page — requis pour le tunnel self-service de masse.",
+        "next": "Chat de build, livrable 1: redaction contrat cadre + annexe maintenance, validation Dominique article par article, puis relecture avocat avant envoi de masse."
       }
     }
   },
