@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.545",
+    "version": "1.546",
     "updated": "2026-07-21",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -84,6 +84,15 @@
       "BOOT_v2_search_first": "OBLIGATOIRE pour tout nouveau chat (2026-07-21): (1) POST github-relay.php {\"action\":\"search\",\"q\":\"<mots du chantier>\"} -> sections pertinentes avec extraits. (2) {\"action\":\"read\",\"section\":[...]} sur les sections trouvees UNIQUEMENT. (3) L'index ({\"action\":\"read\",\"index\":true}) est AUTO-FUSIONNE par le relay: il liste TOUTES les sections reelles, il ne peut plus etre perime. (4) Jamais de lecture du state entier. (5) A chaque creation de section: ajouter une ligne descriptive dans _index."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-21",
+        "version_from": "1.545",
+        "version_to": "1.546",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Boucle d'alimentation leads gravee: Claude enrichit et cree dans HubSpot chaque soir, cards par personne le matin (Dominique 2-3 GC, ME 5-8 base, Julien 15-20, renfort 40-60 via outil Pharow/Kaspr budget oct)."
+        ]
+      },
       {
         "date": "2026-07-21",
         "version_from": "1.544",
@@ -10500,6 +10509,11 @@
       "moteur": "La comm est BRANCHEE sur la routine, pas creee ex nihilo: le recap quotidien/hebdo des avancees reelles (reprises signees, jalons Albizias, guides publies, marches BOAMP) = matiere premiere. Claude PM drafte 2-3 posts/semaine pour la page LinkedIn OZECAR, Marie-Estelle = voix visible qui publie/incarne, Dominique republie. Scenario Make existant 'Publier post LinkedIn OZECAR' utilisable pour l'automatisation.",
       "regles": "1) Marque blanche absolue (jamais Monta). 2) JAMAIS de chiffres sensibles ni d'allusion au projet de cession. 3) Validation ME ou Dominique avant toute publication. 4) Ton: concret, chantiers reels, zero bullshit corporate. 5) Cadence 2-3/semaine, kick-off cale sur le lancement du site en septembre.",
       "videos": "2 videos produit a produire pour le lancement: (a) 'Activation en 10 minutes, chronometre' — le kit en conditions reelles, (b) demo portail exploitant + app conducteur. Diffusion: page LinkedIn OZECAR + homepage du nouveau site."
+    },
+    "ALIMENTATION_LEADS_2026_07_21": {
+      "boucle": "Vivier (1086 amenageurs) -> enrichissement -> creation contact+societe+deal HubSpot par Claude PM (MCP ecriture complete) -> card dans le canal todo de la personne (nom/tel/PDC/accroche contextuelle/script/lien HubSpot) -> appel -> resultat logge HubSpot -> jauge + DM + mix du lendemain ajuste. Regles: jamais de numero invente (card non sourcee = 'a enrichir', non servie), dedup strict, 'non' ferme = rappel +4 mois.",
+      "feed_par_personne": "DOMINIQUE: 2-3 cards/jour MAX, grands comptes/portefeuilles uniquement, enrichies en profondeur (dirigeant, actualite, accroche) par Claude via recherche web. MARIE-ESTELLE: 5-8 appels/jour depuis la BASE EXISTANTE (Forfait Zero, devis dormants, impayes) — donnees HubSpot/Pennylane directes, pas d'enrichissement necessaire. JULIEN (des 05/10): 15-20 cards/jour vivier pre-enrichi + formation a l'enrichissement (competence alternant). RENFORT (des oct): 40-60 appels/jour => OUTIL d'enrichissement obligatoire (Pharow ou Kaspr ~100-200 EUR/mois, RGPD B2B ok, budget octobre), Claude pilote les segments, l'outil fournit les lignes directes.",
+      "capacite_claude": "Enrichissement manuel Claude: 5-10 cards de qualite/jour (suffisant pour Dominique+debut Julien). Au-dela: l'outil. Claude alimente HubSpot en amont chaque soir pour le matin suivant."
     }
   }
 }
