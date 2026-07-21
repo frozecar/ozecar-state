@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "version": "1.529",
-    "updated": "2026-07-21",
+    "version": "1.530",
+    "updated": "2026-07-20",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
@@ -83,6 +83,18 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-20",
+        "version_from": "1.529",
+        "version_to": "1.530",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Backlog parcours complet en 5 blocs (juridique bloquant, apres-signature, emails, refus/coupure, pilotage)",
+          "Decision: annonce fin Forfait Zero debut aout (preavis ~8 sem)",
+          "Audit CGV en attente d'export PDF PandaDoc par Dominique (grille 12 points prete)",
+          "Stripe: rail test operationnel valide par Dominique, ecrans de confirmation ok/cancel"
+        ]
+      },
       {
         "date": "2026-07-21",
         "version_from": "1.528",
@@ -3161,7 +3173,16 @@
         "identite_fiscale_et_propagation": "Ecran 2: confirmation SIREN + n TVA intracommunautaire (exigence facturation electronique, pre-remplis, client verifie/corrige) + IBAN double sens (prelevements ET versement des recettes — ligne echeancier 'vos recettes versees sur ce compte', jamais de mention de frais deduits). Le webhook propage les donnees confirmees vers Pennylane (client) ET Monta (team via Partner API) — regle l'ecart name-matching team/entite legale. A VERIFIER au build: l'IBAN de payout wallet Monta est-il modifiable par API; sinon micro-etape back-office avec alerte auto si IBAN confirme != IBAN payout actuel."
       },
       "plan_execution": "S30 (avant 26/07): mapping 410 subs (customs exclus), generateur pages par client, modal eSignatures, webhook signature->Stripe SEPA->Pennylane->Monta->HubSpot, correction 3 teams mixtes. S32: test interne + 5 pilotes gros gagnants (Kalliste, Sole di Sari, Calvi Hotel, Acqua e Sole, Mairie Olmeto). 01/09: envoi masse FZ (relance Make J+10, tel Marie-Estelle J+20, fin de service 30/09 pour non-repondants Zero). Octobre: vague 2 reste du parc (recit 'tarif gele 24 mois'). Objectif: >=80% des 106 PDC FZ signes au 30/09 (~+1200 EUR/mois MRR) — jauge a ajouter au cockpit.",
-      "dependances_dominique": "Cles Stripe (bloquant chaine paiement) + creneau Fred (perimetre N0-N4 contractuel) + appel Renault (independant, visuel pret)."
+      "dependances_dominique": "Cles Stripe (bloquant chaine paiement) + creneau Fred (perimetre N0-N4 contractuel) + appel Renault (independant, visuel pret).",
+      "PARCOURS_COMPLET_BACKLOG_2026_07_20": {
+        "constat": "La page (vitrine) est faite; ~60% du produit manque. Backlog ordonne du chat de build:",
+        "bloc1_juridique_BLOQUANT": "Case CGV obligatoire + lien version datee + archivage version acceptee par le webhook; recap double-clic (art 1127-2); SIREN/TVA editables avec validation format; liens a token opaque par client (RGPD, pas de donnees en URL); mentions legales; retractation L221-3 a securiser en CGV. AUDIT CGV EN ATTENTE: source = PandaDoc (pas d'acces API/MCP; API eSignatures ne rend que les metadonnees du template 73094966) -> Dominique exporte le PDF CGV et l'upload au chat de build. Grille d'audit 12 points posee (SEPA/pre-notif, fact. electronique, engagement 24m + remise conditionnelle, resiliation anticipee, avenants, N0-N4 perimetre+48h/24h jours ouvres+pieces en sus+exclusions, Maintenance Site, fin Forfait Zero, retractation, revision prix vs gel 24m, clause Monta ApS scopee reversement, RGPD/mediation). Outil cree: api/esignatures-template-read.php (lecture metadonnees template, auth ESIG_WEBHOOK_KEY).",
+        "bloc2_apres_signature": "Email de confirmation reel avec contrat signe + mandat/RUM en PJ (obligation SEPA); pre-notification avant chaque prelevement (delai a fixer en CGV, config Pennylane/Stripe); facture pont/1ere mensualite; bascule Monta; HubSpot; propagation SIREN/TVA.",
+        "bloc3_sequence_emails": "J0 invitation (3 variantes: comparatif/mandat seul/info); J+3 abandon tunnel (vu page ou setup=cancel); J+10 non-ouvreurs; J+20 appel Marie-Estelle + derniere semaine; J-3 deadline; post-deadline constat fin de service (Zero uniquement). Aucun n'est ecrit.",
+        "bloc4_refus_et_coupure": "Pas de bouton refuser (non-reponse = refus). Payants legacy: statu quo. Zero: fin de service au 30/09. DECISION DOMINIQUE 2026-07-20: l'annonce de fin du Forfait Zero part DEBUT AOUT (email court dedie, avant la campagne) -> ~8 semaines de preavis, probleme de delai regle. Process technique de desactivation a ecrire (cancel subs Monta, retrait cartes publiques, info conducteurs, conditions de reactivation). FAQ page + script reponses Marie-Estelle.",
+        "bloc5_pilotage": "Webhook Stripe (whsec a creer), generateur pages/tokens, tableau d'etats par client (envoye->ouvert->clique->mandat->signe) en jauge cockpit.",
+        "stripe_status_2026_07_20": "RAIL OPERATIONNEL: api/stripe.php deploye (allowlist endpoints + Bearer proxy token ozstripe_*), SEPA active en LIVE, cle rk_test en place ligne 12 (cle live a remettre au lancement pilotes — regenerable), session cs_test validee PAR DOMINIQUE avec IBAN test, ecrans retour setup=ok (confirmation 'compte a jour' + next steps) et setup=cancel (reprise) integres a la page demo. Ajouter rk_ aux patterns de redaction state."
+      }
     }
   },
   "monta": {
