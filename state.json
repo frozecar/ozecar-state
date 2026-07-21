@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.544",
+    "version": "1.545",
     "updated": "2026-07-21",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -84,6 +84,16 @@
       "BOOT_v2_search_first": "OBLIGATOIRE pour tout nouveau chat (2026-07-21): (1) POST github-relay.php {\"action\":\"search\",\"q\":\"<mots du chantier>\"} -> sections pertinentes avec extraits. (2) {\"action\":\"read\",\"section\":[...]} sur les sections trouvees UNIQUEMENT. (3) L'index ({\"action\":\"read\",\"index\":true}) est AUTO-FUSIONNE par le relay: il liste TOUTES les sections reelles, il ne peut plus etre perime. (4) Jamais de lecture du state entier. (5) A chaque creation de section: ajouter une ligne descriptive dans _index."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-21",
+        "version_from": "1.544",
+        "version_to": "1.545",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "RYTHME OZECAR grave: routine quotidienne (matin auto / cards appels / soir #avancees auto) + hebdo (lundi 20 min, vendredi recap), resultats>activite, cadrage humain avant lancement.",
+          "COMMUNICATION gravee: posture Dominique (pas de personal branding, republication seulement, 1-2 videos produit format wilmo), moteur comm branche sur les avancees reelles, ME voix visible, regles (marque blanche, pas de chiffres sensibles, validation)."
+        ]
+      },
       {
         "date": "2026-07-21",
         "version_from": "1.543",
@@ -10478,6 +10488,18 @@
       "portage": "Fred N'EST PAS vendeur (arbitrage Dominique 21/07) — il reste technique (validation guides, kits, supervision). Canal installateurs: matiere preparee par Claude PM, relations partenaires portees par Dominique, appels de recrutement par le renfort commercial des octobre.",
       "OPS_QUOTIDIEN_CIBLE": "Canaux Slack dedies #todo-dominique #todo-mae #todo-fred #todo-julien avec taches COCHABLES (boutons interactifs via slack-bot.php). Pour les appels: chaque tache = card avec lien contact HubSpot + nom/prenom/tel/nb PDC/script a utiliser. Pilotage quotidien en DM a Dominique (quoi faire/reajuster). Claude PM fait le mix des canaux. Semaine millimetree.",
       "GO_LIVE_CHECKLIST_pro_ozecar_fr": "Prerequis avant mise en ligne: 1) campagne Forfait Zero lancee, 2) campagne e-facturation+SEPA, 3) avenant/duree contrat (24-36 mois cessibles), 4) visuels kits finalises, 5) commande autocollants (labels+instructions) + cartes SIM, 6) process installateur COMPLET: tracking commissions + mail recap mensuel avec bouton PAYOUT, 7) grille commissions unifiee, 8) backlog Monday purge des CRITIQUES (form contact...). Rien ne se lance avant."
+    },
+    "RYTHME_OZECAR_2026_07_21": {
+      "principe": "Valide par Dominique: l'entreprise vit avec des avancees VISIBLES tous les jours. Mesurer les resultats (PDC bascules), pas l'activite (todos coches). Le systeme reduit la charge mentale de Dominique, il n'en ajoute pas. Lisible par des humains sans Claude (Monday=source, Slack=surface, Claude=orchestrateur remplacable).",
+      "routine_quotidienne": "MATIN (auto): pulse CAP 3000 + todos par canal (#todo-dominique/-mae/-fred/-julien, cochables) + DM pilotage a Dominique (5 lignes max: PDC bascules hier, appels argumentes, blocages, 1 decision pre-machee, 1 question max — <60 sec de lecture). JOURNEE: appels selon cards (lien HubSpot + nom/tel/PDC/script). SOIR (auto): post 'Aujourd'hui chez OZECAR' compile par le bot (todos coches + PDC + deals bouges) dans un canal commun #avancees — le progres visible sans demander a personne de reporter.",
+      "routine_hebdo": "LUNDI 20 min (seule reunion): jauge CAP 3000, mix canaux de la semaine (decide par Claude PM), blocages. VENDREDI: recap de semaine auto = matiere premiere de la communication.",
+      "cadrage_humain": "AVANT le premier digest par canaux: Dominique presente le systeme en personne a ME et Fred ('notre tableau de bord partage pour tenir le rythme, pas une surveillance; les taches viennent de Monday'). 3-5 taches/personne/jour MAX. Fred: technique et bref."
+    },
+    "COMMUNICATION_2026_07_21": {
+      "posture_dominique": "ACTE: Dominique ne veut PAS de personal branding CEO ni de communication publique personnelle. Il republie (30 sec/jour max) les posts de la page OZECAR ou de Marie-Estelle. Accepte 1-2 videos MAX, format wilmo.ai = VIDEO PRODUIT (demo portail, activation kit chronometree 10 min, app conducteur) ou le produit est la vedette, voix off, visage optionnel. Jamais plus. Ne jamais lui proposer de posts personnels, d'interviews ou de mise en avant.",
+      "moteur": "La comm est BRANCHEE sur la routine, pas creee ex nihilo: le recap quotidien/hebdo des avancees reelles (reprises signees, jalons Albizias, guides publies, marches BOAMP) = matiere premiere. Claude PM drafte 2-3 posts/semaine pour la page LinkedIn OZECAR, Marie-Estelle = voix visible qui publie/incarne, Dominique republie. Scenario Make existant 'Publier post LinkedIn OZECAR' utilisable pour l'automatisation.",
+      "regles": "1) Marque blanche absolue (jamais Monta). 2) JAMAIS de chiffres sensibles ni d'allusion au projet de cession. 3) Validation ME ou Dominique avant toute publication. 4) Ton: concret, chantiers reels, zero bullshit corporate. 5) Cadence 2-3/semaine, kick-off cale sur le lancement du site en septembre.",
+      "videos": "2 videos produit a produire pour le lancement: (a) 'Activation en 10 minutes, chronometre' — le kit en conditions reelles, (b) demo portail exploitant + app conducteur. Diffusion: page LinkedIn OZECAR + homepage du nouveau site."
     }
   }
 }
