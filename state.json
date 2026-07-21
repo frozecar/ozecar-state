@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.535",
+    "version": "1.536",
     "updated": "2026-07-20",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-20",
+        "version_from": "1.535",
+        "version_to": "1.536",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Cadrage levee: verdict 2,75M non defendable aujourd'hui, tour 1,5-2M atteignable T2 2027, package mixte pour 2,75M, 4 options sortie Smalt 750k, pistes investisseurs, prealables dossier."
+        ]
+      },
       {
         "date": "2026-07-20",
         "version_from": "1.534",
@@ -10355,6 +10364,14 @@
     "alerte_economie_recurrente": "Paiements Monta 2026 YTD ~66-68k (enterprise 35k net 30k + WL 30k + platform 3k) vs MRR supervision 6,3k/mois + frais operateur ~7k/mois. Si paiements annuels: cout effectif ~5,9k/mois; si semestriels: ~10k/mois. DANS TOUS LES CAS le cout plateforme est du meme ordre que le MRR supervision => levier n1 de rentabilite recurrente: renegociation Monta WL et/ou hausse pricing supervision. A instruire avant la levee (les investisseurs verront la marge brute recurrente).",
     "arithmetique_3000_PDC": "525 -> 3000 fin 2027 impossible par reprises unitaires seules (2-4/mois x 10-15 PDC = ~500 PDC/an). 3 etages requis: (1) machine reprise 5-25 PDC operee par l'alternant (fond de pipeline, ~40-60 PDC/mois vise), (2) PORTEFEUILLES: rachat/reprise de parcs entiers (installateurs avec parcs, operateurs regionaux en difficulte, churn Freshmile 390 cibles/3598 PDC), (3) DC flagship (Albizias => references Sungrow => 2-3 stations DC/an).",
     "roadmap": "AOUT: encaisser V1 Albizias 112k au 01/08, solder C2C+Zaptec 17k, commande Sungrow, lettrage Pennylane, prep offre flash Zaptec, T0 site (bandeau FAIT). SEPT: lancement site+PR+offre flash, commande Giga, migration Forfait Zero deadline 30/09 (38 clients/119 PDC), ads T2 7k. OCT: alternant 05/10 outbound sur 1086 amenageurs, V2 Albizias ~15/10, Zaptec 60k 15/10, TVA acompte. NOV-DEC: mise en service Albizias <=15/12 (CA 2026 complet ~350k, +19% vs 2025), case study DC, pipeline BOAMP. T1 2027: dossier levee avec 6 mois de courbe MRR.",
-    "risques": "1) Churn Forfait Zero au 30/09 (jusqu'a -119 PDC si resiliations massives) - suivre le taux de migration. 2) Concentration Corse (Balesi, OEHC, Ghisonaccia, Albizias...). 3) Marge brute recurrente faible (cf alerte Monta). 4) Annee 1 Albizias offerte => son MRR n'apparait qu'en 2028, compter sur le narratif DC pas sur sa courbe. 5) TVA 10% Albizias non validee fiscalement."
+    "risques": "1) Churn Forfait Zero au 30/09 (jusqu'a -119 PDC si resiliations massives) - suivre le taux de migration. 2) Concentration Corse (Balesi, OEHC, Ghisonaccia, Albizias...). 3) Marge brute recurrente faible (cf alerte Monta). 4) Annee 1 Albizias offerte => son MRR n'apparait qu'en 2028, compter sur le narratif DC pas sur sa courbe. 5) TVA 10% Albizias non validee fiscalement.",
+    "levee_cadrage_2026_07_20": {
+      "donnees": "Sortie Smalt attendue ~750k. Ticket envisage 2,75M (sans calcul). Marche seed FR 2025-2026: ticket seed moyen ~2,4M, marche selectif, secteur IRVE finance surtout en croissance (WAAT 100M serie B 2025).",
+      "verdict": "2,75M en equity pur AUJOURD'HUI: non defendable. Base: MRR supervision 6,3k/mois (76k ARR) + frais operateur ~7k/mois => ARR recurrent elargi ~160k. Pre-money defendable aujourd'hui 2,5-4M => tour max 600k-1M a dilution acceptable, incompatible avec 750k de secondaire Smalt (27% d'un tour de 2,75M en cash-out = redhibitoire en seed, seuil tolere ~10-15%).",
+      "atteignable": "T2 2027 apres execution H2 (MRR 12-15k, ARR elargi 250-300k, CA 2026 350k, case DC, machine reprise): pre 5-8M => TOUR 1,5-2M defendable a 20-25% dilution. 2,75M atteignable si: (a) deal portefeuille signe (300-500 PDC, MRR>20k), ou (b) corporate/strategic au tour, ou (c) PACKAGE mixte: equity 1,5-2M + 0,75-1M non-dilutif (Bpifrance pret amorcage/pret vert, ADEME, financement stock/affacturage BFR Zaptec).",
+      "smalt_options": "1) Secondaire adosse au tour avec decote 20-40% pris par lead/family office (exige tour >=2M). 2) Sortie sequencee: partielle au closing + put/earn-out 2028. 3) Rachat par la societe (reduction capital) sur cash-flow 2027 + dette si EBITDA positif. 4) Renegociation du quantum. DONNEES MANQUANTES: % detenu par Smalt, valo d'entree, clauses du pacte (put/liquidite/ratchet).",
+      "pistes_investisseurs": "Amorcage climat/mobilite: Demeter, Via ID, MAIF Avenir, Ring Capital, Citizen Capital, Satgana, Breega, Daphni. Regional (atout Aix): Region Sud Investissement, Provence Business Angels, Sud Angels, CAAP, Marseille Innovation, reseau Smalt lui-meme pour organiser sa sortie. Corporates: Engie New Ventures, EDF Pulse Croissance, TotalEnergies On, Vinci Energies/SPIE (aussi acquereurs potentiels). Non-dilutif: Bpifrance, ADEME, affacturage/stock, revenue-based (Karmen, Silvr) sur MRR. Crowdequity: Tudigo, Sowefund (bon fit infra verte regionale, 300k-1,5M). Pistes a qualifier, pas d'intros verifiees.",
+      "prealables_dossier": "1) Marge brute recurrente a redresser (renego Monta / pricing) - premiere question d'un VC. 2) Lettrage/comptes propres (C2C). 3) Courbe MRR 6 mois. 4) KPI machine reprise (cout d'acquisition, cycle, taux de conversion du vivier 1086)."
+    }
   }
 }
