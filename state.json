@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.536",
+    "version": "1.537",
     "updated": "2026-07-20",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-20",
+        "version_from": "1.536",
+        "version_to": "1.537",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Analyse pacte Smalt/Neoveris: 450k investis 2022, ~8,7%, ROI Cible TRI 8%, put personnel sur Dominique, drag 12.2, prix contractuel ~674-700k vs 750k annonces, implications levee."
+        ]
+      },
       {
         "date": "2026-07-20",
         "version_from": "1.535",
@@ -10372,6 +10381,14 @@
       "smalt_options": "1) Secondaire adosse au tour avec decote 20-40% pris par lead/family office (exige tour >=2M). 2) Sortie sequencee: partielle au closing + put/earn-out 2028. 3) Rachat par la societe (reduction capital) sur cash-flow 2027 + dette si EBITDA positif. 4) Renegociation du quantum. DONNEES MANQUANTES: % detenu par Smalt, valo d'entree, clauses du pacte (put/liquidite/ratchet).",
       "pistes_investisseurs": "Amorcage climat/mobilite: Demeter, Via ID, MAIF Avenir, Ring Capital, Citizen Capital, Satgana, Breega, Daphni. Regional (atout Aix): Region Sud Investissement, Provence Business Angels, Sud Angels, CAAP, Marseille Innovation, reseau Smalt lui-meme pour organiser sa sortie. Corporates: Engie New Ventures, EDF Pulse Croissance, TotalEnergies On, Vinci Energies/SPIE (aussi acquereurs potentiels). Non-dilutif: Bpifrance, ADEME, affacturage/stock, revenue-based (Karmen, Silvr) sur MRR. Crowdequity: Tudigo, Sowefund (bon fit infra verte regionale, 300k-1,5M). Pistes a qualifier, pas d'intros verifiees.",
       "prealables_dossier": "1) Marge brute recurrente a redresser (renego Monta / pricing) - premiere question d'un VC. 2) Lettrage/comptes propres (C2C). 3) Courbe MRR 6 mois. 4) KPI machine reprise (cout d'acquisition, cycle, taux de conversion du vivier 1086)."
+    },
+    "pacte_smalt_analyse_2026_07_20": {
+      "source": "Drive: 'OZECAR - Pacte d'associes (v29.03.2022) - Projet.DOCX' (id 1a48xA8PG4SE6jPDk5LOJhwlNpvgJ9mLi) + Rapport President AGE 31/03/2022. Les 'Pacte 2025' du Drive sont des templates NON signes.",
+      "faits": "Investisseur = NEOVERIS CORSE 2019 (FIP gere par SMALT CAPITAL). Investissement 450 001,89 EUR le 31/03/2022 en 10 602 ADP 2022 a 42,445 EUR (nominal 0,63 + prime 41,815). Capital 76 679,82 EUR = ~121 714 actions => Smalt ~8,7%. Valo post implicite 2022 ~5,17M.",
+      "clauses_cles": "ROI Cible = TRI 8% contractuel (revu a la hausse seulement si financement HUB par un fonds Smalt). Art 12: sortie 'au plus tard le 31/12/2027'. 12.1: PROMESSE D'ACHAT PERSONNELLE = Dominique engage irrevocablement a racheter la TOTALITE des titres Smalt au prix TRI 8% si Smalt leve son option de vente (paiement sous 8 jours, procedure d'expertise a defaut d'accord); fenetres exactes 12.1.3 A FAIRE CONFIRMER PAR AVOCAT. 12.2: clause liquidite-mandat = Smalt peut mandater une banque d'affaires pour vendre 100% de la societe (Periode de Selection jusqu'au 31/12/2027, RENOUVELABLE a sa seule initiative), et si Smalt accepte une offre TOUTES les parties sont contraintes de vendre (drag total). Statuts Annexe 1: conversion des ADP 2022 (ratchet) en cas de non-atteinte du ROI. Transferts libres par l'Investisseur a compter du 01/01/2028. Clauses leaver severes (decote 60%/30% selon date). Inalienabilite titres fondateur 10 ans.",
+      "prix_contractuel": "Prix promesse (TRI 8%): ~674k au 30/06/2027, ~700k au 31/12/2027. Les 750k annonces par Smalt sont 7-11% AU-DESSUS du prix contractuel => 750k = position d'ouverture, le pacte plafonne de fait a ~700k fin 2027. Chaque annee d'attente ajoute ~8% (~55k/an).",
+      "implications": "1) La sortie Smalt n'est pas un souhait mais une echeance contractuelle avec put personnel sur Dominique => la levee T2 2027 doit embarquer le rachat des ADP (~700k max au prix contractuel) OU une sortie negociee avant le tour (financement relais/vendor loan). Le secondaire est justifiable aupres d'un nouveau fonds car il purge une clause toxique (put + drag + ratchet). 2) Le drag 12.2 est le vrai risque: sans solution avant fin 2027, Smalt peut forcer la vente de toute la societe. 3) Levier bilateral: FIP 2019 en fin de vie + contrainte d'eligibilite corse => Smalt a AUSSI une pression a sortir proprement. 4) Negocier au S1 2027 en position de force (post-Albizias, courbe MRR).",
+      "actions": "[Dominique] Faire relire 12.1.3 (fenetres du put) + version SIGNEE du pacte par avocat; verifier aussi si avenants posterieurs. [PM] Integrer 700k de secondaire dans la structuration du tour; construire cap table simulee."
     }
   }
 }
