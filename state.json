@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.533",
+    "version": "1.534",
     "updated": "2026-07-20",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-20",
+        "version_from": "1.533",
+        "version_to": "1.534",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Contrats supervision v2 et maintenance v2 rediges (docx) selon les 12 arbitrages — validation Dominique + avocat requis"
+        ]
+      },
       {
         "date": "2026-07-20",
         "version_from": "1.532",
@@ -3247,6 +3256,11 @@
         "sous_traitance": "CLAUSE EXPLICITE: la maintenance peut etre realisee par les equipes OZECAR ET/OU en sous-traitance via partenaires OZECAR. Support contractuel du deploiement N2+ national via installateurs partenaires.",
         "ARCHITECTURE_FINALE_2_CONTRATS_AUTONOMES": "DECISION Dominique: PAS de contrat cadre fusionne. Deux contrats AUTONOMES et COTERMINAUX: (1) Supervision (socle, pur service), (2) Maintenance (autonome, activable a la souscription OU en avenant isole plus tard). REGLE CLE: si ajout de maintenance ulterieur, le client ne signe QUE le contrat de maintenance (jamais re-signer la supervision). Sur la page, si supervision+maintenance pris ensemble -> eSignatures enchaine les 2 documents en UNE session de signature (fluidite parcours unique + modularite juridique).",
         "autres_arbitrages": "Juridiction TC Bastia (ville maintenue, juridiction corrigee administratif->commerce). Gel 24m puis Syntec. Frais 2.2.8 reformules. Remise conditionnelle + exigibilite solde si resiliation aux torts client. Retractation L221-3. Plafond responsabilite 12 mois de redevances. Reconduction tacite 12 mois post-engagement. Facturation electronique (SIREN/TVA client). Ref cassee 'point 2.3' + telecopie a nettoyer."
+      },
+      "CONTRATS_REDIGES_2026_07_20": {
+        "supervision_v2": "Redige (docx). Siege Aix, preambule independance materiel/maintenance, art 3.3 tacite reconduction 12m + exigibilite solde/reprise remise, art 3.5 SEPA (pre-notif 5j), art 3.6 gel puis Syntec, art 3.9 plafond 12 mois redevances, art 3.10 TC Bastia, art 3.11 retractation L221-3, SIREN/TVA client, Monta scope 2.2.8 uniquement. Placeholders {societe}{siren}{tva}... prets webhook.",
+        "maintenance_v2": "Redige (docx). Pur service SANS materiel (clause transfert responsabilite SUPPRIMEE), independant supervision. Art 2 = grille N1(distance)/N2(+visite=annexe1)/N3(48h ouvrees)/N4(24h ouvrees)/Premium(<24h devis). Sous-traitance partenaires autorisee (art 1). Pieces+MO en sus hors visite. Annexe 1 = 18 operations preventives (tableau conserve du PDF). Art 7.3 TVA 20%. SEPA. Art 8 coterminal supervision + tacite reconduction. Plafond 12m. Retractation. TC Bastia.",
+        "reste": "Validation Dominique article par article + RELECTURE AVOCAT avant envoi masse. Clause avenant ajout bornes: a decider (dans corps supervision ou doc avenant separe). Fichiers: outputs OZECAR_Contrat_supervision_v2.docx + OZECAR_Contrat_maintenance_v2.docx."
       }
     }
   },
