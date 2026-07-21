@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.534",
+    "version": "1.535",
     "updated": "2026-07-20",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-20",
+        "version_from": "1.534",
+        "version_to": "1.535",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Section strategie_H2_2026: cap levee T1 2027, alerte economie recurrente Monta vs MRR, arithmetique 3000 PDC (3 etages dont portefeuilles), roadmap aout->T1 2027, risques."
+        ]
+      },
       {
         "date": "2026-07-20",
         "version_from": "1.533",
@@ -10340,5 +10349,12 @@
       "automatisation": "Make/cron via monta.php par client — envoi le 5 du mois. Cout marginal ~0 (self-service).",
       "csm": "Le CSM 99 €/mois inclut le Reporting avance (inchange)"
     }
+  },
+  "strategie_H2_2026": {
+    "cap": "Levee T1-T2 2027 avec sortie Smalt integree. 3 conditions: treso assainie (Albizias), courbe MRR 6 mois, machine commerciale industrialisee (site+alternant+ABM). Parametres manquants (Dominique): montant sortie Smalt + ticket de levee vise.",
+    "alerte_economie_recurrente": "Paiements Monta 2026 YTD ~66-68k (enterprise 35k net 30k + WL 30k + platform 3k) vs MRR supervision 6,3k/mois + frais operateur ~7k/mois. Si paiements annuels: cout effectif ~5,9k/mois; si semestriels: ~10k/mois. DANS TOUS LES CAS le cout plateforme est du meme ordre que le MRR supervision => levier n1 de rentabilite recurrente: renegociation Monta WL et/ou hausse pricing supervision. A instruire avant la levee (les investisseurs verront la marge brute recurrente).",
+    "arithmetique_3000_PDC": "525 -> 3000 fin 2027 impossible par reprises unitaires seules (2-4/mois x 10-15 PDC = ~500 PDC/an). 3 etages requis: (1) machine reprise 5-25 PDC operee par l'alternant (fond de pipeline, ~40-60 PDC/mois vise), (2) PORTEFEUILLES: rachat/reprise de parcs entiers (installateurs avec parcs, operateurs regionaux en difficulte, churn Freshmile 390 cibles/3598 PDC), (3) DC flagship (Albizias => references Sungrow => 2-3 stations DC/an).",
+    "roadmap": "AOUT: encaisser V1 Albizias 112k au 01/08, solder C2C+Zaptec 17k, commande Sungrow, lettrage Pennylane, prep offre flash Zaptec, T0 site (bandeau FAIT). SEPT: lancement site+PR+offre flash, commande Giga, migration Forfait Zero deadline 30/09 (38 clients/119 PDC), ads T2 7k. OCT: alternant 05/10 outbound sur 1086 amenageurs, V2 Albizias ~15/10, Zaptec 60k 15/10, TVA acompte. NOV-DEC: mise en service Albizias <=15/12 (CA 2026 complet ~350k, +19% vs 2025), case study DC, pipeline BOAMP. T1 2027: dossier levee avec 6 mois de courbe MRR.",
+    "risques": "1) Churn Forfait Zero au 30/09 (jusqu'a -119 PDC si resiliations massives) - suivre le taux de migration. 2) Concentration Corse (Balesi, OEHC, Ghisonaccia, Albizias...). 3) Marge brute recurrente faible (cf alerte Monta). 4) Annee 1 Albizias offerte => son MRR n'apparait qu'en 2028, compter sur le narratif DC pas sur sa courbe. 5) TVA 10% Albizias non validee fiscalement."
   }
 }
