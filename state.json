@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.542",
+    "version": "1.543",
     "updated": "2026-07-21",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -80,9 +80,20 @@
         "quand_NE_PAS_le_faire": "Ne pas interrompre un chantier en cours pour une micro-question (une correction, une verification, un chiffre). Ne pas le repeter si Dominique choisit de continuer : il decide, je signale une fois.",
         "format_de_la_relance": "Une ligne + le prompt pret a coller. Exemple : '↗ Nouveau chantier — je conseille un nouveau chat (celui-ci porte deja X). Prompt a coller : [bloc]'. Le prompt contient TOUJOURS : le chantier, le protocole de demarrage (index -> sections utiles), les sections du state a lire, le contexte minimal, la methode (staging -> go).",
         "avant_de_fermer": "Toujours graver l'etat du chantier dans le state AVANT de basculer, pour que le nouveau chat reprenne sans perte."
-      }
+      },
+      "BOOT_v2_search_first": "OBLIGATOIRE pour tout nouveau chat (2026-07-21): (1) POST github-relay.php {\"action\":\"search\",\"q\":\"<mots du chantier>\"} -> sections pertinentes avec extraits. (2) {\"action\":\"read\",\"section\":[...]} sur les sections trouvees UNIQUEMENT. (3) L'index ({\"action\":\"read\",\"index\":true}) est AUTO-FUSIONNE par le relay: il liste TOUTES les sections reelles, il ne peut plus etre perime. (4) Jamais de lecture du state entier. (5) A chaque creation de section: ajouter une ligne descriptive dans _index."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-21",
+        "version_from": "1.542",
+        "version_to": "1.543",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "FIX decouverte state: relay v2 (index auto-fusionne + action search), _index complete (finance, strategie, +auto), BOOT v2 search-first dans PROTOCOLE_DE_TRAVAIL.",
+          "Todos v2 (recurrence, section Claude PM) + backlog Monday seede (18 items etages)."
+        ]
+      },
       {
         "date": "2026-07-21",
         "version_from": "1.541",
@@ -733,7 +744,11 @@
     "pilotage_energetique_2026_07_15": "[autre chat] modele de pilotage energetique en 4 couches",
     "deal_sungrow_480kW_2026_07_15": "[autre chat] appel d'offre Sungrow 5 PDC 480 kW",
     "audit_coherence_site_vs_deck_2026_07_15": "[autre chat] audit coherence site vs deck",
-    "cockpit": "cockpit CEO = plan de vol reprise : arbitrage 80/20, trajectoire, vivier IRVE 359 operateurs, cibles, capteurs sourcing (BODACC/BOAMP/IRVE), pieges API supervision, verdict legacy"
+    "cockpit": "cockpit CEO = plan de vol reprise : arbitrage 80/20, trajectoire, vivier IRVE 359 operateurs, cibles, capteurs sourcing (BODACC/BOAMP/IRVE), pieges API supervision, verdict legacy",
+    "finance_tresorerie_2026_07_20": "FINANCE juillet 2026 : treso/burn, impayes Pennylane verifies, revenus Monta 2026, plan cash + DEVIS ALBIZIAS R7 final (280 002,80 TTC, echeancier date 01/08, geste commercial), budget lancement site, plan Zaptec",
+    "strategie_H2_2026": "STRATEGIE : cap scenario B (cession S2 2027), analyse pacte Smalt (put personnel, drag, prix ~700k), contrat Monta 36 mois analyse, valo 1000/1500/3000 PDC, roadmap sept-dec, pulse quotidien CAP 3000, todos quotidiens, fiche renfort commercial",
+    "brand_kit": "[auto] {\"_desc\": \"brand kit v1.0 : logos declines, architecture .fr/One/Shop/Pro, papeterie, social, ads, print\", \"st",
+    "reporting_funnel_2026_07_21": "[auto] {\"_decision\": \"DECISION 2026-07-21 (Dominique) — mecanique de lancement de l'option Reporting avance 15 €/mois"
   },
   "pricing": {
     "pricing": {
