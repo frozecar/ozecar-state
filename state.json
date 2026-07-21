@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.532",
+    "version": "1.533",
     "updated": "2026-07-20",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-20",
+        "version_from": "1.532",
+        "version_to": "1.533",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CGV consolide final: 2 contrats AUTONOMES coterminaux (maintenance en avenant isole = signer que la maintenance), maintenance = pur service sans materiel + connectivite hors responsabilite, SEPA partout zero virement, sous-traitance maintenance autorisee, TVA maintenance 20%, siege Aix"
+        ]
+      },
       {
         "date": "2026-07-20",
         "version_from": "1.531",
@@ -3228,6 +3237,16 @@
         "audit_contrat_maintenance": "PDF 5p fourni. A corriger: coordonnees obsoletes (Ventiseri/RCS Bastia -> Aix, harmoniser); art 1 'transfert de responsabilite de l'installation' = clause ascensoriste DANGEREUSE a supprimer (contradictoire avec 4.2; aligner sur 3.9 supervision = defaut d'entretien seulement); art 3.1 72h ouvrables -> grille par niveau (N2 72h / N3 48h / N4 24h ouvrees + SLA Premium sur devis); structure mono-forfait -> N1 (distance illimite) / N2 (+ visite annuelle = TABLEAU 2.2 CONSERVE tel quel, c'est le perimetre technique de la visite) / N3 / N4; pieces+MO hors visite en sus (deja coherent); exclusions 5.1 conservees; 4.4-4.7 alignes campagne (coterminal supervision, SEPA, gel 24m puis Syntec); ref cassee 'point 2.3'; telecopie -> email/portail; TVA 10% gardee avec attestation.",
         "architecture_contractuelle_proposee": "CONTRAT CADRE UNIQUE (a valider Dominique): corps commun (duree, SEPA, fact. electronique, resiliation, plafond, TC Bastia) + module Supervision + module Maintenance avec grille de niveaux en annexe. UNE SEULE signature eSignatures sur la page — requis pour le tunnel self-service de masse.",
         "next": "Chat de build, livrable 1: redaction contrat cadre + annexe maintenance, validation Dominique article par article, puis relecture avocat avant envoi de masse."
+      },
+      "CGV_CONSOLIDE_FINAL_2026_07_20": {
+        "siege": "Aix-en-Provence partout (supprimer toute mention Ventiseri/ZA Travo/RCS Bastia des deux contrats).",
+        "contrat_maintenance_pur_service": "AUCUN materiel dans le contrat de maintenance. Supprimer la clause 'transfert de responsabilite de l'installation' (dangereuse, ascensoriste). Materiel achete chez OZECAR = contrat MATERIEL distinct. Connectivite non fournie par OZECAR = hors responsabilite OZECAR (repeter la ligne 3.9 supervision).",
+        "sepa_partout": "ZERO virement, ZERO 'paiement a reception de facture', ZERO IBAN de reception dans aucun contrat. Prelevement SEPA sur mandat pour supervision ET maintenance. Principe Dominique: 'on ne court plus apres l'argent'.",
+        "maintenance_niveaux": "N1 (distance illimite) / N2 (+ visite annuelle = tableau preventif du PDF conserve tel quel) / N3 (48h ouvrees) / N4 (24h ouvrees) / Premium (<24h sur conditions et tarifs specifiques, sur devis). Pieces + MO hors visite en sus. Exclusions 5.1 conservees.",
+        "maintenance_TVA": "20% (service standard). Le 10% n'etait qu'un cas particulier sur attestation — a borner, pas le defaut.",
+        "sous_traitance": "CLAUSE EXPLICITE: la maintenance peut etre realisee par les equipes OZECAR ET/OU en sous-traitance via partenaires OZECAR. Support contractuel du deploiement N2+ national via installateurs partenaires.",
+        "ARCHITECTURE_FINALE_2_CONTRATS_AUTONOMES": "DECISION Dominique: PAS de contrat cadre fusionne. Deux contrats AUTONOMES et COTERMINAUX: (1) Supervision (socle, pur service), (2) Maintenance (autonome, activable a la souscription OU en avenant isole plus tard). REGLE CLE: si ajout de maintenance ulterieur, le client ne signe QUE le contrat de maintenance (jamais re-signer la supervision). Sur la page, si supervision+maintenance pris ensemble -> eSignatures enchaine les 2 documents en UNE session de signature (fluidite parcours unique + modularite juridique).",
+        "autres_arbitrages": "Juridiction TC Bastia (ville maintenue, juridiction corrigee administratif->commerce). Gel 24m puis Syntec. Frais 2.2.8 reformules. Remise conditionnelle + exigibilite solde si resiliation aux torts client. Retractation L221-3. Plafond responsabilite 12 mois de redevances. Reconduction tacite 12 mois post-engagement. Facturation electronique (SIREN/TVA client). Ref cassee 'point 2.3' + telecopie a nettoyer."
       }
     }
   },
