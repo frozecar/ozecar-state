@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.538",
+    "version": "1.539",
     "updated": "2026-07-21",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-21",
+        "version_from": "1.538",
+        "version_to": "1.539",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Correctif KPI: jauge principale = CAP 3000 (jalon mensuel + rythme requis 146 PDC/mois), palier Monta retrograde en plancher contractuel."
+        ]
+      },
       {
         "date": "2026-07-21",
         "version_from": "1.537",
@@ -10399,6 +10408,6 @@
       "implications": "1) La sortie Smalt n'est pas un souhait mais une echeance contractuelle avec put personnel sur Dominique => la levee T2 2027 doit embarquer le rachat des ADP (~700k max au prix contractuel) OU une sortie negociee avant le tour (financement relais/vendor loan). Le secondaire est justifiable aupres d'un nouveau fonds car il purge une clause toxique (put + drag + ratchet). 2) Le drag 12.2 est le vrai risque: sans solution avant fin 2027, Smalt peut forcer la vente de toute la societe. 3) Levier bilateral: FIP 2019 en fin de vie + contrainte d'eligibilite corse => Smalt a AUSSI une pression a sortir proprement. 4) Negocier au S1 2027 en position de force (post-Albizias, courbe MRR).",
       "actions": "[Dominique] Faire relire 12.1.3 (fenetres du put) + version SIGNEE du pacte par avocat; verifier aussi si avenants posterieurs. [PM] Integrer 700k de secondaire dans la structuration du tour; construire cap table simulee."
     },
-    "kpi_palier_monta_cockpit": "DEPLOYE 21/07: api/cockpit.php (ozecar.fr) expose 'monta_palier' (echeancier contractuel Q-14778RV2 hardcode: 500 juil-sept26 / 750 oct-dec26 / 1000 janv-mars27 / 1300 avr-mai27 / 1500 juin27-juin29; unit 5,00 puis 4,50; monthly 8000->12250) compare au pdc_total live Monta => pdc_reels, fantomes, cout_vide_mois, surplus_factures_150pct, taux_remplissage_pct, prochain_palier+gap. UI staging cockpit.html: jauge 'PALIER MONTA' en tete de la rangee instruments (vert >=100%, rouge <80%, tooltip contrat). Etat au deploiement: 525/500 (105%), +25 CP au-dela du palier factures +50%, prochain palier 750 des oct 2026 => 225 PDC a combler. Backups: api/backup-cockpit-20260721.php + uploads/backup-cockpit-20260721.html. NOTE analyse contrat Monta (Q-14778RV2 signe 29/06/2026): 36 mois ferme 410 700 EUR net, indexation min +5%/an, depassement +50%, PAS de clause de changement de controle detectee (share deal cessible, art 20.1 n'encadre que la cession du contrat, interdite vers concurrent direct de Monta) => actif cessible pour scenario B, a confirmer par avocat. Renego Monta n'est PLUS un levier avant 2029."
+    "kpi_palier_monta_cockpit": "DEPLOYE 21/07: api/cockpit.php (ozecar.fr) expose 'monta_palier' (echeancier contractuel Q-14778RV2 hardcode: 500 juil-sept26 / 750 oct-dec26 / 1000 janv-mars27 / 1300 avr-mai27 / 1500 juin27-juin29; unit 5,00 puis 4,50; monthly 8000->12250) compare au pdc_total live Monta => pdc_reels, fantomes, cout_vide_mois, surplus_factures_150pct, taux_remplissage_pct, prochain_palier+gap. UI staging cockpit.html: jauge 'PALIER MONTA' en tete de la rangee instruments (vert >=100%, rouge <80%, tooltip contrat). Etat au deploiement: 525/500 (105%), +25 CP au-dela du palier factures +50%, prochain palier 750 des oct 2026 => 225 PDC a combler. Backups: api/backup-cockpit-20260721.php + uploads/backup-cockpit-20260721.html. NOTE analyse contrat Monta (Q-14778RV2 signe 29/06/2026): 36 mois ferme 410 700 EUR net, indexation min +5%/an, depassement +50%, PAS de clause de changement de controle detectee (share deal cessible, art 20.1 n'encadre que la cession du contrat, interdite vers concurrent direct de Monta) => actif cessible pour scenario B, a confirmer par avocat. Renego Monta n'est PLUS un levier avant 2029. CORRECTIF 21/07 (Dominique): le palier Monta est un PLANCHER contractuel, PAS l'objectif. L'objectif reste 3000 PDC fin 2027. API: nouvelle section objectif_3000 (jalon lineaire 525 juil-26 -> 3000 dec-27, ecart au jalon, rythme requis PDC/mois recalcule chaque mois). UI: jauge principale = 'CAP 3000 PDC - reels vs jalon du mois' (vert si >= jalon), plancher Monta relegue en sous-ligne. Etat: 525/jalon 525 (ecart 0), rythme requis 146 PDC/mois."
   }
 }
