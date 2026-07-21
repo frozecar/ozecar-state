@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.530",
+    "version": "1.531",
     "updated": "2026-07-20",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-20",
+        "version_from": "1.530",
+        "version_to": "1.531",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Audit CGV complet (grille 12 points) sur le PDF contrat supervision: 4 corrections bloquantes (TA Bastia->TC, art 3.5 SEPA, gel vs Syntec, article maintenance absent) + 7 ajouts + relecture avocat recommandee"
+        ]
+      },
       {
         "date": "2026-07-20",
         "version_from": "1.529",
@@ -3182,6 +3191,26 @@
         "bloc4_refus_et_coupure": "Pas de bouton refuser (non-reponse = refus). Payants legacy: statu quo. Zero: fin de service au 30/09. DECISION DOMINIQUE 2026-07-20: l'annonce de fin du Forfait Zero part DEBUT AOUT (email court dedie, avant la campagne) -> ~8 semaines de preavis, probleme de delai regle. Process technique de desactivation a ecrire (cancel subs Monta, retrait cartes publiques, info conducteurs, conditions de reactivation). FAQ page + script reponses Marie-Estelle.",
         "bloc5_pilotage": "Webhook Stripe (whsec a creer), generateur pages/tokens, tableau d'etats par client (envoye->ouvert->clique->mandat->signe) en jauge cockpit.",
         "stripe_status_2026_07_20": "RAIL OPERATIONNEL: api/stripe.php deploye (allowlist endpoints + Bearer proxy token ozstripe_*), SEPA active en LIVE, cle rk_test en place ligne 12 (cle live a remettre au lancement pilotes — regenerable), session cs_test validee PAR DOMINIQUE avec IBAN test, ecrans retour setup=ok (confirmation 'compte a jour' + next steps) et setup=cancel (reprise) integres a la page demo. Ajouter rk_ aux patterns de redaction state."
+      },
+      "AUDIT_CGV_2026_07_20": {
+        "source": "PDF 'Contrat de supervision et de monetique' (9 p.) uploade par Dominique — version PandaDoc, semble ANTERIEURE a la reecriture art 3.5 Pennylane/SEPA documentee au state (27/05): a verifier quelle version est dans PandaDoc.",
+        "conforme": "Preambule mandat de gestion hors L.521-1 OK; 2.2.8 remise sans effet sur les frais (couvre le -25%); Monta ApS scope frais transaction 2% uniquement OK; engagement 12/24/36 sans reconduction tacite, preavis 3 mois, effet a l'echeance; RGPD art 28 propre; confidentialite; reference client.",
+        "corrections_bloquantes": [
+          "3.10: 'Tribunal administratif de Bastia' -> ERREUR, contrat prive B2B = tribunal de COMMERCE (Aix-en-Provence). Correction n1.",
+          "3.5: 'virement des reception' + IBAN en dur -> reecrire en prelevement SEPA sur mandat (pre-notification ~5j), wallet en option.",
+          "3.6: revision Syntec en conflit avec 'tarif gele 24 mois' -> gel pendant l'engagement initial, Syntec ensuite.",
+          "ARTICLE MAINTENANCE TOTALEMENT ABSENT (malgre en-tete 'Contrat maintenance Specifique' = residu copier-coller): ajouter art 4 = N0-N4 (48h/24h JOURS OUVRES, pieces en sus, exclusions) + Maintenance Site, texte = page + cadrage Fred. B-LEGAL-02 jamais integre depuis mai."
+        ],
+        "ajouts": [
+          "Facturation electronique (format, canal, SIREN/TVA client exacts, acceptation e-facture)",
+          "Remise conditionnelle a l'engagement + exigibilite du solde en cas de resiliation anticipee aux torts du client",
+          "Regime des avenants (ajout bornes coterminal memes conditions, changement niveau maintenance)",
+          "Retractation L221-3 (TPE <=5 salaries): information + renonciation expresse pour execution immediate",
+          "Plafond de responsabilite en montant (standard 12 mois de redevances) — 3.9 n'a que les exclusions",
+          "Reconduction tacite 12 mois apres engagement initial (sinon falaise: tout le parc migre expire oct 2028)",
+          "2.2.8 reformuler 'frais definis par le Client' -> 'selectionnes lors du choix du forfait' + coquilles (supevision, phrase orpheline)"
+        ],
+        "next": "Chat de build: rediger les projets d'articles pour validation Dominique. RELECTURE AVOCAT RECOMMANDEE avant envoi de masse (106 signatures)."
       }
     }
   },
