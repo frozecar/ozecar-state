@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.526",
+    "version": "1.527",
     "updated": "2026-07-20",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-20",
+        "version_from": "1.526",
+        "version_to": "1.527",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Devis Albizias R6: total annuel supervision+maintenance affiche (239,40/mois, 2 872,80/an, an 1 offert)."
+        ]
+      },
       {
         "date": "2026-07-20",
         "version_from": "1.525",
@@ -10194,6 +10203,6 @@
     "revenus_monta_2026_verifie": "Wallet operateur OZECAR (id 1088439), 31 625 transactions 2026 analysees. REVENUS SURS: frais operateur (roaming-cpo 28,1k + professional 13,9k + p2p 2,2k + starting fees 1,5k) = ~45,6k HT + abonnements via wallet 4,2k = ~49,8k HT. A QUALIFIER: recettes de charge encaissees sur wallet operateur (charge-professional 28,3k + roaming-cpo-reseller 17,0k + monta_buyer 2,3k) = ~47,6k HT — revenu OZECAR si sites operes en propre, sinon pass-through. Paire wallet-balanced in 168,9k / out 153,6k = mecanique de reversement (pass-through, net +15,2k). Sorties notables: withdraw-wise 71,8k (rapatriement banque), paiements Monta 68k YTD (enterprise 35k + white-label 30k + platform 3k). CA consolide 2026: 93,8k Pennylane + 49,8k Monta sur = ~143,6k HT (jusqu'a ~191k si recettes de charge qualifiees revenu). RISQUE double comptage si des frais Monta sont aussi factures via Pennylane — regle de reconnaissance a fixer pour la levee.",
     "plan_ecoulement_zaptec": "30 Zaptec Pro (~750/u cout, 22,5k immobilise) + 80 en sept (60k du 15/10). Plan: 1) Option AC parking personnel dans devis Albizias (4-6 u). 2) Offre flash revendeurs/installateurs via grille bounty + Giga Energia, prix agressif avec attach supervision obligatoire. 3) Upsell parc AC existant (hotels/campings achetent a l'automne pour la saison suivante, Homair 5 sites). 4) Pack lancement site sept: borne + kit + 3 mois supervision offerts (fait du bruit + ecoule). 5) Si <20 vendues mi-sept: negocier Zaptec split livraison 40/40 ou report echeance AVANT le 15/10. Objectif: ~33k cash avant le 15/10.",
     "budget_lancement_site_sept": "Enveloppe 8,5-10k cash max sur sept-oct, par tranches conditionnelles: T0 aout (0 EUR, interne): bandeau consentement CNIL OBLIGATOIRE avant tout trafic paye + tracking GA4/HubSpot + assets + sequences emails. T1 des mise en ligne (~1k): communique de presse + presse specialisee IRVE + LinkedIn organique + emailing base + offre lancement Zaptec (3 mois supervision offerts = ~1,3k de marge differee, pas de cash). T2 APRES encaissement acompte Albizias (~7k): LinkedIn Ads ABM 2,5k/mois x2 + Google Search 1k/mois x2, pic mi-sept->fin oct pour alimenter l'alternant (arrive 05/10). T3 optionnelle (1-2k): article sponsorise presse specialisee si CPL T2 correct. Kill-switch a 15 jours si cout/lead derape. AUCUN engagement pub avant acompte encaisse.",
-    "devis_albizias_final": "DEV-2026-ALB-01 R5 (20/07): geste = TPE offerts (-4 185) + signaletique offerte (-1 494) + butees offertes (-1 134) + annee 1 supervision (95,40/mois) et maintenance N4 (24 EUR/PDC/mois x6 = 144/mois) offerte. Simulation d'exploitation RETIREE du devis (garder pour l'oral). Encart signature 'Bon pour accord' ajoute (impression/signature). TVA 10% sur l'ENSEMBLE installation & materiel (arbitrage Dominique, alerte fiscale maintenue + clause de sauvegarde aux conditions). Totaux: HT 254 548 / TVA 25 454,80 / TTC 280 002,80. Echeancier: 112 001,12 au 01/08 max / 112 001,12 expedition / 56 000,56 mise en service. ALERTE FISCALE emise: taux reduit 10% IRVE vise les locaux d'habitation >2 ans; centre d'imagerie = local professionnel, 20% en principe => clause de sauvegarde ajoutee aux conditions (rectification refacturable au taux legal). A valider avec l'expert-comptable/C2C avant envoi. Valeur du geste ~9,7k. Retroplanning inchange (mise en service 15/12/2026)."
+    "devis_albizias_final": "DEV-2026-ALB-01 R6 (20/07): geste = TPE offerts (-4 185) + signaletique offerte (-1 494) + butees offertes (-1 134) + annee 1 supervision (95,40/mois) et maintenance N4 (24 EUR/PDC/mois x6 = 144/mois) offerte. Simulation d'exploitation RETIREE du devis (garder pour l'oral). Encart signature 'Bon pour accord' ajoute (impression/signature). TVA 10% sur l'ENSEMBLE installation & materiel (arbitrage Dominique, alerte fiscale maintenue + clause de sauvegarde aux conditions). Totaux: HT 254 548 / TVA 25 454,80 / TTC 280 002,80. Echeancier: 112 001,12 au 01/08 max / 112 001,12 expedition / 56 000,56 mise en service. ALERTE FISCALE emise: taux reduit 10% IRVE vise les locaux d'habitation >2 ans; centre d'imagerie = local professionnel, 20% en principe => clause de sauvegarde ajoutee aux conditions (rectification refacturable au taux legal). A valider avec l'expert-comptable/C2C avant envoi. Valeur du geste ~9,7k. Retroplanning inchange (mise en service 15/12/2026). R6: total recurrent affiche au devis: 239,40 EUR/mois soit 2 872,80 EUR HT/an, premiere annee offerte, facturation a partir de mise en service + 12 mois."
   }
 }
