@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.523",
+    "version": "1.524",
     "updated": "2026-07-20",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-20",
+        "version_from": "1.523",
+        "version_to": "1.524",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Devis Albizias R3: geste = TPE + signaletique offerts + an 1 supervision/maintenance, pas de remise installation. HT 254 548 / TTC 305 457,60, echeancier 122 183,04 x2 + 61 091,52."
+        ]
+      },
       {
         "date": "2026-07-20",
         "version_from": "1.522",
@@ -10167,6 +10176,6 @@
     "revenus_monta_2026_verifie": "Wallet operateur OZECAR (id 1088439), 31 625 transactions 2026 analysees. REVENUS SURS: frais operateur (roaming-cpo 28,1k + professional 13,9k + p2p 2,2k + starting fees 1,5k) = ~45,6k HT + abonnements via wallet 4,2k = ~49,8k HT. A QUALIFIER: recettes de charge encaissees sur wallet operateur (charge-professional 28,3k + roaming-cpo-reseller 17,0k + monta_buyer 2,3k) = ~47,6k HT — revenu OZECAR si sites operes en propre, sinon pass-through. Paire wallet-balanced in 168,9k / out 153,6k = mecanique de reversement (pass-through, net +15,2k). Sorties notables: withdraw-wise 71,8k (rapatriement banque), paiements Monta 68k YTD (enterprise 35k + white-label 30k + platform 3k). CA consolide 2026: 93,8k Pennylane + 49,8k Monta sur = ~143,6k HT (jusqu'a ~191k si recettes de charge qualifiees revenu). RISQUE double comptage si des frais Monta sont aussi factures via Pennylane — regle de reconnaissance a fixer pour la levee.",
     "plan_ecoulement_zaptec": "30 Zaptec Pro (~750/u cout, 22,5k immobilise) + 80 en sept (60k du 15/10). Plan: 1) Option AC parking personnel dans devis Albizias (4-6 u). 2) Offre flash revendeurs/installateurs via grille bounty + Giga Energia, prix agressif avec attach supervision obligatoire. 3) Upsell parc AC existant (hotels/campings achetent a l'automne pour la saison suivante, Homair 5 sites). 4) Pack lancement site sept: borne + kit + 3 mois supervision offerts (fait du bruit + ecoule). 5) Si <20 vendues mi-sept: negocier Zaptec split livraison 40/40 ou report echeance AVANT le 15/10. Objectif: ~33k cash avant le 15/10.",
     "budget_lancement_site_sept": "Enveloppe 8,5-10k cash max sur sept-oct, par tranches conditionnelles: T0 aout (0 EUR, interne): bandeau consentement CNIL OBLIGATOIRE avant tout trafic paye + tracking GA4/HubSpot + assets + sequences emails. T1 des mise en ligne (~1k): communique de presse + presse specialisee IRVE + LinkedIn organique + emailing base + offre lancement Zaptec (3 mois supervision offerts = ~1,3k de marge differee, pas de cash). T2 APRES encaissement acompte Albizias (~7k): LinkedIn Ads ABM 2,5k/mois x2 + Google Search 1k/mois x2, pic mi-sept->fin oct pour alimenter l'alternant (arrive 05/10). T3 optionnelle (1-2k): article sponsorise presse specialisee si CPL T2 correct. Kill-switch a 15 jours si cout/lead derape. AUCUN engagement pub avant acompte encaisse.",
-    "devis_albizias_final": "DEV-2026-ALB-01 R2 (20/07): effort commercial demande par client => remise 12 900 HT (-5%) conditionnee a versement 1 encaisse au plus tard le 01/08/2026 + annee 1 supervision+maintenance offerte (2 933 HT). Totaux: HT 245 833 / TVA 49 166,60 / TTC 294 999,60. Echeancier date: 117 999,84 TTC au 01/08 max / 117 999,84 a l'expedition materiel (prev. oct., paiement a reception) / 58 999,92 a la mise en service. RETROPLANNING (delais Dominique): materiel 12-16 sem => livraison 24/10-20/11, elec 4-6 sem + GC dalle sechage 3 sem en parallele sept-oct, pose 7j, MISE EN SERVICE au plus tard 15/12/2026 (tout le projet en CA 2026). Simulation 3 scenarios integree au devis (prudent 70MWh/CA 36k/marge 11k, central 120/62/24, haut 208/108/48, tarif dynamique ~0,52 HT; frais fixes OZECAR 2 933/an = 3-8% des recettes; aides AUE + TIRUERT mentionnees non incluses). Marge OZECAR restante ~95k (39%). IMPACT TRESO: acompte 118k des le 01/08 (5 semaines plus tot), couvre dettes + Giga sept + burn; V2 fin oct couvre Zaptec 60k du 15/10 avec ventes stock; Sungrow 66k payable ~dec couvert."
+    "devis_albizias_final": "DEV-2026-ALB-01 R3 (20/07, arbitrage Dominique): PAS de remise sur l'installation. Geste = TPE offerts (-4 185) + signaletique sol offerte (-1 494) + annee 1 supervision+maintenance offerte (2 933 valeur), conditionne au versement 1 encaisse au plus tard le 01/08/2026. Totaux: brut 260 227 HT (signaletique 1 494 integree en base) - 5 679 offerts = 254 548 HT / TVA 50 909,60 / TTC 305 457,60. Echeancier date: 122 183,04 au 01/08 max / 122 183,04 a l'expedition (prev. oct., paiement a reception) / 61 091,52 mise en service. Retroplanning inchange: livraison 24/10-20/11, mise en service au plus tard 15/12/2026. Simulation 3 scenarios integree. Marge OZECAR ~104k moins cout TPE/peinture (~100k, 39%). Valeur totale du geste ~8,6k."
   }
 }
