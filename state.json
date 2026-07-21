@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "version": "1.528",
-    "updated": "2026-07-20",
+    "version": "1.529",
+    "updated": "2026-07-21",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
@@ -83,6 +83,16 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-21",
+        "version_from": "1.528",
+        "version_to": "1.529",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Reporting avance : PROPOSE -> VALIDE 15 €/mois/compte",
+          "Nouvelle section reporting_funnel_2026_07_21 : 3 mois offerts (nouveaux + base installee), bascule mois 4 rapport simple/option, rapport annuel inclus janvier"
+        ]
+      },
       {
         "date": "2026-07-20",
         "version_from": "1.527",
@@ -6804,7 +6814,7 @@
           "cron_php_v2": "Job 3 pipeline_poll a chaque passage ; cockpit_warm gate 1x/heure ; boamp inchange. Backup api/cron.php.bak-20260719-180823. Recommandation Hostinger: */15 min.",
           "cohabitation": "Endpoints idempotents (flags HubSpot) -> poller + scenarios Make peuvent tourner ensemble sans doublon.",
           "condition_extinction_make": "Des que le cron Hostinger est actif (2-3 runs reguliers dans .cron-log.json), desactiver les scenarios 6400488, 6452570, 6458109 -> 0 ops Make.",
-          "blocage_dominique": "Cron Hostinger JAMAIS ACTIVE (1 seul run logge = test manuel du 16/07). Ligne a ajouter dans hPanel: */15 * * * * -> curl 'https://ozecar.fr/api/cron.php?key=ckp_5171c7f30dc28282ec096475'"
+          "blocage_dominique": "Cron Hostinger JAMAIS ACTIVE (1 seul run logge = test manuel du 16/07). Ligne a ajouter dans hPanel: */15 * * * * -> curl 'https://ozecar.fr/api/cron.php?key=ckp_<REDACTED>'"
         }
       }
     },
@@ -10213,5 +10223,22 @@
     "plan_ecoulement_zaptec": "30 Zaptec Pro (~750/u cout, 22,5k immobilise) + 80 en sept (60k du 15/10). Plan: 1) Option AC parking personnel dans devis Albizias (4-6 u). 2) Offre flash revendeurs/installateurs via grille bounty + Giga Energia, prix agressif avec attach supervision obligatoire. 3) Upsell parc AC existant (hotels/campings achetent a l'automne pour la saison suivante, Homair 5 sites). 4) Pack lancement site sept: borne + kit + 3 mois supervision offerts (fait du bruit + ecoule). 5) Si <20 vendues mi-sept: negocier Zaptec split livraison 40/40 ou report echeance AVANT le 15/10. Objectif: ~33k cash avant le 15/10.",
     "budget_lancement_site_sept": "Enveloppe 8,5-10k cash max sur sept-oct, par tranches conditionnelles: T0 aout (0 EUR, interne): bandeau consentement CNIL OBLIGATOIRE avant tout trafic paye + tracking GA4/HubSpot + assets + sequences emails. T1 des mise en ligne (~1k): communique de presse + presse specialisee IRVE + LinkedIn organique + emailing base + offre lancement Zaptec (3 mois supervision offerts = ~1,3k de marge differee, pas de cash). T2 APRES encaissement acompte Albizias (~7k): LinkedIn Ads ABM 2,5k/mois x2 + Google Search 1k/mois x2, pic mi-sept->fin oct pour alimenter l'alternant (arrive 05/10). T3 optionnelle (1-2k): article sponsorise presse specialisee si CPL T2 correct. Kill-switch a 15 jours si cout/lead derape. AUCUN engagement pub avant acompte encaisse.",
     "devis_albizias_final": "DEV-2026-ALB-01 R7 (20/07): geste = TPE offerts (-4 185) + signaletique offerte (-1 494) + butees offertes (-1 134) + annee 1 supervision (95,40/mois) et maintenance N4 (24 EUR/PDC/mois x6 = 144/mois) offerte. Simulation d'exploitation RETIREE du devis (garder pour l'oral). Encart signature 'Bon pour accord' ajoute (impression/signature). TVA 10% sur l'ENSEMBLE installation & materiel (arbitrage Dominique, alerte fiscale maintenue + clause de sauvegarde aux conditions). Totaux: HT 254 548 / TVA 25 454,80 / TTC 280 002,80. Echeancier: 112 001,12 au 01/08 max / 112 001,12 expedition / 56 000,56 mise en service. ALERTE FISCALE emise: taux reduit 10% IRVE vise les locaux d'habitation >2 ans; centre d'imagerie = local professionnel, 20% en principe => clause de sauvegarde ajoutee aux conditions (rectification refacturable au taux legal). A valider avec l'expert-comptable/C2C avant envoi. Valeur du geste ~9,7k. Retroplanning inchange (mise en service 15/12/2026). R6: total recurrent affiche au devis: 239,40 EUR/mois soit 2 872,80 EUR HT/an, premiere annee offerte, facturation a partir de mise en service + 12 mois. R7: calendrier redessine en timeline verticale (jalons 01/08 jaune, 15/12 ink) et deplace en §05 juste avant le Bon pour accord (§06); ordre final: 01 installation / 02 echeancier / 03 recurrent / 04 options / 05 calendrier / 06 signature."
+  },
+  "reporting_funnel_2026_07_21": {
+    "_decision": "DECISION 2026-07-21 (Dominique) — mecanique de lancement de l'option Reporting avance 15 €/mois/compte",
+    "nouveaux_clients": "Rapport avance OFFERT les 3 premiers mois (des l'onboarding, vitrine produit)",
+    "clients_existants": "Campagne one-shot au lancement de l'option : 3 mois de rapport avance offerts a toute la base installee (moteur d'upsell)",
+    "mois_4_bascule": {
+      "sans_option": "Rapport SIMPLE mensuel, inclus, envoye a tous les clients",
+      "avec_option": "Rapport avance continue (15 €/mois/compte)",
+      "email_bascule": "L'email du mois 4 = moment d'upsell : 'vous avez recu 3 rapports avances, pour continuer -> option Reporting avance'"
+    },
+    "rapport_annuel": "Recapitulatif annuel INCLUS pour tous les clients, envoye en janvier (annee civile, aligne compta/RSE)",
+    "production": {
+      "template_avance": "Existe deja : PDF weasyprint + matplotlib, charte OZECAR (cf. rapports Balesi 2026-07). A industrialiser.",
+      "template_simple": "A creer : version allegee (sessions, kWh, dispo, top bornes) — derive du template avance",
+      "automatisation": "Make/cron via monta.php par client — envoi le 5 du mois. Cout marginal ~0 (self-service).",
+      "csm": "Le CSM 99 €/mois inclut le Reporting avance (inchange)"
+    }
   }
 }
