@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.521",
+    "version": "1.522",
     "updated": "2026-07-20",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -83,6 +83,15 @@
       }
     },
     "session_changelog": [
+      {
+        "date": "2026-07-20",
+        "version_from": "1.521",
+        "version_to": "1.522",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Campagne MAJ compte: confirmation SIREN/TVA + IBAN double sens sur l'ecran 2, propagation webhook vers Pennylane ET Monta (payout IBAN a verifier par API)"
+        ]
+      },
       {
         "date": "2026-07-20",
         "version_from": "1.520",
@@ -3084,7 +3093,8 @@
         "matrice_N0_N4": "N0 aucune / N1 a distance (4) / N2 preventif annuel (9) / N3 = N2 + intervention&diagnostic garantis 48h (18) / N4 = 24h, pieces NON incluses (24). Pieces en sus a tous les niveaux. Remise -25% des N2 (N2/N3/N4 — a confirmer pour N4). PERIMETRE CONTRACTUEL A VALIDER AVEC FRED avant tout envoi; texte page = texte contrat.",
         "segmentation_recents": "5 regles: (1) recent+SEPA+grille actuelle = simple mail info, rien a signer. (2) recent hors SEPA = avenant de paiement seul, contrat/date de fin inchanges. (3) upsell sur contrat existant = avenant coterminal, prorata, echeance inchangee. (4) client demande le combo -25% = SEUL cas de reprise de contrat, 24 mois repartent (la remise s'achete avec l'engagement). (5) PAS d'alignement au 01/01 (falaise de renouvellement = risque churn concentre; dates dispersees = protection structurelle). Exception: annuels saisonniers alignes sur avril (prorata pont).",
         "avenant_ajout_bornes": "Client sous contrat ajoute des bornes: memes conditions heritees, COTERMINAL (fin avec le contrat, engagement ne repart pas), prorata (prelevement suivant en mensuel / facture pont jusqu'a l'echeance en annuel), one-shot Kit Borne 29 + Kit Site 49 si nouveau site. Mandat SEPA existant couvre (montants variables) -> une signature, zero friction. = revenu d'expansion a CAC zero.",
-        "compta_annuel": "Produit constate d'avance (compte 487): CA reconnu prorata temporis mois par mois, cash encaisse d'avance (BFR negatif), TVA sur encaissement (regime a confirmer expert-comptable). Chaque facture annuelle DOIT porter la periode de service — champ a integrer au webhook Pennylane. Jauges cockpit restent en base contractuelle ARR."
+        "compta_annuel": "Produit constate d'avance (compte 487): CA reconnu prorata temporis mois par mois, cash encaisse d'avance (BFR negatif), TVA sur encaissement (regime a confirmer expert-comptable). Chaque facture annuelle DOIT porter la periode de service — champ a integrer au webhook Pennylane. Jauges cockpit restent en base contractuelle ARR.",
+        "identite_fiscale_et_propagation": "Ecran 2: confirmation SIREN + n TVA intracommunautaire (exigence facturation electronique, pre-remplis, client verifie/corrige) + IBAN double sens (prelevements ET versement des recettes — ligne echeancier 'vos recettes versees sur ce compte', jamais de mention de frais deduits). Le webhook propage les donnees confirmees vers Pennylane (client) ET Monta (team via Partner API) — regle l'ecart name-matching team/entite legale. A VERIFIER au build: l'IBAN de payout wallet Monta est-il modifiable par API; sinon micro-etape back-office avec alerte auto si IBAN confirme != IBAN payout actuel."
       },
       "plan_execution": "S30 (avant 26/07): mapping 410 subs (customs exclus), generateur pages par client, modal eSignatures, webhook signature->Stripe SEPA->Pennylane->Monta->HubSpot, correction 3 teams mixtes. S32: test interne + 5 pilotes gros gagnants (Kalliste, Sole di Sari, Calvi Hotel, Acqua e Sole, Mairie Olmeto). 01/09: envoi masse FZ (relance Make J+10, tel Marie-Estelle J+20, fin de service 30/09 pour non-repondants Zero). Octobre: vague 2 reste du parc (recit 'tarif gele 24 mois'). Objectif: >=80% des 106 PDC FZ signes au 30/09 (~+1200 EUR/mois MRR) — jauge a ajouter au cockpit.",
       "dependances_dominique": "Cles Stripe (bloquant chaine paiement) + creneau Fred (perimetre N0-N4 contractuel) + appel Renault (independant, visuel pret)."
