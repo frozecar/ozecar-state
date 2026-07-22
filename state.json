@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.559",
+    "version": "1.560",
     "updated": "2026-07-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -84,6 +84,18 @@
       "BOOT_v2_search_first": "OBLIGATOIRE pour tout nouveau chat (2026-07-21): (1) POST github-relay.php {\"action\":\"search\",\"q\":\"<mots du chantier>\"} -> sections pertinentes avec extraits. (2) {\"action\":\"read\",\"section\":[...]} sur les sections trouvees UNIQUEMENT. (3) L'index ({\"action\":\"read\",\"index\":true}) est AUTO-FUSIONNE par le relay: il liste TOUTES les sections reelles, il ne peut plus etre perime. (4) Jamais de lecture du state entier. (5) A chaque creation de section: ajouter une ligne descriptive dans _index."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-22",
+        "version_from": "1.559",
+        "version_to": "1.560",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "STRIPE-GAGNE-AUTO livre: api/stripe-hook.php deploye en prod en mode DRY, signature Stripe verifiee, delegation a pandadoc-signed.php",
+          "Decision: pas de scenario Make (aucune connexion Stripe dans Make, pas de verif de signature possible) — 0 op Make",
+          "customer.subscription.created ecarte du signal Gagne (se declenche avant l'action du client)",
+          "Bloqueurs Dominique: Stripe en live (rk_live_), creation de l'endpoint webhook, collage du whsec"
+        ]
+      },
       {
         "date": "2026-07-22",
         "version_from": "1.558",
@@ -7169,6 +7181,26 @@
           "condition_extinction_make": "Des que le cron Hostinger est actif (2-3 runs reguliers dans .cron-log.json), desactiver les scenarios 6400488, 6452570, 6458109 -> 0 ops Make.",
           "blocage_dominique": "Cron Hostinger JAMAIS ACTIVE (1 seul run logge = test manuel du 16/07). Ligne a ajouter dans hPanel: */15 * * * * -> curl 'https://ozecar.fr/api/cron.php?key=ckp_<REDACTED>'"
         }
+      },
+      "12_stripe_gagne_auto": {
+        "statut": "LIVE en mode DRY sur https://ozecar.fr/api/stripe-hook.php (2026-07-22) — aucun scenario Make cree",
+        "decision": "Pas de scenario Make. Aucune connexion Stripe n'existe dans Make (verifie via connections_list team 197685) et Make ne sait pas verifier la signature Stripe. Le handler PHP fait 0 op Make, verifie la signature HMAC, et delegue au flux deja eprouve pandadoc-signed.php (Gagne 5215721691 + creation deal Livraison + associations + note + Slack, idempotent via ozecar_livraison_cree).",
+        "evenements_ecoutes": [
+          "checkout.session.completed",
+          "setup_intent.succeeded",
+          "payment_method.attached (filtre type=sepa_debit)"
+        ],
+        "evenement_ecarte": "customer.subscription.created — se declenche a la CREATION de l'abonnement par Dominique, donc AVANT que le client remplisse l'IBAN. Faux signal de Gagne. Ecarte volontairement malgre la formulation initiale de la directive.",
+        "resolution_du_deal": "1) metadata.deal_id sur l'objet Stripe ou sur le customer (match sur). 2) sinon email -> contact HubSpot -> deals associes -> filtre pipeline 3747862733 hors Gagne/Perdu -> match si UN seul candidat. 3) sinon: aucune ecriture, alerte Slack #todo-dominique avec les candidats cliquables.",
+        "securite": "Signature Stripe verifiee (HMAC SHA256, tolerance 300s), fail-closed 503 tant que le whsec n'est pas renseigne. Secret dans api/stripe-hook-config.php. Cle Stripe lue dans api/stripe.php (source unique). Rien dans state.json.",
+        "tests_2026_07_22": "Local (php -S): mauvaise signature -> 400, horodatage perime -> 400, customer.subscription.created -> ignore, payment_method card -> ignore, metadata.deal_id -> resolu. Prod dry: email reel myriam.benaim@lelycenter.com -> deal 504571004116 (Agriel/Lelycenter) resolu correctement sans ecriture; email inconnu -> non resolu + alerte Slack. Fail-closed 503 verifie apres verrouillage du secret.",
+        "reste_dominique": [
+          "Stripe passe en LIVE: remplacer rk_test_ par rk_live_ dans api/stripe.php ligne 12",
+          "Stripe > Developers > Webhooks > Add endpoint: https://ozecar.fr/api/stripe-hook.php, cocher les 3 evenements ecoutes",
+          "Coller le Signing secret (whsec_) dans api/stripe-hook-config.php",
+          "Apres 1 mandat reel observe en dry: passer OZ_STRIPE_HOOK_MODE a 'live'"
+        ],
+        "ameliorations_v2": "Poser metadata.deal_id sur le customer/checkout Stripe a la creation du lien de paiement -> match 100% fiable, plus de dependance a l'email. Boutons Slack (oz_stripe_gagne_{deal}) pour arbitrer les cas multi-candidats depuis le digest."
       }
     },
     "email_system_2026_06_21": {
@@ -10700,6 +10732,7 @@
       "backlog": "Généraliser ozecar_origine à tous les canaux de création de deals",
       "complements_2026_07_22": "Strazzabosco = en attente (reste Devis-contrat envoyé). Terrasses d'Arsella RECRÉÉ (511997025494, Devis-contrat envoyé — réel, pas de retour pour l'instant). Albizias (511932029151) passé Qualifié -> Devis-contrat envoyé (devis déjà envoyé, créé depuis un autre chat)."
     },
-    "DIRECTIVE_STRIPE_GAGNE": "DIRECTIVE Dominique 22/07/2026 : signal de victoire = client signe + remplit Stripe avec IBAN (mandat SEPA). Claude peut passer les deals en Gagné lui-même sur ce signal. À AUTOMATISER (webhook-first) : webhook Stripe (setup_intent.succeeded / customer.subscription.created) -> Make -> match client -> PATCH deal HubSpot en Gagné 5215721691 + tag ozecar_origine. Chantier dédié à ouvrir."
+    "DIRECTIVE_STRIPE_GAGNE": "DIRECTIVE Dominique 22/07/2026 : signal de victoire = client signe + remplit Stripe avec IBAN (mandat SEPA). Claude peut passer les deals en Gagné lui-même sur ce signal. À AUTOMATISER (webhook-first) : webhook Stripe (setup_intent.succeeded / customer.subscription.created) -> Make -> match client -> PATCH deal HubSpot en Gagné 5215721691 + tag ozecar_origine. Chantier dédié à ouvrir.",
+    "DIRECTIVE_STRIPE_GAGNE_STATUT": "2026-07-22: chantier STRIPE-GAGNE-AUTO livre en mode dry. Voir make.make_scenarios.12_stripe_gagne_auto. Handler = api/stripe-hook.php (pas de scenario Make). En attente: passage Stripe en live + creation de l'endpoint webhook cote Dominique."
   }
 }
