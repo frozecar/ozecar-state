@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.558",
+    "version": "1.559",
     "updated": "2026-07-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -84,6 +84,16 @@
       "BOOT_v2_search_first": "OBLIGATOIRE pour tout nouveau chat (2026-07-21): (1) POST github-relay.php {\"action\":\"search\",\"q\":\"<mots du chantier>\"} -> sections pertinentes avec extraits. (2) {\"action\":\"read\",\"section\":[...]} sur les sections trouvees UNIQUEMENT. (3) L'index ({\"action\":\"read\",\"index\":true}) est AUTO-FUSIONNE par le relay: il liste TOUTES les sections reelles, il ne peut plus etre perime. (4) Jamais de lecture du state entier. (5) A chaque creation de section: ajouter une ligne descriptive dans _index."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-22",
+        "version_from": "1.558",
+        "version_to": "1.559",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Arsella recréé 511997025494 · Albizias -> Devis-contrat envoyé · Strazzabosco confirmé en attente",
+          "DIRECTIVE_STRIPE_GAGNE: signature+IBAN Stripe = signal Gagné, automatisation webhook à construire"
+        ]
+      },
       {
         "date": "2026-07-22",
         "version_from": "1.557",
@@ -10685,9 +10695,11 @@
       "installateurs_partenaires": "INCHANGÉ (valide dans les 2 mappings) : Alexandre Vincent NOVA (754362865902) · Anthony Ceccareli ELGECE (828019974352) · Abdellah Zarkani EIB Calvi (827997590772) · Luc Xiong Serpollet (827981767918). EIG = potentiel partenaire installateur (deal ouvert).",
       "statuts_valides_par_dominique": "Castelli=test (déjà archivé) · Sole e Vista=expiré (déjà archivé) · Terrasses d'Arsella=RÉEL en attente mais deal ARCHIVÉ dans HubSpot — à recréer ? · Client NOVA + NOVA matériel = devis via NOVA pour même client, en attente · EIB 05/26 = hôtel, à relancer · EIB AO x2 (matériel+supervision) = en attente · Aromazone = en attente, rappeler Luc · Rossi = post-saison (manque puissance)",
       "cards": "Serpollet corrigée (b568b9cf) · OEHC RÉTABLIE (02e54d46, deadline toujours active) · Agriel relance (16ea4f53) · EIB (98873fd7) · Rossi due 01/10 (0e46cf5e)",
-      "questions_ouvertes": "#11 Strazzabosco = 'll' (statut illisible, à clarifier) · Terrasses d'Arsella réel mais archivé (recréer ?)",
+      "questions_ouvertes": "aucune — tout tranché le 22/07",
       "clarification_auto_vs_manuel": "VENTE: automatismes créent seulement (05->Démo planifiée, BOAMP->Qualifié, /devis+configurateur->Devis à faire puis 08->Devis-contrat envoyé). Gagné/Perdu = toujours manuel. LIVRAISON: 01 crée, 03/04 avancent auto, 02 webhook activation.",
-      "backlog": "Généraliser ozecar_origine à tous les canaux de création de deals"
-    }
+      "backlog": "Généraliser ozecar_origine à tous les canaux de création de deals",
+      "complements_2026_07_22": "Strazzabosco = en attente (reste Devis-contrat envoyé). Terrasses d'Arsella RECRÉÉ (511997025494, Devis-contrat envoyé — réel, pas de retour pour l'instant). Albizias (511932029151) passé Qualifié -> Devis-contrat envoyé (devis déjà envoyé, créé depuis un autre chat)."
+    },
+    "DIRECTIVE_STRIPE_GAGNE": "DIRECTIVE Dominique 22/07/2026 : signal de victoire = client signe + remplit Stripe avec IBAN (mandat SEPA). Claude peut passer les deals en Gagné lui-même sur ce signal. À AUTOMATISER (webhook-first) : webhook Stripe (setup_intent.succeeded / customer.subscription.created) -> Make -> match client -> PATCH deal HubSpot en Gagné 5215721691 + tag ozecar_origine. Chantier dédié à ouvrir."
   }
 }
