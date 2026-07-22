@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "version": "1.548",
-    "updated": "2026-07-21",
+    "version": "1.549",
+    "updated": "2026-07-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
@@ -84,6 +84,18 @@
       "BOOT_v2_search_first": "OBLIGATOIRE pour tout nouveau chat (2026-07-21): (1) POST github-relay.php {\"action\":\"search\",\"q\":\"<mots du chantier>\"} -> sections pertinentes avec extraits. (2) {\"action\":\"read\",\"section\":[...]} sur les sections trouvees UNIQUEMENT. (3) L'index ({\"action\":\"read\",\"index\":true}) est AUTO-FUSIONNE par le relay: il liste TOUTES les sections reelles, il ne peut plus etre perime. (4) Jamais de lecture du state entier. (5) A chaque creation de section: ajouter une ligne descriptive dans _index."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-22",
+        "version_from": "1.548",
+        "version_to": "1.549",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "OPS-DAILY-RUN: premier seed cards (5 ME Forfait Zéro tel réels + 2 Dominique dont Calliès 19 PDC)",
+          "Digests postés manuellement via ozecarbot dans #todo-mae + #todo-dominique (Job 5 verrouillé pour aujourd'hui)",
+          "Bot invité dans les 5 canaux par Dominique — cron autonome dès demain",
+          "9 cibles a_enrichir (sans tel) tracées pour batch J+1"
+        ]
+      },
       {
         "date": "2026-07-21",
         "version_from": "1.547",
@@ -10538,7 +10550,7 @@
     }
   },
   "ops_daily_build": {
-    "statut": "DEPLOYE 22/07/2026 — en attente presentation Dominique -> go-live",
+    "statut": "LIVE 22/07/2026 — go-live tapé, bot invité dans les canaux, premier batch seedé et posté",
     "canaux_slack": {
       "todo-dominique": "C0BK0A2K492",
       "todo-mae": "C0BJF7XDT47",
@@ -10553,9 +10565,16 @@
     "go_live": "Gate: config.channels_live=false tant que Dominique n a pas presente le systeme en personne a ME et Fred (cadrage RYTHME_OZECAR). Lien one-tap go-live fourni a Dominique (todos.php golive=1). Avant go-live: digest legacy continue dans #veille-marches, canaux todo-* restent vides.",
     "generation_cards": "Routine Claude PM chaque soir pour le matin: Dominique 2-3 cards grands comptes enrichies web, ME 5-8 base existante HubSpot (Forfait Zero, dormants), Julien 15-20 des 05/10. Ajout via POST todos.php add=1 {who,text,card:{...}}. Dedup vs recalls=1 (refus = rappel +4 mois). Jamais de numero invente.",
     "restes": [
-      "Bot Slack a inviter dans les 5 canaux si conversations.join echoue (verifier au 1er digest)",
-      "Presentation Dominique -> ME/Fred puis tap go-live",
-      "Seed des premieres cards d appel (ME: segment Forfait Zero) apres go-live"
-    ]
+      "Enrichir les ~9 cibles a_enrichir (tel manquants) pour le batch J+1",
+      "Vérifier demain matin le passage auto du Job 5 (digests par canaux) + Job 6 (DM pilotage)",
+      "Julien: 15-20 cards/jour à partir du 05/10"
+    ],
+    "seed_2026_07_22": {
+      "cards_mae_5": "Hôtel Genovese (Lantieri, 8 PDC, id 90aebb0a) · SCA Mont St Jean (Pouyau, 2, db352b50) · Corse Piscine (Andréani, 2, d0b30a9b) · Ajaccio Automobiles (Istria, 1, 1f11733d) · JFC 2b (Napoli, 1, 6c6ead54). Tel réels HubSpot, scripts offre v3 Business+N3 -25% 20,90 EUR/PDC/mois, vigilance respectée (jamais 'Forfait Zéro' nommé, pas d'économie CA chiffrée).",
+      "cards_dominique_2": "Groupe Calliès 19 PDC / 3 résidences (Terrasses PV 11 + Vesna Rossa 4 + Villas PV 4, contact 754356499642, id 122b80dd, traitement direct fondateur) · OEHC relance deadline (deal 510334425321, id c283f0c9).",
+      "a_enrichir": "Sans tel en base (règle jamais de numéro inventé): U Capu Biancu 6 PDC (Mucchieli) · Cala di Greco + Terra Marina 7 PDC (Amadei) · Jardins de Santa Giulia 3 (Ladu) · Commune Olmeto 2 · Le Relax 2 (Andreani) · Commune Serra di Fiumorbo 2 (Profizi) · Super Souk 1 · Casa Orsu Maria 1 · Sarl Pbp 1. Prochain batch après enrichissement web/annuaire.",
+      "digests_manuels": "Job 5 verrouillé (todos_last_day + fenêtre 05-07 UTC passée) -> digests postés manuellement via bot ozecarbot (U0BDB9M3GG5) dans #todo-mae + #todo-dominique le 22/07. Boutons fonctionnels (postés par le bot, pas le connecteur MCP).",
+      "bot_canaux": "conversations.join échoue sur canaux privés -> Dominique a invité @ozecarbot dans les 5 canaux le 22/07. Cron demain matin OK."
+    }
   }
 }
