@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.570",
+    "version": "1.571",
     "updated": "2026-07-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -86,6 +86,17 @@
       "REGLE_FICHIERS_CANONIQUES": "RÈGLE_FICHIERS_CANONIQUES (22/07/2026): tout contrat, devis ou document client produit en chat DOIT être déployé sur le serveur AVANT livraison à Dominique — contrats types dans uploads/ozecar/contrats/, documents client dans uploads/ozecar/clients/ (via wp-deploy). Le serveur est la copie canonique, les outputs de chat sont éphémères. Vérifiés en place: albizias-contrat-supervision-v6.html + albizias-devis-R11.html (clients/), contrat-supervision-standard-v1.html (contrats/)."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-22",
+        "version_from": "1.570",
+        "version_to": "1.571",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Reservoir reprise: 251 prospects Monday->HubSpot (1089 PDC, FreshMile/ChargeGuru/Virta) branches a la fabrique de cards (Julien des 05/10, top >=10 PDC candidates Dominique)",
+          "Annuaire installateurs: 18 Partner HubSpot + 12 contacts (emails/SIRET) depuis board Installateurs; label 'Installateur referent' actif (Soleco)",
+          "Bardinet: SIGNE 22/07 (PandaDoc CS 2026101, 3748.80 EUR HT an 1, Business-equivalent 11.90/PDC, mise en service SUR SITE 04/09 Blanquefort), deal Vente Gagne + carte Livraison + item monday 12599334590"
+        ]
+      },
       {
         "date": "2026-07-22",
         "version_from": "1.569",
@@ -10870,6 +10881,12 @@
     "DECISION_2026_07_22_CYCLE_GAGNE_ACTIVATION": "DÉCISION validée Dominique 22/07/2026 — cycle signature->facturation : (1) Gagné (signature + IBAN Stripe) -> deal Livraison & Activation 'Kit à préparer' + groupe Monta + bornes créés tôt (signature ou prépa kit — SANS COÛT : FAIT VÉRIFIÉ, le coût Monta ne démarre QUE lorsque la borne est ACTIVE, une borne créée inactive ne coûte rien). (2) Activation QR par l'installateur, borne par borne -> triple déclencheur synchrone au 1er PDC actif : début facturation client (prorata PDC activés) + invitation admin + avancement deal L&A. Coût Monta et revenu client naissent au même moment. (3) Garde-fou : facturation démarre au plus tard J+60 après expédition du kit, activé ou non — à inscrire aux CGV + rappel dans devis PandaDoc (action Dominique). Implémentation : chantier STRIPE-GAGNE-AUTO (webhook Stripe = chef d'orchestre Gagné->L&A+Monta ; scénario 02 activation = facturation + invitation admin).",
     "chantier_gagne_orchestration": "Chantier GAGNE-ORCHESTRATION défini 22/07 (remplace STRIPE-GAGNE-AUTO, livré en DRY par un autre chat via api/stripe-hook.php) : 1) logs DRY -> passage live, 2) Gagné -> deal L&A + groupe Monta + bornes, 3) activation -> facturation prorata + invitation admin (scénario 02), 4) clause J+60 insérée au docx à l'upload. | 22/07 12h: point 1 tranche (voir chantier_gagne_orchestration_audit_2026_07_22, bloque cote Dominique). Points 2-3 en cours: pandadoc-signed.php cree deja Gagne + deal L&A 'Kit a preparer' + associations + note + Slack mais explicitement SANS Monta -> la creation groupe Monta + bornes reste a ajouter.",
     "chantier_gagne_orchestration_audit_2026_07_22": "AUDIT Claude PM 22/07 12h: le point 1 (analyser les logs DRY) est SANS OBJET — aucun evenement Stripe reel n'est jamais arrive. Preuves: api/stripe-hook-config.php contient encore STRIPE_WEBHOOK_SECRET='REMPLACER_PAR_LE_whsec...' -> le handler part en fail-closed 503 sur TOUTE requete (verifie en live: 503 whsec_not_configured); api/stripe.php est encore en rk_test_; le log ne contenait que les 2 evenements synthetiques du 22/07 10h11 + 1 ligne whsec_not_configured. CONCLUSION: le passage live ne depend pas d'une analyse, il depend des 3 actions Dominique (cle rk_live_, creation endpoint Stripe, collage du whsec). Ensuite 1 mandat reel observe en dry -> bascule OZ_STRIPE_HOOK_MODE='live'.",
-    "fix_2026_07_22_fuite_log_stripe": "FUITE CORRIGEE: api/stripe-hook.log etait servi publiquement en HTTP 200 (contenait un email client reel + un deal id HubSpot). wp-deploy refuse l'extension .log (403 read/delete) -> fix en 2 temps: (1) stripe-hook.php ecrit desormais dans api/stripe-hook-log.php prefixe de '<?php exit; ?>' (garde d'execution, HTTP 200 vide), (2) script one-shot api/oz-purge-log.php (cle ozpurge_2026_07_22) execute puis auto-supprime -> stripe-hook.log renvoie 404. Backup: api/stripe-hook.php.bak-20260722-121626. LECON: tout log ecrit dans api/ doit avoir l'extension .php + garde exit; wp-deploy ne peut ni lire ni supprimer les .log/.txt/.htaccess. A VERIFIER (meme risque, non traite): api/qr-redirect.log, api/pilot-log.jsonl, api/maillog.txt."
+    "fix_2026_07_22_fuite_log_stripe": "FUITE CORRIGEE: api/stripe-hook.log etait servi publiquement en HTTP 200 (contenait un email client reel + un deal id HubSpot). wp-deploy refuse l'extension .log (403 read/delete) -> fix en 2 temps: (1) stripe-hook.php ecrit desormais dans api/stripe-hook-log.php prefixe de '<?php exit; ?>' (garde d'execution, HTTP 200 vide), (2) script one-shot api/oz-purge-log.php (cle ozpurge_2026_07_22) execute puis auto-supprime -> stripe-hook.log renvoie 404. Backup: api/stripe-hook.php.bak-20260722-121626. LECON: tout log ecrit dans api/ doit avoir l'extension .php + garde exit; wp-deploy ne peut ni lire ni supprimer les .log/.txt/.htaccess. A VERIFIER (meme risque, non traite): api/qr-redirect.log, api/pilot-log.jsonl, api/maillog.txt.",
+    "reservoir_reprise_2026_07_22": {
+      "source": "251 societes prospects importees dans HubSpot le 22/07 (batch API) depuis Monday 'Prospection telephonique' (8108540183). Desc 'REPRISE DE BORNES', lifecycle=lead, tel 252/253, adresse+CP. Operateurs: FreshMile 208 / ChargeGuru 39 / Virta 6. 1089 PDC total, zone PACA/Vaucluse/Drome/Rhone.",
+      "usage": "Reservoir de cards pour la fabrique quotidienne (generation_cards). Julien 15-20/j des 05/10 => ~14 jours ouvres de runway. Priorisation PDC decroissant puis proximite geo. Dedup via todos.php recalls=1. Boucle retour: chaque appel argumente doit MAJ le statut sur la board Monday 8108540183 (colonne status) + la societe HubSpot.",
+      "top_cibles_10pdc_plus": "Audi Odicee Aix 77 (ChargeGuru) · Port Lympia Nice 40 · E.Leclerc Bourg-les-Valence 40 · Urbis Park Euromed 24 · Zenpark 13015 20 · Intersport Annonay 17 · Palais des Papes 16 · Baikowski 74 16 (ChargeGuru) · Maxi Zoo St-Mitre 14 (Virta) · Mercedes Toulon 12 · METRO Lyon-Gerland 12 · Gare Centre Avignon 12 — candidates cards DOMINIQUE avant le 05/10, sur son go (sequence validee: site lance -> ads -> prospection; ne pas bruler la liste avant).",
+      "annuaire_installateurs": "18 societes type=PARTNER dans HubSpot avec contacts/emails/SIRET (source board Monday Installateurs 8298587781). Libelle association 'Installateur referent' (deal<->company, typeId 1) operationnel, 1er usage: SOLECO sur deal Soleco 509830947036. A trancher: Fabrice Le Chevalier = C2A ENERGIES (Monday) vs Izitek (Dominique 22/07) — associe aux deux en attendant."
+    }
   }
 }
