@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.569",
+    "version": "1.570",
     "updated": "2026-07-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -86,6 +86,16 @@
       "REGLE_FICHIERS_CANONIQUES": "RÈGLE_FICHIERS_CANONIQUES (22/07/2026): tout contrat, devis ou document client produit en chat DOIT être déployé sur le serveur AVANT livraison à Dominique — contrats types dans uploads/ozecar/contrats/, documents client dans uploads/ozecar/clients/ (via wp-deploy). Le serveur est la copie canonique, les outputs de chat sont éphémères. Vérifiés en place: albizias-contrat-supervision-v6.html + albizias-devis-R11.html (clients/), contrat-supervision-standard-v1.html (contrats/)."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-22",
+        "version_from": "1.569",
+        "version_to": "1.570",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Revue ME appliquée: 37 PATCH partnerExternalId (18 PL + catégories OZECAR/MONTA/PARTENAIRE/PROSPECT/REFUS/AFACTURER)",
+          "rapprochement.php v2.1 + écart D 'à facturer' au cockpit. Mappées 118/178, B 162→36 PDC, C rec 8342→3840€"
+        ]
+      },
       {
         "date": "2026-07-22",
         "version_from": "1.568",
@@ -3633,6 +3643,14 @@
         "cockpit": "cockpit.php expose bloc 'rapprochement' (kpi + top 6 A/B/C-récurrent depuis rapprochement.json). Widget 'Rapprochement facturation' ajouté à cockpit.html staging (2 colonnes: parc sans supervision facturée / récurrent orphelin avec lien fiche Pennylane). Backups: rapprochement-bak-20260722-v1.php.txt, cockpit.php.bak-20260722-105359.",
         "caveat_v2": "Heuristique par sujet de facture, pas par lignes. Une facture annuelle sans abonnement ni mot-clé serait classée matériel (non observé sur échantillon 100 factures).",
         "reste": "Intégrer les arbitrages de la revue des 60 teams (fichier chez Dominique) — chaque arbitrage = PATCH partnerExternalId via monta.php, puis fresh=1."
+      },
+      "REVUE_ME_APPLIQUEE_2026_07_22": {
+        "source": "Réponses Marie-Estelle en DM Slack (D09KALVQ03G, 22/07 16:26) — 37 teams arbitrées sur 60.",
+        "patches": "37/37 PATCH partnerExternalId OK via monta.php. 18 mappings PL validés contre /customers (dont Ajaccio=245687496 COMMUNE D AJACCIO, Bonifacio parkings+admin+voirie+minute=167849262, Dolce Vita=123853972 LA PINEDE, Pista Padel=247915449 BOMAX 72, Gedimat=120863868 SAS CASTELLI, Weldom=120863870 SAS CEMAG, Utile=120863872, Lauriers Roses=123960835, Balesi VO=123853931, Nova x2=145106358, Hôtel du Golfe=161846751 FPM, Bocca Bè=123853800 Mairie de Chisà, La Porta=247969034). Piège: team 'Camping Les Ramieres -  Curnier' a un double espace.",
+        "nouvelles_categories": "OZECAR (tiers/co-invest, bornes propres: Arrenagio, Vignale, Spar Ghiso, Chalet Asco, Roches Blanches) · MONTA (facturation directe: Ramieres, Sole e Vista, Poissonerie Lucchini) · PARTENAIRE (Chateau Pimo, Grimaldi TPI) · PROSPECT (La Vetta, Centre Médical Prunelli, CP Immobilier) · REFUS (Le California Vico, accès restreint) · AFACTURER = écart D.",
+        "script_v21": "rapprochement.php v2.1: catégories hors facturation exclues de l'écart B, AFACTURER = écart D 'à facturer confirmé' (5 teams/17 PDC: Genovese 8, Santa Giulia 3, Mairie Olmeto 2, Mont-St-Jean 2, Abartello 2 — revenu dormant). Cockpit.php expose top_D, widget MAJ staging.",
+        "resultats_v21": "Mappées 100→118. Non mappées 60→23 (écart B 162→36 PDC). C récurrent 16 clients/8 342€ → 10 clients/3 840€. Écart A monte 81→104 PDC: les nouveaux mappés Pista Padel (8), Gedimat (4) etc. ont un compte PL mais 0€ récurrent/12m — à facturer ou vérifier.",
+        "reste": "23 teams non arbitrées (ELC INVEST 8 PDC en tête — ME demande quel paiement bancaire a été confirmé, question pour Dominique). Ghisonaccia=123960330 COMMUNE DE GHISONACCIA validé mais non utilisé (les 2 teams Ghiso sont OZECAR). Écart A 104 PDC à qualifier team par team."
       }
     },
     "CONTRATS_REDIGES_2026_07_20": {
