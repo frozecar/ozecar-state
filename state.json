@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.555",
+    "version": "1.556",
     "updated": "2026-07-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -84,6 +84,15 @@
       "BOOT_v2_search_first": "OBLIGATOIRE pour tout nouveau chat (2026-07-21): (1) POST github-relay.php {\"action\":\"search\",\"q\":\"<mots du chantier>\"} -> sections pertinentes avec extraits. (2) {\"action\":\"read\",\"section\":[...]} sur les sections trouvees UNIQUEMENT. (3) L'index ({\"action\":\"read\",\"index\":true}) est AUTO-FUSIONNE par le relay: il liste TOUTES les sections reelles, il ne peut plus etre perime. (4) Jamais de lecture du state entier. (5) A chaque creation de section: ajouter une ligne descriptive dans _index."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-22",
+        "version_from": "1.555",
+        "version_to": "1.556",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "add_todo: création de todos via @ozecarbot (mention ou DM), pour tout membre de l'équipe — testé e2e"
+        ]
+      },
       {
         "date": "2026-07-22",
         "version_from": "1.554",
@@ -10643,6 +10652,7 @@
         "motif": "PDC en zéro à son insu (erreur OZECAR) — régularisation SEPA + e-facture",
         "ajout": "2026-07-22"
       }
-    ]
+    ],
+    "add_todo_2026_07_22": "Nouvel outil add_todo dans l'agent slack-bot.php : toute personne de l'équipe peut créer un todo pour dominique|mae|fred|julien en mentionnant @ozecarbot (ou en DM au bot). Création directe sans confirmation, type=task, visible au prochain digest du matin du destinataire. Special-case dans run_tool (POST OZ_TODOS_URL &add=1), documenté dans le prompt système. Testé end-to-end (mention simulée signée -> todo créé -> nettoyé). Backup pré-modif : api/backup-slack-bot-20260722c.php."
   }
 }
