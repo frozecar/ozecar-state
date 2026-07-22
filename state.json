@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.562",
+    "version": "1.563",
     "updated": "2026-07-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -84,6 +84,16 @@
       "BOOT_v2_search_first": "OBLIGATOIRE pour tout nouveau chat (2026-07-21): (1) POST github-relay.php {\"action\":\"search\",\"q\":\"<mots du chantier>\"} -> sections pertinentes avec extraits. (2) {\"action\":\"read\",\"section\":[...]} sur les sections trouvees UNIQUEMENT. (3) L'index ({\"action\":\"read\",\"index\":true}) est AUTO-FUSIONNE par le relay: il liste TOUTES les sections reelles, il ne peut plus etre perime. (4) Jamais de lecture du state entier. (5) A chaque creation de section: ajouter une ligne descriptive dans _index."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-22",
+        "version_from": "1.562",
+        "version_to": "1.563",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "rapprochement.php v2: filtrage récurrent vs matériel (écart A 47→81 PDC, C récurrent orphelin 16 clients/8 342€)",
+          "Cockpit: bloc rapprochement dans cockpit.php + widget dans cockpit.html staging"
+        ]
+      },
       {
         "date": "2026-07-22",
         "version_from": "1.561",
@@ -3557,7 +3567,14 @@
       "ecarts_v1_2026_07_22": "A (mappées+PDC mais 0€/12m): 12 teams / 47 PDC dont Europcar-Balesi 15, Groupe ADF 10, Cala di Greco 5. B (non mappées avec PDC): 55 teams / 162 PDC dont Ville d'Ajaccio 16. C (facturés PL 12m sans team): 44 clients / 77 639 € HT — inclut matériel one-shot, à interpréter.",
       "cron": "Job 8 ajouté à api/cron.php (backup api/cron-bak-20260722-rapprochement.php.txt): rapprochement hebdo lundi 05-07h UTC avec push Slack DM Dominique.",
       "caveat": "ht12m mélange supervision+matériel: l'écart A est conservateur. Affiner (filtrage lignes supervision) = v2.",
-      "premier_run": "2026-07-22, Slack OK."
+      "premier_run": "2026-07-22, Slack OK.",
+      "V2_2026_07_22": {
+        "fait": "rapprochement.php passé en v2: classification RÉCURRENT vs MATÉRIEL par facture sans appel API supplémentaire (billing_subscription présent OU pdf_invoice_subject contenant supervision/monétique/maintenance/abonnement/forfait). Écart A recalculé sur le récurrent uniquement.",
+        "chiffres_v2": "A: 81 PDC mappés avec 0€ récurrent/12m (vs 47 en v1 — la v1 masquait les clients facturés matériel sans supervision, ex. ETS C2C 6 678€ mat/0 rec/6 PDC, Ibis Porto Vecchio, Pinea Mare). C affiné: 16 clients PL avec du RÉCURRENT facturé (8 342€ HT/12m) sans team mappée — vraie fuite de mapping, dont plid 167849262 (Bonifacio parkings, cas en revue). Totaux 12m: récurrent 55 662€ / matériel 94 843€ HT.",
+        "cockpit": "cockpit.php expose bloc 'rapprochement' (kpi + top 6 A/B/C-récurrent depuis rapprochement.json). Widget 'Rapprochement facturation' ajouté à cockpit.html staging (2 colonnes: parc sans supervision facturée / récurrent orphelin avec lien fiche Pennylane). Backups: rapprochement-bak-20260722-v1.php.txt, cockpit.php.bak-20260722-105359.",
+        "caveat_v2": "Heuristique par sujet de facture, pas par lignes. Une facture annuelle sans abonnement ni mot-clé serait classée matériel (non observé sur échantillon 100 factures).",
+        "reste": "Intégrer les arbitrages de la revue des 60 teams (fichier chez Dominique) — chaque arbitrage = PATCH partnerExternalId via monta.php, puis fresh=1."
+      }
     }
   },
   "monta": {
