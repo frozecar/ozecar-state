@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.573",
+    "version": "1.574",
     "updated": "2026-07-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -86,6 +86,15 @@
       "REGLE_FICHIERS_CANONIQUES": "RÈGLE_FICHIERS_CANONIQUES (22/07/2026): tout contrat, devis ou document client produit en chat DOIT être déployé sur le serveur AVANT livraison à Dominique — contrats types dans uploads/ozecar/contrats/, documents client dans uploads/ozecar/clients/ (via wp-deploy). Le serveur est la copie canonique, les outputs de chat sont éphémères. Vérifiés en place: albizias-contrat-supervision-v6.html + albizias-devis-R11.html (clients/), contrat-supervision-standard-v1.html (contrats/)."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-22",
+        "version_from": "1.573",
+        "version_to": "1.574",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Section kits_canonique creee (correction Dominique): OZKM/OZKU = SKU perimes, flux kit-first via Livraison&Activation + invite self-service, SIM activee avec la borne, bibliotheque guides multi-marques existante, hotline=Fred. ozecar-kits.docx marque PERIME."
+        ]
+      },
       {
         "date": "2026-07-22",
         "version_from": "1.572",
@@ -10998,5 +11007,14 @@
       "top_cibles_10pdc_plus": "Audi Odicee Aix 77 (ChargeGuru) · Port Lympia Nice 40 · E.Leclerc Bourg-les-Valence 40 · Urbis Park Euromed 24 · Zenpark 13015 20 · Intersport Annonay 17 · Palais des Papes 16 · Baikowski 74 16 (ChargeGuru) · Maxi Zoo St-Mitre 14 (Virta) · Mercedes Toulon 12 · METRO Lyon-Gerland 12 · Gare Centre Avignon 12 — candidates cards DOMINIQUE avant le 05/10, sur son go (sequence validee: site lance -> ads -> prospection; ne pas bruler la liste avant).",
       "annuaire_installateurs": "18 societes type=PARTNER dans HubSpot avec contacts/emails/SIRET (source board Monday Installateurs 8298587781). Libelle association 'Installateur referent' (deal<->company, typeId 1) operationnel, 1er usage: SOLECO sur deal Soleco 509830947036. A trancher: Fabrice Le Chevalier = C2A ENERGIES (Monday) vs Izitek (Dominique 22/07) — associe aux deux en attendant."
     }
+  },
+  "kits_canonique": {
+    "_ATTENTION": "SOURCE DE VERITE KITS (correction Dominique 2026-07-22). Le document projet ozecar-kits.docx (avril 2026) est PERIME pour le flux et le nommage — ne jamais le citer sans recouper ici.",
+    "nommage": "OZKM / OZKU = anciens SKU PERIMES. Ne plus les utiliser comme noms de produits. Nommage courant: Kit Site / Kit Borne (one-shot 49 EUR + 29 EUR/PDC).",
+    "flux_kit_first": "Kit envoye (gratuit ou vendu) -> activation SUR SITE par l'installateur (ozecar.fr/activation) -> pipeline HubSpot Livraison & Activation -> l'installateur envoie une INVITE au client final -> le client retombe dans le pipeline Vente au stage 'Devis contrat envoye' en SELF-SERVICE -> signature en ligne -> derniere session d'onboarding (tarifs, config). Le probleme 'borne activee sans contrat' est donc RESOLU par design.",
+    "sim": "La SIM du kit est activee EN MEME TEMPS que l'activation de la borne — zero cout de connectivite sur les kits dormants.",
+    "guides_config": "Bibliotheque multi-marques EXISTANTE sur le site: guides dedies ABB AC, ABB DC, Schneider, Wallbox, Easee + guide OCPP general + base recherchable 80+ modeles (Alfen, Hager, Keba, Legrand, Autel, Vestel, Sungrow, Zaptec, EVBox, Delta, Kempower, Alpitronic, Circontrol...).",
+    "assistance": "Hotline technique installateurs = FRED, accompagnement au telephone. Son numero doit figurer sur la notice et le packaging.",
+    "packaging": "Plusieurs versions faites, AUCUNE validee par Dominique. Concept propose 22/07 (a trancher): 'boite reassort' — voir strategy.operation_kits_gratuits_installateurs."
   }
 }
