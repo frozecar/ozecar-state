@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.566",
+    "version": "1.567",
     "updated": "2026-07-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -84,6 +84,15 @@
       "BOOT_v2_search_first": "OBLIGATOIRE pour tout nouveau chat (2026-07-21): (1) POST github-relay.php {\"action\":\"search\",\"q\":\"<mots du chantier>\"} -> sections pertinentes avec extraits. (2) {\"action\":\"read\",\"section\":[...]} sur les sections trouvees UNIQUEMENT. (3) L'index ({\"action\":\"read\",\"index\":true}) est AUTO-FUSIONNE par le relay: il liste TOUTES les sections reelles, il ne peut plus etre perime. (4) Jamais de lecture du state entier. (5) A chaque creation de section: ajouter une ligne descriptive dans _index."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-22",
+        "version_from": "1.566",
+        "version_to": "1.567",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Contrat Albizias v6: clause J60 'prise d'effet de la facturation' integree art 6, ancrage LIVRAISON tranche (flag). Contrat supervision STANDARD v1 + avenant type generes et graves dans parc_clients.CONTRATS_REDIGES (reutilisables par tous les chats), _index mis a jour."
+        ]
+      },
       {
         "date": "2026-07-22",
         "version_from": "1.565",
@@ -964,7 +973,7 @@
     "products": "catalogue materiel (Zaptec AC, Sungrow DC uniquement, accessoires), kits OZKM/OZKU, guides bornes, partenariats constructeurs",
     "configurateur": "configurateur v2 (staging configurateur-v2-dev.html) : moteur multi-sites, options, materiel double vue, flux installateur, brief de portage, etapes restantes (avenant, webhook)",
     "esignature": "signature electronique : historique PandaDoc + decision eSignatures.com, templates",
-    "parc_clients": "verite facturation (cross-check 4 canaux, 10,38 EUR/PDC), dashboard parc, mapping partnerExternalId, migration Forfait Zero, clients",
+    "parc_clients": "verite facturation (cross-check 4 canaux, 10,38 EUR/PDC), dashboard parc, mapping partnerExternalId, migration Forfait Zero, clients · CONTRATS_REDIGES: contrat de supervision STANDARD v1 (modele 13 articles reutilisable), avenant type, clause J60 prise d'effet facturation (Albizias v6 integree).",
     "monta": "negociation Monta, plans du Hub, feature groups, OCPP, REGLE marque blanche (Monta jamais visible client)",
     "hubspot": "CRM : proprietes, pipelines, CPQ, curation des fiches",
     "pennylane": "facturation recurrente SEPA/GoCardless, architecture de paiement",
@@ -3608,7 +3617,10 @@
     },
     "CONTRATS_REDIGES_2026_07_20": {
       "clause_J60_a_inserer_2026_07_22": "CLAUSE RÉDIGÉE (Claude PM 22/07, découle de DECISION_2026_07_22_CYCLE_GAGNE_ACTIVATION), à insérer au contrat supervision_v2 art 3.4bis/3.5bis (section Redevances), docx chez Dominique (upload requis pour insertion physique) : « Prise d'effet de la facturation. La facturation des redevances de supervision prend effet, pour chaque point de charge, à la date de son activation sur la plateforme OZECAR. Par exception, si l'activation n'est pas intervenue dans un délai de soixante (60) jours calendaires suivant l'expédition du kit de connexion, la facturation prend effet de plein droit à l'issue de ce délai pour l'ensemble des points de charge visés au devis, l'absence d'activation étant alors réputée imputable au Client ou à son installateur. Le premier mois est facturé prorata temporis ; la facturation est ensuite alignée sur le mois calendaire. » Cohérence : prorata+alignement calendaire (réglage Monta existant), SEPA art 3.5. À inclure dans la relecture avocat.",
-      "clause_J60_variante_albizias_DC": "VARIANTE DC pour OZECAR-contrat-supervision-albizias.html (ajout Article 6, à intégrer en v6 par le chat Albizias) : « Prise d'effet de la facturation. Les redevances fixes prennent effet à la date de mise en service de la Station. Si la mise en service n'est pas intervenue dans un délai de soixante (60) jours suivant la livraison de la Station, pour une cause non imputable à OZECAR, les redevances prennent effet de plein droit à l'issue de ce délai. Le premier mois est facturé prorata temporis ; la facturation est ensuite alignée sur le mois calendaire. » ARBITRAGE OUVERT (Dominique, dans le chat Albizias) : ancrage du J+60 sur la LIVRAISON (protecteur OZECAR, mais fait courir la facturation si Enedis traîne) ou sur le RACCORDEMENT effectif (protecteur relation client sur un contrat 254k). Déclencheur DC = mise en service, pas expédition kit."
+      "clause_J60_variante_albizias_DC": "VARIANTE DC pour OZECAR-contrat-supervision-albizias.html (ajout Article 6, à intégrer en v6 par le chat Albizias) : « Prise d'effet de la facturation. Les redevances fixes prennent effet à la date de mise en service de la Station. Si la mise en service n'est pas intervenue dans un délai de soixante (60) jours suivant la livraison de la Station, pour une cause non imputable à OZECAR, les redevances prennent effet de plein droit à l'issue de ce délai. Le premier mois est facturé prorata temporis ; la facturation est ensuite alignée sur le mois calendaire. » ARBITRAGE TRANCHE 22/07 (Claude PM, flag a Dominique): LIVRAISON : ancrage du J+60 sur la LIVRAISON (protecteur OZECAR, mais fait courir la facturation si Enedis traîne) ou sur le RACCORDEMENT effectif (protecteur relation client sur un contrat 254k). Déclencheur DC = mise en service, pas expédition kit.",
+      "STATUT_2026_07_22": "INTEGRE: clause 'Prise d'effet de la facturation' inseree a l'Article 6 du contrat Albizias v6 (OZECAR-contrat-supervision-albizias.html). Ancrage du J+60 TRANCHE sur la LIVRAISON de la Station sur site (rationale: (1) l'annee 1 offerte neutralise le risque relationnel 'Enedis traine' — le J+60 ne declenche que le decompte de l'annee offerte, pas une facturation reelle; (2) le raccordement est partiellement sous coordination OZECAR/Giga = ancrage contestable; (3) carve-out 'cause non imputable a OZECAR' protege le client si le retard vient de nous). Prorata temporis puis alignement calendaire, coherent reglage Monta. Dominique peut inverser vers 'raccordement' en 1 min si desaccord.",
+      "CONTRAT_STANDARD_v1": "MODELE REUTILISABLE PAR TOUS LES CHATS: OZECAR-contrat-supervision-standard.html (livre a Dominique 22/07, a porter en template PandaDoc). Structure 13 articles + 5 bis + 10.2: 1 Objet (client proprietaire bornes/tarifs/recettes) · 2 Services (supervision 24/7, monetique AFIR, reversement mensuel, portail, hotline, itinerance, maintenance opt.) · 3 Redevances fixes [plan x N PDC, annee 1 offerte optionnelle, indexation Syntec min 3%] · 4 Frais variables [selon plan: Enterprise 6/12 plancher; monetique incluse] · 5 Duree [12/24/36 mois + tacite 12, preavis 3 mois] · 5 bis Clause de developpement [nouvelles stations aux memes conditions par avenant] · 6 Reversements (Monta ApS mention cadree, SEPA 15j) + CLAUSE J60 prise d'effet [DC: livraison / AC: expedition kit] · 7 SLA (99,5%, bloquant 4h ouvrees/site 5j, non-bloquant 48h, hotline 24/7) · 8 Obligations client · 9 Responsabilite plafonnee 12 mois de redevances · 10 Cession libre si transmission + 10.2 GARANTIE DE CONTINUITE (sortie uniquement si SLA non tenus 3 mois consecutifs dans les 12 mois post-changement de controle, avantages acquis) · 11 RGPD · 12 Resiliation anticipee (recalcul des avantages) · 13 Droit francais, T.com Bastia. REGLES: sieges Ghisonaccia, jamais Monta hors mention art 6, trame a valider avocat avant premiere signature de chaque variante.",
+      "AVENANT_TYPE_v1": "OZECAR-avenant-supervision-type.html: 4 articles (objet: rattachement station 5 bis / extension PDC / modification · perimetre · conditions identiques avec duree propre + clause J60 applicable · portee). Usage principal: rattachement des futures stations Albizias et de tout client multi-sites."
     }
   },
   "monta": {
