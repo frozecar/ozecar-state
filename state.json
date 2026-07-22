@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.564",
+    "version": "1.565",
     "updated": "2026-07-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -84,6 +84,15 @@
       "BOOT_v2_search_first": "OBLIGATOIRE pour tout nouveau chat (2026-07-21): (1) POST github-relay.php {\"action\":\"search\",\"q\":\"<mots du chantier>\"} -> sections pertinentes avec extraits. (2) {\"action\":\"read\",\"section\":[...]} sur les sections trouvees UNIQUEMENT. (3) L'index ({\"action\":\"read\",\"index\":true}) est AUTO-FUSIONNE par le relay: il liste TOUTES les sections reelles, il ne peut plus etre perime. (4) Jamais de lecture du state entier. (5) A chaque creation de section: ajouter une ligne descriptive dans _index."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-22",
+        "version_from": "1.564",
+        "version_to": "1.565",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Clause J+60 variante DC Albizias rédigée (art 6, mise en service, arbitrage livraison vs raccordement ouvert) — intégration v6 par le chat Albizias"
+        ]
+      },
       {
         "date": "2026-07-22",
         "version_from": "1.563",
@@ -3587,7 +3596,8 @@
       }
     },
     "CONTRATS_REDIGES_2026_07_20": {
-      "clause_J60_a_inserer_2026_07_22": "CLAUSE RÉDIGÉE (Claude PM 22/07, découle de DECISION_2026_07_22_CYCLE_GAGNE_ACTIVATION), à insérer au contrat supervision_v2 art 3.4bis/3.5bis (section Redevances), docx chez Dominique (upload requis pour insertion physique) : « Prise d'effet de la facturation. La facturation des redevances de supervision prend effet, pour chaque point de charge, à la date de son activation sur la plateforme OZECAR. Par exception, si l'activation n'est pas intervenue dans un délai de soixante (60) jours calendaires suivant l'expédition du kit de connexion, la facturation prend effet de plein droit à l'issue de ce délai pour l'ensemble des points de charge visés au devis, l'absence d'activation étant alors réputée imputable au Client ou à son installateur. Le premier mois est facturé prorata temporis ; la facturation est ensuite alignée sur le mois calendaire. » Cohérence : prorata+alignement calendaire (réglage Monta existant), SEPA art 3.5. À inclure dans la relecture avocat."
+      "clause_J60_a_inserer_2026_07_22": "CLAUSE RÉDIGÉE (Claude PM 22/07, découle de DECISION_2026_07_22_CYCLE_GAGNE_ACTIVATION), à insérer au contrat supervision_v2 art 3.4bis/3.5bis (section Redevances), docx chez Dominique (upload requis pour insertion physique) : « Prise d'effet de la facturation. La facturation des redevances de supervision prend effet, pour chaque point de charge, à la date de son activation sur la plateforme OZECAR. Par exception, si l'activation n'est pas intervenue dans un délai de soixante (60) jours calendaires suivant l'expédition du kit de connexion, la facturation prend effet de plein droit à l'issue de ce délai pour l'ensemble des points de charge visés au devis, l'absence d'activation étant alors réputée imputable au Client ou à son installateur. Le premier mois est facturé prorata temporis ; la facturation est ensuite alignée sur le mois calendaire. » Cohérence : prorata+alignement calendaire (réglage Monta existant), SEPA art 3.5. À inclure dans la relecture avocat.",
+      "clause_J60_variante_albizias_DC": "VARIANTE DC pour OZECAR-contrat-supervision-albizias.html (ajout Article 6, à intégrer en v6 par le chat Albizias) : « Prise d'effet de la facturation. Les redevances fixes prennent effet à la date de mise en service de la Station. Si la mise en service n'est pas intervenue dans un délai de soixante (60) jours suivant la livraison de la Station, pour une cause non imputable à OZECAR, les redevances prennent effet de plein droit à l'issue de ce délai. Le premier mois est facturé prorata temporis ; la facturation est ensuite alignée sur le mois calendaire. » ARBITRAGE OUVERT (Dominique, dans le chat Albizias) : ancrage du J+60 sur la LIVRAISON (protecteur OZECAR, mais fait courir la facturation si Enedis traîne) ou sur le RACCORDEMENT effectif (protecteur relation client sur un contrat 254k). Déclencheur DC = mise en service, pas expédition kit."
     }
   },
   "monta": {
