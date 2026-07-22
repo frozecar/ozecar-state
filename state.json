@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.568",
+    "version": "1.569",
     "updated": "2026-07-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -82,9 +82,19 @@
         "avant_de_fermer": "Toujours graver l'etat du chantier dans le state AVANT de basculer, pour que le nouveau chat reprenne sans perte."
       },
       "BOOT_v2_search_first": "OBLIGATOIRE pour tout nouveau chat (2026-07-21): (1) POST github-relay.php {\"action\":\"search\",\"q\":\"<mots du chantier>\"} -> sections pertinentes avec extraits. (2) {\"action\":\"read\",\"section\":[...]} sur les sections trouvees UNIQUEMENT. (3) L'index ({\"action\":\"read\",\"index\":true}) est AUTO-FUSIONNE par le relay: il liste TOUTES les sections reelles, il ne peut plus etre perime. (4) Jamais de lecture du state entier. (5) A chaque creation de section: ajouter une ligne descriptive dans _index.",
-      "REGLE_DOCUMENTS_CLIENTS_SERVEUR": "REGLE DOCUMENTS CLIENTS (2026-07-22): tout contrat/devis/document client produit en chat est DEPLOYE SUR LE SERVEUR AVANT LIVRAISON a Dominique. Copies canoniques (lisibles/modifiables par tout chat via wp-deploy sur ozecar.fr): wp-content/uploads/ozecar/clients/ (documents nominatifs, ex: albizias-contrat-supervision-v6.html, albizias-devis-R11.html, ristorcelli-*) et wp-content/uploads/ozecar/contrats/ (modeles: contrat-supervision-standard-v1.html, avenant-supervision-type-v1.html). Nommage: <client>-<type>-<version>.html ou <modele>-v<N>.html. Toute modification = lire la version serveur d'abord (elle prime sur le contexte du chat), ecrire la nouvelle version, referencer le chemin dans le state."
+      "REGLE_DOCUMENTS_CLIENTS_SERVEUR": "REGLE DOCUMENTS CLIENTS (2026-07-22): tout contrat/devis/document client produit en chat est DEPLOYE SUR LE SERVEUR AVANT LIVRAISON a Dominique. Copies canoniques (lisibles/modifiables par tout chat via wp-deploy sur ozecar.fr): wp-content/uploads/ozecar/clients/ (documents nominatifs, ex: albizias-contrat-supervision-v6.html, albizias-devis-R11.html, ristorcelli-*) et wp-content/uploads/ozecar/contrats/ (modeles: contrat-supervision-standard-v1.html, avenant-supervision-type-v1.html). Nommage: <client>-<type>-<version>.html ou <modele>-v<N>.html. Toute modification = lire la version serveur d'abord (elle prime sur le contexte du chat), ecrire la nouvelle version, referencer le chemin dans le state.",
+      "REGLE_FICHIERS_CANONIQUES": "RÈGLE_FICHIERS_CANONIQUES (22/07/2026): tout contrat, devis ou document client produit en chat DOIT être déployé sur le serveur AVANT livraison à Dominique — contrats types dans uploads/ozecar/contrats/, documents client dans uploads/ozecar/clients/ (via wp-deploy). Le serveur est la copie canonique, les outputs de chat sont éphémères. Vérifiés en place: albizias-contrat-supervision-v6.html + albizias-devis-R11.html (clients/), contrat-supervision-standard-v1.html (contrats/)."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-22",
+        "version_from": "1.568",
+        "version_to": "1.569",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "RÈGLE_FICHIERS_CANONIQUES au protocole: contrats/documents client déployés serveur avant livraison (outputs chat = éphémères). Fichiers Albizias v6 + standard v1 vérifiés en place avec clause J+60."
+        ]
+      },
       {
         "date": "2026-07-22",
         "version_from": "1.567",
