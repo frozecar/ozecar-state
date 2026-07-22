@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.572",
+    "version": "1.573",
     "updated": "2026-07-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -86,6 +86,15 @@
       "REGLE_FICHIERS_CANONIQUES": "RÈGLE_FICHIERS_CANONIQUES (22/07/2026): tout contrat, devis ou document client produit en chat DOIT être déployé sur le serveur AVANT livraison à Dominique — contrats types dans uploads/ozecar/contrats/, documents client dans uploads/ozecar/clients/ (via wp-deploy). Le serveur est la copie canonique, les outputs de chat sont éphémères. Vérifiés en place: albizias-contrat-supervision-v6.html + albizias-devis-R11.html (clients/), contrat-supervision-standard-v1.html (contrats/)."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-22",
+        "version_from": "1.572",
+        "version_to": "1.573",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Shortlist vague 1 kits gratuits installateurs LIVREE: 10 profils actifs/influents (6x dept13, 2x dept83, 2x dept33) avec preuves d'activite web, IDs HubSpot et telephones — strategy.operation_kits_gratuits_installateurs.shortlist_vague_1. Courrier colis 1 page drafte en chat. En attente validation Dominique puis prepa Fred (monday 12603366006)."
+        ]
+      },
       {
         "date": "2026-07-22",
         "version_from": "1.571",
@@ -8990,7 +8999,84 @@
         "[Dominique] Valider shortlist + confirmer quantite Sungrow + go production",
         "[Fred] Preparer dotations (5 OZKM + 10 Kit Borne x N) des liste validee — stock board 18409310538",
         "[Claude] Courrier d'accompagnement du colis (1 page: regle 100% marge, reassort en 1 appel, activation 48h)"
-      ]
+      ],
+      "shortlist_vague_1": {
+        "statut": "LIVREE 2026-07-22 — en attente validation Dominique",
+        "methode": "594 Qualifelec HubSpot filtres 13/83/33, exclusion majors (SNEF/SPIE/Eiffage/Engie/Cegelec/Ineo) et concurrent CPO Electric 55 Charging, verification web activite (site vivant, page IRVE dediee, avis, presse)",
+        "profils": [
+          {
+            "nom": "IBORNE",
+            "ville": "Chateauneuf-les-Martigues (13)",
+            "tel": "0634593623",
+            "hubspot_id": "439401200849",
+            "preuve": "Pure player borne, site dedie + guides choix borne, Qualifelec IRVE"
+          },
+          {
+            "nom": "WATTSELECT",
+            "ville": "La Ciotat (13)",
+            "tel": "0631248278",
+            "hubspot_id": "439355942113",
+            "preuve": "wattselect.fr page bornes dediee, avis Google, gerant Erwan Perico identifie"
+          },
+          {
+            "nom": "ELEC3CITY",
+            "ville": "Marseille 9e (13)",
+            "tel": "0651380945",
+            "hubspot_id": "439401200848",
+            "preuve": "elec3city.fr, IRVE N2, publie ses chantiers (borne Witty Hager Aubagne)"
+          },
+          {
+            "nom": "SATE",
+            "ville": "Marseille 11e (13)",
+            "tel": "0665177898",
+            "hubspot_id": "439401200857",
+            "preuve": "sate-elec.fr page IRVE complete, rayonne 13+83, contact Adrien Darragon"
+          },
+          {
+            "nom": "MANEO RESEAUX / MANEO ENERGIE",
+            "ville": "Marseille 15e (13)",
+            "tel": "0750033237",
+            "hubspot_id": "439401200887",
+            "preuve": "maneo-energie.fr landing pages IRVE par ville (SEO actif), structure QHSE"
+          },
+          {
+            "nom": "ACTIV'ENVIRONNEMENT",
+            "ville": "Salon-de-Provence (13)",
+            "tel": "0675800915",
+            "hubspot_id": "439355943106",
+            "preuve": "Blog IRVE actif multi-villes, contact Olivier Rommens"
+          },
+          {
+            "nom": "NEXTEK",
+            "ville": "Nans-les-Pins (83)",
+            "tel": "0683395199",
+            "hubspot_id": "439412046059",
+            "preuve": "Article Tesla-Mag dedie, PV+bornes, label Advenir, contact U. Courtois"
+          },
+          {
+            "nom": "CHAUCHET",
+            "ville": "La Londe-les-Maures (83)",
+            "tel": "0609585449",
+            "hubspot_id": "439395818713",
+            "preuve": "chauchet.net vivant, reportage video Legrand (domotique+borne Green'up), IRVE"
+          },
+          {
+            "nom": "ETRELEC",
+            "ville": "Blanquefort (33)",
+            "tel": "0556358460",
+            "hubspot_id": "439430740199",
+            "preuve": "5.0/5 sur 183 avis Google dont 35 specifiques bornes — plus forte preuve sociale du lot"
+          },
+          {
+            "nom": "ENERGICAL",
+            "ville": "Sainte-Eulalie (33)",
+            "tel": "0533895090",
+            "hubspot_id": "439430741220",
+            "preuve": "energical.fr, showroom, partenaire EDF, 10 ans Gironde, service technique structure"
+          }
+        ],
+        "courrier_colis": "Draft 1 page livre en chat 2026-07-22 (regle 100pct marge, reassort 1 appel, activation 48h) — en attente validation"
+      }
     }
   },
   "partenaires": {
