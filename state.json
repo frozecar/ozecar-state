@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.561",
+    "version": "1.562",
     "updated": "2026-07-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -84,6 +84,16 @@
       "BOOT_v2_search_first": "OBLIGATOIRE pour tout nouveau chat (2026-07-21): (1) POST github-relay.php {\"action\":\"search\",\"q\":\"<mots du chantier>\"} -> sections pertinentes avec extraits. (2) {\"action\":\"read\",\"section\":[...]} sur les sections trouvees UNIQUEMENT. (3) L'index ({\"action\":\"read\",\"index\":true}) est AUTO-FUSIONNE par le relay: il liste TOUTES les sections reelles, il ne peut plus etre perime. (4) Jamais de lecture du state entier. (5) A chaque creation de section: ajouter une ligne descriptive dans _index."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-22",
+        "version_from": "1.561",
+        "version_to": "1.562",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Mapping partnerExternalId: +41 teams PL (100/178) + 17 INTERNE, 60 en revue (fichier livré)",
+          "api/rapprochement.php déployé (écarts A/B/C supervisé vs facturé) + Job 8 cron hebdo + rapprochement.json cockpit"
+        ]
+      },
       {
         "date": "2026-07-22",
         "version_from": "1.560",
@@ -2760,7 +2770,12 @@
       "fait": "59 teams mappees automatiquement le 2026-07-15 via PATCH /teams/{id} body {partnerExternalId}: email exact 47, domaine unique 9, nom exact 3. Verifie en relecture. Fuzzy (2) exclus volontairement.",
       "reste": "96 teams / 307 PDC sans mapping -> /mnt/user-data/outputs/ozecar-teams-sans-mapping.txt (revue manuelle Dominique/Marie-Estelle). Monday MAP-01.",
       "methode_technique": "Le proxy ozecar.fr/api/monta.php supporte method+body: {\"path\":\"/teams/{id}\",\"method\":\"PATCH\",\"body\":{\"partnerExternalId\":\"PL:123\"}} -> retourne l'objet team modifie.",
-      "a_automatiser": "(1) le webhook post-signature du configurateur ecrit partnerExternalId a la creation de la team; (2) controle mensuel des teams sans mapping."
+      "a_automatiser": "(1) le webhook post-signature du configurateur ecrit partnerExternalId a la creation de la team; (2) controle mensuel des teams sans mapping.",
+      "MAJ_2026_07_22": {
+        "fait": "41 nouvelles teams mappées PL: (26 nom-exact via companyName/entité légale + 15 curées à la main: Valabre, Pinede Calvi, Comepa, Canali, Apéritif Provençal, Terra Marina, Castel d'Orcino, Le Tourisme Zonza, Marinca, Intemporelle, Isula Prestige, Vesna Rossa, Villas Mandarine, Taxi Gordon->Jean Gordon, Renault Bastia->BALESI AUTOMOBILE). 17 teams internes/test taguées partnerExternalId='INTERNE'. Total: 100/178 mappées PL + 18 internes = 60 en revue.",
+        "revue_dominique": "/mnt/user-data/outputs/ozecar-teams-revue-mapping-2026-07-22.txt (60 teams, avec hypothèses). Cas à trancher: Bonifacio (2 IDs PL 120863861/167849262 pour mairie+5 parkings/voirie), Ghisonaccia (2 IDs), La Porta (2 IDs), Ajaccio (2 IDs, gros client wallet), Balesi-VO, ELC INVEST (payeur PL confirmé mais aucune fiche client PL trouvée), Le Genovese, teams '- Nova' (facturées via NOVA ENERGIE 145106358 ?).",
+        "source_pl": "Les 140 clients Pennylane extraits via miroir HubSpot du sync (propriété pennylane_customer_id), pas via API PL directe."
+      }
     },
     "parc_clients_hubspot_2026_07_11": {
       "pipelines_REELS_verifies": "'Livraison & Activation' (id=default: Kit à préparer → Kit expédié → Activation en cours → Contrat envoyé → Contrat signé → Supervision active → Fermé gagné/perdu) et 'Vente' (id=3747862733: Nouveau → Qualifié → Démo planifiée → Devis à faire → Devis-contrat envoyé → Gagné → Perdu). Les anciens noms Supervision/L&Q sont PERIMES.",
@@ -3536,6 +3551,13 @@
         "maintenance_v2": "Redige (docx). Pur service SANS materiel (clause transfert responsabilite SUPPRIMEE), independant supervision. Art 2 = grille N1(distance)/N2(+visite=annexe1)/N3(48h ouvrees)/N4(24h ouvrees)/Premium(<24h devis). Sous-traitance partenaires autorisee (art 1). Pieces+MO en sus hors visite. Annexe 1 = 18 operations preventives (tableau conserve du PDF). Art 7.3 TVA 20%. SEPA. Art 8 coterminal supervision + tacite reconduction. Plafond 12m. Retractation. TC Bastia.",
         "reste": "Validation Dominique article par article + RELECTURE AVOCAT avant envoi masse. Clause avenant ajout bornes: a decider (dans corps supervision ou doc avenant separe). Fichiers: outputs OZECAR_Contrat_supervision_v2.docx + OZECAR_Contrat_maintenance_v2.docx."
       }
+    },
+    "RAPPROCHEMENT_AUTOMATISE_2026_07_22": {
+      "script": "api/rapprochement.php (clé ozrp_ dans le fichier). Jointure Monta teams+charge-points vs factures Pennylane 12m glissants via PL:{customer_id}. Sortie: uploads/ozecar/rapprochement.json (cache 6h, ?fresh=1). ?slack=1 -> résumé DM Dominique.",
+      "ecarts_v1_2026_07_22": "A (mappées+PDC mais 0€/12m): 12 teams / 47 PDC dont Europcar-Balesi 15, Groupe ADF 10, Cala di Greco 5. B (non mappées avec PDC): 55 teams / 162 PDC dont Ville d'Ajaccio 16. C (facturés PL 12m sans team): 44 clients / 77 639 € HT — inclut matériel one-shot, à interpréter.",
+      "cron": "Job 8 ajouté à api/cron.php (backup api/cron-bak-20260722-rapprochement.php.txt): rapprochement hebdo lundi 05-07h UTC avec push Slack DM Dominique.",
+      "caveat": "ht12m mélange supervision+matériel: l'écart A est conservateur. Affiner (filtrage lignes supervision) = v2.",
+      "premier_run": "2026-07-22, Slack OK."
     }
   },
   "monta": {
