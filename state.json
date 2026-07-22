@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.549",
+    "version": "1.550",
     "updated": "2026-07-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -84,6 +84,16 @@
       "BOOT_v2_search_first": "OBLIGATOIRE pour tout nouveau chat (2026-07-21): (1) POST github-relay.php {\"action\":\"search\",\"q\":\"<mots du chantier>\"} -> sections pertinentes avec extraits. (2) {\"action\":\"read\",\"section\":[...]} sur les sections trouvees UNIQUEMENT. (3) L'index ({\"action\":\"read\",\"index\":true}) est AUTO-FUSIONNE par le relay: il liste TOUTES les sections reelles, il ne peut plus etre perime. (4) Jamais de lecture du state entier. (5) A chaque creation de section: ajouter une ligne descriptive dans _index."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-22",
+        "version_from": "1.549",
+        "version_to": "1.550",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "FIX boutons todos: define OZ_TODOS_URL remonté avant handle_interaction (fatale 500 sur chaque tap)",
+          "Testé local + prod (200), backup pré-fix 20260722b"
+        ]
+      },
       {
         "date": "2026-07-22",
         "version_from": "1.548",
@@ -10575,6 +10585,7 @@
       "a_enrichir": "Sans tel en base (règle jamais de numéro inventé): U Capu Biancu 6 PDC (Mucchieli) · Cala di Greco + Terra Marina 7 PDC (Amadei) · Jardins de Santa Giulia 3 (Ladu) · Commune Olmeto 2 · Le Relax 2 (Andreani) · Commune Serra di Fiumorbo 2 (Profizi) · Super Souk 1 · Casa Orsu Maria 1 · Sarl Pbp 1. Prochain batch après enrichissement web/annuaire.",
       "digests_manuels": "Job 5 verrouillé (todos_last_day + fenêtre 05-07 UTC passée) -> digests postés manuellement via bot ozecarbot (U0BDB9M3GG5) dans #todo-mae + #todo-dominique le 22/07. Boutons fonctionnels (postés par le bot, pas le connecteur MCP).",
       "bot_canaux": "conversations.join échoue sur canaux privés -> Dominique a invité @ozecarbot dans les 5 canaux le 22/07. Cron demain matin OK."
-    }
+    },
+    "fix_2026_07_22_boutons": "BUG: fatale 500 sur tous les taps oz_todo_done/oz_call_result_* — define('OZ_TODOS_URL') placé ligne 889, APRÈS le handle_interaction (ligne 44) exécuté inline: constante inexistante au runtime (les fonctions sont hoistées, pas les define). FIX: define remonté juste après le require slack-bot-config.php. Testé en local (php -S + tap signé synthétique: 200 sans fatale) puis prod (200). Backup pré-fix: api/backup-slack-bot-20260722b.php. LEÇON: dans slack-bot.php tout define utilisé par les handlers doit être AVANT la ligne 44."
   }
 }
