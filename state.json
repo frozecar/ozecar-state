@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.557",
+    "version": "1.558",
     "updated": "2026-07-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -84,6 +84,17 @@
       "BOOT_v2_search_first": "OBLIGATOIRE pour tout nouveau chat (2026-07-21): (1) POST github-relay.php {\"action\":\"search\",\"q\":\"<mots du chantier>\"} -> sections pertinentes avec extraits. (2) {\"action\":\"read\",\"section\":[...]} sur les sections trouvees UNIQUEMENT. (3) L'index ({\"action\":\"read\",\"index\":true}) est AUTO-FUSIONNE par le relay: il liste TOUTES les sections reelles, il ne peut plus etre perime. (4) Jamais de lecture du state entier. (5) A chaque creation de section: ajouter une ligne descriptive dans _index."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-22",
+        "version_from": "1.557",
+        "version_to": "1.558",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "ERRATUM+rollback nettoyage pipeline (mapping 27/05) puis réapplication: Gagnés=Comepa/Arinella/Piazza d'Olmo/Natali, OEHC+Vétérinaire rétablis Qualifié",
+          "Nouveau deal CP Immo Supervision 511939293373 (Monta 4531071 existant)",
+          "Cards corrigées: Serpollet v2, OEHC rétablie, Agriel"
+        ]
+      },
       {
         "date": "2026-07-22",
         "version_from": "1.556",
@@ -10667,14 +10678,16 @@
     ],
     "add_todo_2026_07_22": "Nouvel outil add_todo dans l'agent slack-bot.php : toute personne de l'équipe peut créer un todo pour dominique|mae|fred|julien en mentionnant @ozecarbot (ou en DM au bot). Création directe sans confirmation, type=task, visible au prochain digest du matin du destinataire. Special-case dans run_tool (POST OZ_TODOS_URL &add=1), documenté dans le prompt système. Testé end-to-end (mention simulée signée -> todo créé -> nettoyé). Backup pré-modif : api/backup-slack-bot-20260722c.php.",
     "nettoyage_pipeline_2026_07_22": {
-      "gagnes": "OEHC (510334425321, marché signé en mai — card todo c283f0c9 fermée) · EIG Zaptec (504577697986, réalisé) · EIB Zaptec AO (504577796344, réalisé) · Agriel/ELGECE (504571004116, accepté 2x Zaptec+pied)",
-      "perdus": "Vétérinaire BFC (509226528971, devis test) · Piazza d'Olmo (504496148713, devis expiré)",
-      "cp_immo": "Deal 504571845877 renommé 'CP Immo (ex-Entreprise Natali) — Proposition Supervision' + note 506033673411. PandaDoc expiré, client attend l'installation, prospect assuré. Premier devis à envoyer depuis HubSpot nouvelle version. GROUPE MONTA DÉJÀ CRÉÉ ID 4531071, bornes créées — ne pas recréer.",
-      "installateurs_partenaires": "Contacts créés/maj (jobtitle 'Installateur partenaire') : Alexandre Vincent NOVA Énergie (754362865902, existait) · Anthony Ceccareli ELGECE (828019974352) · Abdellah Zarkani EIB Calvi (827997590772) · Luc Xiong Serpollet (827981767918, sans email)",
-      "relances_cards": "Serpollet 3 devis (c239bcf4) · EIB matériel+AO (98873fd7) · Rossi post-saison due 2026-10-01 (0e46cf5e, manque de puissance)",
-      "en_attente_inchanges": "Albizias DC · Serpollet St Alban · EIB 05/26 · Arinella (via NOVA) · Client NOVA · Strazzabosco · CP Immo · NOVA devis matériel (potentiel partenaire) · EIB AO supervision · Comepa · Aromazone · Rossi",
-      "clarification_auto_vs_manuel": "VENTE: automatismes créent seulement (05 démo->Démo planifiée, BOAMP->Qualifié, /devis+configurateur->Devis à faire puis 08->Devis-contrat envoyé). Gagné/Perdu/Qualifié = toujours manuel. LIVRAISON: 01 crée Kit à préparer, 03/04 avancent auto, 02 webhook activation.",
-      "backlog": "Généraliser la propriété ozecar_origine à tous les canaux de création de deals pour tracer l'origine de chaque card"
+      "ERRATUM": "Premier passage annulé (mapping erroné — Dominique numérotait sur la liste MCP du batch 27/05, pas la liste live). Rollback complet puis réapplication correcte ci-dessous.",
+      "gagnes": "Comepa (504572371161, signé en mai) · Arinella Bianca (504569713884, réalisé) · Piazza d'Olmo (504496148713, réalisé) · Natali matériel (504571845877, ELGECE accepté 2x Zaptec + pied)",
+      "rollbacks": "OEHC → Qualifié (renouvellement EN COURS, deadline tient toujours) · Vétérinaire BFC → Qualifié (réel) · EIG, EIB Zaptec AO, Agriel → Devis-contrat envoyé",
+      "cp_immo": "NOUVEAU deal 511939293373 'CP Immo — Proposition Supervision' (Devis à faire) + note 506036537575. Ex-Natali. PandaDoc expiré, client attend l'installation, prospect assuré, premier devis à envoyer depuis HubSpot. GROUPE MONTA DÉJÀ CRÉÉ ID 4531071 + bornes — ne pas recréer.",
+      "installateurs_partenaires": "INCHANGÉ (valide dans les 2 mappings) : Alexandre Vincent NOVA (754362865902) · Anthony Ceccareli ELGECE (828019974352) · Abdellah Zarkani EIB Calvi (827997590772) · Luc Xiong Serpollet (827981767918). EIG = potentiel partenaire installateur (deal ouvert).",
+      "statuts_valides_par_dominique": "Castelli=test (déjà archivé) · Sole e Vista=expiré (déjà archivé) · Terrasses d'Arsella=RÉEL en attente mais deal ARCHIVÉ dans HubSpot — à recréer ? · Client NOVA + NOVA matériel = devis via NOVA pour même client, en attente · EIB 05/26 = hôtel, à relancer · EIB AO x2 (matériel+supervision) = en attente · Aromazone = en attente, rappeler Luc · Rossi = post-saison (manque puissance)",
+      "cards": "Serpollet corrigée (b568b9cf) · OEHC RÉTABLIE (02e54d46, deadline toujours active) · Agriel relance (16ea4f53) · EIB (98873fd7) · Rossi due 01/10 (0e46cf5e)",
+      "questions_ouvertes": "#11 Strazzabosco = 'll' (statut illisible, à clarifier) · Terrasses d'Arsella réel mais archivé (recréer ?)",
+      "clarification_auto_vs_manuel": "VENTE: automatismes créent seulement (05->Démo planifiée, BOAMP->Qualifié, /devis+configurateur->Devis à faire puis 08->Devis-contrat envoyé). Gagné/Perdu = toujours manuel. LIVRAISON: 01 crée, 03/04 avancent auto, 02 webhook activation.",
+      "backlog": "Généraliser ozecar_origine à tous les canaux de création de deals"
     }
   }
 }
