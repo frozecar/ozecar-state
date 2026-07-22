@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.565",
+    "version": "1.566",
     "updated": "2026-07-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -84,6 +84,17 @@
       "BOOT_v2_search_first": "OBLIGATOIRE pour tout nouveau chat (2026-07-21): (1) POST github-relay.php {\"action\":\"search\",\"q\":\"<mots du chantier>\"} -> sections pertinentes avec extraits. (2) {\"action\":\"read\",\"section\":[...]} sur les sections trouvees UNIQUEMENT. (3) L'index ({\"action\":\"read\",\"index\":true}) est AUTO-FUSIONNE par le relay: il liste TOUTES les sections reelles, il ne peut plus etre perime. (4) Jamais de lecture du state entier. (5) A chaque creation de section: ajouter une ligne descriptive dans _index."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-22",
+        "version_from": "1.565",
+        "version_to": "1.566",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "GAGNE-ORCHESTRATION point 1: aucun evenement Stripe reel n'a jamais atteint le hook (whsec placeholder -> 503 fail-closed, cle encore rk_test_). Analyse des logs DRY sans objet, bloque sur 3 actions Dominique.",
+          "SECURITE: fuite api/stripe-hook.log (public, email client + deal id) corrigee — log migre vers stripe-hook-log.php avec garde exit, ancien fichier purge (404).",
+          "Constat point 2: pandadoc-signed.php cree le deal L&A mais pas le groupe Monta ni les bornes — a construire."
+        ]
+      },
       {
         "date": "2026-07-22",
         "version_from": "1.564",
@@ -10806,6 +10817,8 @@
     "DIRECTIVE_STRIPE_GAGNE": "DIRECTIVE Dominique 22/07/2026 : signal de victoire = client signe + remplit Stripe avec IBAN (mandat SEPA). Claude peut passer les deals en Gagné lui-même sur ce signal. À AUTOMATISER (webhook-first) : webhook Stripe (setup_intent.succeeded / customer.subscription.created) -> Make -> match client -> PATCH deal HubSpot en Gagné 5215721691 + tag ozecar_origine. Chantier dédié à ouvrir.",
     "DIRECTIVE_STRIPE_GAGNE_STATUT": "2026-07-22: chantier STRIPE-GAGNE-AUTO livre en mode dry. Voir make.make_scenarios.12_stripe_gagne_auto. Handler = api/stripe-hook.php (pas de scenario Make). En attente: passage Stripe en live + creation de l'endpoint webhook cote Dominique.",
     "DECISION_2026_07_22_CYCLE_GAGNE_ACTIVATION": "DÉCISION validée Dominique 22/07/2026 — cycle signature->facturation : (1) Gagné (signature + IBAN Stripe) -> deal Livraison & Activation 'Kit à préparer' + groupe Monta + bornes créés tôt (signature ou prépa kit — SANS COÛT : FAIT VÉRIFIÉ, le coût Monta ne démarre QUE lorsque la borne est ACTIVE, une borne créée inactive ne coûte rien). (2) Activation QR par l'installateur, borne par borne -> triple déclencheur synchrone au 1er PDC actif : début facturation client (prorata PDC activés) + invitation admin + avancement deal L&A. Coût Monta et revenu client naissent au même moment. (3) Garde-fou : facturation démarre au plus tard J+60 après expédition du kit, activé ou non — à inscrire aux CGV + rappel dans devis PandaDoc (action Dominique). Implémentation : chantier STRIPE-GAGNE-AUTO (webhook Stripe = chef d'orchestre Gagné->L&A+Monta ; scénario 02 activation = facturation + invitation admin).",
-    "chantier_gagne_orchestration": "Chantier GAGNE-ORCHESTRATION défini 22/07 (remplace STRIPE-GAGNE-AUTO, livré en DRY par un autre chat via api/stripe-hook.php) : 1) logs DRY -> passage live, 2) Gagné -> deal L&A + groupe Monta + bornes, 3) activation -> facturation prorata + invitation admin (scénario 02), 4) clause J+60 insérée au docx à l'upload."
+    "chantier_gagne_orchestration": "Chantier GAGNE-ORCHESTRATION défini 22/07 (remplace STRIPE-GAGNE-AUTO, livré en DRY par un autre chat via api/stripe-hook.php) : 1) logs DRY -> passage live, 2) Gagné -> deal L&A + groupe Monta + bornes, 3) activation -> facturation prorata + invitation admin (scénario 02), 4) clause J+60 insérée au docx à l'upload. | 22/07 12h: point 1 tranche (voir chantier_gagne_orchestration_audit_2026_07_22, bloque cote Dominique). Points 2-3 en cours: pandadoc-signed.php cree deja Gagne + deal L&A 'Kit a preparer' + associations + note + Slack mais explicitement SANS Monta -> la creation groupe Monta + bornes reste a ajouter.",
+    "chantier_gagne_orchestration_audit_2026_07_22": "AUDIT Claude PM 22/07 12h: le point 1 (analyser les logs DRY) est SANS OBJET — aucun evenement Stripe reel n'est jamais arrive. Preuves: api/stripe-hook-config.php contient encore STRIPE_WEBHOOK_SECRET='REMPLACER_PAR_LE_whsec...' -> le handler part en fail-closed 503 sur TOUTE requete (verifie en live: 503 whsec_not_configured); api/stripe.php est encore en rk_test_; le log ne contenait que les 2 evenements synthetiques du 22/07 10h11 + 1 ligne whsec_not_configured. CONCLUSION: le passage live ne depend pas d'une analyse, il depend des 3 actions Dominique (cle rk_live_, creation endpoint Stripe, collage du whsec). Ensuite 1 mandat reel observe en dry -> bascule OZ_STRIPE_HOOK_MODE='live'.",
+    "fix_2026_07_22_fuite_log_stripe": "FUITE CORRIGEE: api/stripe-hook.log etait servi publiquement en HTTP 200 (contenait un email client reel + un deal id HubSpot). wp-deploy refuse l'extension .log (403 read/delete) -> fix en 2 temps: (1) stripe-hook.php ecrit desormais dans api/stripe-hook-log.php prefixe de '<?php exit; ?>' (garde d'execution, HTTP 200 vide), (2) script one-shot api/oz-purge-log.php (cle ozpurge_2026_07_22) execute puis auto-supprime -> stripe-hook.log renvoie 404. Backup: api/stripe-hook.php.bak-20260722-121626. LECON: tout log ecrit dans api/ doit avoir l'extension .php + garde exit; wp-deploy ne peut ni lire ni supprimer les .log/.txt/.htaccess. A VERIFIER (meme risque, non traite): api/qr-redirect.log, api/pilot-log.jsonl, api/maillog.txt."
   }
 }
