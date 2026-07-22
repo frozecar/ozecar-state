@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.556",
+    "version": "1.557",
     "updated": "2026-07-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -84,6 +84,18 @@
       "BOOT_v2_search_first": "OBLIGATOIRE pour tout nouveau chat (2026-07-21): (1) POST github-relay.php {\"action\":\"search\",\"q\":\"<mots du chantier>\"} -> sections pertinentes avec extraits. (2) {\"action\":\"read\",\"section\":[...]} sur les sections trouvees UNIQUEMENT. (3) L'index ({\"action\":\"read\",\"index\":true}) est AUTO-FUSIONNE par le relay: il liste TOUTES les sections reelles, il ne peut plus etre perime. (4) Jamais de lecture du state entier. (5) A chaque creation de section: ajouter une ligne descriptive dans _index."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-22",
+        "version_from": "1.556",
+        "version_to": "1.557",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Nettoyage pipeline Vente: 4 Gagnés (OEHC, EIG, EIB Zaptec AO, Agriel/ELGECE), 2 Perdus (Vétérinaire test, Piazza d'Olmo expiré)",
+          "Natali renommé CP Immo — Proposition Supervision + note (Monta group 4531071 déjà créé)",
+          "4 contacts installateurs partenaires (NOVA, ELGECE, EIB, Serpollet)",
+          "3 cards relance (Serpollet, EIB, Rossi post-saison due 01/10), card OEHC fermée"
+        ]
+      },
       {
         "date": "2026-07-22",
         "version_from": "1.555",
@@ -10653,6 +10665,16 @@
         "ajout": "2026-07-22"
       }
     ],
-    "add_todo_2026_07_22": "Nouvel outil add_todo dans l'agent slack-bot.php : toute personne de l'équipe peut créer un todo pour dominique|mae|fred|julien en mentionnant @ozecarbot (ou en DM au bot). Création directe sans confirmation, type=task, visible au prochain digest du matin du destinataire. Special-case dans run_tool (POST OZ_TODOS_URL &add=1), documenté dans le prompt système. Testé end-to-end (mention simulée signée -> todo créé -> nettoyé). Backup pré-modif : api/backup-slack-bot-20260722c.php."
+    "add_todo_2026_07_22": "Nouvel outil add_todo dans l'agent slack-bot.php : toute personne de l'équipe peut créer un todo pour dominique|mae|fred|julien en mentionnant @ozecarbot (ou en DM au bot). Création directe sans confirmation, type=task, visible au prochain digest du matin du destinataire. Special-case dans run_tool (POST OZ_TODOS_URL &add=1), documenté dans le prompt système. Testé end-to-end (mention simulée signée -> todo créé -> nettoyé). Backup pré-modif : api/backup-slack-bot-20260722c.php.",
+    "nettoyage_pipeline_2026_07_22": {
+      "gagnes": "OEHC (510334425321, marché signé en mai — card todo c283f0c9 fermée) · EIG Zaptec (504577697986, réalisé) · EIB Zaptec AO (504577796344, réalisé) · Agriel/ELGECE (504571004116, accepté 2x Zaptec+pied)",
+      "perdus": "Vétérinaire BFC (509226528971, devis test) · Piazza d'Olmo (504496148713, devis expiré)",
+      "cp_immo": "Deal 504571845877 renommé 'CP Immo (ex-Entreprise Natali) — Proposition Supervision' + note 506033673411. PandaDoc expiré, client attend l'installation, prospect assuré. Premier devis à envoyer depuis HubSpot nouvelle version. GROUPE MONTA DÉJÀ CRÉÉ ID 4531071, bornes créées — ne pas recréer.",
+      "installateurs_partenaires": "Contacts créés/maj (jobtitle 'Installateur partenaire') : Alexandre Vincent NOVA Énergie (754362865902, existait) · Anthony Ceccareli ELGECE (828019974352) · Abdellah Zarkani EIB Calvi (827997590772) · Luc Xiong Serpollet (827981767918, sans email)",
+      "relances_cards": "Serpollet 3 devis (c239bcf4) · EIB matériel+AO (98873fd7) · Rossi post-saison due 2026-10-01 (0e46cf5e, manque de puissance)",
+      "en_attente_inchanges": "Albizias DC · Serpollet St Alban · EIB 05/26 · Arinella (via NOVA) · Client NOVA · Strazzabosco · CP Immo · NOVA devis matériel (potentiel partenaire) · EIB AO supervision · Comepa · Aromazone · Rossi",
+      "clarification_auto_vs_manuel": "VENTE: automatismes créent seulement (05 démo->Démo planifiée, BOAMP->Qualifié, /devis+configurateur->Devis à faire puis 08->Devis-contrat envoyé). Gagné/Perdu/Qualifié = toujours manuel. LIVRAISON: 01 crée Kit à préparer, 03/04 avancent auto, 02 webhook activation.",
+      "backlog": "Généraliser la propriété ozecar_origine à tous les canaux de création de deals pour tracer l'origine de chaque card"
+    }
   }
 }
