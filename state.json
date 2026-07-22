@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.571",
+    "version": "1.572",
     "updated": "2026-07-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -86,6 +86,15 @@
       "REGLE_FICHIERS_CANONIQUES": "RÈGLE_FICHIERS_CANONIQUES (22/07/2026): tout contrat, devis ou document client produit en chat DOIT être déployé sur le serveur AVANT livraison à Dominique — contrats types dans uploads/ozecar/contrats/, documents client dans uploads/ozecar/clients/ (via wp-deploy). Le serveur est la copie canonique, les outputs de chat sont éphémères. Vérifiés en place: albizias-contrat-supervision-v6.html + albizias-devis-R11.html (clients/), contrat-supervision-standard-v1.html (contrats/)."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-22",
+        "version_from": "1.571",
+        "version_to": "1.572",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Operation kits gratuits installateurs STRUCTUREE (decision Dominique): vagues 30-50-100, dotation 5 OZKM+10 Kit Borne, revente 100% marge, reassort=activation; Sungrow canal fournisseur; Dielco relance; email masse retrograde en couche de fond; Qualifelec 594 importes HubSpot + reserve 4047"
+        ]
+      },
       {
         "date": "2026-07-22",
         "version_from": "1.570",
@@ -8967,7 +8976,22 @@
       "prochaine_etape": "Ne rien construire tant que la condition d'activation n'est pas remplie. Pas de script, pas de seuil, pas de playbook prématuré.",
       "condition_activation": "Marie-Estelle opérationnelle sur le premier temps commercial (qualification + relance) et volume de deals suffisant pour justifier une escalade sélective vers le Président. Revue au lancement rentrée (semaine du 1er sept 2026)."
     },
-    "_archive": "Historique des iterations (7 sous-sections) sorti vers archive.json > purge_2026_07_15 > strategy. Decisions conservees ci-dessus; le recit du 'comment' est dans l'archive et dans git log."
+    "_archive": "Historique des iterations (7 sous-sections) sorti vers archive.json > purge_2026_07_15 > strategy. Decisions conservees ci-dessus; le recit du 'comment' est dans l'archive et dans git log.",
+    "operation_kits_gratuits_installateurs": {
+      "decision": "DOMINIQUE 22/07: canal installateurs = KITS GRATUITS, pas email de masse. Envoi 30-50-100 kits gratuits aux installateurs actifs/influents (LinkedIn) et via fournisseurs. Dotation type par installateur: 5 Kits Site (OZKM) + 10 Kits Borne. L'installateur REVEND le kit a 100% de marge pour lui; quand il n'en a plus, il rappelle -> reassort = signal d'activation. Chaque kit active = 1 PDC supervise OZECAR (MRR).",
+      "canal_fournisseur": "Sungrow OK sur le principe (deja discute avec Dominique): distribue des kits a SES installateurs. Modele BayWa/reev comme reference (presence + quasi-gratuit + contact direct = adoption).",
+      "contexte_comptoirs": "Rexel=Freshmile, CGED/Yesss=yes55, Sonepar=echec ChargePoint (porte fermee). Seule touche: DIELCO Corse (groupement, kit deja presente avec Schneider) -> relance prioritaire, meme mecanique kits gratuits.",
+      "conflit_zaptec_shop": "Vente Zaptec sur le shop = risque percu concurrent. Parade: regle publique 'OZECAR ne pose jamais' + chaque vente shop = chantier confie a un installateur du reseau (chantier offert). Le shop devient source de leads pour les installateurs, pas un concurrent.",
+      "selection_vague_1": "10 installateurs actifs/influents (posts chantiers IRVE, page vivante, LinkedIn/Facebook), priorite 13/83/33, croises avec les 594 Qualifelec HubSpot. Shortlist = livrable Claude PM.",
+      "funnel_math": "Vague 1 = 10 installateurs x (5 Kit Site + 10 Kit Borne) = 50+100 kits. Si 30% activent ne serait-ce que la moitie de leur dotation: ~15-20 PDC + 3 installateurs en reassort recurrent. Cout: production kits + Colissimo (marginal).",
+      "email_masse": "REPRIORISE en couche de fond automatique post-lancement site (taux reponse 1-3%, boites contact@ saturees). Fer de lance = kits + Dielco + engagement social + chantier offert via shop.",
+      "prochaines_actions": [
+        "[Claude] Shortlist 10 influents vague 1 (recherche LinkedIn/web sur base Qualifelec 13/83/33)",
+        "[Dominique] Valider shortlist + confirmer quantite Sungrow + go production",
+        "[Fred] Preparer dotations (5 OZKM + 10 Kit Borne x N) des liste validee — stock board 18409310538",
+        "[Claude] Courrier d'accompagnement du colis (1 page: regle 100% marge, reassort en 1 appel, activation 48h)"
+      ]
+    }
   },
   "partenaires": {
     "partner_program": {
