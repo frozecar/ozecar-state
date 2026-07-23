@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.582",
+    "version": "1.583",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -78,6 +78,16 @@
       ]
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.582",
+        "version_to": "1.583",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Mode materiel v2 REWORK complet (feedback Dominique) livre staging: maintenance=back-office partenaire sans prix, devis installateur interactif, catalogue etendu, adresses, timeline installateur",
+          "Relances devis LIVE: api/devis-relance.php + template email + job 8 cron (7j recurrent, dernier jour, expiration J30)"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.581",
@@ -2803,7 +2813,30 @@
         "Dossier de presentation client final (page/PDF remis PAR l'installateur)",
         "Remplissage auto ozecar_devis_edit_url a l'entree en Devis a faire (via cron.php + proxy hubspot serveur, pas de workflow Starter)",
         "Webhook signature materiel -> deal supervision auto + association deal-deal"
-      ]
+      ],
+      "v2_feedback_dominique_2026_07_23": {
+        "corrections_livrees": [
+          "Tables comparatives supervision/maintenance (.legend) masquees en mode materiel",
+          "Maintenance repositionnee en carte 'votre prestation, notre back-office' (facturation + reversement recettes + alertes + visites preventives + rapports + relances) — premiere brique pro.ozecar.fr, AUCUN prix maintenance affiche (on ne vole pas le travail de l'installateur)",
+          "Vue devis installateur (v=2) INTERACTIVE: quantites modifiables, tout le catalogue selectionnable, total recalcule en direct",
+          "Catalogue etendu: TPE Payter Apollo 649 (prix state), Zaptec Sense / signaletique IRVE / butee de parking en 'Sur devis' (prix inconnus au state — ne pas inventer)",
+          "Support photo produit (m.img) + fiche produit telechargeable (m.pdf) dans le moteur — assets a fournir",
+          "Encart 'Votre remise partenaire -X%' visible cote installateur",
+          "Adresses de facturation et de livraison dans Vos informations (livraison = facturation si vide)",
+          "Timeline reecrite installateur: commande -> prepa/expedition -> activation par lui (hotline) -> invite client (3 mois offerts, il reste referent)",
+          "Engagement/eco/recap supervision jamais visibles en mode materiel"
+        ],
+        "relances_devis_LIVE": {
+          "moteur": "api/devis-relance.php (v1.0) — ancre ozecar_devis_expire_le (posee a l'envoi = +30j), relance tous les 7j (J7/J14/J21/J28), relance dediee dernier jour, statut Expire a J30. Anti-doublon via ozecar_devis_relances. Email au contact associe du deal via send-mail.php + template project/email-templates/devis-relance.html (charte).",
+          "cron": "Job 8 branche a cron.php (1x/jour 07-10h UTC), smoke OK (200).",
+          "regle_envoi": "A l'envoi d'un devis: poser devis_url_client + ozecar_devis_expire_le=envoi+30j + ozecar_devis_statut=Envoye + stage Devis envoye. Sans expire_le, pas de relance."
+        },
+        "inputs_dominique": [
+          "Grille de paliers de remise installateur (ex: 1-4 / 5-9 / 10+ bornes) — mecanisme pret, grille = decision pricing",
+          "Prix: Zaptec Sense, panneau signaletique IRVE, butee de parking",
+          "Photos produits + fiches PDF (uploads/ozecar/catalogue/) pour peupler m.img / m.pdf"
+        ]
+      }
     }
   },
   "esignature": {
