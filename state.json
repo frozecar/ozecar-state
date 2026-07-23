@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.585",
+    "version": "1.586",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -78,6 +78,15 @@
       ]
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.585",
+        "version_to": "1.586",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Mode materiel it.4: photo+fiche Zaptec Pro cablees, adresses fact/livraison eclatees (rue/CP/ville), wp-deploy staging etendu binaire (png/jpg/webp/pdf + content_b64)"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.584",
@@ -2886,6 +2895,15 @@
           "input remise globale legacy retire du mode materiel (paliers par ligne font foi)"
         ],
         "verifie_servi": "6/6 marqueurs presents sur staging apres deploy 11:01"
+      },
+      "iteration_4_2026_07_23": {
+        "livre": [
+          "Photo produit Zaptec Pro (extraite de la fiche officielle) + fiche PDF telechargeable cablees sur la ligne zpro — assets sur staging uploads/ozecar/catalogue/ (zaptec-pro.png, zaptec-pro-fiche.pdf)",
+          "Adresses ECLATEES sans validation: facturation (rue / CP / ville) + livraison (rue / CP / ville, vide = identique) — champs cl.fact_* et cl.livr_*",
+          "wp-deploy STAGING etendu: extensions png/jpg/jpeg/webp/pdf + param content_b64 pour l'ecriture binaire (backup pose). A repliquer sur prod si besoin."
+        ],
+        "note_quantites": "Les steppers en vue installateur etaient deja actifs depuis l'iteration 3 (re-render R() apres set MATONLY) — les captures de Dominique dataient du build precedent.",
+        "assets_attendus": "Autres produits: deposer <id>.png / <id>-fiche.pdf dans catalogue/ (zgo2, colonnes, sungrow...) et je cable."
       }
     }
   },
