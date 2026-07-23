@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.583",
+    "version": "1.584",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -78,6 +78,15 @@
       ]
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.583",
+        "version_to": "1.584",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Mode materiel iteration 2: remise par ligne a paliers + cumul, bloc maintenance N2-N4 avec checkbox 'proposer a mon client' (idee Dominique), paiement 30j SEPA / certifie fin de mois"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.582",
@@ -2835,6 +2844,20 @@
           "Grille de paliers de remise installateur (ex: 1-4 / 5-9 / 10+ bornes) — mecanisme pret, grille = decision pricing",
           "Prix: Zaptec Sense, panneau signaletique IRVE, butee de parking",
           "Photos produits + fiches PDF (uploads/ozecar/catalogue/) pour peupler m.img / m.pdf"
+        ]
+      },
+      "iteration_2_2026_07_23": {
+        "diagnostic_screenshot": "Le test de Dominique etait un lien CLIENT v=1 genere hors mode materiel (titre 'Votre offre OZECAR') + cache navigateur — pas le devis installateur du rework. Rework bien deploye.",
+        "livre": [
+          "Remise PAR LIGNE a paliers predefinis (selecteur -0 a -30% par pas de 5, vue commerciale), prix net + public barre par ligne, ligne 'Remise partenaire cumulee (-X% en moyenne) : -Y EUR' au sous-total. st.matRemL par produit, st.matRem global = fallback legacy.",
+          "Bloc maintenance v2 (bordure jaune): N1 'inclus pour vous', tableau N2 9 / N3 18 / N4 24 EUR/PDC/mois (grille client canonique), pitch 'vous realisez les interventions, OZECAR facture votre client, vous reverse vos recettes (commission de service deduite)', CHECKBOX 'Proposer la maintenance a mon client' (st.mntProp) + email client optionnel (st.mntPropMail) — voyage dans le lien, capture avec consentement, double vecteur de transfert du dossier supervision.",
+          "Timeline: paiement 30 jours SEPA · certifie OZECAR = 30 jours fin de mois.",
+          "Dossier wp-content/uploads/ozecar/catalogue/ cree (staging) pour photos + fiches PDF produits."
+        ],
+        "decisions_attendues_dominique": [
+          "Taux de commission de service maintenance (non affiche tant que non fixe)",
+          "Validation grille paliers remise (0/5/10/15/20/25/30) ou grille commerciale dediee",
+          "Conditions 'installateur certifie' (30j fin de mois) a formaliser au programme partenaire"
         ]
       }
     }
