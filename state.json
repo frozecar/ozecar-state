@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.577",
+    "version": "1.578",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -12,7 +12,8 @@
       "Toujours lire d'abord {\"action\":\"read\",\"index\":true} pour s'orienter, puis {\"action\":\"read\",\"section\":[\"x\",\"y\"]} pour ne charger que l'utile. Ne lire le fichier entier que pour une restructuration.",
       "Avant d'ecrire : relire frais (plusieurs chats ecrivent), fusionner, incrementer _meta.version, redacter les tokens.",
       "Si une section depasse ~20 Ko, c'est qu'elle contient du narratif : garder la decision, jeter le recit.",
-      "Le relay lit via l'API git/blobs : plus de limite a 1 Mo. Mais viser < 400 Ko pour le confort de lecture."
+      "Le relay lit via l'API git/blobs : plus de limite a 1 Mo. Mais viser < 400 Ko pour le confort de lecture.",
+      "La section 'canon' est servie par {\"action\":\"boot\"} à chaque nouveau chat : toute décision qui change prix/nom/version/règle DOIT la mettre à jour dans le même push."
     ],
     "archive": "archive.json (meme repo) : changelog historique 2026 + narratif des sessions. Lire via {\"action\":\"read\",\"file\":\"archive.json\"}.",
     "PROTOCOLE_DE_TRAVAIL": {
@@ -77,6 +78,17 @@
       ]
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.577",
+        "version_to": "1.578",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Création section 'canon' (vérité compacte: pricing, kits, versions actives, marque blanche, concepts supprimés) servie par la nouvelle action boot du relay",
+          "Nouvelle règle de tenue: toute décision changeant le canon le met à jour dans le même push",
+          "Architecture boot push-based: un nouveau chat fait UN appel {action:boot} et reçoit la vérité courante"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.576",
@@ -11054,5 +11066,31 @@
     "guides_config": "Bibliotheque multi-marques EXISTANTE sur le site: guides dedies ABB AC, ABB DC, Schneider, Wallbox, Easee + guide OCPP general + base recherchable 80+ modeles (Alfen, Hager, Keba, Legrand, Autel, Vestel, Sungrow, Zaptec, EVBox, Delta, Kempower, Alpitronic, Circontrol...).",
     "assistance": "Hotline technique installateurs = FRED, accompagnement au telephone. Son numero doit figurer sur la notice et le packaging.",
     "packaging": "Plusieurs versions faites, AUCUNE validee par Dominique. Concept propose 22/07 (a trancher): 'boite reassort' — voir strategy.operation_kits_gratuits_installateurs."
+  },
+  "canon": {
+    "_regle": "Cette section est LA vérité courante servie à chaque boot de chat. Toute décision qui change un prix, un nom, une version active ou une règle DOIT mettre à jour canon dans le même push. Compacte: décisions, pas de narratif.",
+    "pricing_supervision": {
+      "grille": "Essential 6,90 AC / 9,90 DC · Business 9,90 AC / 15,90 DC (populaire) · Enterprise sur devis",
+      "unite": "€ HT / PDC / mois, prix affiché = engagement 36 mois, options 12/24/36, prépaiement -5%, activation 0 €",
+      "options": "data 4G/5G 2,00 · wallet Essential 5,00 (+12,5% fees)",
+      "INTERDIT": "Pro / Pro Plus / Transit / operator fees / roaming fees sur surface publique — ancienne grille SUPPRIMÉE, ne jamais réafficher"
+    },
+    "kits_oneshot": "Kit OZECAR (OZKM) 49 € HT /site · Kit Borne (OZKU) 29 € HT /PDC · OZRT routeur Teltonika RUT241 eSIM 249 € HT. Pas de frais d'activation.",
+    "materiel": "Zaptec AC + Sungrow DC uniquement. OZECAR ne fait JAMAIS l'installation.",
+    "versions_actives": {
+      "configurateur": "v2 (staging configurateur-v2-dev.html) — toute réf. à un configurateur antérieur est périmée",
+      "site": "prod ozecar.fr NE PAS TOUCHER · staging.ozecar.fr = zone de travail · homepage courante = v5",
+      "vente_forfaits": "PandaDoc/eSignatures + Stripe Subscriptions — JAMAIS via Shopify"
+    },
+    "marque_blanche": "Monta JAMAIS visible côté client (textes, URLs imgix/montaapi, logos, emails). Exception unique: CGV art 2.1.1/2.2.8 (reversements Monta ApS). Vocabulaire: app OZECAR One, portail OZECAR, 'Fourni par OZECAR'.",
+    "concepts_supprimes": [
+      "OZKU comme objet physique (= sticker QR + carte RFID)",
+      "First Action Card",
+      "Sleeve séparée",
+      "Forfaits supervision sur Shopify",
+      "ozecar.store comme destination future",
+      "Grille Essential 5,90 / Pro 14,90 / Pro+ / Transit"
+    ],
+    "protocole_etat": "state via github-relay.php + champ k obligatoire. Jamais raw.githubusercontent. Écriture: read frais → merge → increment → changelog en tête → redact tokens → push."
   }
 }
