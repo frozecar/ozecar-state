@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.598",
+    "version": "1.599",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -79,6 +79,17 @@
       "update_relay_fichier_entier": "L'action update ne supporte PAS de payload par section. Toujours pousser le contenu COMPLET apres merge."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.598",
+        "version_to": "1.599",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CANON: 3 formules maintenance (+cas 4) au devis, bloc en 3 cartes deploye",
+          "CANON: doctrine tunnel client final J+2/J+5/J+7/J+14 (suspension) actee + moteur LIVE dans devis-relance.php",
+          "ACTION DOMINIQUE: creer propriete deal ozecar_invite_le (date) pour armer le tunnel"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.597",
@@ -11466,6 +11477,8 @@
     "maintenance_niveaux_sla": "ACTE Dominique 2026-07-23 (v2, remplace la version du meme jour) : N1 a distance (inclus supervision) · N2 = N1 + visite preventive annuelle · N3 = N2 + curatif sur site, INTERVENTION & DIAGNOSTIC SOUS 48 H · N4 = N3 + INTERVENTION & DIAGNOSTIC SOUS 24 H — AUCUNE piece incluse a aucun niveau (libelles 'pieces incluses' et 'delai renforce' PERIMES). Prix client : 4/9/18/24 EUR/PDC/mois. Corrige aux 4 zones du configurateur v2.",
     "materiel_libelle_zpro": "ACTE 2026-07-23 : specs produit affichees SOUS marque+modele (bloc dedie), et pour Zaptec Pro : 'Connexion de donnees 4G LTE-M incluse · MID + RFID · garantie 5 ans' (plus jamais 'Modem 4G integre').",
     "regle_typographie_tiret": "REGLE Dominique 2026-07-23 : ne JAMAIS utiliser le tiret cadratin dans les textes rediges (reponses chat, contenus, pages). Preferer virgule, deux-points ou point. Egalement gravee en memoire utilisateur.",
-    "paiement_materiel": "DECISION Dominique 2026-07-23 : facturation materiel via PENNYLANE (30 jours), mandat SEPA collecte via STRIPE. JAMAIS GoCardless pour les nouveaux flux (GoCardless = legacy MRR existant uniquement). Installateur deja client avec mandat actif : facture sur mandat existant, zero friction. Certifie : 30 jours fin de mois."
+    "paiement_materiel": "DECISION Dominique 2026-07-23 : facturation materiel via PENNYLANE (30 jours), mandat SEPA collecte via STRIPE. JAMAIS GoCardless pour les nouveaux flux (GoCardless = legacy MRR existant uniquement). Installateur deja client avec mandat actif : facture sur mandat existant, zero friction. Certifie : 30 jours fin de mois.",
+    "maintenance_formules": "DECISION Dominique 2026-07-23 (remplace maintenance_deux_formules) : 3 formules affichees au devis materiel + 1 cas implicite. (1) JE REALISE : OZECAR facture le client (grille N2-N4), l'installateur execute, prestations reversees. (2) JE CONFIE : OZECAR facture ET fait intervenir son reseau, prime d'apport recurrente a l'installateur. (3) JE GERE EN DIRECT : l'installateur facture et realise SON propre contrat a ses prix, la grille OZECAR ne s'applique pas, N1 supervision reste inclus et l'alerte a distance sert l'installateur. (4) Client n'en veut pas : N1 inclus, grille proposable a tout moment. AUCUN taux affiche. st.mntMode: realise|confie|direct.",
+    "tunnel_client_final_doctrine": "DECISION Dominique 2026-07-23 : apres invite self-service (ancre ozecar_invite_le, PROPRIETE A CREER par Dominique, type date) : J+2 et J+5 relance email client final (template invite-relance, compte a rebours des 14 jours annonce des l'invite) · J+7 notification installateur referent + tache ME (statut 'Relance installateur (J+7)') · J+14 statut 'Suspendu (J+14 sans contrat)' + notif interne pour suspension Monta (manuelle pour l'instant). Signature tardive : reactivation immediate, FACTURATION A DATE DE SIGNATURE, aucun retroactif, aucune penalite. Refus definitif : sortie fair-play (cloture Monta, SIM kit desactivee, elements techniques transmis, deal Perdu avec MOTIF OBLIGATOIRE, installateur reste referent). Moteur : bloc tunnel client final dans api/devis-relance.php (defensif tant que la propriete n'existe pas), journal partage ozecar_devis_relances (I2;I5;INST7;SUSP14)."
   }
 }
