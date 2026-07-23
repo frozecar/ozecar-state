@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.575",
+    "version": "1.576",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
@@ -86,6 +86,15 @@
       "REGLE_FICHIERS_CANONIQUES": "RÈGLE_FICHIERS_CANONIQUES (22/07/2026): tout contrat, devis ou document client produit en chat DOIT être déployé sur le serveur AVANT livraison à Dominique — contrats types dans uploads/ozecar/contrats/, documents client dans uploads/ozecar/clients/ (via wp-deploy). Le serveur est la copie canonique, les outputs de chat sont éphémères. Vérifiés en place: albizias-contrat-supervision-v6.html + albizias-devis-R11.html (clients/), contrat-supervision-standard-v1.html (contrats/)."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.575",
+        "version_to": "1.576",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Devis Corsica Energia finalise : config 1 colonne Zaptec dos-a-dos validee par Dominique, total 2975 EUR HT, line items complets sur deal 512210983114"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.574",
@@ -9529,10 +9538,11 @@
         "pipeline": "3747862733",
         "line_items": [
           "2x Zaptec Pro 22 kW @1325 HT (li 472738797772)",
-          "colonne en attente choix config"
+          "1x Colonne Zaptec Single/Twin dos-a-dos @325 HT (li 472707383532)"
         ]
       },
-      "en_attente": "Choix colonne (Zaptec Single/Twin 325 / OnePole 410 / OnePole Twin SBS 530) selon config des 2 bornes, puis generation du devis HubSpot (Quote UI = action Dominique si pas d'outil MCP quotes)."
+      "en_attente": "Generation + envoi du devis HubSpot a Mael (action Dominique, line items prets sur le deal 512210983114).",
+      "total_ht": 2975
     }
   },
   "ops": {
