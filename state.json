@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.592",
+    "version": "1.593",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -78,6 +78,15 @@
       ]
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.592",
+        "version_to": "1.593",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CANON: SLA maintenance actes — N3 intervention & diagnostic sous 48h, N4 sous 24h (libelle 'delai renforce' perime) — corrige aux 4 zones du configurateur v2"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.591",
@@ -11350,6 +11359,7 @@
     "protocole_etat": "state via github-relay.php + champ k obligatoire. Jamais raw.githubusercontent. Écriture: read frais → merge → increment → changelog en tête → redact tokens → push.",
     "sources_pages": "Référence unique des pages = staging.ozecar.fr lu EN DIRECT via wp-deploy.php (jamais de copie HTML en project knowledge — elles dérivent). Archive historique des 42 mockups HTML: uploads/ozecar/archive-projet-claude-2026-07/ (lecture seule, ne pas réutiliser comme source de prix/design).",
     "commission_maintenance_partenaire": "DECISION Dominique 2026-07-23 : commission de service OZECAR sur la maintenance vendue par l'installateur = 12,5 % (facturation client + reversement + admin). Part installateur affichee au configurateur : N2 7,88 / N3 15,75 / N4 21,00 EUR/PDC/mois. Levier futur possible : 10 % certifie (non decide).",
-    "maintenance_deux_formules": "DECISION Dominique 2026-07-23 : la maintenance partenaire = 2 formules, AUCUN chiffre partenaire affiche au devis. (A) 'Je realise les interventions' : OZECAR contracte/facture le client, l'installateur execute, reversement (taux non publie, 12,5% de commission acte en interne). (B) 'Je confie a OZECAR' : le reseau OZECAR execute (= partenaires A des autres zones), prime d'apport recurrente (taux NON DECIDE). Grille client N2 9 / N3 18 / N4 24 EUR/PDC/mois affichable. Conditions detaillees uniquement a l'adhesion partenaire. Juridique sous-traitance a verrouiller (avocat) avant publication de tout taux."
+    "maintenance_deux_formules": "DECISION Dominique 2026-07-23 : la maintenance partenaire = 2 formules, AUCUN chiffre partenaire affiche au devis. (A) 'Je realise les interventions' : OZECAR contracte/facture le client, l'installateur execute, reversement (taux non publie, 12,5% de commission acte en interne). (B) 'Je confie a OZECAR' : le reseau OZECAR execute (= partenaires A des autres zones), prime d'apport recurrente (taux NON DECIDE). Grille client N2 9 / N3 18 / N4 24 EUR/PDC/mois affichable. Conditions detaillees uniquement a l'adhesion partenaire. Juridique sous-traitance a verrouiller (avocat) avant publication de tout taux.",
+    "maintenance_niveaux_sla": "ACTE Dominique 2026-07-23 (deja corrige dans d'autres chats, jamais grave — desormais canonique) : N1 a distance (inclus supervision) · N2 = N1 + visite preventive annuelle · N3 = N2 + curatif sur site avec INTERVENTION & DIAGNOSTIC SOUS 48 H · N4 = N3 + pieces incluses avec INTERVENTION & DIAGNOSTIC SOUS 24 H. Prix client inchanges : 4/9/18/24 EUR/PDC/mois. 'Delai renforce' comme libelle = PERIME. Corrige au configurateur v2 (4 zones : tableau legend client, modal maintenance, selecteur par site, tableau bloc materiel installateur)."
   }
 }
