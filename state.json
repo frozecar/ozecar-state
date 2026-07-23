@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.587",
+    "version": "1.588",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -78,6 +78,15 @@
       ]
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.587",
+        "version_to": "1.588",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Mode materiel it.6: checkbox 'proposer' cote commercial (qty 0 ajustable par le destinataire), steppers actifs v=1+v=2, paliers 35/40 ajoutes"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.586",
@@ -2919,6 +2928,11 @@
         "commission_12_5_actee": "Affichee au bloc maintenance avec colonne VOTRE PART (7,88/15,75/21,00).",
         "blindage_flags": "MATONLY/MO recalcules DANS R() depuis st.mode + pose de la classe body — plus aucune dependance a l'ordre d'init. Steppers installateur garantis a tout rendu.",
         "photo_colonne": "catalogue/zaptec-colonne.webp cablee sur zcol (fournie par Dominique)."
+      },
+      "iteration_6_2026_07_23": {
+        "modele_proposition_valide_dominique": "Le commercial ne pre-force PAS de quantites : checkbox 'proposer' par produit (st.matProp) -> la ligne apparait a 0x dans le devis du destinataire, qui ajuste librement les quantites (steppers actifs en v=1 ET v=2 en mode materiel). Lignes non proposees et non quantifiees invisibles cote destinataire.",
+        "paliers": "Grille de remise etendue : 0/5/10/15/20/25/30/35/40 %.",
+        "diagnostic": "Les captures 'pas de selecteur' venaient du lien CLIENT v=1 (fige par design avant cette iteration) — desormais les deux vues destinataire sont ajustables en mode materiel."
       }
     }
   },
