@@ -1,26 +1,9 @@
 {
   "_meta": {
-    "version": "1.576",
+    "version": "1.577",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
-    "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
-    "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
-    "instructions": "Pour mettre à jour: GET le sha via API GitHub puis PUT le nouveau contenu encodé base64. TOUJOURS lire la version actuelle avant push, vérifier la version dans _meta, lire session_changelog pour comprendre les modifs des autres chats, et fusionner sans écraser.",
-    "infrastructure_health_2026_05_08": {
-      "checked_by": "Claude (chat audit)",
-      "checked_at": "2026-05-08",
-      "results": {
-        "raw_githubusercontent_state_json": "OK - lecture libre",
-        "wp_deploy_php_staging": "OK - tests reussis (read/write/list)",
-        "wp_deploy_php_prod": "OK - lecture github-relay.php confirmee",
-        "github_relay_php_pat": "❌ ECHEC - 'Bad credentials' (PAT GitHub expire ou revoque). Action user requise : generer nouveau PAT (scope repo) sur github.com/settings/personal-access-tokens, le mettre dans api/github-relay.php ligne 'define GITHUB_TOKEN' via wp-deploy.php write. PAT actuel expire : github_pat_<REVOKED_FORMER_TOKEN_REDACTED_FOR_PUSH_PROTECTION>",
-        "shopify_oauth_token": "OK selon state.json (shpat_... dans shopify-ozecar/.dev.vars sur le poste local Dominique)",
-        "monday_mcp": "OK - tests CRUD reussis",
-        "shopify_storefront_password": "OK - 401 sur /products.json comme attendu (storefront protege)"
-      }
-    },
-    "last_updated": "2026-06-11T17:25:00Z",
-    "last_action": "Logo OZECAR officiel SVG intégré (lb sources + WP pages + PDFs régénérés)",
+    "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
     "canonical_pricing": "pricing_canonical_2026_06_17",
     "changelog_archive": "Entrees anterieures au 2026-06-XX archivees dans changelog-archive.json (meme repo) le 2026-07-15 : state.json depassait 1 Mo, limite au-dela de laquelle l'API GitHub Contents ne renvoie plus le contenu (le relay lisait du vide). Politique: conserver les 100 dernieres entrees dans state.json, archiver le reste.",
     "REGLES_DE_TENUE": [
@@ -36,9 +19,12 @@
       "_pourquoi": "Une session longue renvoie TOUT l'historique a chaque tour : c'est le premier poste de consommation, loin devant la difficulte des taches. Ces regles valent pour TOUS les chats OZECAR.",
       "1_UN_CHAT_UN_CHANTIER": "Levier n1. Le state est la memoire : un nouveau chat demarre pour ~2 000 tokens (index + section utile) au lieu de trainer 200 000 de contexte. Des qu'on change de sujet -> nouveau chat. Ne jamais enchainer 6 chantiers dans un fil (session 2026-07-15 : parc + options + configurateur + PDF + crosscheck + restructuration = a faire en 6 chats).",
       "2_PROTOCOLE_DE_DEMARRAGE": [
-        "a) {\"action\":\"read\",\"index\":true} -> carte des 21 themes (~500 tokens)",
-        "b) {\"action\":\"read\",\"section\":[\"x\",\"y\"]} -> UNIQUEMENT les themes du chantier",
-        "c) travailler. Ne JAMAIS lire le fichier entier (223 000 tokens) sauf restructuration."
+        "TOUTE requete au relay exige le champ \"k\" (cle dans les instructions projet Claude.ai). Sans k -> {\"error\":\"cle requise\"}.",
+        "a) {\"action\":\"search\",\"q\":\"<mots du chantier>\",\"k\":\"...\"} -> sections pertinentes + extraits",
+        "b) sinon {\"action\":\"read\",\"index\":true,\"k\":\"...\"} -> carte des themes (~500 tokens)",
+        "c) {\"action\":\"read\",\"section\":[\"x\",\"y\"],\"k\":\"...\"} -> UNIQUEMENT les sections du chantier",
+        "d) Ne JAMAIS lire le state entier (>900 Ko) sauf restructuration ou push complet",
+        "e) Ne JAMAIS lire raw.githubusercontent ni l'API GitHub directe : cache stale + pas de fusion index"
       ],
       "3_CHOIX_DU_MODELE": {
         "axe": "PAS 'reflexion vs code' (erreur corrigee 2026-07-15). Sonnet 5 est de premier plan en raisonnement ET en code. Le bon axe = DIFFICULTE et ENJEU.",
@@ -83,9 +69,25 @@
       },
       "BOOT_v2_search_first": "OBLIGATOIRE pour tout nouveau chat (2026-07-21): (1) POST github-relay.php {\"action\":\"search\",\"q\":\"<mots du chantier>\"} -> sections pertinentes avec extraits. (2) {\"action\":\"read\",\"section\":[...]} sur les sections trouvees UNIQUEMENT. (3) L'index ({\"action\":\"read\",\"index\":true}) est AUTO-FUSIONNE par le relay: il liste TOUTES les sections reelles, il ne peut plus etre perime. (4) Jamais de lecture du state entier. (5) A chaque creation de section: ajouter une ligne descriptive dans _index.",
       "REGLE_DOCUMENTS_CLIENTS_SERVEUR": "REGLE DOCUMENTS CLIENTS (2026-07-22): tout contrat/devis/document client produit en chat est DEPLOYE SUR LE SERVEUR AVANT LIVRAISON a Dominique. Copies canoniques (lisibles/modifiables par tout chat via wp-deploy sur ozecar.fr): wp-content/uploads/ozecar/clients/ (documents nominatifs, ex: albizias-contrat-supervision-v6.html, albizias-devis-R11.html, ristorcelli-*) et wp-content/uploads/ozecar/contrats/ (modeles: contrat-supervision-standard-v1.html, avenant-supervision-type-v1.html). Nommage: <client>-<type>-<version>.html ou <modele>-v<N>.html. Toute modification = lire la version serveur d'abord (elle prime sur le contexte du chat), ecrire la nouvelle version, referencer le chemin dans le state.",
-      "REGLE_FICHIERS_CANONIQUES": "RÈGLE_FICHIERS_CANONIQUES (22/07/2026): tout contrat, devis ou document client produit en chat DOIT être déployé sur le serveur AVANT livraison à Dominique — contrats types dans uploads/ozecar/contrats/, documents client dans uploads/ozecar/clients/ (via wp-deploy). Le serveur est la copie canonique, les outputs de chat sont éphémères. Vérifiés en place: albizias-contrat-supervision-v6.html + albizias-devis-R11.html (clients/), contrat-supervision-standard-v1.html (contrats/)."
+      "REGLE_FICHIERS_CANONIQUES": "RÈGLE_FICHIERS_CANONIQUES (22/07/2026): tout contrat, devis ou document client produit en chat DOIT être déployé sur le serveur AVANT livraison à Dominique — contrats types dans uploads/ozecar/contrats/, documents client dans uploads/ozecar/clients/ (via wp-deploy). Le serveur est la copie canonique, les outputs de chat sont éphémères. Vérifiés en place: albizias-contrat-supervision-v6.html + albizias-devis-R11.html (clients/), contrat-supervision-standard-v1.html (contrats/).",
+      "3_EN_CAS_ERREUR_RELAY": [
+        "\"cle requise\" -> ajouter le champ k depuis les instructions projet, ne PAS improviser ni repondre de memoire",
+        "401 Bad credentials -> PAT GitHub serveur expire, action Dominique",
+        "409 sha mismatch -> relire frais + merge + retry"
+      ]
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.576",
+        "version_to": "1.577",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "FIX BOOT: purge _meta des instructions perimees (read_url raw.githubusercontent, web_fetch, PUT GitHub direct, audit infra 2026-05-08 'PAT expire')",
+          "PROTOCOLE_DE_DEMARRAGE reecrit avec exigence cle k sur toute requete relay + conduite en cas d'erreur",
+          "Cause du symptome 'nouveaux chats ne lisent pas le state': snippet des instructions projet sans cle k -> rejet relay -> reponse depuis memoire perimee"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.575",
