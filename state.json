@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "version": "1.574",
-    "updated": "2026-07-22",
+    "version": "1.575",
+    "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de vérité OZECAR. Lire via web_fetch en début de session.",
     "read_url": "https://raw.githubusercontent.com/frozecar/ozecar-state/main/state.json",
@@ -86,6 +86,15 @@
       "REGLE_FICHIERS_CANONIQUES": "RÈGLE_FICHIERS_CANONIQUES (22/07/2026): tout contrat, devis ou document client produit en chat DOIT être déployé sur le serveur AVANT livraison à Dominique — contrats types dans uploads/ozecar/contrats/, documents client dans uploads/ozecar/clients/ (via wp-deploy). Le serveur est la copie canonique, les outputs de chat sont éphémères. Vérifiés en place: albizias-contrat-supervision-v6.html + albizias-devis-R11.html (clients/), contrat-supervision-standard-v1.html (contrats/)."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.574",
+        "version_to": "1.575",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Premier devis flux HubSpot post-PandaDoc : Corsica Energia (installateur) — company 439546008773, contact Mael Couton 828610766071, deal 512210983114 (2x Zaptec Pro 22kW), colonne en attente de choix config"
+        ]
+      },
       {
         "date": "2026-07-22",
         "version_from": "1.573",
@@ -9507,6 +9516,23 @@
       "linked_to_business_expansion": "axe_1_services_revendus_installateurs - le portail est le frontal du programme services revendus",
       "linked_to_partner_program": "installer_certified.services_module - implémentation concrète du module catalogue + contrats",
       "_note_correction_2026_05_16": "Précision Dominique: staging.ozecar.fr est l'environnement de dev de ozecar.fr (pas un produit séparé). Le portail pro vit donc sur une stack TOTALEMENT indépendante, avec son propre pro-staging.ozecar.fr. Aucun risque de confusion d'environnement."
+    },
+    "devis_hubspot_premier_cas_2026_07_23": {
+      "date": "2026-07-23",
+      "contexte": "Premier devis du nouveau flux : devis generes depuis HubSpot, PandaDoc arrete (decision Dominique 22/07).",
+      "cas": "Corsica Energia (installateur, appel entrant) demande devis materiel 2x Zaptec Pro 22 kW + pied pour un client final inconnu.",
+      "doctrine_appliquee": "materiel_vente_b2b (configurateur.destinataire_devis) : l'installateur achete et signe le devis materiel ; supervision = devis SEPARE au client final une fois rattache.",
+      "hubspot": {
+        "company_corsica_energia": 439546008773,
+        "contact_mael_couton": 828610766071,
+        "deal": 512210983114,
+        "pipeline": "3747862733",
+        "line_items": [
+          "2x Zaptec Pro 22 kW @1325 HT (li 472738797772)",
+          "colonne en attente choix config"
+        ]
+      },
+      "en_attente": "Choix colonne (Zaptec Single/Twin 325 / OnePole 410 / OnePole Twin SBS 530) selon config des 2 bornes, puis generation du devis HubSpot (Quote UI = action Dominique si pas d'outil MCP quotes)."
     }
   },
   "ops": {
