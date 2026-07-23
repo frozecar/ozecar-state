@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.605",
+    "version": "1.606",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -79,6 +79,15 @@
       "update_relay_fichier_entier": "L'action update ne supporte PAS de payload par section. Toujours pousser le contenu COMPLET apres merge."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.605",
+        "version_to": "1.606",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CANON: FLUX B acte et LIVE (clic = demande de signature, completion a la signature, paiement 30j SEPA par defaut, toggle commercial 'a la commande'), CGV alignees, teste bout en bout (slack OK, deal immobile)"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.604",
@@ -11583,6 +11592,7 @@
     "tracking_produit": "LIVE 2026-07-23 : api/track.php (beacon devis_open avec vue sales/v1/v2 + flag materiel + num devis, IP hashee jour, events.jsonl) + rapport mensuel automatique (cron job 9, le 1er du mois : digest du mois precedent emaille a Dominique avec le prompt d'analyse Claude pret a coller). Claude = analyse et optimisations proactives a chaque rapport.",
     "rgpd_relances": "LIVE 2026-07-23 : propriete deal ozecar_stop_relances (creee par API), filtree par le moteur (aucune relance si true, devis ET invite), lien 'ne plus recevoir ces rappels' dans les templates. Process : mail STOP recu -> ME coche la case. Base legale prospection client final = interet legitime, a documenter dans la politique de confidentialite (avec l'avocat).",
     "clauses_cgv_a_faire": "LISTE POUR AVOCAT (2026-07-23) : 1 reserve de propriete jusqu'a paiement complet (materiel) · 2 desactivation a distance en cas de non-paiement (materiel + supervision) · 3 suspension supervision J+14 sans contrat apres activation · 4 conditions de paiement (1re commande a la commande, 30j comptes etablis, acompte DC, certifie fin de mois) · 5 sous-traitance maintenance (assurances RC pro/decennale exigees, plan de prevention, SLA back-to-back) · 6 prime d'apport (statut, fiscalite) · 7 prospection & desinscription (RGPD) · 8 livraison et transfert des risques (48h/3-5j) · 9 garanties constructeur (Zaptec 5 ans) et retours B2B · 10 page CGV vente materiel a publier sur le site.",
-    "commande_signature_paiement_A_ARBITRER": "QUESTION OUVERTE 2026-07-23 (posee par Dominique : pourquoi pas de signature ni page Stripe). Etat actuel : clic = bon pour accord clickwrap (CGV cochees + horodatage IP, valide en B2B) mais AUCUNE collecte de paiement/mandat en ligne. Options proposees : (A) clickwrap + lien Stripe (paiement 1re commande ou mandat SEPA) envoye dans l'email de confirmation, cree par Claude/ME a chaque commande via Stripe — rapide, live en 1 jour ; (B) signature electronique complete du devis (eSignatures.com) avant toute confirmation + Stripe ensuite — beton, plus lourd ; (C) hybride : clickwrap sous seuil (ex 5000 EUR), signature au-dela. Recommandation Claude : C. DECISION DOMINIQUE ATTENDUE avant envoi a Mael."
+    "commande_signature_paiement_A_ARBITRER": "TRANCHE — voir canon.commande_flux_B",
+    "commande_flux_B": "DECISION Dominique 2026-07-23 : FLUX B. Le clic 'Accepter et signer' = demande de signature (CGV cochees + preuve horodatee), statut 'Signature demandee', AUCUN Gagne ni carte Livraison au clic. Le bon pour accord ELECTRONIQUE (eSignatures.com) est genere et envoye ; A SIGNATURE : Gagne + carte Livraison + confirmation + facturation Pennylane, PAIEMENT DEBITE A 30 JOURS par SEPA par defaut. Le COMMERCIAL choisit par devis 'paiement a la commande' (toggle st.payMode, question de confiance, defaut = 30j pour gagner le client — remplace la regle automatique 'premiere commande a la commande', assouplie par Dominique). CGV art. 2-3 alignees. TRANSITOIRE : generation/envoi eSignatures manuel (notif interne '✍️ Signature a generer') jusqu'au cablage API eSignatures.com — necessite compte + cle API (action Dominique), puis webhook signature -> completion auto."
   }
 }
