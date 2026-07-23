@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.584",
+    "version": "1.585",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -78,6 +78,15 @@
       ]
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.584",
+        "version_to": "1.585",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Mode materiel iteration 3: 5 bugs des captures corriges (remise doublon, Engagement, barre/1er render, bandeau, fiche) — cause racine: R() initial avant set MATONLY, re-render ajoute"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.583",
@@ -2859,6 +2868,24 @@
           "Validation grille paliers remise (0/5/10/15/20/25/30) ou grille commerciale dediee",
           "Conditions 'installateur certifie' (30j fin de mois) a formaliser au programme partenaire"
         ]
+      },
+      "iteration_3_fix_2026_07_23": {
+        "bugs_captures_dominique": [
+          "double remise (ancienne ligne 'Remise accordee' arrondi faux vs cumulee exacte)",
+          "carte Engagement visible (vit dans div.eng, pas #mep)",
+          "barre: label 'A LA MISE EN SERVICE' + '0 PDC undefined mois' (1er R() executait AVANT le set de MATONLY dans l'init)",
+          "bandeau noir 'SUPERVISION DE POINTS DE CHARGE' sur un devis materiel",
+          "fiche 'etablissement du contrat' au lieu de commande"
+        ],
+        "fixes": [
+          "ligne Remise accordee SUPPRIMEE (cumulee exacte partout)",
+          "body.matonly .eng masque",
+          "re-render R() en fin d'init MATONLY + label barre 'TOTAL MATERIEL HT' + barsub 'paiement a 30 jours par SEPA'",
+          "bandeau matonly 'DEVIS MATERIEL — FOURNITURE OZECAR'",
+          "fiche 'necessaires a la commande et a la livraison' en matonly",
+          "input remise globale legacy retire du mode materiel (paliers par ligne font foi)"
+        ],
+        "verifie_servi": "6/6 marqueurs presents sur staging apres deploy 11:01"
       }
     }
   },
