@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.588",
+    "version": "1.589",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -78,6 +78,16 @@
       ]
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.588",
+        "version_to": "1.589",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Mode materiel it.7: persistance des lignes 0x cote destinataire (MATVIS)",
+          "Reflexion 2 formules maintenance gravee (aucun taux decide, refonte bloc en attente arbitrage Dominique)"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.587",
@@ -2933,6 +2943,13 @@
         "modele_proposition_valide_dominique": "Le commercial ne pre-force PAS de quantites : checkbox 'proposer' par produit (st.matProp) -> la ligne apparait a 0x dans le devis du destinataire, qui ajuste librement les quantites (steppers actifs en v=1 ET v=2 en mode materiel). Lignes non proposees et non quantifiees invisibles cote destinataire.",
         "paliers": "Grille de remise etendue : 0/5/10/15/20/25/30/35/40 %.",
         "diagnostic": "Les captures 'pas de selecteur' venaient du lien CLIENT v=1 (fige par design avant cette iteration) — desormais les deux vues destinataire sont ajustables en mode materiel."
+      },
+      "iteration_7_2026_07_23": {
+        "fixes": [
+          "Ligne servie au destinataire (retenue ou proposee) reste visible meme redescendue a 0x (snapshot MATVIS au 1er rendu — pas dans le lien)",
+          "Ordre verifie : checkbox 'proposer' AVANT le selecteur de palier"
+        ],
+        "reflexion_maintenance_EN_COURS": "Point ME/Dominique 23/07 : wording ambigu (qui vend / qui execute). Realite juridique visee : OZECAR contracte et facture EN SON NOM (coherent contrat maintenance B-LEGAL-02), l'installateur EXECUTE en sous-traitance (reversement 87,5%). ME : beaucoup d'installateurs ne veulent PAS faire la maintenance -> 2 formules a l'etude : (A) 'Vous intervenez' reversement 87,5% · (B) 'Vous confiez' bounty d'apport, execution par le reseau OZECAR (= les partenaires formule A d'autres zones). AUCUNE decision de taux formule B — analyse Claude fournie en chat, decision Dominique attendue. NE PAS refondre le bloc avant arbitrage."
       }
     }
   },
