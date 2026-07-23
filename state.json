@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.590",
+    "version": "1.591",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -78,6 +78,15 @@
       ]
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.590",
+        "version_to": "1.591",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Mode materiel it.9: formules maintenance en cartes selectionnables (style forfaits, clic carte, bordure violette)"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.589",
@@ -2963,6 +2972,9 @@
       },
       "iteration_8_2026_07_23": {
         "bloc_maintenance_final": "'La maintenance de vos chantiers — deux facons d'en vivre' : contrat+facturation portes par OZECAR (les 2 cas), N1 inclus, grille client N2-N4, radio 'Je realise' / 'Je confie' (st.mntMode), checkbox 'Proposer a mon client' + email optionnel, AUCUN pourcentage affiche, renvoi adhesion partenaire. Colonne VOTRE PART retiree."
+      },
+      "iteration_9_2026_07_23": {
+        "formules_en_cartes": "Les 2 formules maintenance = cartes selectionnables style forfaits (kicker FORMULE, titre, liste a coches, clic sur toute la carte, selection = bordure violette + ombre, selMnt(), restauration depuis st.mntMode). Demande visuelle Dominique."
       }
     }
   },
