@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "version": "1.606",
-    "updated": "2026-07-23",
+    "version": "1.607",
+    "updated": "2026-07-24",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
     "canonical_pricing": "pricing_canonical_2026_06_17",
@@ -79,6 +79,16 @@
       "update_relay_fichier_entier": "L'action update ne supporte PAS de payload par section. Toujours pousser le contenu COMPLET apres merge."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-24",
+        "version_from": "1.606",
+        "version_to": "1.607",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CANON: architecture tunnel commande cible (signature inline + SEPA + CMD + PDF signe + statut devis + stock monday/shopify + #preparation-commandes C0BKDPSKD2A cree)",
+          "Infra decouverte : esignatures-create/webhook + stripe proxy/hook + pandadoc-signed + shopify-parse DEJA en place (autres chats), reutilisation totale"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.605",
@@ -3258,7 +3268,7 @@
     "esign_esignatures_com_2026_07_07": {
       "DECISION": "eSignatures.com retenu (Subnoto ecarte: son SDK PHP exige une extension native oak_client_php.so + tunnel enclave SEV-SNP, impossible sur Hostinger mutualise; proxy = conteneur, idem). eSignatures.com = API REST simple + HTTP Basic Auth + donnees UE Francfort + embarque + paiement a l'usage. S'integre direct sur le PHP OZECAR.",
       "api": "POST {ESIG_BASE}/contracts, HTTP Basic Auth (token en username, pas de mdp). metadata=deal_id (revient dans le webhook -> mapping direct). Signataire: signature_request_delivery_method=none + embedded_redirect_iframe_only=yes -> on embarque sign_page_url en iframe. placeholder_fields = variables du template (societe/nom/numero_devis). custom_webhook_url par contrat -> notre webhook.",
-      "fichiers": "esignatures-config.php (ESIG_TOKEN + ESIG_TEMPLATE_ID + ESIG_TEST + ESIG_WEBHOOK_KEY=ozesig_wh_Qp7Zt3Rk9m + ESIG_BASE=esignatures.io/api), esignatures-create.php (deal->signataire->contrat->sign_page_url), esignatures-webhook.php (contract-signed -> pandadoc-signed.php Gagné/Livraison). Teste OK.",
+      "fichiers": "esignatures-config.php (ESIG_TOKEN + ESIG_TEMPLATE_ID + ESIG_TEST + ESIG_WEBHOOK_KEY=ozesig_wh_<REDACTED> + ESIG_BASE=esignatures.io/api), esignatures-create.php (deal->signataire->contrat->sign_page_url), esignatures-webhook.php (contract-signed -> pandadoc-signed.php Gagné/Livraison). Teste OK.",
       "subnoto_supprime": "api/subnoto-config.php + api/subnoto-webhook.php supprimes du serveur.",
       "reste_dominique": [
         "Coller le Secret Token eSignatures.com dans api/esignatures-config.php (ESIG_TOKEN).",
@@ -11593,6 +11603,7 @@
     "rgpd_relances": "LIVE 2026-07-23 : propriete deal ozecar_stop_relances (creee par API), filtree par le moteur (aucune relance si true, devis ET invite), lien 'ne plus recevoir ces rappels' dans les templates. Process : mail STOP recu -> ME coche la case. Base legale prospection client final = interet legitime, a documenter dans la politique de confidentialite (avec l'avocat).",
     "clauses_cgv_a_faire": "LISTE POUR AVOCAT (2026-07-23) : 1 reserve de propriete jusqu'a paiement complet (materiel) · 2 desactivation a distance en cas de non-paiement (materiel + supervision) · 3 suspension supervision J+14 sans contrat apres activation · 4 conditions de paiement (1re commande a la commande, 30j comptes etablis, acompte DC, certifie fin de mois) · 5 sous-traitance maintenance (assurances RC pro/decennale exigees, plan de prevention, SLA back-to-back) · 6 prime d'apport (statut, fiscalite) · 7 prospection & desinscription (RGPD) · 8 livraison et transfert des risques (48h/3-5j) · 9 garanties constructeur (Zaptec 5 ans) et retours B2B · 10 page CGV vente materiel a publier sur le site.",
     "commande_signature_paiement_A_ARBITRER": "TRANCHE — voir canon.commande_flux_B",
-    "commande_flux_B": "DECISION Dominique 2026-07-23 : FLUX B. Le clic 'Accepter et signer' = demande de signature (CGV cochees + preuve horodatee), statut 'Signature demandee', AUCUN Gagne ni carte Livraison au clic. Le bon pour accord ELECTRONIQUE (eSignatures.com) est genere et envoye ; A SIGNATURE : Gagne + carte Livraison + confirmation + facturation Pennylane, PAIEMENT DEBITE A 30 JOURS par SEPA par defaut. Le COMMERCIAL choisit par devis 'paiement a la commande' (toggle st.payMode, question de confiance, defaut = 30j pour gagner le client — remplace la regle automatique 'premiere commande a la commande', assouplie par Dominique). CGV art. 2-3 alignees. TRANSITOIRE : generation/envoi eSignatures manuel (notif interne '✍️ Signature a generer') jusqu'au cablage API eSignatures.com — necessite compte + cle API (action Dominique), puis webhook signature -> completion auto."
+    "commande_flux_B": "DECISION Dominique 2026-07-23 : FLUX B. Le clic 'Accepter et signer' = demande de signature (CGV cochees + preuve horodatee), statut 'Signature demandee', AUCUN Gagne ni carte Livraison au clic. Le bon pour accord ELECTRONIQUE (eSignatures.com) est genere et envoye ; A SIGNATURE : Gagne + carte Livraison + confirmation + facturation Pennylane, PAIEMENT DEBITE A 30 JOURS par SEPA par defaut. Le COMMERCIAL choisit par devis 'paiement a la commande' (toggle st.payMode, question de confiance, defaut = 30j pour gagner le client — remplace la regle automatique 'premiere commande a la commande', assouplie par Dominique). CGV art. 2-3 alignees. TRANSITOIRE : generation/envoi eSignatures manuel (notif interne '✍️ Signature a generer') jusqu'au cablage API eSignatures.com — necessite compte + cle API (action Dominique), puis webhook signature -> completion auto.",
+    "tunnel_commande_cible": "ARCHITECTURE VALIDEE A CONSTRUIRE (Dominique 23-24/07, exigences completes) : clic 'Accepter et signer' -> esignatures-create.php (INFRA EXISTANTE, token+template en config, ESIG_TEST=yes) -> redirection sign_page_url INLINE -> retour -> si pas de mandat SEPA : Stripe Checkout setup via api/stripe.php (proxy EXISTANT, cle rk_test) -> merci. Completion quand signature ET mandat (signature seule si mandat existant) via esignatures-webhook + stripe-hook (EXISTANTS) -> completer etendu materiel : numero de commande CMD (propriete ozecar_numero_commande) genere A LA SIGNATURE (le devis garde son numero OZ-), Gagne + carte Livraison, PDF signe stocke (ozecar_pdf_signe_url + ozecar_signe_le), email de confirmation AVEC le PDF signe certifie, post #preparation-commandes (C0BKDPSKD2A, cree 23/07, toutes sources : devis + shop), decrement stock monday (board 18409310538) + inventaire Shopify (verite de stock unique shop+devis), re-clic sur le lien devis -> api/devis-statut.php -> bandeau 'Devis accepte et signe le JJ.MM.AAAA' + telechargement du PDF signe, page figee. PROCESS MAI RETROUVE : Shopify (password_protected, setup Claude Code) -> shopify-parse.php (SKU PACK-BASIC-PDC/QR/SIM/ZAPTEC-GO/PRO) -> Make -> monday/HubSpot ; a router aussi vers #preparation-commandes a l'ouverture du shop. ACTIONS DOMINIQUE : (1) template eSignatures 'Bon pour accord materiel' dans l'UI (contenu fourni par Claude) ou validation du template existant, (2) bascule live le jour J : ESIG_TEST=no + cle Stripe rk_live, (3) enregistrer les URLs webhook dans les UIs eSignatures/Stripe si absent, (4) ajouter Fred et ME au canal #preparation-commandes."
   }
 }
