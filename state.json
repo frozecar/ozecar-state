@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.579",
+    "version": "1.580",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -78,6 +78,16 @@
       ]
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.579",
+        "version_to": "1.580",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Batch 2 ME appliqué (19 PATCH): mappées 127/179, écart B 162→2 PDC, écart D 10 teams/29 PDC",
+          "ELC INVEST=client SOLECO sans fiche PL (à créer). Script v2.2 (+RESILIE)."
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.578",
@@ -3731,6 +3741,15 @@
         "script_v21": "rapprochement.php v2.1: catégories hors facturation exclues de l'écart B, AFACTURER = écart D 'à facturer confirmé' (5 teams/17 PDC: Genovese 8, Santa Giulia 3, Mairie Olmeto 2, Mont-St-Jean 2, Abartello 2 — revenu dormant). Cockpit.php expose top_D, widget MAJ staging.",
         "resultats_v21": "Mappées 100→118. Non mappées 60→23 (écart B 162→36 PDC). C récurrent 16 clients/8 342€ → 10 clients/3 840€. Écart A monte 81→104 PDC: les nouveaux mappés Pista Padel (8), Gedimat (4) etc. ont un compte PL mais 0€ récurrent/12m — à facturer ou vérifier.",
         "reste": "23 teams non arbitrées (ELC INVEST 8 PDC en tête — ME demande quel paiement bancaire a été confirmé, question pour Dominique). Ghisonaccia=123960330 COMMUNE DE GHISONACCIA validé mais non utilisé (les 2 teams Ghiso sont OZECAR). Écart A 104 PDC à qualifier team par team."
+      },
+      "REVUE_ME_BATCH2_2026_07_23": {
+        "source": "2e batch ME (DM Slack 23/07 11:05) — 19 teams. 19/19 PATCH OK.",
+        "mappings_pl": "Deltagame=159448860 LILOU LAZER GAME · Magic Padel=1373927292928 (ID 13 chiffres VALIDE) · Marina Rossa=120863934 VESNA ROSSA · Hôtel Calvi=120863863 · Casa Orsu=123960856 · Pascal Paoli=123853953 CORSICA TOURISME · Cantu di Mare=145106358 NOVA · Rouby Cuers+Eguilles=123853964 IZITEK (facturés via partenaire Izitek).",
+        "categories": "Marina di Favone=OZECAR (bornes OZECAR; fiche PL 120863903 existe, réf.) · Ambulance la Ciotat=MONTA (prélèvement direct) · Algajola=PROSPECT (bornes obsolètes, reprise impossible) · Pey Blanc=PROSPECT (pb connexion) · Super Souk=RESILIE (plus client, tag ajouté script v2.2) · Le Relax+Port de Porto Vecchio+Carré d'or (=même proprio que Genovese)+ELC INVEST+Soleco=AFACTURER.",
+        "ELC_SOLECO": "ELC INVEST (8 PDC) est un client SOLECO — mais AUCUNE fiche SOLECO dans Pennylane (scan complet). Action: créer la fiche client SOLECO dans PL puis facturer. Tagué AFACTURER en attendant.",
+        "bilan_final": "Mappées 127/179 · non mappées 5 dont 1 seule avec PDC (Résidence Saint Jacques, 2 PDC, inconnue de ME) · écart B 162→2 PDC · écart D 'à facturer confirmé' 10 teams/29 PDC (ELC 8, Genovese 8, Santa Giulia 3, Olmeto 2, Mont-St-Jean 2, Abartello 2, Le Relax 2, Carré d'or 1, Port PV 1, Soleco 0) · C récurrent 8 clients/3 660€.",
+        "incoherence_a_trancher": "COMMUNE DE GHISONACCIA (123960330) paie 768€ de récurrent/12m mais ses 2 teams (Vignale, Spar) sont taguées OZECAR sur parole ME ('bornes OZECAR'). Vérifier si Vignale devrait être PL:123960330. Idem: identifier les 7 autres fiches C récurrent (120863885 1080€ en tête).",
+        "teams_0pdc": "Arsouille Invest, Marcheschi Axa, XXParking Porticcio: 0 PDC, non mappées, consigne ME 'ne pas supprimer'."
       }
     },
     "CONTRATS_REDIGES_2026_07_20": {
