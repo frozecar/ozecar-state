@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.604",
+    "version": "1.605",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -79,6 +79,15 @@
       "update_relay_fichier_entier": "L'action update ne supporte PAS de payload par section. Toujours pousser le contenu COMPLET apres merge."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.604",
+        "version_to": "1.605",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "DEVIS CORSICA ENVOYE : deal en Devis envoye, expiration 22/08, relances armees, garde sk sur la vue commerciale (lien sales sans cle -> vue devis)"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.603",
@@ -3137,6 +3146,12 @@
           "Arbitrage A/B/C signature-paiement (canon commande_signature_paiement_A_ARBITRER)",
           "Puis envoi du devis (je pose expire_le+statut+email devis-pret-materiel)"
         ]
+      },
+      "DEVIS_ENVOYE_2026_07_23": {
+        "statut": "DEVIS CORSICA ENVOYE par Dominique (email perso avec rattrapage integre + pre-requis electriques : 2x disjoncteur 40A, 2x differentiel 40A, cable R2V 5G 10mm2, lien tracke HubSpot sales-engage).",
+        "deal": "512210983114 : stage Devis-contrat envoye · statut Envoye · expire 2026-08-22 · devis_url_client = lien v=2 propre · relances armees (J+7/14/21/28, dernier jour, expiration J30).",
+        "garde_sales": "Vue commerciale protegee par cle sk (sans cle, tout lien ?sales en mode materiel redirige vers la vue devis v=2). Lien edition du deal mis a jour avec la cle. Motif : incertitude sur le lien exact envoye par Dominique.",
+        "arbitrage_ABC": "Toujours ouvert : de facto mode A (clickwrap CGV + Stripe par email a la commande) tant que non tranche."
       }
     }
   },
