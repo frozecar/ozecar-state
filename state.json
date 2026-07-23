@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.580",
+    "version": "1.581",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -78,6 +78,16 @@
       ]
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.580",
+        "version_to": "1.581",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Regle 7 jours contrat client final apres activation GRAVEE (kits_canonique.delai_contrat_client_final)",
+          "Convention nommage deals materiel + ozecar_devis_edit_url pose sur deal Corsica 512210983114"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.579",
@@ -9582,10 +9592,12 @@
         "line_items": [
           "2x Zaptec Pro 22 kW @1325 HT (li 472738797772)",
           "1x Colonne Zaptec Single/Twin dos-a-dos @325 HT (li 472707383532)"
-        ]
+        ],
+        "ozecar_devis_edit_url": "pose sur le deal : configurateur-v2-dev.html?sales&mode=materiel&deal_id=512210983114 (params pas encore lus par le v2 — cablage a venir)"
       },
       "en_attente": "Generation + envoi du devis HubSpot a Mael (action Dominique, line items prets sur le deal 512210983114).",
-      "total_ht": 2975
+      "total_ht": 2975,
+      "convention_nommage_deal_materiel": "Titre = 'Materiel {AC/DC} — {n} PDC — {chantier ou client final}'. Jamais la liste des references (role des line items), jamais l'installateur en premier. Installateur = ozecar_ref_site + deal_for_partner=true + label association 'Installateur referent'. Applique au deal 512210983114 (valide visuellement par Dominique)."
     }
   },
   "ops": {
@@ -11094,7 +11106,8 @@
     "sim": "La SIM du kit est activee EN MEME TEMPS que l'activation de la borne — zero cout de connectivite sur les kits dormants.",
     "guides_config": "Bibliotheque multi-marques EXISTANTE sur le site: guides dedies ABB AC, ABB DC, Schneider, Wallbox, Easee + guide OCPP general + base recherchable 80+ modeles (Alfen, Hager, Keba, Legrand, Autel, Vestel, Sungrow, Zaptec, EVBox, Delta, Kempower, Alpitronic, Circontrol...).",
     "assistance": "Hotline technique installateurs = FRED, accompagnement au telephone. Son numero doit figurer sur la notice et le packaging.",
-    "packaging": "Plusieurs versions faites, AUCUNE validee par Dominique. Concept propose 22/07 (a trancher): 'boite reassort' — voir strategy.operation_kits_gratuits_installateurs."
+    "packaging": "Plusieurs versions faites, AUCUNE validee par Dominique. Concept propose 22/07 (a trancher): 'boite reassort' — voir strategy.operation_kits_gratuits_installateurs.",
+    "delai_contrat_client_final": "CONFIRME Dominique 2026-07-23 : apres activation de la borne, le client final a 7 JOURS pour finaliser son contrat de supervision en self-service (invite envoyee par l'installateur, stage 'Devis contrat envoye'). Regle absente du state jusqu'ici — gravee ce jour."
   },
   "canon": {
     "_regle": "Cette section est LA vérité courante servie à chaque boot de chat. Toute décision qui change un prix, un nom, une version active ou une règle DOIT mettre à jour canon dans le même push. Compacte: décisions, pas de narratif.",
