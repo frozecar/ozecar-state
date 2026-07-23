@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.603",
+    "version": "1.604",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -79,6 +79,15 @@
       "update_relay_fichier_entier": "L'action update ne supporte PAS de payload par section. Toujours pousser le contenu COMPLET apres merge."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.603",
+        "version_to": "1.604",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "QA FINALE : page devis materiel TERMINEE, chaine testee de bout en bout (mode test, slack OK apres fix not_in_channel + restauration send_mail), CGV materiel v1 redigees/publiees/liees (validation avocat en attente)"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.602",
@@ -3117,6 +3126,16 @@
           "WRAPPER devis.php (uploads/ozecar/) : sert configurateur-v2-dev.html avec Cache-Control no-store + noindex — TOUS les liens distribues passent desormais par devis.php (le .htaccess est hors allowlist wp-deploy)",
           "En mode materiel, v=1 EST le devis installateur : INST force, titre/CTA/commande identiques a v=2 — plus aucun lien ne peut tomber sur un vestige",
           "Lien 'Editer le devis' du deal Corsica bascule sur devis.php"
+        ]
+      },
+      "QA_FINALE_2026_07_23": {
+        "statut": "PAGE TERMINEE — chaine complete validee en mode test (slack:true, aucun email client, deal immobile verifie stage/montant/statut apres test)",
+        "cgv_materiel_v1": "REDIGEES et publiees : staging uploads/ozecar/cgv-materiel.html (12 articles bases sur les decisions gravees : bon pour accord clickwrap, paiement, DESACTIVATION A DISTANCE apres mise en demeure 8j, reserve de propriete, livraison 48h/3-5j + transfert des risques, pre-configuration/supervision distincte, garanties constructeur, retours B2B, responsabilite plafonnee, RGPD, Aix-en-Provence). Liees : case a cocher du devis + pied de page + email de confirmation. A FAIRE VALIDER PAR L'AVOCAT (v1 operationnelle en attendant).",
+        "bug_slack_resolu": "send_mail modifie par erreur (fins de fonctions identiques) restaure · slack via SLACK_BOT_TOKEN (slack-bot-config.php) · not_in_channel sur #avancees resolu par conversations.join auto + repli #veille-marches.",
+        "en_attente_dominique": [
+          "Envoi email de rattrapage a Mael (redige)",
+          "Arbitrage A/B/C signature-paiement (canon commande_signature_paiement_A_ARBITRER)",
+          "Puis envoi du devis (je pose expire_le+statut+email devis-pret-materiel)"
         ]
       }
     }
