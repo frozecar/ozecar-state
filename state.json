@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.578",
+    "version": "1.579",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -78,6 +78,16 @@
       ]
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.578",
+        "version_to": "1.579",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "42 mockups HTML du project knowledge archivés sur uploads/ozecar/archive-projet-claude-2026-07/ — feu vert suppression de TOUS les .html du projet",
+          "DÉCISION canon.sources_pages: référence pages = staging lu en direct via wp-deploy, jamais de copies HTML en project knowledge"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.577",
@@ -11091,6 +11101,7 @@
       "ozecar.store comme destination future",
       "Grille Essential 5,90 / Pro 14,90 / Pro+ / Transit"
     ],
-    "protocole_etat": "state via github-relay.php + champ k obligatoire. Jamais raw.githubusercontent. Écriture: read frais → merge → increment → changelog en tête → redact tokens → push."
+    "protocole_etat": "state via github-relay.php + champ k obligatoire. Jamais raw.githubusercontent. Écriture: read frais → merge → increment → changelog en tête → redact tokens → push.",
+    "sources_pages": "Référence unique des pages = staging.ozecar.fr lu EN DIRECT via wp-deploy.php (jamais de copie HTML en project knowledge — elles dérivent). Archive historique des 42 mockups HTML: uploads/ozecar/archive-projet-claude-2026-07/ (lecture seule, ne pas réutiliser comme source de prix/design)."
   }
 }
