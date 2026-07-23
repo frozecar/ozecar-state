@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.591",
+    "version": "1.592",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -78,6 +78,15 @@
       ]
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.591",
+        "version_to": "1.592",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Mode materiel it.10: cartes formules refondues orientees benefices (accroche 2160 EUR/an, format forfait, ✗ grises)"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.590",
@@ -2975,6 +2984,9 @@
       },
       "iteration_9_2026_07_23": {
         "formules_en_cartes": "Les 2 formules maintenance = cartes selectionnables style forfaits (kicker FORMULE, titre, liste a coches, clic sur toute la carte, selection = bordure violette + ombre, selMnt(), restauration depuis st.mntMode). Demande visuelle Dominique."
+      },
+      "iteration_10_2026_07_23": {
+        "cartes_benefices": "Refonte orientée gains installateur (critique Dominique 'ne voit pas les avantages'): accroche chiffrée grille client publique ('10 PDC en N3 = 2 160 EUR/an de contrat'), format forfait exact (kicker/titre/✓ avantages/✗ grisés=ce dont il est débarrassé/séparateur/note), 'Je réalise' = revenu récurrent + roulez utile + payé sans courir, 'Je confie' = prime récurrente + zéro astreinte + client reste le sien. Aucun taux partenaire affiché (canon respecté)."
       }
     }
   },
