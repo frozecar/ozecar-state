@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.594",
+    "version": "1.595",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -78,6 +78,16 @@
       ]
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.594",
+        "version_to": "1.595",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CANON: regle typographie, jamais de tiret cadratin (aussi en memoire)",
+          "Mode materiel it.11: refonte ligne produit (image 90x90, specs multi-lignes, fiche en dernier, stepper avant prix, barre/remise sur 2 lignes)"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.593",
@@ -3006,6 +3016,9 @@
       },
       "iteration_10_2026_07_23": {
         "cartes_benefices": "Refonte orientée gains installateur (critique Dominique 'ne voit pas les avantages'): accroche chiffrée grille client publique ('10 PDC en N3 = 2 160 EUR/an de contrat'), format forfait exact (kicker/titre/✓ avantages/✗ grisés=ce dont il est débarrassé/séparateur/note), 'Je réalise' = revenu récurrent + roulez utile + payé sans courir, 'Je confie' = prime récurrente + zéro astreinte + client reste le sien. Aucun taux partenaire affiché (canon respecté)."
+      },
+      "iteration_11_2026_07_23": {
+        "ligne_produit_refonte": "Image 90x90 (flex fixe), nom en semi-gras, specs eclatees en lignes (split sur les separateurs), 'Fiche technique' en derniere ligne du bloc texte, ordre de droite : proposer, palier, STEPPER en avant-dernier, PRIX en dernier (public barre 1re ligne, remise en gras dessous, min-width 110px)."
       }
     }
   },
@@ -11371,6 +11384,7 @@
     "commission_maintenance_partenaire": "DECISION Dominique 2026-07-23 : commission de service OZECAR sur la maintenance vendue par l'installateur = 12,5 % (facturation client + reversement + admin). Part installateur affichee au configurateur : N2 7,88 / N3 15,75 / N4 21,00 EUR/PDC/mois. Levier futur possible : 10 % certifie (non decide).",
     "maintenance_deux_formules": "DECISION Dominique 2026-07-23 : la maintenance partenaire = 2 formules, AUCUN chiffre partenaire affiche au devis. (A) 'Je realise les interventions' : OZECAR contracte/facture le client, l'installateur execute, reversement (taux non publie, 12,5% de commission acte en interne). (B) 'Je confie a OZECAR' : le reseau OZECAR execute (= partenaires A des autres zones), prime d'apport recurrente (taux NON DECIDE). Grille client N2 9 / N3 18 / N4 24 EUR/PDC/mois affichable. Conditions detaillees uniquement a l'adhesion partenaire. Juridique sous-traitance a verrouiller (avocat) avant publication de tout taux.",
     "maintenance_niveaux_sla": "ACTE Dominique 2026-07-23 (v2, remplace la version du meme jour) : N1 a distance (inclus supervision) · N2 = N1 + visite preventive annuelle · N3 = N2 + curatif sur site, INTERVENTION & DIAGNOSTIC SOUS 48 H · N4 = N3 + INTERVENTION & DIAGNOSTIC SOUS 24 H — AUCUNE piece incluse a aucun niveau (libelles 'pieces incluses' et 'delai renforce' PERIMES). Prix client : 4/9/18/24 EUR/PDC/mois. Corrige aux 4 zones du configurateur v2.",
-    "materiel_libelle_zpro": "ACTE 2026-07-23 : specs produit affichees SOUS marque+modele (bloc dedie), et pour Zaptec Pro : 'Connexion de donnees 4G LTE-M incluse · MID + RFID · garantie 5 ans' (plus jamais 'Modem 4G integre')."
+    "materiel_libelle_zpro": "ACTE 2026-07-23 : specs produit affichees SOUS marque+modele (bloc dedie), et pour Zaptec Pro : 'Connexion de donnees 4G LTE-M incluse · MID + RFID · garantie 5 ans' (plus jamais 'Modem 4G integre').",
+    "regle_typographie_tiret": "REGLE Dominique 2026-07-23 : ne JAMAIS utiliser le tiret cadratin dans les textes rediges (reponses chat, contenus, pages). Preferer virgule, deux-points ou point. Egalement gravee en memoire utilisateur."
   }
 }
