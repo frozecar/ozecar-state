@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.581",
+    "version": "1.582",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -78,6 +78,16 @@
       ]
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.581",
+        "version_to": "1.582",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Mode materiel seul LIVRE sur staging (configurateur v2, flag MATONLY, cas test Corsica pre-rempli)",
+          "INCIDENT REMEDIE: write parti sur prod (wp-deploy ozecar.fr = prod seul), fichier supprime, regle 2 endpoints gravee (infra.wp_deploy_deux_endpoints)"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.580",
@@ -2782,7 +2792,19 @@
       ],
       "statut": "Cree. Cablage consommateurs = etape suivante."
     },
-    "_archive": "Historique des iterations (14 sous-sections) sorti vers archive.json > purge_2026_07_15 > configurateur. Decisions conservees ci-dessus; le recit du 'comment' est dans l'archive et dans git log."
+    "_archive": "Historique des iterations (14 sous-sections) sorti vers archive.json > purge_2026_07_15 > configurateur. Decisions conservees ci-dessus; le recit du 'comment' est dans l'archive et dans git log.",
+    "mode_materiel_2026_07_23": {
+      "date": "2026-07-23",
+      "statut": "LIVRE sur staging",
+      "quoi": "Mode 'materiel seul' dans configurateur-v2-dev.html (?sales&mode=materiel). Additif, garde par flag MATONLY (st.mode='materiel' voyage dans le param c, deal_id stocke dans st.deal_id pour le futur webhook). Sections masquees: sites/options compte/domicile/mise en service/recap supervision. Conserves: catalogue MAT double vue + remise, encart 3 mois supervision offerts (teaser client final), timeline 'apres signature', logos. Ajouts: champ CHANTIER/CLIENT FINAL optionnel (st.chantier name+commune, l'installateur garde la main), encart Programme partenaire (prix revendeur, primes, kit offert, partenaires@ozecar.fr), barre = total materiel seul, CTA sales = genLinkInst (v=2 = devis installateur fige).",
+      "backup_staging": "api/backups/deploy/wp-content__uploads__ozecar__configurateur-v2-dev.html.20260723-093823.bak.php",
+      "cas_test": "Corsica Energia pre-rempli (2x zpro + 1 zcol = 2975 HT), lien edition pose dans ozecar_devis_edit_url du deal 512210983114.",
+      "restant": [
+        "Dossier de presentation client final (page/PDF remis PAR l'installateur)",
+        "Remplissage auto ozecar_devis_edit_url a l'entree en Devis a faire (via cron.php + proxy hubspot serveur, pas de workflow Starter)",
+        "Webhook signature materiel -> deal supervision auto + association deal-deal"
+      ]
+    }
   },
   "esignature": {
     "panda_templates": {
@@ -8001,7 +8023,8 @@
         "status": "TODO"
       }
     },
-    "_archive": "Historique des iterations (1 sous-sections) sorti vers archive.json > purge_2026_07_15 > infra. Decisions conservees ci-dessus; le recit du 'comment' est dans l'archive et dans git log."
+    "_archive": "Historique des iterations (1 sous-sections) sorti vers archive.json > purge_2026_07_15 > infra. Decisions conservees ci-dessus; le recit du 'comment' est dans l'archive et dans git log.",
+    "wp_deploy_deux_endpoints": "REGLE 2026-07-23: ozecar.fr/api/wp-deploy.php ecrit PROD (DOCUMENT_ROOT). staging.ozecar.fr/api/wp-deploy.php ecrit STAGING. Meme Bearer. Toujours choisir l'endpoint selon la cible — jamais de chemin 'staging/' relatif."
   },
   "strategy": {
     "business_expansion": {
@@ -10222,7 +10245,14 @@
         }
       ],
       "note_renommage": "Claude ne peut pas renommer un chat existant : le titre appartient a l'interface. Les chats anterieurs a OZ-24 sont a renommer a la main par Dominique s'il le souhaite, ou a laisser mourir."
-    }
+    },
+    "incidents": [
+      {
+        "date": "2026-07-23",
+        "type": "ecriture prod par erreur — REMEDIE",
+        "detail": "wp-deploy.php sur ozecar.fr resout DOCUMENT_ROOT = PROD uniquement. Un write de configurateur-v2-dev.html est parti sur prod (fichier inexistant avant, backup:None). Supprime dans les 2 minutes (backup .deleted-20260723-093751 conserve). LECON GRAVEE: staging s'ecrit via staging.ozecar.fr/api/wp-deploy.php (meme Bearer). ozecar.fr/api/wp-deploy.php = PROD SEUL."
+      }
+    ]
   },
   "monday_boards": {
     "stock_kits": {
