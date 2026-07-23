@@ -75,9 +75,20 @@
     "\"cle requise\" -> ajouter le champ k depuis les instructions projet, ne PAS improviser ni repondre de memoire",
     "401 Bad credentials -> PAT GitHub serveur expire, action Dominique",
     "409 sha mismatch -> relire frais + merge + retry"
-   ]
+   ],
+   "update_relay_fichier_entier": "L'action update ne supporte PAS de payload par section. Toujours pousser le contenu COMPLET apres merge."
   },
   "session_changelog": [
+   {
+    "date": "2026-07-23",
+    "version_from": "1.596",
+    "version_to": "1.597",
+    "author": "Claude PM (claude.ai)",
+    "changes": [
+     "Packaging kits: spec structurelle pochette kraft A6 actee + dieline SVG 1:1 en ligne (uploads/ozecar/packaging/) + brief designer print 5p livre. Codes OZB/OZS adoptes (go final Dominique). Reste: numero Fred, choix designer, go impression.",
+     "INCIDENT RELAY (resolu): un update avec champ 'section' a ecrase state.json entier (commit c91c9eb, 20:12 UTC). Restaure depuis commit parent b75d63f (v1.596) puis merge. REGLE GRAVEE: l'action update du relay ecrit TOUJOURS le fichier ENTIER — jamais de payload par section."
+    ]
+   },
    {
     "date": "2026-07-22",
     "version_from": "1.595",
@@ -11435,15 +11446,5 @@
   "maintenance_niveaux_sla": "ACTE Dominique 2026-07-23 (v2, remplace la version du meme jour) : N1 a distance (inclus supervision) · N2 = N1 + visite preventive annuelle · N3 = N2 + curatif sur site, INTERVENTION & DIAGNOSTIC SOUS 48 H · N4 = N3 + INTERVENTION & DIAGNOSTIC SOUS 24 H — AUCUNE piece incluse a aucun niveau (libelles 'pieces incluses' et 'delai renforce' PERIMES). Prix client : 4/9/18/24 EUR/PDC/mois. Corrige aux 4 zones du configurateur v2.",
   "materiel_libelle_zpro": "ACTE 2026-07-23 : specs produit affichees SOUS marque+modele (bloc dedie), et pour Zaptec Pro : 'Connexion de donnees 4G LTE-M incluse · MID + RFID · garantie 5 ans' (plus jamais 'Modem 4G integre').",
   "regle_typographie_tiret": "REGLE Dominique 2026-07-23 : ne JAMAIS utiliser le tiret cadratin dans les textes rediges (reponses chat, contenus, pages). Preferer virgule, deux-points ou point. Egalement gravee en memoire utilisateur."
- },
- "changelog": [
-  {
-   "date": "2026-07-23",
-   "v": "1.597",
-   "changes": [
-    "Packaging kits: spec structurelle pochette kraft A6 actee + dieline SVG 1:1 en ligne (uploads/ozecar/packaging/) + brief designer print 5p livre. Codes OZB/OZS adoptes (go final Dominique). Reste: numero Fred, choix designer, go impression.",
-    "INCIDENT RELAY (resolu): update avec champ 'section' a ecrase state.json entier a 20:12 UTC (commit c91c9eb). Restaure depuis commit parent b75d63f + merge. REGLE: l'action update du relay ecrit TOUJOURS le fichier ENTIER, jamais de payload section."
-   ]
-  }
- ]
+ }
 }
