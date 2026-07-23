@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "version": "1.595",
-    "updated": "2026-07-23",
+    "version": "1.596",
+    "updated": "2026-07-22",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
     "canonical_pricing": "pricing_canonical_2026_06_17",
@@ -78,6 +78,15 @@
       ]
     },
     "session_changelog": [
+      {
+        "date": "2026-07-22",
+        "version_from": "1.595",
+        "version_to": "1.596",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Packaging kits: direction validee pochette kraft decoupee style Disruptive + langage kraft/noir/pastille jaune + 2 niveaux production (Brother serie / Caisse Jaune influence). Liens Canva + fichiers + points a trancher graves pour reprise dans chat dedie."
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.594",
@@ -11353,7 +11362,26 @@
     "guides_config": "Bibliotheque multi-marques EXISTANTE sur le site: guides dedies ABB AC, ABB DC, Schneider, Wallbox, Easee + guide OCPP general + base recherchable 80+ modeles (Alfen, Hager, Keba, Legrand, Autel, Vestel, Sungrow, Zaptec, EVBox, Delta, Kempower, Alpitronic, Circontrol...).",
     "assistance": "Hotline technique installateurs = FRED, accompagnement au telephone. Son numero doit figurer sur la notice et le packaging.",
     "packaging": "Plusieurs versions faites, AUCUNE validee par Dominique. Concept propose 22/07 (a trancher): 'boite reassort' — voir strategy.operation_kits_gratuits_installateurs.",
-    "delai_contrat_client_final": "CONFIRME Dominique 2026-07-23 : apres activation de la borne, le client final a 7 JOURS pour finaliser son contrat de supervision en self-service (invite envoyee par l'installateur, stage 'Devis contrat envoye'). Regle absente du state jusqu'ici — gravee ce jour."
+    "delai_contrat_client_final": "CONFIRME Dominique 2026-07-23 : apres activation de la borne, le client final a 7 JOURS pour finaliser son contrat de supervision en self-service (invite envoyee par l'installateur, stage 'Devis contrat envoye'). Regle absente du state jusqu'ici — gravee ce jour.",
+    "packaging_design_2026_07_22": {
+      "direction_validee": "Format POCHETTE KRAFT DECOUPEE style Disruptive Technologies (sensor kit) — 'on y est presque' + 'un truc de genre' (Dominique). Une seule piece de carton decoupee = emballage + support + notice: fente carte RFID, poche planche autocollants, logement SIM, instructions imprimees a l'interieur du rabat. Plat, expedie en enveloppe standard, stockage a plat.",
+      "langage_graphique": "Kraft naturel + impression encre noire + UNE touche jaune #FAC828 = la pastille de scelle portant le code kit (imprimable MUNBYN rouleau jaune). Carte RFID NOIRE finition CB avec eclair jaune = objet heros (le client final la garde). Kit Borne et Kit Site = meme decoupe, titre/code/poches differents.",
+      "deux_niveaux_production": "SERIE = flux Brother existant: grande enveloppe d'expedition contenant 2 enveloppes (creme=installateur: kits+notice / noire=client final: carte RFID+mot bienvenue, remise en main propre fin de chantier). INFLUENCE (vague 1) = Caisse Jaune rigide petite serie (~24x16x5, ink mat, interieur jaune, alveoles-jauge, fond revele 'Caisse vide = bornes en ligne + tel Fred') avec pochettes kraft dedans.",
+      "canva_generations": {
+        "caisse_ouverte_realiste": "https://www.canva.com/d/LzyPbq5KFulF4xD (et 3 variantes meme session)",
+        "enveloppes_jaune_noir": "https://www.canva.com/d/dZro7BCzSx-sDmc (4 variantes)",
+        "pochettes_kraft_disruptive": "https://www.canva.com/d/s3FASZ30ZiurzSu · https://www.canva.com/d/kTkSoKsSKCB-eRC · https://www.canva.com/d/DsLs-S7XGsUGDeF · https://www.canva.com/d/RAISGJwpfjpPdqW"
+      },
+      "fichiers_produits": "ozecar-caisse-jaune-kits-charte.png (planche vraie charte + logo officiel) + ozecar-pack-brother-A4.pdf (notice installateur / mot client / page de garde colis) — livres a Dominique le 22/07.",
+      "a_trancher": [
+        "Codes OZB-XXXX / OZS-XXXX (proposes, non valides)",
+        "Numero de Fred a inserer partout",
+        "Choix du candidat Canva kraft a convertir en design editable",
+        "Spec structurelle pochette: format ferme (~12x12 ou A6) + 3 decoupes",
+        "Logo: declinaison claire officielle existe-t-elle (pour fonds encre) ? Sinon plaque jaune",
+        "Executant final: designer print freelance (recommande, brief Claude) vs gabarits Canva"
+      ]
+    }
   },
   "canon": {
     "_regle": "Cette section est LA vérité courante servie à chaque boot de chat. Toute décision qui change un prix, un nom, une version active ou une règle DOIT mettre à jour canon dans le même push. Compacte: décisions, pas de narratif.",
