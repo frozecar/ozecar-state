@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.599",
+    "version": "1.600",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -79,6 +79,16 @@
       "update_relay_fichier_entier": "L'action update ne supporte PAS de payload par section. Toujours pousser le contenu COMPLET apres merge."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.599",
+        "version_to": "1.600",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "CANON: protocole 'produit abouti' 8 dimensions (obligatoire a chaque fonctionnalite)",
+          "Propriete ozecar_invite_le CREEE PAR API (PAT a le scope schemas — regle perimee corrigee) : tunnel client final arme"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.598",
@@ -11479,6 +11489,8 @@
     "regle_typographie_tiret": "REGLE Dominique 2026-07-23 : ne JAMAIS utiliser le tiret cadratin dans les textes rediges (reponses chat, contenus, pages). Preferer virgule, deux-points ou point. Egalement gravee en memoire utilisateur.",
     "paiement_materiel": "DECISION Dominique 2026-07-23 : facturation materiel via PENNYLANE (30 jours), mandat SEPA collecte via STRIPE. JAMAIS GoCardless pour les nouveaux flux (GoCardless = legacy MRR existant uniquement). Installateur deja client avec mandat actif : facture sur mandat existant, zero friction. Certifie : 30 jours fin de mois.",
     "maintenance_formules": "DECISION Dominique 2026-07-23 (remplace maintenance_deux_formules) : 3 formules affichees au devis materiel + 1 cas implicite. (1) JE REALISE : OZECAR facture le client (grille N2-N4), l'installateur execute, prestations reversees. (2) JE CONFIE : OZECAR facture ET fait intervenir son reseau, prime d'apport recurrente a l'installateur. (3) JE GERE EN DIRECT : l'installateur facture et realise SON propre contrat a ses prix, la grille OZECAR ne s'applique pas, N1 supervision reste inclus et l'alerte a distance sert l'installateur. (4) Client n'en veut pas : N1 inclus, grille proposable a tout moment. AUCUN taux affiche. st.mntMode: realise|confie|direct.",
-    "tunnel_client_final_doctrine": "DECISION Dominique 2026-07-23 : apres invite self-service (ancre ozecar_invite_le, PROPRIETE A CREER par Dominique, type date) : J+2 et J+5 relance email client final (template invite-relance, compte a rebours des 14 jours annonce des l'invite) · J+7 notification installateur referent + tache ME (statut 'Relance installateur (J+7)') · J+14 statut 'Suspendu (J+14 sans contrat)' + notif interne pour suspension Monta (manuelle pour l'instant). Signature tardive : reactivation immediate, FACTURATION A DATE DE SIGNATURE, aucun retroactif, aucune penalite. Refus definitif : sortie fair-play (cloture Monta, SIM kit desactivee, elements techniques transmis, deal Perdu avec MOTIF OBLIGATOIRE, installateur reste referent). Moteur : bloc tunnel client final dans api/devis-relance.php (defensif tant que la propriete n'existe pas), journal partage ozecar_devis_relances (I2;I5;INST7;SUSP14)."
+    "tunnel_client_final_doctrine": "DECISION Dominique 2026-07-23 : apres invite self-service (ancre ozecar_invite_le, PROPRIETE A CREER par Dominique, type date) : J+2 et J+5 relance email client final (template invite-relance, compte a rebours des 14 jours annonce des l'invite) · J+7 notification installateur referent + tache ME (statut 'Relance installateur (J+7)') · J+14 statut 'Suspendu (J+14 sans contrat)' + notif interne pour suspension Monta (manuelle pour l'instant). Signature tardive : reactivation immediate, FACTURATION A DATE DE SIGNATURE, aucun retroactif, aucune penalite. Refus definitif : sortie fair-play (cloture Monta, SIM kit desactivee, elements techniques transmis, deal Perdu avec MOTIF OBLIGATOIRE, installateur reste referent). Moteur : bloc tunnel client final dans api/devis-relance.php (defensif tant que la propriete n'existe pas), journal partage ozecar_devis_relances (I2;I5;INST7;SUSP14).",
+    "protocole_produit_abouti": "PROTOCOLE Dominique 2026-07-23, s'applique a TOUTE nouvelle fonctionnalite avant livraison. Passer les 8 dimensions et lister explicitement ce qui est couvert / reporte : 1 EXPERIENCE (design, clarte, mobile, qui voit quoi) · 2 VENTE (est-ce vendeur, objections, pricing/marge, remises vs cout d'achat) · 3 NOTIFS & EMAILS (qui recoit quoi a chaque etape, relances, tons) · 4 ETATS & CAS LIMITES (abandon, refus, expiration, suspension, retour arriere, doublons) · 5 PAIEMENT & FINANCE (comment on encaisse, mandats, impayes/rejets SEPA, BFR, marge unitaire) · 6 JURIDIQUE (CGV/contrats a mettre a jour, RGPD/consentement, assurances, sous-traitance) · 7 DATA & MESURE (quel evenement trace, quel KPI, attribution) · 8 OPS & CAPACITE (qui execute, stock/supply, playbook equipe, dependances fournisseurs). Chaque livraison se conclut par le bilan de ces 8 points au state.",
+    "hubspot_properties_api": "MAJ 2026-07-23 : le PAT (proxy hubspot.php) cree les proprietes via crm/v3/properties (teste : ozecar_invite_le, deal, date, creee par API). L'ancienne regle 'creation = action manuelle Dominique' est PERIMEE. ozecar_invite_le existe : tunnel client final ARME."
   }
 }
