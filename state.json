@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.601",
+    "version": "1.602",
     "updated": "2026-07-23",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -79,6 +79,15 @@
       "update_relay_fichier_entier": "L'action update ne supporte PAS de payload par section. Toujours pousser le contenu COMPLET apres merge."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-23",
+        "version_from": "1.601",
+        "version_to": "1.602",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "It.12 : wrapper anti-cache devis.php (regle : tous les liens passent par devis.php), v=1 materiel = devis commandable (INST force), lien deal mis a jour"
+        ]
+      },
       {
         "date": "2026-07-23",
         "version_from": "1.600",
@@ -3089,6 +3098,14 @@
           "Page CGV vente materiel a publier",
           "Check Pennylane mandat existant a la creation du deal (brique 4)",
           "Process Pennylane/Stripe cote ME a formaliser"
+        ]
+      },
+      "iteration_12_2026_07_23": {
+        "cause_racine_captures": "Chrome servait des builds perimes du .html (heuristique last-modified, pas d'en-tete cache). Les tests de Dominique tombaient tantot sur v=1 (CTA 'Accepter et signer' = vestige non cable), tantot sur des versions d'avant-midi.",
+        "fixes_structurels": [
+          "WRAPPER devis.php (uploads/ozecar/) : sert configurateur-v2-dev.html avec Cache-Control no-store + noindex — TOUS les liens distribues passent desormais par devis.php (le .htaccess est hors allowlist wp-deploy)",
+          "En mode materiel, v=1 EST le devis installateur : INST force, titre/CTA/commande identiques a v=2 — plus aucun lien ne peut tomber sur un vestige",
+          "Lien 'Editer le devis' du deal Corsica bascule sur devis.php"
         ]
       }
     }
