@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.623",
+    "version": "1.624",
     "updated": "2026-07-24",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -79,6 +79,15 @@
       "update_relay_fichier_entier": "L'action update ne supporte PAS de payload par section. Toujours pousser le contenu COMPLET apres merge."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-24",
+        "version_from": "1.623",
+        "version_to": "1.624",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Audience CF garantie serveur (redirect 302 par type de deal dans devis.php, QA 2 cas) + branche CF avec CTA signature"
+        ]
+      },
       {
         "date": "2026-07-24",
         "version_from": "1.622",
@@ -3326,7 +3335,7 @@
         "ux_visuelle": "MAJ : plus d'alert(). Champs manquants/invalides en ROUGE (bordure #DC2626 + fond rose), scroll automatique centre sur le premier champ manquant + focus, le rouge s'efface a la saisie (listener delegue data-f). CGV non cochee : carte CGV en rouge + scroll. QA : syntaxe du JS SERVI validee par node apres deploiement (nouvelle etape obligatoire suite a un deploy casse rattrape en 2 min)."
       },
       "ordre_cartes_2026_07_24": "Mode materiel : la carte MAINTENANCE est en 2E POSITION, juste apres le bloc materiel (deplacement DOM a l'init). Ordre final : 1 Materiel · 2 Maintenance (3 formules) · 3 Vos informations · 4 Et apres (timeline) · 5 CGV (fin) · barre CTA.",
-      "audience_cf_2026_07_24": "BUG corrige (repere par Dominique) : le mode materiel forcait INST=true pour tout destinataire. Desormais aud=cf (payload ou URL) desactive la vue installateur : PRIX PUBLICS, titre 'Devis materiel — client final', badge violet 'CLIENT FINAL · PRIX PUBLICS' dans le bandeau. La surcouche deal (matRemL) reste applicable si une remise commerciale CF est voulue. Contenu CF complet (discours, maintenance service, 'pose par X') = P3 a concevoir."
+      "audience_cf_2026_07_24": "DEFINITIF 2026-07-24 : l'audience client final est garantie COTE SERVEUR : devis.php verifie ozecar_devis_type du deal et redirige (302) tout lien non-sales d'un deal materiel_client_final vers aud=cf&v=1 — corrige liens passes, presents et mal copies (teste : deal CF 302, deal installateur 200). Cote page : branche CF complete (RO&&!INST : titre, sous-titre prix publics, CTA 'Accepter et signer' -> meme tunnel signature), badge violet 'CLIENT FINAL · PRIX PUBLICS' (aussi dans l'editeur), INST jamais force quand aud=cf. Tous les payloads provisionnes portent aud."
     }
   },
   "esignature": {
