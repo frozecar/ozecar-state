@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.610",
+    "version": "1.611",
     "updated": "2026-07-24",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -79,6 +79,16 @@
       "update_relay_fichier_entier": "L'action update ne supporte PAS de payload par section. Toujours pousser le contenu COMPLET apres merge."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-24",
+        "version_from": "1.610",
+        "version_to": "1.611",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "INCIDENT remises remedie : deal = source de verite (ozecar_devis_json + devis-data.php + fusion page), Corsica realigne 2445 (-20% zpro)",
+          "Analyse vues brutes : Mael 1 vue (24/07 08h43), le reste = Dominique + tests"
+        ]
+      },
       {
         "date": "2026-07-24",
         "version_from": "1.609",
@@ -10643,6 +10653,11 @@
       "note_renommage": "Claude ne peut pas renommer un chat existant : le titre appartient a l'interface. Les chats anterieurs a OZ-24 sont a renommer a la main par Dominique s'il le souhaite, ou a laisser mourir."
     },
     "incidents": [
+      {
+        "date": "2026-07-24",
+        "type": "remises perdues sur les liens regeneres — REMEDIE",
+        "detail": "En reconstruisant les liens du deal Corsica (bascule devis.php puis cle sales), Claude a regenere le payload c= a la main SANS matRemL : le devis distribue affichait 2975 sans remise. Mael l'a ouvert 1 fois ce matin 08h43 (plein tarif vu ; la correction n'affiche que mieux : pas de rattrapage necessaire). FIX RACINE : le deal porte la verite du devis via ozecar_devis_json (matRemL, payMode) servi par api/devis-data.php ; la page fusionne cette surcouche au chargement quand deal_id present (sans ecraser un choix explicite du lien). Corsica corrige (zpro -20%, total 2445, amount realigne). REGLE : ne JAMAIS regenerer un payload de devis a la main — toujours repartir du lien source ou du ozecar_devis_json."
+      },
       {
         "date": "2026-07-23",
         "type": "email de confirmation envoye a un vrai client lors d'un test — REMEDIE",
