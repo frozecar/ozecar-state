@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.612",
+    "version": "1.613",
     "updated": "2026-07-24",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -79,6 +79,15 @@
       "update_relay_fichier_entier": "L'action update ne supporte PAS de payload par section. Toujours pousser le contenu COMPLET apres merge."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-24",
+        "version_from": "1.612",
+        "version_to": "1.613",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Devis Corsica : remise zpro -35% (861,25/u, total 2 047,50 HT), MAJ silencieuse sans email client (demande Dominique), surcouche deal desormais PRIORITAIRE sur les valeurs du lien (deal = verite du devis), amount realigne"
+        ]
+      },
       {
         "date": "2026-07-24",
         "version_from": "1.611",
