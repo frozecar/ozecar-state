@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.613",
+    "version": "1.614",
     "updated": "2026-07-24",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -79,6 +79,15 @@
       "update_relay_fichier_entier": "L'action update ne supporte PAS de payload par section. Toujours pousser le contenu COMPLET apres merge."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-24",
+        "version_from": "1.613",
+        "version_to": "1.614",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Editeur de devis depuis HubSpot LIVE : barre 2 boutons (maj silencieuse / maj + notification client), devis-save.php, surcouche complete quantites+remises+paiement, teste"
+        ]
+      },
       {
         "date": "2026-07-24",
         "version_from": "1.612",
@@ -11666,6 +11675,7 @@
     "commande_signature_paiement_A_ARBITRER": "TRANCHE — voir canon.commande_flux_B",
     "commande_flux_B": "DECISION Dominique 2026-07-23 : FLUX B. Le clic 'Accepter et signer' = demande de signature (CGV cochees + preuve horodatee), statut 'Signature demandee', AUCUN Gagne ni carte Livraison au clic. Le bon pour accord ELECTRONIQUE (eSignatures.com) est genere et envoye ; A SIGNATURE : Gagne + carte Livraison + confirmation + facturation Pennylane, PAIEMENT DEBITE A 30 JOURS par SEPA par defaut. Le COMMERCIAL choisit par devis 'paiement a la commande' (toggle st.payMode, question de confiance, defaut = 30j pour gagner le client — remplace la regle automatique 'premiere commande a la commande', assouplie par Dominique). CGV art. 2-3 alignees. TRANSITOIRE : generation/envoi eSignatures manuel (notif interne '✍️ Signature a generer') jusqu'au cablage API eSignatures.com — necessite compte + cle API (action Dominique), puis webhook signature -> completion auto.",
     "tunnel_commande_cible": "ARCHITECTURE VALIDEE A CONSTRUIRE (Dominique 23-24/07, exigences completes) : clic 'Accepter et signer' -> esignatures-create.php (INFRA EXISTANTE, token+template en config, ESIG_TEST=yes) -> redirection sign_page_url INLINE -> retour -> si pas de mandat SEPA : Stripe Checkout setup via api/stripe.php (proxy EXISTANT, cle rk_test) -> merci. Completion quand signature ET mandat (signature seule si mandat existant) via esignatures-webhook + stripe-hook (EXISTANTS) -> completer etendu materiel : numero de commande CMD (propriete ozecar_numero_commande) genere A LA SIGNATURE (le devis garde son numero OZ-), Gagne + carte Livraison, PDF signe stocke (ozecar_pdf_signe_url + ozecar_signe_le), email de confirmation AVEC le PDF signe certifie, post #preparation-commandes (C0BKDPSKD2A, cree 23/07, toutes sources : devis + shop), decrement stock monday (board 18409310538) + inventaire Shopify (verite de stock unique shop+devis), re-clic sur le lien devis -> api/devis-statut.php -> bandeau 'Devis accepte et signe le JJ.MM.AAAA' + telechargement du PDF signe, page figee. PROCESS MAI RETROUVE : Shopify (password_protected, setup Claude Code) -> shopify-parse.php (SKU PACK-BASIC-PDC/QR/SIM/ZAPTEC-GO/PRO) -> Make -> monday/HubSpot ; a router aussi vers #preparation-commandes a l'ouverture du shop. ACTIONS DOMINIQUE : (1) template eSignatures 'Bon pour accord materiel' dans l'UI (contenu fourni par Claude) ou validation du template existant, (2) bascule live le jour J : ESIG_TEST=no + cle Stripe rk_live, (3) enregistrer les URLs webhook dans les UIs eSignatures/Stripe si absent, (4) ajouter Fred et ME au canal #preparation-commandes.",
-    "journal_activite_deal": "LIVE 2026-07-24 : api/deal-event.php = journal d'activite standardise (POST k/deal_id/event/details/statut?) -> note HubSpot formatee emoji+label+details+horodatage. TAXONOMIE COMPLETE : devis_envoye 📤 · consulte 👁 · relance 📧 · relance_dernier ⏰ · expire ⛔ · signature_demandee ✍️ · signe ✅ · mandat_sepa 💳 · paye 💰 · commande 🛒 · preparation 🔧 · expedie 📦 · livre 🏁 · active ⚡ · invite_client 🔁 · notif_installateur 🔔 · suspendu ⏸ · reactive ▶️ · perdu ❌ · note 📝. REGLE : tout script qui fait avancer un deal DOIT logger via deal-event (une ligne). Deja branches : track.php (consulte), devis-relance.php (relances devis + tunnel client final : relance/dernier/expire/notif_installateur/suspendu). A brancher au fil des builds : tunnel signature (signe/mandat_sepa/commande), stripe-hook (paye), expedition (expedie/livre), activation (active/invite_client). Note retroactive 'Devis envoye 23/07' posee sur Corsica."
+    "journal_activite_deal": "LIVE 2026-07-24 : api/deal-event.php = journal d'activite standardise (POST k/deal_id/event/details/statut?) -> note HubSpot formatee emoji+label+details+horodatage. TAXONOMIE COMPLETE : devis_envoye 📤 · consulte 👁 · relance 📧 · relance_dernier ⏰ · expire ⛔ · signature_demandee ✍️ · signe ✅ · mandat_sepa 💳 · paye 💰 · commande 🛒 · preparation 🔧 · expedie 📦 · livre 🏁 · active ⚡ · invite_client 🔁 · notif_installateur 🔔 · suspendu ⏸ · reactive ▶️ · perdu ❌ · note 📝. REGLE : tout script qui fait avancer un deal DOIT logger via deal-event (une ligne). Deja branches : track.php (consulte), devis-relance.php (relances devis + tunnel client final : relance/dernier/expire/notif_installateur/suspendu). A brancher au fil des builds : tunnel signature (signe/mandat_sepa/commande), stripe-hook (paye), expedition (expedie/livre), activation (active/invite_client). Note retroactive 'Devis envoye 23/07' posee sur Corsica.",
+    "edition_devis_hubspot": "LIVE 2026-07-24 : le lien 'Editer le devis' de la carte HubSpot (vue sales + cle sk) est un EDITEUR complet. Toute modification (quantites, remises par ligne, mode de paiement, produits proposes) vs l'etat charge fait apparaitre une barre 'Modifications non enregistrees' avec 2 boutons : 'Mettre a jour le devis' (silencieux) et 'Mettre a jour et notifier le client' (email template devis-maj avec nouveau total). Sauvegarde via api/devis-save.php (cle sales) -> ozecar_devis_json (VERITE du devis, surcouche prioritaire sur tous les liens distribues, quantites comprises) + amount + note journal (📝 silencieux / 📤 notifie). La surcouche fusionne mat/matRemL/matProp/payMode au chargement de tout lien avec deal_id."
   }
 }
