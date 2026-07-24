@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.611",
+    "version": "1.612",
     "updated": "2026-07-24",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -79,6 +79,15 @@
       "update_relay_fichier_entier": "L'action update ne supporte PAS de payload par section. Toujours pousser le contenu COMPLET apres merge."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-24",
+        "version_from": "1.611",
+        "version_to": "1.612",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Email 'devis mis a jour : remise partenaire appliquee (2 445 EUR HT)' ENVOYE a Mael (09:52 UTC, template devis-maj cree, demande Dominique), note au journal du deal"
+        ]
+      },
       {
         "date": "2026-07-24",
         "version_from": "1.610",
