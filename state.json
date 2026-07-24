@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": "1.622",
+    "version": "1.623",
     "updated": "2026-07-24",
     "updated_by": "Claude PM (claude.ai)",
     "description": "Source de verite OZECAR. Acces EXCLUSIF via https://ozecar.fr/api/github-relay.php avec cle k (voir instructions projet Claude). Jamais raw.githubusercontent (cache CDN stale), jamais API GitHub directe.",
@@ -79,6 +79,15 @@
       "update_relay_fichier_entier": "L'action update ne supporte PAS de payload par section. Toujours pousser le contenu COMPLET apres merge."
     },
     "session_changelog": [
+      {
+        "date": "2026-07-24",
+        "version_from": "1.622",
+        "version_to": "1.623",
+        "author": "Claude PM (claude.ai)",
+        "changes": [
+          "Fix audience client final : aud=cf = prix publics + badge (le forcage INST ne s'applique plus), JS servi valide"
+        ]
+      },
       {
         "date": "2026-07-24",
         "version_from": "1.621",
@@ -3316,7 +3325,8 @@
         "qa_preuves": "QA automatisee 24/07 : 7 cas d'erreur rejetes avec le bon code (cgv 400, raison_sociale/siren/contact/email/telephone/adresse 422) + cas nominal ok:true en mode test (deal immobile, aucun email client) + page servie verifiee (telephone present, CGV milieu=0, cgvzone presente).",
         "ux_visuelle": "MAJ : plus d'alert(). Champs manquants/invalides en ROUGE (bordure #DC2626 + fond rose), scroll automatique centre sur le premier champ manquant + focus, le rouge s'efface a la saisie (listener delegue data-f). CGV non cochee : carte CGV en rouge + scroll. QA : syntaxe du JS SERVI validee par node apres deploiement (nouvelle etape obligatoire suite a un deploy casse rattrape en 2 min)."
       },
-      "ordre_cartes_2026_07_24": "Mode materiel : la carte MAINTENANCE est en 2E POSITION, juste apres le bloc materiel (deplacement DOM a l'init). Ordre final : 1 Materiel · 2 Maintenance (3 formules) · 3 Vos informations · 4 Et apres (timeline) · 5 CGV (fin) · barre CTA."
+      "ordre_cartes_2026_07_24": "Mode materiel : la carte MAINTENANCE est en 2E POSITION, juste apres le bloc materiel (deplacement DOM a l'init). Ordre final : 1 Materiel · 2 Maintenance (3 formules) · 3 Vos informations · 4 Et apres (timeline) · 5 CGV (fin) · barre CTA.",
+      "audience_cf_2026_07_24": "BUG corrige (repere par Dominique) : le mode materiel forcait INST=true pour tout destinataire. Desormais aud=cf (payload ou URL) desactive la vue installateur : PRIX PUBLICS, titre 'Devis materiel — client final', badge violet 'CLIENT FINAL · PRIX PUBLICS' dans le bandeau. La surcouche deal (matRemL) reste applicable si une remise commerciale CF est voulue. Contenu CF complet (discours, maintenance service, 'pose par X') = P3 a concevoir."
     }
   },
   "esignature": {
